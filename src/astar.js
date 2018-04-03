@@ -1,4 +1,4 @@
-/* 在 N*N 的坐标系集合中以1位单位进行A*寻径
+/* 在 N*N 的坐标系集合中以1为单位进行A*寻径
 * @param {Array}     startUnitXY  X、Y元坐标值
 * @param {Array}     endUnitXY    X、Y元坐标值
 * @param {Function}  filter       自行过滤

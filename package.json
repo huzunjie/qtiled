@@ -1,5 +1,5 @@
 {
-  "name": "QTiled",
+  "name": "qtiled",
   "version": "0.0.1",
   "description": "一套基于中心点坐标系的 Tiled 坐标管理工具。",
   "main": "lib/index.js",
