@@ -1,0 +1,15 @@
+{
+ "presets": [
+    ["env",
+      {
+        "targets": {
+          "browsers": [ "last 2 versions", "not ie <= 8"]
+        }
+      }
+    ],
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-decorators-legacy"
+  ]
+}
