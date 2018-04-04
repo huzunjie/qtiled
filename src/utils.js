@@ -121,7 +121,7 @@ const sqrt2 = Math.sqrt(2);
 const sincos45 = sqrt2 / 2;
 // 元坐标45度变换后的差值补充
 const unitDiff = -1 / sqrt2;
-export function unit2rhombusPixel (unitXY = [0, 0], diagonal = [10, 10], originXY = [0, 0]) {
+export function unit2rhombusPixel (unitXY = [], diagonal = [], originXY = []) {
   const [X = 0, Y = 0] = unitXY;
   const [W = 10, H = 10] = diagonal;
   const [ox = 0, oy = 0] = originXY;
@@ -143,7 +143,7 @@ export function unit2rhombusPixel (unitXY = [0, 0], diagonal = [10, 10], originX
 * @param {Array}   originXY  基准像素点的X、Y像素坐标值
 * @return {Array}  x,y 对应元坐标值
 */
-export function rhombusPixel2unit (pixelXY = [0, 0], diagonal = [10, 10], originXY = [0, 0]) {
+export function rhombusPixel2unit (pixelXY = [], diagonal = [], originXY = []) {
   const [pixelX = 0, pixelY = 0] = pixelXY;
   const [W = 10, H = 10] = diagonal;
   const [ox = 0, oy = 0] = originXY;

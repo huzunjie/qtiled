@@ -138,3 +138,36 @@ function drawTiled(unitXY, pos = centerPos, borderColor = _tiledBorderColor){
   return box;
 }
 
+/*
+
+const {Scene, Sprite} = spritejs
+const scene = new Scene('#container')
+const landJsonUrl = 'https://s4.ssl.qhres.com/static/a1dafc2e1fb2c2f8.json'
+const landRes = 'https://p0.ssl.qhimg.com/t01f949f6b927777203.png'
+
+;(async function(){
+scene.setResolution(800, 600)
+
+await scene.preload([
+  landRes, landJsonUrl
+
+])
+
+const box1 = new Sprite()
+box1.attr({
+  anchor: [0.5, 0.5],
+  pos: [400, 300],
+  size: [78, 40],
+  border: [1, 'red'],
+  borderRadius: 25,
+  padding: 10
+})
+box1.textures = [{
+  src: 'grassland_06.png'
+}]
+
+scene.layer().appendChild(box1)
+})()
+
+
+*/

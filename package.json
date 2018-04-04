@@ -1,13 +1,14 @@
 {
   "name": "qtiled",
-  "version": "0.0.1",
-  "description": "一套基于中心点坐标系的 Tiled 坐标管理工具。",
+  "version": "0.0.2",
+  "description": "一套基于中心点坐标系的 Tiles 坐标管理工具。",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
   "scripts": {
     "test": "jest --coverage",
+    "test-w": "jest --coverage --watch",
     "lint": "eslint . --fix",
     "start": "rollup -c build/rollup.config.dev.js -w",
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
