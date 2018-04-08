@@ -7,3 +7,5 @@ export * from './utils';
 
 // 公布A*寻路
 export searchPath from './astar';
+
+export const version = process.env.PLAYER_VERSION;
