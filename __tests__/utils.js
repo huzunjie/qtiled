@@ -87,7 +87,8 @@ test('qtiled.rhombusPixel2unit.def', () => {
 
 test('qtiled.getStaggeredUnitsByRowCol', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol(2, 2);
-  expect(ret+'').toBe('0.5,-0.5,-0.5,0.5,-0.5,-0.5');
+  expect(ret+'').toBe('1,0,0,1,0,0,0,-1,-1,0');
+  // qtiled.getStaggeredUnitsByRowCol(4, 5, ()=>1, (...args)=>console.log(args));
 });
 
 test('qtiled.getStaggeredUnitsByRowCol.def', () => {

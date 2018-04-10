@@ -101,20 +101,24 @@ myPath.forEach(unitXY=>{
 */
 
 // 错列布局
-xyDiff = [14, 14];
-getStaggeredUnitsByRowCol(5,5).forEach(unitXY=>{
+xyDiff = [12, 12];
+getStaggeredUnitsByRowCol(3,2, (x, y, xn, yn, xa, ca)=>{
+  // 当偶数行单元格大于2个时，过滤偶数行第一个，显得整齐一些~
+  return !(xa>=2 && yn%2 && xn==0);
+}).forEach(unitXY=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
   const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
   drawTiled(unitXY, pixelXY);
 });
 
 // 错列布局
-xyDiff = [10, 10];
-getStaggeredUnitsByRowCol(5,8, (x, y, mX, mY, line)=>{
+xyDiff = [3, 7];
+getStaggeredUnitsByRowCol(5, 8, (x, y, xn, yn)=>{
   // 过滤排除掉坐标（-1, -1）的单元
   return !( x==-1 && -1==y );
-}).forEach(unitXY=>{
+},(x, y)=>{
+  unitXY = [x, y];
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+  const pixelXY = unit2rhombusPixel(unitXY, size, [300,250]);
   drawTiled(unitXY, pixelXY);
 });
