@@ -185,15 +185,14 @@ export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, 
   const xIsSingle = column === 1;
   for(let yNum = 0; yNum < row; yNum++) {
     const y = _half_precision((yNum - halfY) / 2);
-    const isEven = yNum % 2==0;
+    const isEven = yNum % 2 === 0;
     // 偶数行右移，实现错列对齐
     const xDiff = isEven ? 0.5 : 0;
     for(let xNum = 0; xNum < column; xNum++) {
       const x = xNum + xDiff - halfX;
       const [unitX, unitY] = rhombusPixel2unit([x, y], size, pos);
       // 排除掉奇数第一个，实现整齐效果
-      if(xIsSingle || isEven || xNum!==0)
-        filter(unitX, unitY, xNum, yNum, column, row) && ret.push(processor(unitX, unitY, xNum, yNum, column, row));
+      if(xIsSingle || isEven || xNum !== 0) {filter(unitX, unitY, xNum, yNum, column, row) && ret.push(processor(unitX, unitY, xNum, yNum, column, row));}
     }
   }
   return ret;
