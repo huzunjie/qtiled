@@ -100,14 +100,9 @@ myPath.forEach(unitXY=>{
   )
 */
 
-getUnitsByRowCol(1,1).forEach(unitXY=>{
-  const pixelXY = unit2pixel(unitXY, size, centerPos);
-  drawRect(unitXY, pixelXY).attr('bgcolor','#ff000030');
-});
-
 // 错列布局
-xyDiff = [13, 13];
-getStaggeredUnitsByRowCol(4, 3).forEach(unitXY=>{
+xyDiff = [13, 12];
+getStaggeredUnitsByRowCol(4, 5,(...unitXY)=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
   const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
   drawTiled(unitXY, pixelXY);
@@ -115,8 +110,7 @@ getStaggeredUnitsByRowCol(4, 3).forEach(unitXY=>{
 
 // 错列布局
 xyDiff = [3, 7];
-getStaggeredUnitsByRowCol(5, 10,(x, y)=>{
-  unitXY = [x, y];
+getStaggeredUnitsByRowCol(5, 10,(...unitXY)=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
   const pixelXY = unit2rhombusPixel(unitXY, size, [300,250]);
   drawTiled(unitXY, pixelXY);

@@ -178,19 +178,20 @@ export function rhombusPixel2unit (pixelXY = [], diagonal = [], originXY = []) {
 */
 export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, y)=>[x, y], filter = (x, y)=>true) {
   const ret = [];
-  const halfX = column > 1 ? _half_precision(column / 2) : 0;
-  const halfY = row > 1 ? _half_precision(row / 4) : 0;
+  const halfX = _half_precision(column / 2);
+  const halfY = _half_precision(row / 2);
   const size = [1, 1];
   const pos = [0, 0];
-  const xIsSingle = column===1;
+  const xIsSingle = column === 1;
   for(let yNum = 0; yNum < row; yNum++) {
-    const y = yNum / 2 - halfY;
-    const isEven = yNum % 2;
+    const y = _half_precision((yNum - halfY) / 2);
+    const isEven = yNum % 2==0;
+    // 偶数行右移，实现错列对齐
     const xDiff = isEven ? 0.5 : 0;
     for(let xNum = 0; xNum < column; xNum++) {
       const x = xNum + xDiff - halfX;
       const [unitX, unitY] = rhombusPixel2unit([x, y], size, pos);
-      // 排除掉位移偏差列
+      // 排除掉奇数第一个，实现整齐效果
       if(xIsSingle || isEven || xNum!==0)
         filter(unitX, unitY, xNum, yNum, column, row) && ret.push(processor(unitX, unitY, xNum, yNum, column, row));
     }
