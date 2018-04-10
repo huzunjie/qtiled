@@ -97,8 +97,8 @@ export function unit2pixel (unitXY = [0, 0], size = [10, 10], originXY = [0, 0])
   return unitXY.map((XY, i)=>_half_precision(XY * size[i] + originXY[i]));
 }
 // 精确到0.5个单位
-function _half_precision(v){
-  return Math.round(v*2)/2
+function _half_precision (v) {
+  return Math.round(v * 2) / 2;
 }
 /* 根据像素坐标、渲染宽高、原点像素坐标，取得元坐标
 * @param {Array}   pixelXY   X、Y像素坐标值
@@ -107,7 +107,7 @@ function _half_precision(v){
 * @return {Array} x,y 对应的元坐标
 */
 export function pixel2unit (pixelXY = [0, 0], size = [10, 10], originXY = [0, 0]) {
-  return pixelXY.map((XY, i)=> _half_precision( (XY-originXY[i])/size[i] ) );
+  return pixelXY.map((XY, i)=> _half_precision((XY - originXY[i]) / size[i]));
 }
 
 /* 将像素坐标按照tile宽高取整
@@ -116,7 +116,7 @@ export function pixel2unit (pixelXY = [0, 0], size = [10, 10], originXY = [0, 0]
 * @param {Array}   originXY 基准像素点的X、Y像素坐标值
 * @return {Array} x,y 对应的元坐标
 */
-/*export function pixelRound (pixelXY = [0, 0], size = [10, 10], originXY = [0, 0]) {
+/* export function pixelRound (pixelXY = [0, 0], size = [10, 10], originXY = [0, 0]) {
   return pixelXY.map((XY, i)=> _half_precision( (XY-originXY[i])/size[i] ) );
 }
 */
@@ -159,12 +159,12 @@ export function rhombusPixel2unit (pixelXY = [], diagonal = [], originXY = []) {
   const [ox = 0, oy = 0] = originXY;
 
   // 像素坐标换算为元坐标
-  const uX = (pixelX - ox)/(unitDiff * W);
-  const uY = (pixelY - oy)/(unitDiff * H);
+  const uX = (pixelX - ox) / (unitDiff * W);
+  const uY = (pixelY - oy) / (unitDiff * H);
 
   // 45度变换
-  const unitX = _half_precision( (uX+ uY) / sincos45 /2 );
-  const unitY =  _half_precision( uY / sincos45 - unitX );
+  const unitX = _half_precision((uX + uY) / sincos45 / 2);
+  const unitY = _half_precision(uY / sincos45 - unitX);
 
   return [unitX, unitY];
 }
@@ -178,15 +178,15 @@ export function rhombusPixel2unit (pixelXY = [], diagonal = [], originXY = []) {
 */
 export function getStaggeredUnitsByRowCol (column = 1, row = 1, filter = (x, y)=>true, processor = (x, y)=>[x, y]) {
   const ret = [];
-  const halfX = _half_precision(column / 2);
-  const halfY = _half_precision( row / 4);
+  const halfX = column > 1 ? _half_precision(column / 2) : 0;
+  const halfY = row > 1 ? _half_precision(row / 4) : 0;
   const size = [1, 1];
-  const pos = [0,0];
+  const pos = [0, 0];
   for(let yNum = 0; yNum < row; yNum++) {
-    let y = yNum/2-halfY;
-    let xDiff = yNum%2==0?.5:0;
-    for(let xNum = 0; xNum<column; xNum++){
-      let x = xNum + xDiff - halfX;
+    const y = yNum / 2 - halfY;
+    const xDiff = yNum % 2 ? 0.5 : 0;
+    for(let xNum = 0; xNum < column; xNum++) {
+      const x = xNum + xDiff - halfX;
       const [unitX, unitY] = rhombusPixel2unit([x, y], size, pos);
       filter(unitX, unitY, xNum, yNum, column, row) && ret.push(processor(unitX, unitY, xNum, yNum, column, row));
     }
