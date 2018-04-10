@@ -102,15 +102,15 @@ myPath.forEach(unitXY=>{
 
 // 错列布局
 xyDiff = [12, 12];
-getStaggeredUnitsByRowCol(3,2, (x, y, xn, yn, xa, ca)=>{
-  // 当偶数行单元格大于2个时，过滤偶数行第一个，显得整齐一些~
-  return !(xa>=2 && yn%2 && xn==0);
+getStaggeredUnitsByRowCol(4,3, (x, y, xn, yn, xa, ca)=>{
+  // 当偶数行单元格大于2个时，过滤偶数行末一个，显得整齐一些~
+  return !(xa>=2 && yn%2 && (xn+1)==xa);
 }).forEach(unitXY=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
   const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
   drawTiled(unitXY, pixelXY);
 });
-
+/*
 // 错列布局
 xyDiff = [3, 7];
 getStaggeredUnitsByRowCol(5, 8, (x, y, xn, yn)=>{
@@ -122,3 +122,4 @@ getStaggeredUnitsByRowCol(5, 8, (x, y, xn, yn)=>{
   const pixelXY = unit2rhombusPixel(unitXY, size, [300,250]);
   drawTiled(unitXY, pixelXY);
 });
+*/

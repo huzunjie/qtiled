@@ -1,22 +1,21 @@
 import * as qtiled from 'index';
 
-
 test('qtiled.getUnitsByRowCol', () => {
-  expect(qtiled.getUnitsByRowCol(2,2)).toHaveLength(4);
+  expect(qtiled.getUnitsByRowCol(2, 2)).toHaveLength(4);
 });
 test('qtiled.getUnitsByRowCol.def', () => {
   expect(qtiled.getUnitsByRowCol()).toHaveLength(1);
 });
 
 test('qtiled.getNeighbourUnitsByRowCol', () => {
-  expect(qtiled.getNeighbourUnitsByRowCol(2,2)).toHaveLength(12);
+  expect(qtiled.getNeighbourUnitsByRowCol(2, 2)).toHaveLength(12);
 });
 test('qtiled.getNeighbourUnitsByRowCol.def', () => {
   expect(qtiled.getNeighbourUnitsByRowCol()).toHaveLength(8);
 });
 
 test('qtiled.getDiagonalUnitsByRowCol', () => {
-  expect(qtiled.getDiagonalUnitsByRowCol(3,3)).toHaveLength(5);
+  expect(qtiled.getDiagonalUnitsByRowCol(3, 3)).toHaveLength(5);
 });
 test('qtiled.getDiagonalUnitsByRowCol.def', () => {
   const ret = qtiled.getDiagonalUnitsByRowCol();
@@ -46,7 +45,7 @@ test('qtiled.rotateUnit.def', () => {
 
 test('qtiled.unit2pixel', () => {
   const start = [0, 1];
-  const ret = qtiled.unit2pixel(start, [10 ,10]);
+  const ret = qtiled.unit2pixel(start, [10, 10]);
   expect(ret.join()).toBe([0, 10].join());
 });
 test('qtiled.unit2pixel.def', () => {
@@ -56,7 +55,7 @@ test('qtiled.unit2pixel.def', () => {
 
 test('qtiled.pixel2unit', () => {
   const start = [0, 10];
-  const ret = qtiled.pixel2unit(start, [10 ,10]);
+  const ret = qtiled.pixel2unit(start, [10, 10]);
   expect(ret.join()).toBe([0, 1].join());
 });
 test('qtiled.pixel2unit.def', () => {
@@ -66,7 +65,7 @@ test('qtiled.pixel2unit.def', () => {
 
 test('qtiled.unit2rhombusPixel', () => {
   const start = [0, 1];
-  const ret = qtiled.unit2rhombusPixel(start, [10 ,10]);
+  const ret = qtiled.unit2rhombusPixel(start, [10, 10]);
   expect(ret.join()).toBe([5, -5].join());
 });
 test('qtiled.unit2rhombusPixel.def', () => {
@@ -74,10 +73,9 @@ test('qtiled.unit2rhombusPixel.def', () => {
   expect(ret.join()).toBe([0, 0].join());
 });
 
-
 test('qtiled.rhombusPixel2unit', () => {
   const start = [5, -5];
-  const ret = qtiled.rhombusPixel2unit(start, [10 ,10]);
+  const ret = qtiled.rhombusPixel2unit(start, [10, 10]);
   expect(ret.join()).toBe([0, 1].join());
 });
 test('qtiled.rhombusPixel2unit.def', () => {
@@ -87,11 +85,12 @@ test('qtiled.rhombusPixel2unit.def', () => {
 
 test('qtiled.getStaggeredUnitsByRowCol', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol(2, 2);
-  expect(ret+'').toBe('1,0,0,1,0,0,0,-1,-1,0');
+  // console.log(ret)
+  expect(ret + '').toBe('1.5,-0.5,0.5,0.5,0.5,-0.5,-0.5,0.5');
   // qtiled.getStaggeredUnitsByRowCol(4, 5, ()=>1, (...args)=>console.log(args));
 });
 
 test('qtiled.getStaggeredUnitsByRowCol.def', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol();
-  expect(ret+'').toBe('0,0');
+  expect(ret + '').toBe('0,0');
 });

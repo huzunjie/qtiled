@@ -11,15 +11,15 @@ import referenceArr from './tile-neighbors';
 
 export default function (startUnitXY = [], endUnitXY = [], filter) {
   // console.log(fromX + ',' + fromY, 'to', toX + ',' + toY);
-  let [fromX = 0, fromY = 0] = startUnitXY;
-  let [toX = 0, toY = 0] = endUnitXY;
+  const [fromX = 0, fromY = 0] = startUnitXY;
+  const [toX = 0, toY = 0] = endUnitXY;
 
   // 起止点相同直接返回当前点
   if(fromX === toX && fromY === toY) {
     return [startUnitXY];
   }
   // 排除不可能到达的点，避免死循环
-  if(Math.abs(fromX%1) !== Math.abs(toX%1) || Math.abs(fromY%1) !== Math.abs(toY%1)) {
+  if(Math.abs(fromX % 1) !== Math.abs(toX % 1) || Math.abs(fromY % 1) !== Math.abs(toY % 1)) {
     return [];
   }
   const cost = {};
@@ -31,7 +31,7 @@ export default function (startUnitXY = [], endUnitXY = [], filter) {
   if(typeof (filter) !== 'function') {
     filter = _=>true;
   }
-  let _limit = 0;
+  // const _limit = 0;
   function checker (x, y) {
     const eligiblePoints = [];
     const currentCost = cost[x + ',' + y];
