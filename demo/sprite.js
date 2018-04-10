@@ -65,6 +65,7 @@ function drawRect(unitXY=[], pos = centerPos){
     );
   });
   layer.appendChild(box1)
+  return box1;
 }
 
 // tiled 变换前的矩形宽高 - 这里为了便于计算以正方形进行菱形变换
