@@ -176,19 +176,23 @@ export function rhombusPixel2unit (pixelXY = [], diagonal = [], originXY = []) {
 * @param {Function} processor    加工：可以用于将单位为1的坐标值换算为目标值或对象
 * @return {Array} 生成的坐标集合
 */
-export function getStaggeredUnitsByRowCol (column = 1, row = 1, filter = (x, y)=>true, processor = (x, y)=>[x, y]) {
+export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, y)=>[x, y], filter = (x, y)=>true) {
   const ret = [];
   const halfX = column > 1 ? _half_precision(column / 2) : 0;
   const halfY = row > 1 ? _half_precision(row / 4) : 0;
   const size = [1, 1];
   const pos = [0, 0];
+  const xIsSingle = column===1;
   for(let yNum = 0; yNum < row; yNum++) {
     const y = yNum / 2 - halfY;
-    const xDiff = yNum % 2 ? 0.5 : 0;
+    const isEven = yNum % 2;
+    const xDiff = isEven ? 0.5 : 0;
     for(let xNum = 0; xNum < column; xNum++) {
       const x = xNum + xDiff - halfX;
       const [unitX, unitY] = rhombusPixel2unit([x, y], size, pos);
-      filter(unitX, unitY, xNum, yNum, column, row) && ret.push(processor(unitX, unitY, xNum, yNum, column, row));
+      // 排除掉位移偏差列
+      if(xIsSingle || isEven || xNum!==0)
+        filter(unitX, unitY, xNum, yNum, column, row) && ret.push(processor(unitX, unitY, xNum, yNum, column, row));
     }
   }
   return ret;
