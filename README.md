@@ -1,7 +1,10 @@
 # QTiled
 
-这是一套Tile布局基础库，目前还在雏形状态。
+这是一套Tile布局基础库。
 
+## DEMO
+
+结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://code.h5jun.com/nihi/edit?js,output
 
 ## 安装引用
 
