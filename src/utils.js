@@ -178,11 +178,11 @@ export function rhombusPixel2unit (pixelXY = [], diagonal = [], originXY = []) {
 */
 export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, y)=>[x, y], filter = (x, y)=>true) {
   const ret = [];
-  const halfX = _half_precision(column / 2);
+  const xIsSingle = column === 1;
+  const halfX = _half_precision(column / 2) + (xIsSingle && row > 1 ? -0.5 : 0);
   const halfY = _half_precision(row / 2);
   const size = [1, 1];
   const pos = [0, 0];
-  const xIsSingle = column === 1;
   for(let yNum = 0; yNum < row; yNum++) {
     const y = _half_precision((yNum - halfY) / 2);
     const isEven = yNum % 2 === 0;
