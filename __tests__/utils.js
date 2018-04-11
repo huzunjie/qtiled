@@ -94,3 +94,14 @@ test('qtiled.getStaggeredUnitsByRowCol.def', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol();
   expect(ret + '').toBe('0,0');
 });
+
+test('qtiled.getStaggeredUnitsByRowCol', () => {
+  const ret = qtiled.getStaggeredUnitsByRowCol(1, 2);
+  expect(ret + '').toBe('0,1,0,0');
+});
+
+
+test('qtiled.getStaggeredUnitsByRowCol', () => {
+  const ret = qtiled.getStaggeredUnitsByRowCol(2, 1);
+  expect(ret + '').toBe('0.5,-0.5,-0.5,0.5');
+});
