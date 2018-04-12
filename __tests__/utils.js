@@ -100,8 +100,20 @@ test('qtiled.getStaggeredUnitsByRowCol', () => {
   expect(ret + '').toBe('0,1,0,0');
 });
 
-
 test('qtiled.getStaggeredUnitsByRowCol', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol(2, 1);
   expect(ret + '').toBe('0.5,-0.5,-0.5,0.5');
+});
+
+test('qtiled.staggeredUnitRound.def', () => {
+  const ret = qtiled.staggeredUnitRound();
+  expect(ret + '').toBe('0,0');
+});
+
+test('qtiled.staggeredUnitRound', () => {
+  const ret = qtiled.staggeredUnitRound([40, 25], [78, 40]);
+  expect(ret + '').toBe('39,20');
+
+  const ret1 = qtiled.staggeredUnitRound([78, 100], [78, 40]);
+  expect(ret1 + '').toBe('117,100');
 });

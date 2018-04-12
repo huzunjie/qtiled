@@ -1,17 +1,19 @@
 /* 根据行列数设定，取得对应元坐标集合
 * @param {Number}   column       列数
 * @param {Number}   row          行数
-* @param {Function} filter       过滤
 * @param {Function} processor    加工：可以用于将单位为1的坐标值换算为目标值或对象
+* @param {Function} filter       过滤
 * @return {Array} 生成的坐标集合
 */
-export function getUnitsByRowCol (column = 1, row = 1, filter = (x, y)=>true, processor = (x, y)=>[x, y]) {
+export function getUnitsByRowCol (column = 1, row = 1, processor = (xId, yId)=>[xId, yId], filter = ()=>true) {
   const ret = [];
-  const maxX = (column - 1) / 2;
-  const maxY = (row - 1) / 2;
-  for(let y = -maxY; y <= maxY; y++) {
-    for(let x = -maxX; x <= maxX; x++) {
-      filter(x, y, maxX, maxY) && ret.push(processor(x, y, maxX, maxY));
+  const halfCol = Math.round(column / 2);
+  const halfRow = Math.round(row / 2);
+  for(let x = 1; x <= column; x++) {
+    const xId = x - halfCol;
+    for(let y = 1; y <= row; y++) {
+      const yId = y - halfRow;
+      filter(xId, yId, x, y, column, row) && ret.push(processor(xId, yId, x, y, column, row));
     }
   }
   return ret;
@@ -23,27 +25,29 @@ export function getUnitsByRowCol (column = 1, row = 1, filter = (x, y)=>true, pr
 * @param {Function} filter    过滤
 * @return {Array} 生成的坐标集合
 */
-export function getNeighbourUnitsByRowCol (column = 1, row = 1, filter = (x, y)=>true, processor = (x, y)=>[x, y]) {
+export function getNeighbourUnitsByRowCol (column = 1, row = 1, processor = (xId, yId)=>[xId, yId], filter = ()=>true) {
   return getUnitsByRowCol(
     column + 2,
     row + 2,
-    (x, y, maxX, maxY)=>filter(x, y, maxX, maxY) && (Math.abs(x) === maxX || Math.abs(y) === maxY),
-    processor
+    processor,
+    (xId, yId, x, y, column, row)=>filter(xId, yId, x, y, column, row) && (x === 1 || x === column || y === 1 || y === row)
   );
 };
 
-/* 根据行列数设定，取得斜对角范围内的错列元坐标集合
+/* 根据斜对角元素数设定，取得斜对角范围内的错列元坐标集合（可用于将正规布局裁切掉四个角，生成菱形布局）
 * @param {Number}   column    列数
 * @param {Number}   row       行数
 * @param {Function} filter    过滤
 * @return {Array} 生成的坐标集合
 */
-export function getDiagonalUnitsByRowCol (column = 1, row = 1, filter = (x, y)=>true, processor = (x, y)=>[x, y]) {
+export function getDiagonalUnitsByRowCol (column = 1, row = 1, processor = (xId, yId)=>[xId, yId], filter = ()=>true) {
+  const halfCol = Math.round(column / 2) - column % 2;
+  const halfRow = Math.round(row / 2) - row % 2;
   return getUnitsByRowCol(
     column,
     row,
-    (x, y, maxX, maxY)=>filter(x, y, maxX, maxY) && Math.abs(x) / maxX + Math.abs(y) / maxY <= 1,
-    processor
+    processor,
+    (xId, yId, x, y, column, row)=>filter(xId, yId, x, y, column, row) && Math.abs(xId) / halfCol + Math.abs(yId) / halfRow <= 1
   );
 }
 
@@ -52,7 +56,7 @@ export function getDiagonalUnitsByRowCol (column = 1, row = 1, filter = (x, y)=>
 * @param {Array}   endUnitXY    X、Y元坐标值
 * @return {Array}  元坐标集合
 */
-export function getUnitsByDiagonal (startUnitXY = [], endUnitXY = []) {
+export function getUnitsByDiagonal (startUnitXY = [], endUnitXY = [], processor = (xId, yId)=>[xId, yId], filter = ()=>true) {
   const [startX = 0, startY = 0] = startUnitXY;
   const [endX = 0, endY = 0] = endUnitXY;
   const minX = Math.min(startX, endX);
@@ -60,9 +64,9 @@ export function getUnitsByDiagonal (startUnitXY = [], endUnitXY = []) {
   const minY = Math.min(startY, endY);
   const maxY = Math.max(startY, endY);
   const ret = [];
-  for(let x = minX; x <= maxX; x++) {
-    for(let y = minY; y <= maxY; y++) {
-      ret.push([x, y]);
+  for(let xId = minX; xId <= maxX; xId++) {
+    for(let yId = minY; yId <= maxY; yId++) {
+      filter(xId, yId, minX, minY, maxX, maxY, startUnitXY, endUnitXY) && ret.push(processor(xId, yId, minX, minY, maxX, maxY, startUnitXY, endUnitXY));
     }
   }
   return ret;
@@ -97,7 +101,7 @@ export function unit2pixel (unitXY = [0, 0], size = [10, 10], originXY = [0, 0])
   return unitXY.map((XY, i)=>_half_precision(XY * size[i] + originXY[i]));
 }
 // 精确到0.5个单位
-function _half_precision (v) {
+export function _half_precision (v) {
   return Math.round(v * 2) / 2;
 }
 /* 根据像素坐标、渲染宽高、原点像素坐标，取得元坐标
@@ -197,3 +201,23 @@ export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, 
   }
   return ret;
 };
+
+/* 将任意像素坐标按错列布局中单元格尺寸取整，对应到相应像素坐标
+* @param {Array}    pos       像素坐标 x y 值
+* @param {Array}    size      单元格宽高 w h 值
+* @param {Array}    offsetPos 要累加到结果 x y 值上的偏移量
+* @return {Array} 生成的坐标集合
+*/
+export function staggeredUnitRound ([vX = 0, vY = 0] = [], [w = 78, h = 40] = [], [oX = 0, oY = 0] = []) {
+  const halfW = w / 2;
+  const halfH = h / 2;
+  const y = Math.round(vY / halfH) * halfH;
+  let x = Math.round(vX / w) * w;
+
+  // 偶数行错列布局右移部分回填
+  if(y % h === halfH) {
+    // 鼠标位置大于半个则回移，小于半个则右移；保证在单元格内
+    x += (vX - x) >= 0 ? halfW : -halfW;
+  }
+  return [x + oX, y + oY];
+}

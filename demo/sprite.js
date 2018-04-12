@@ -30,6 +30,20 @@ refBox.attr({
 })
 layer.appendChild(refBox);
 
+window.drawCenterOfCircle = function(pos){
+  const refBox1 = new Sprite()
+  refBox1.attr({
+    anchor: [.5, .5],
+    pos: pos||centerPos,
+    size: [5, 5],
+    border: [5, '#ff000090'],
+    bgcolor:'#000000',
+    borderRadius: 5
+  })
+  layer.appendChild(refBox1);
+}
+
+
 const _rectBorderWidth=1;
 const _rectBorderMargin=_rectBorderWidth*2;
 function drawRect(unitXY=[], pos = centerPos){
