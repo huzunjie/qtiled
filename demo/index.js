@@ -14,105 +14,101 @@ const {
 
 const size = [_width, _height];
 
-let xyDiff = [0, 0];
+let cPos = [105, 55];
+drawCenterOfCircle(cPos);
 // 正矩形：2*2元素
-getUnitsByRowCol(3,4).forEach(unitXY=>{
-  unitXY = unitXY.map((v,i)=>v+xyDiff[i])
-  const pixelXY = unit2pixel(unitXY, size, centerPos);
+const uint2x2 = getUnitsByRowCol(2,2);
+uint2x2.forEach(unitXY=>{
+  const pixelXY = unit2pixel(unitXY, size, cPos);
   drawRect(unitXY, pixelXY);
 });
+
 // 正矩形：4*4的邻居
-getNeighbourUnitsByRowCol(5, 6).forEach(unitXY=>{
-  unitXY = unitXY.map((v,i)=>v+xyDiff[i])
-  const pixelXY = unit2pixel(unitXY, size, centerPos);
+const uint4x4 = getNeighbourUnitsByRowCol(4, 4);
+uint4x4.forEach(unitXY=>{
+  const pixelXY = unit2pixel(unitXY, size, cPos);
   drawRect(unitXY, pixelXY);
 });
 
+
+cPos = [120, 200];
+drawCenterOfCircle(cPos);
 // 菱形：2*2元素
-xyDiff = [19, 5];
-getUnitsByRowCol(2,2).forEach(unitXY=>{
-  unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
-  
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+//const centerPos
+uint2x2.forEach(unitXY=>{
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
+
+
 // 菱形：4*4的邻居
-getNeighbourUnitsByRowCol(4,4).forEach(unitXY=>{
-  unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+uint4x4.forEach(unitXY=>{
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
 
-
+let xyDiff = [1,13];
+drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
 // 对角范围内的元素
-xyDiff = [14, -1];
-getDiagonalUnitsByRowCol(7,7).forEach(unitXY=>{
+getDiagonalUnitsByRowCol(7,9, (...unitXY)=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
-
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
 
-
-// 起止点连线作为对角线的矩形范围内的元素
-xyDiff = [10, -6];
-getUnitsByDiagonal([-1,-1], [1,2]).forEach(unitXY=>{
+xyDiff = [-4, 7];
+drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+// 根据设定起止点得到一条线，以这条线作为矩形对角线得出矩形区域元素
+getUnitsByDiagonal([-1,-1], [1,1], (...unitXY)=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
 
 // 设定起止点寻径经过的元素
-xyDiff = [6, -10];
-searchPath([-1,-1], [1,2]).forEach(unitXY=>{
+xyDiff = [-2, 16];
+drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+searchPath([-2,-1], [1,1]).forEach(unitXY=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
 
 // 设定起止点寻径经过的元素: 角落不通行的
-xyDiff = [2, -14];
-const myPath = searchPath([-1,-1], [1,2], (x,y,cost)=> cost==10);
-myPath.forEach(unitXY=>{
+xyDiff = [-5, 11];
+drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+const mySearchPath = searchPath([-1,-1], [1,2], (x,y,cost)=> cost==10);
+mySearchPath.forEach(unitXY=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
 
 // 坐标系角度旋转
-xyDiff = [-2, -16];
-myPath.forEach(unitXY=>{
+xyDiff = [-7, 13];
+drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+mySearchPath.forEach(unitXY=>{
   unitXY = rotateUnit(unitXY, 90)
   unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
 
-// 像素转为uint坐标
-/*
-  console.log(
-    'pixel2unit:', 
-    pixel2unit([386, 126], [_width, _height], centerPos)
-  );
-  console.log(
-    'rhombusPixel2unit:', 
-    rhombusPixel2unit(_t.attr('pos'),[_width, _height], centerPos)
-  )
-*/
-
 // 错列布局
-xyDiff = [13, 12];
+xyDiff = [-4, -5];
+drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
 getStaggeredUnitsByRowCol(4, 5,(...unitXY)=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
-  const pixelXY = unit2rhombusPixel(unitXY, size, centerPos);
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
 
 // 错列布局
-xyDiff = [3, 7];
-getStaggeredUnitsByRowCol(5, 10,(...unitXY)=>{
+xyDiff = [-9, 1];
+drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+getStaggeredUnitsByRowCol(6, 10,(...unitXY)=>{
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
-  const pixelXY = unit2rhombusPixel(unitXY, size, [300,250]);
+  const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 }, (x, y, xn, yn)=>{
   // 过滤排除掉坐标（-1, -1）的单元

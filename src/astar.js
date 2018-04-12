@@ -9,7 +9,7 @@
 // 上右下左8个方向相邻单元的差值及评分权重 - 方向优先级以列表次序为准（这里后续可以适度扩展动态优先级次序）
 import referenceArr from './tile-neighbors';
 
-export default function (startUnitXY = [], endUnitXY = [], filter) {
+export default function (startUnitXY = [], endUnitXY = [], filter = (xId, yId, cost, refX, refY)=>true) {
   // console.log(fromX + ',' + fromY, 'to', toX + ',' + toY);
   const [fromX = 0, fromY = 0] = startUnitXY;
   const [toX = 0, toY = 0] = endUnitXY;
@@ -27,10 +27,6 @@ export default function (startUnitXY = [], endUnitXY = [], filter) {
 
   cost[startUnitXY.join()] = 0;
 
-  // 允许用户设定筛查器；如果不设定或非function对象，则默认全量搜寻
-  if(typeof (filter) !== 'function') {
-    filter = _=>true;
-  }
   // const _limit = 0;
   function checker (x, y) {
     const eligiblePoints = [];

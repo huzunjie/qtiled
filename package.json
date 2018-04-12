@@ -1,7 +1,7 @@
 {
   "name": "qtiled",
-  "version": "0.0.13",
-  "description": "一套基于中心点坐标系的 Tiles 坐标管理工具。",
+  "version": "0.1.0",
+  "description": "一套基于坐标系中心点的 Tiles 坐标管理工具。",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "jsnext:main": "lib/index.mjs",
