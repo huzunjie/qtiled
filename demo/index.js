@@ -9,12 +9,15 @@ const {
   rotateUnit,
   getStaggeredUnitsByRowCol,
   pixel2unit,
-  rhombusPixel2unit
+  rhombusPixel2unit,
+  staggeredUnitRound
 } = qtiled;
 
 const size = [_width, _height];
+let xyDiff;
+let cPos;
 
-let cPos = [105, 55];
+cPos = [105, 55];
 drawCenterOfCircle(cPos);
 // 正矩形：2*2元素
 const uint2x2 = getUnitsByRowCol(2,2);
@@ -47,7 +50,7 @@ uint4x4.forEach(unitXY=>{
   drawTiled(unitXY, pixelXY);
 });
 
-let xyDiff = [1,13];
+xyDiff = [1,13];
 drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
 // 对角范围内的元素
 getDiagonalUnitsByRowCol(7,9, (...unitXY)=>{
@@ -73,8 +76,8 @@ searchPath([-2,-1], [1,1]).forEach(unitXY=>{
   const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
 });
-
 // 设定起止点寻径经过的元素: 角落不通行的
+cPos = [120, 200];
 xyDiff = [-5, 11];
 drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
 const mySearchPath = searchPath([-1,-1], [1,2], (x,y,cost)=> cost==10);
@@ -94,13 +97,34 @@ mySearchPath.forEach(unitXY=>{
   drawTiled(unitXY, pixelXY);
 });
 
+
 // 错列布局
-xyDiff = [-4, -5];
+cPos = [120, 200];
+xyDiff = [-6, -7];
+window.staggeredUnitRound = staggeredUnitRound;
 drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
-getStaggeredUnitsByRowCol(4, 5,(...unitXY)=>{
+getStaggeredUnitsByRowCol(4, 9,(xId, yId)=>{
+  // console.log('getStaggeredUnitsByRowCol.ids:',[xId, yId])
+  let unitXY = [xId, yId];
+  const realXY= unitXY.join();
   unitXY = unitXY.map((v,i)=>v+xyDiff[i])
   const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
   drawTiled(unitXY, pixelXY);
+
+  const label = new window.Label(realXY)
+  label.attr({
+    anchor: [0.5, 0.5],
+    pos: pixelXY,
+    padding: 3,
+    font: 'italic 12px Arial',
+    color:'#00000050',
+    transform: {
+      scale: .7
+    }
+
+  });
+  window.layer.appendChild(label)
+
 });
 
 // 错列布局

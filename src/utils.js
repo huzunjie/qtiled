@@ -182,25 +182,54 @@ export function rhombusPixel2unit (pixelXY = [], diagonal = [], originXY = []) {
 */
 export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, y)=>[x, y], filter = (x, y)=>true) {
   const ret = [];
-  const xIsSingle = column === 1;
-  const halfX = _half_precision(column / 2) + (xIsSingle && row > 1 ? -0.5 : 0);
-  const halfY = _half_precision(row / 2);
+  // const xIsSingle = column === 1;
+  // const yIsSingle = row === 1;
+  const minCol = -Math.floor(column / 2);
+  const maxCol = column + minCol - 1;
+  const minRow = -Math.floor(row / 2);
+  const maxRow = row + minRow - 1;
   const size = [1, 1];
   const pos = [0, 0];
-  for(let yNum = 0; yNum < row; yNum++) {
-    const y = _half_precision((yNum - halfY) / 2);
-    const isEven = yNum % 2 === 0;
-    // 偶数行右移，实现错列对齐
-    const xDiff = isEven ? 0.5 : 0;
-    for(let xNum = 0; xNum < column; xNum++) {
-      const x = xNum + xDiff - halfX;
-      const [unitX, unitY] = rhombusPixel2unit([x, y], size, pos);
-      // 排除掉奇数第一个，实现整齐效果
-      if(xIsSingle || isEven || xNum !== 0) {filter(unitX, unitY, xNum, yNum, column, row) && ret.push(processor(unitX, unitY, xNum, yNum, column, row));}
+  for(let rowNum = minRow; rowNum <= maxRow; rowNum++) {
+    const pxY = rowNum * 0.5;
+    const isOdd = Math.abs(pxY % 1) === 0.5;
+    // 奇数行右移，实现错列对齐
+    const xDiff = isOdd ? 0.5 : 0;
+    for(let colNum = minCol; colNum <= maxCol; colNum++) {
+      const pxX = colNum + xDiff;
+      const [xId, yId] = rhombusPixel2unit([pxX, pxY], size, pos);
+      // -del- 排除掉奇数末个，实现整齐效果 -del- ，不再干预、自行 filter
+      // if (yIsSingle || xIsSingle || !isOdd || colNum !== maxCol) {
+        filter(xId, yId, colNum, rowNum, minCol, minRow, maxCol, maxRow, column, row) && ret.push(processor(xId, yId, colNum, rowNum, minCol, minRow, maxCol, maxRow, column, row));
+      // }
     }
   }
   return ret;
 };
+/*
+export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, y)=>[x, y], filter = (x, y)=>true) {
+  const ret = [];
+  const xIsSingle = column === 1;
+  const halfX = Math.round(column / 2);
+  const halfY = Math.round(row / 2);
+  const size = [1, 1];
+  const pos = [0, 0];
+  for(let yNum = 1; yNum <= row; yNum++) {
+    const pxY = ((yNum - halfY) / 2);
+    const isOdd = yNum % 2 === 1;
+    // 奇数行右移，实现错列对齐
+    const xDiff = isOdd ? 0.5 : 0;
+    for(let xNum = 0; xNum < column; xNum++) {
+      const pxX = xNum + xDiff - halfX;
+      let [xId, yId] = rhombusPixel2unit([pxX, pxY], size, pos);
+      xId = Math.round(xId);
+      yId = Math.round(yId);
+      // 排除掉奇数第一个，实现整齐效果
+      if(xIsSingle || isOdd || xNum !== 0) {filter(xId, yId, xNum, yNum, column, row) && ret.push(processor(xId, yId, xNum, yNum, column, row));}
+    }
+  }
+  return ret;
+};*/
 
 /* 将任意像素坐标按错列布局中单元格尺寸取整，对应到相应像素坐标
 * @param {Array}    pos       像素坐标 x y 值

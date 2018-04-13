@@ -83,10 +83,10 @@ test('qtiled.rhombusPixel2unit.def', () => {
   expect(ret.join()).toBe([0, 0].join());
 });
 
-test('qtiled.getStaggeredUnitsByRowCol', () => {
+test('qtiled.getStaggeredUnitsByRowCol.1', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol(2, 2);
   // console.log(ret)
-  expect(ret + '').toBe('1,0,0,1,0,0');
+  expect(ret + '').toBe('1,0,0,1,1,-1,0,0');
   // qtiled.getStaggeredUnitsByRowCol(4, 5, ()=>1, (...args)=>console.log(args));
 });
 
@@ -95,14 +95,14 @@ test('qtiled.getStaggeredUnitsByRowCol.def', () => {
   expect(ret + '').toBe('0,0');
 });
 
-test('qtiled.getStaggeredUnitsByRowCol', () => {
+test('qtiled.getStaggeredUnitsByRowCol.2', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol(1, 2);
   expect(ret + '').toBe('0,1,0,0');
 });
 
-test('qtiled.getStaggeredUnitsByRowCol', () => {
+test('qtiled.getStaggeredUnitsByRowCol.3', () => {
   const ret = qtiled.getStaggeredUnitsByRowCol(2, 1);
-  expect(ret + '').toBe('0.5,-0.5,-0.5,0.5');
+  expect(ret + '').toBe('1,-1,0,0');
 });
 
 test('qtiled.staggeredUnitRound.def', () => {
