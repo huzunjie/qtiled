@@ -1,6 +1,7 @@
-const {Scene, Sprite} = spritejs
+const {Scene, Sprite, Label} = spritejs;
+window.Label = Label;
 const scene = new Scene('#container')
-const layer = scene.layer('def')
+const layer = window.layer = scene.layer('def')
 const sceneWidth = 800;
 const sceneHeight = 600;
 scene.setResolution(sceneWidth, sceneHeight);
