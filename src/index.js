@@ -4,6 +4,8 @@
 // 公布tiled基本工具方法
 export * from './utils';
 
+export * from './ellipse';
+
 // 公布A*寻路
 export searchPath from './astar';
 
