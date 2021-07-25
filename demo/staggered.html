@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QTiled Demo</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Vision Player Demo">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" type="text/css" href="./index.css">
+    <style type="text/css">
+      body {
+        max-width: none;
+        text-align: center;
+      }
+
+      #container {
+        margin: 10px auto;
+        width: 820px;
+        height: 620px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+
+</head>
+<body>
+
+  <header>
+      <h1>QTiled Demo</h1>
+  </header>
+  <section id="container">
+      <!-- my canvas -->
+  </section>
+
+  <script src="https://unpkg.com/spritejs@3/dist/spritejs.js"></script>
+  <script src="../lib/index.dev.js"></script>
+  <script>
+    const { Scene, Sprite, Group, Label } = spritejs;
+    const scene = new Scene({
+      container: document.getElementById('container'),
+      width: 800,
+      height: 600,
+      mode: 'static', // scale
+    });
+    const fglayer = scene.layer('fglayer');
+    const ctlayer = scene.layer('ctlayer');
+
+
+    class Grid extends Sprite {
+
+      constructor (attr = {
+        border: [1,'rgba(0, 0, 0, .4)'],
+        size: [],
+      }) {
+
+        super();
+
+        const {size, id, border, pos} = attr;
+        const [w = 1, h = 1] = size;
+        const {scaleX, scaleY, gridWH} = calculate(w, h, border[0]);
+        super.attr(Object.assign(attr, {
+          anchor: [0.5, 0.5],
+          size: [gridWH, gridWH],
+          scale: [scaleX, scaleY],
+          rotate: 45,
+        }));
+        if(typeof(id)==='function'){
+          attr.id = id.bind(this)();
+        }
+      }
+      /*dispatchEvent(...args){
+        console.log('dispatch')
+        return super.dispatchEvent(...args)
+      }*/
+
+    };
+
+    const _cache = {};
+    function calculate (w = 1, h = 1, bw = 0) {
+      const _cache_key = w + ',' + h + ',' + bw;
+      if(_cache[_cache_key])return _cache[_cache_key];
+
+      const whv = (w + h) / 2;
+      const diagonal = Math.sqrt(Math.pow(whv, 2) * 2);
+
+      return (_cache[_cache_key] = {
+        scaleX: w / diagonal,
+        scaleY: h / diagonal,
+        gridWH: whv - bw * 2
+      });
+    }
+
+        
+    const _labels = Symbol('_labels');
+    const _grids_map = Symbol('_grids_map');
+    class GridsGroup extends Group {
+
+      /* grids 参数示例：
+        {
+          borderWidth: 1,
+          borderColor: 'rgba(0, 0, 0, .4)',
+          bgColor: 'rgba(255, 0, 0, 0)',
+          size: [],
+          poss:[ [x,y], [x1,y1] ],
+          id
+        }
+      */
+      constructor (opts = {}) {
+        const gridsConf = opts.grids;
+        const {poss = [], size = [0, 0], offset=[0, 0], ids=[]} = gridsConf;
+        delete opts.grids;
+        delete gridsConf.poss;
+        delete gridsConf.offset;
+        delete gridsConf.ids;
+
+        super(opts);
+
+
+        this[_grids_map]={}
+        this[_labels]=[]
+
+        let minX = 0;
+        let minY = 0;
+        const gridsPoss = poss.map(([x, y])=>{
+          if(x < minX) minX = x;
+          if(y < minY) minY = y;
+          return [x, y];
+        });
+
+        const [w, h] = size;
+
+        const centerX = -minX+w/2+ offset[0];
+        const centerY = -minY+h/2+ offset[1];
+
+        const gridSprites = gridsPoss.map(([x, y], i)=>{
+          const pos = [x + centerX, y + centerY];
+          const idx = ids[i];
+          const grid = new Grid(
+            Object.assign({},
+              gridsConf,
+              { pos }
+            )
+          );
+          grid._grid_id = idx;
+          this[_grids_map][idx.join()] = grid;
+
+          const label = new Label( (idx||pos).join())
+          this[_labels].push(label);
+          label._grid_id = idx;
+          label.attr({
+            anchor: [0.5, 0.5],
+            pos,
+            padding: 2,
+            font: 'italic 12px Arial',
+            fillColor: opts.color||'#00000080',
+            // opacity:0
+          });
+          return grid;
+        });
+
+        this.append(...gridSprites.concat(this[_labels]));
+      }
+      getGridRealPosByIdx(idx){
+        const grid = this.getGridByIdx(idx);
+        if(!grid) return;
+        const [gridPxX, gridPxY] = grid.attr('pos');
+        const groupLeft = this.renderMatrix[4];
+        const groupTop = this.renderMatrix[5];
+        // 中心单元格渲染到Canvas上后的真实像素坐标（自身pos+group.pos）
+        return [groupLeft+gridPxX, groupTop+gridPxY];
+      }
+      getGridByIdx(idx){
+        return this[_grids_map][idx]
+      }
+      get labels(){
+        return this[_labels];
+      }
+      showIds(opts={}){
+        this[_labels].forEach(lb=>{
+          lb.attr( Object.assign({'opacity':1},opts));
+        });
+        //this.forceUpdate(true)
+      }
+      hideIds(){
+        this[_labels].forEach(lb=>{
+          lb.attr('opacity',0);
+        });
+        //this.forceUpdate(true)
+      }
+    };
+
+
+  </script>
+  <script src="./staggered.js"></script>
+</body>
+</html>
