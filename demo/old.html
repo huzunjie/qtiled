@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QTiled Demo</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Vision Player Demo">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+    <style type="text/css">
+        #container {
+          width: 800px;
+          height: 600px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <header>
+        <h1>QTiled Demo</h1>
+    </header>
+    <section id="container">
+        <!-- my canvas -->
+    </section>
+
+    <script src="https://unpkg.com/spritejs@2.3.1/dist/spritejs.js"></script>
+
+    <script src="./static/js/qtiled.dev.js?x"></script>
+    <script>
+      const {Scene, Sprite, Label} = spritejs;
+      window.Label = Label;
+      const scene = new Scene('#container')
+      const layer = window.layer = scene.layer('def')
+      const sceneWidth = 800;
+      const sceneHeight = 600;
+      scene.setResolution(sceneWidth, sceneHeight);
+
+      // 坐标确认
+      const domC = document.querySelector('canvas');
+      domC.onclick = function(e){
+        console.log('canvas offsetXY:',e.offsetX,e.offsetY)
+      };
+
+
+      // 元素基本参数设置
+      const boxMargin = .5;
+      const _width = 39;
+      const _height = 20;
+
+      // 中心点
+      const centerPos = [sceneWidth/2, sceneHeight/2];
+
+      // 参照物
+      const refBox = new Sprite()
+      refBox.attr({
+        anchor: [0, 0],
+        pos: [0,0],
+        size: [600, 500],
+        border: [1, '#ff000030']
+      })
+      layer.appendChild(refBox);
+
+      window.drawCenterOfCircle = function(pos){
+        const refBox1 = new Sprite()
+        refBox1.attr({
+          anchor: [.5, .5],
+          pos: pos||centerPos,
+          size: [5, 5],
+          border: [5, '#ff000090'],
+          bgcolor:'#000000',
+          borderRadius: 5
+        })
+        layer.appendChild(refBox1);
+      }
+
+
+      const _rectBorderWidth=1;
+      const _rectBorderMargin=_rectBorderWidth*2;
+      function drawRect(unitXY=[], pos = centerPos){
+        const [i = 0, j = 0] = unitXY;
+        const box1 = new Sprite()
+        box1._x=i;
+        box1._y=j;
+        
+        box1.attr({
+          anchor: [0.5, 0.5],
+          pos,
+          size: [_width - _rectBorderMargin, _height - _rectBorderMargin],
+          bgcolor: i==1?'#ff000005':'#ffffff50',
+          border: [_rectBorderWidth, '#00000020']
+        })
+        
+        box1.on('mouseenter', function(evt){
+          evt.target.attr({
+            border:[_rectBorderWidth, 'red']
+          })
+        })
+        box1.on('mouseleave', function(evt){
+          evt.target.attr({
+            border:[_rectBorderWidth, '#00000020']
+          })
+        })
+        box1.on('click', function(evt){
+          var _t = evt.target, pos = _t.attr('pos');
+          console.log(
+            'pos&unitXY:', pos, _t._x, _t._y,
+            '\npixel2unit:', 
+            pixel2unit(pos, [_width, _height])
+          );
+        });
+        layer.appendChild(box1)
+        return box1;
+      }
+
+      // tiled 变换前的矩形宽高 - 这里为了便于计算以正方形进行菱形变换
+      const _baseRectWH = (_width+_height)/2;
+      // tiled 变换前的对角线宽度
+      const _baseRectDiagonal = Math.sqrt(Math.pow(_baseRectWH,2)*2);
+      const _scaleX = _width/_baseRectDiagonal;
+      const _scaleY = _height/_baseRectDiagonal;
+      const _tiledBorderWidth = 1;
+      const _tiledWH = _baseRectWH-_tiledBorderWidth*2-boxMargin;
+      const _tiledBorderColor = 'rgba(0, 0, 0, 0.2)'
+      let start = null;
+      const map = {};
+      let lastPath;
+      const bgcolor = 'rgba(100, 255, 50, 0.1)';
+
+      function drawTiled(unitXY, pos = centerPos, borderColor = _tiledBorderColor){
+        const [i = 0, j = 0] = unitXY;
+        // console.log('xx',i, j, pos, c);
+        const box = new Sprite();
+        map[i+','+j]=box;
+        // console.log(_x, i)
+        box._x=i;
+        box._y=j;
+        box.attr({
+          anchor: [0.5, 0.5],
+          pos,
+          size: [_tiledWH, _tiledWH],
+          border: [_tiledBorderWidth, borderColor],
+          bgcolor: i==1?'#ff000005':bgcolor, 
+          transform: {
+            scale: [_scaleX, _scaleY],
+            rotate: 45
+          }
+        })
+        box.on('mouseenter', function(evt){
+          evt.target.attr({
+            border:[_tiledBorderWidth, 'red']
+          })
+        })
+        box.on('mouseleave', function(evt){
+          evt.target.attr({
+            border:[_tiledBorderWidth, borderColor]
+          })
+        })
+        box.on('click', function(evt){
+          var _t = evt.target;
+          console.log(
+              'pos&unitXY:', _t.attr('pos'), _t._x, _t._y , 
+              '\nrhombusPixel2unit:', rhombusPixel2unit(_t.attr('pos'),[_width, _height],centerPos)
+          )
+          if(start){
+            lastPath = searchPath([start._x, start._y], [_t._x, _t._y], (x,y,cost)=> cost==10);
+            // console.log('lastPath',lastPath)
+            lastPath.forEach(v=>{
+              map[v.join()] && map[v.join()].attr('bgcolor','#ff000030')
+            });
+            
+            start = null;
+          }else{
+            start = _t;
+            if(lastPath){
+              lastPath.forEach(v=>{
+                map[v.join()] && map[v.join()].attr('bgcolor',bgcolor)
+              });
+            }
+          }
+        })
+        layer.appendChild(box)
+        //drawRect(i,j, pos);
+        return box;
+      }
+
+      /*
+
+      const {Scene, Sprite} = spritejs
+      const scene = new Scene('#container')
+      const landJsonUrl = 'https://s4.ssl.qhres.com/static/a1dafc2e1fb2c2f8.json'
+      const landRes = 'https://p0.ssl.qhimg.com/t01f949f6b927777203.png'
+
+      ;(async function(){
+      scene.setResolution(800, 600)
+
+      await scene.preload([
+        landRes, landJsonUrl
+
+      ])
+
+      const box1 = new Sprite()
+      box1.attr({
+        anchor: [0.5, 0.5],
+        pos: [400, 300],
+        size: [78, 40],
+        border: [1, 'red'],
+        borderRadius: 25,
+        padding: 10
+      })
+      box1.textures = [{
+        src: 'grassland_06.png'
+      }]
+
+      scene.layer().appendChild(box1)
+      })()
+
+
+      */
+    </script>
+    <script>
+      const {
+        getUnitsByRowCol,
+        unit2pixel,
+        getNeighbourUnitsByRowCol,
+        unit2rhombusPixel,
+        searchPath,
+        getDiagonalUnitsByRowCol,
+        getUnitsByDiagonal,
+        rotateUnit,
+        getStaggeredUnitsByRowCol,
+        pixel2unit,
+        rhombusPixel2unit,
+        staggeredUnitRound
+      } = qtiled;
+
+      const size = [_width, _height];
+      let xyDiff;
+      let cPos;
+
+      cPos = [105, 55];
+      drawCenterOfCircle(cPos);
+      // 正矩形：2*2元素
+      const uint2x2 = getUnitsByRowCol(2,2);
+      uint2x2.forEach(unitXY=>{
+        const pixelXY = unit2pixel(unitXY, size, cPos);
+        drawRect(unitXY, pixelXY);
+      });
+
+      // 正矩形：4*4的邻居
+      const uint4x4 = getNeighbourUnitsByRowCol(4, 4);
+      uint4x4.forEach(unitXY=>{
+        const pixelXY = unit2pixel(unitXY, size, cPos);
+        drawRect(unitXY, pixelXY);
+      });
+
+
+      cPos = [120, 200];
+      drawCenterOfCircle(cPos);
+      // 菱形：2*2元素
+      //const centerPos
+      uint2x2.forEach(unitXY=>{
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      });
+
+
+      // 菱形：4*4的邻居
+      uint4x4.forEach(unitXY=>{
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      });
+
+      xyDiff = [1,13];
+      drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+      // 对角范围内的元素
+      getDiagonalUnitsByRowCol(7,9, (...unitXY)=>{
+        unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      });
+
+      xyDiff = [-4, 7];
+      drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+      // 根据设定起止点得到一条线，以这条线作为矩形对角线得出矩形区域元素
+      getUnitsByDiagonal([-1,-1], [1,1], (...unitXY)=>{
+        unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      });
+
+      // 设定起止点寻径经过的元素
+      xyDiff = [-2, 16];
+      drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+      searchPath([-2,-1], [1,1]).forEach(unitXY=>{
+        unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      });
+      // 设定起止点寻径经过的元素: 角落不通行的
+      cPos = [120, 200];
+      xyDiff = [-5, 11];
+      drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+      const mySearchPath = searchPath([-1,-1], [1,2], (x,y,cost)=> cost==10);
+      mySearchPath.forEach(unitXY=>{
+        unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      });
+
+      // 坐标系角度旋转
+      xyDiff = [-7, 13];
+      drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+      mySearchPath.forEach(unitXY=>{
+        unitXY = rotateUnit(unitXY, 90)
+        unitXY = unitXY.map((v,i)=>v+xyDiff[i]);
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      });
+
+
+      // 错列布局
+      cPos = [120, 200];
+      xyDiff = [-6, -7];
+      window.staggeredUnitRound = staggeredUnitRound;
+      drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+      getStaggeredUnitsByRowCol(4, 9,(xId, yId)=>{
+        // console.log('getStaggeredUnitsByRowCol.ids:',[xId, yId])
+        let unitXY = [xId, yId];
+        const realXY= unitXY.join();
+        unitXY = unitXY.map((v,i)=>v+xyDiff[i])
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+
+        const label = new window.Label(realXY)
+        label.attr({
+          anchor: [0.5, 0.5],
+          pos: pixelXY,
+          padding: 3,
+          font: 'italic 12px Arial',
+          color:'#00000050',
+          transform: {
+            scale: .7
+          }
+
+        });
+        window.layer.appendChild(label)
+
+      });
+
+      // 错列布局
+      xyDiff = [-9, 1];
+      drawCenterOfCircle(unit2rhombusPixel(xyDiff, size, cPos));
+      getStaggeredUnitsByRowCol(6, 10,(...unitXY)=>{
+        unitXY = unitXY.map((v,i)=>v+xyDiff[i])
+        const pixelXY = unit2rhombusPixel(unitXY, size, cPos);
+        drawTiled(unitXY, pixelXY);
+      }, (x, y, xn, yn)=>{
+        // 过滤排除掉坐标（-1, -1）的单元
+        // console.log(x, y)
+        return !( x==-1 && -1==y );
+      });
+    </script>
+</body>
+</html>

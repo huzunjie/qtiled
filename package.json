@@ -11,11 +11,12 @@
     "test-w": "jest --coverage --watch",
     "lint": "eslint . --fix",
     "dev": "rollup -c build/rollup.config.dev.js -w",
-    "build": "npm run cjs && npm run mjs && npm run umd && npm run min",
+    "build": "npm run cjs && npm run mjs && npm run umd && npm run min && npm run debug",
     "cjs": "rollup -c build/rollup.config.cjs.js",
     "mjs": "rollup -c build/rollup.config.mjs.js",
     "umd": "rollup -c build/rollup.config.umd.js",
-    "min": "rollup -c build/rollup.config.min.js"
+    "min": "rollup -c build/rollup.config.min.js",
+    "debug": "rollup -c build/rollup.config.dev.js"
   },
   "repository": {
     "type": "git",

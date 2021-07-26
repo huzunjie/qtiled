@@ -6,7 +6,7 @@ const { version, name, author, license } = require('../package.json');
 const banner = `
 /**
  * ${name} v${version}
- * (c) ${new Date().getFullYear()} ${author}
+ * (c) 2008-${new Date().getFullYear()} ${author}
  * Released under ${license}
  */
 `;
