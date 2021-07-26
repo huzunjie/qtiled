@@ -214,7 +214,6 @@
     "no-shadow": 0,
     // 关键字不能被遮蔽
     "no-shadow-restricted-names": 2,
-    "no-spaced-func": 2,
     // 禁用稀疏数组
     "no-sparse-arrays": 2,
     // 不禁止使用同步方法
@@ -282,8 +281,6 @@
     "sort-vars": 0,
     // 要求语句块之前的空格
     "space-before-blocks": [2, "always"],
-    // 强制在 function的左括号之前使用一致的空格
-    "space-before-function-paren": [2, "always"],
     // 强制在圆括号内使用一致的空格
     "space-in-parens": [2, "never"],
     // 要求操作符周围有空格

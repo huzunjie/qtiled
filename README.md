@@ -1,10 +1,32 @@
 # QTiled
 
-这是一套Tile布局基础库。
+这是一套 Tiled 布局基础库。
+
+## 计划列表
+
+### Basic Shapes - 基础图形
++ [x] Polygon - 多边形
+	+ [x] Rect - 矩形
+	+ [x] Rhombus - 菱形
+	+ [x] Hexagon - 六边形
++ [x] ellipse - 椭圆形
+
+### Pathfinding - 寻路
+* [x] AStar
+
+### Tile Editor - 瓦片编辑器
+* [ ] ToDo - 待开发
+
+### Sprite Editor - 精灵编辑器
+* [ ] ToDo - 待开发
+
+### Map Editor - 地图编辑器
+* [ ] ToDo - 待开发
+
 
 ## DEMO
 
-结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://code.h5jun.com/nihi/edit?js,output
+结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled.html
 
 ## 安装引用
 

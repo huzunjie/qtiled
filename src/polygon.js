@@ -7,21 +7,21 @@ const QUAR = 0.25; // 四分之一
 const RAUQ = -QUAR;
 const TQUA = 1 - QUAR; // 正六边形两行重合部分高度
 
-// 正方形顶点集合
-export const squarePoints = [
+// 正矩形顶点集合
+export const rectPoints = [
   [FLAH, FLAH],
   [HALF, FLAH],
   [HALF, HALF],
   [FLAH, HALF],
 ];
 
-/* 根据计划渲染后的正方形宽高值，得到顶点坐标集合
+/* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
 * @param  {Number}  width    宽度
 * @param  {Number}  height   高度
 * @return {Array}   [[x, y], ...]
 */
-export function getSquarePoints (width = 1, height = 1) {
-  return getPolygonPoints(squarePoints, width, height);
+export function getRectPoints(width = 1, height = 1) {
+  return getPolygonPoints(rectPoints, width, height);
 };
 
 /* 得到一组矩形地图瓦片的坐标偏移位置集合
@@ -31,7 +31,7 @@ export function getSquarePoints (width = 1, height = 1) {
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}   [[x, y], ...]
  */
-export function getSquarePositions (mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
+export function getRectPositions (mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
   return getTilesPositions(1, mainAxisRange, subAxisRange, tileSize, 'none', renderOrder);
 }
 
@@ -99,7 +99,7 @@ export const hexagonPoints = [
 * @param  {String}  axis     主轴方向 'x' || 'y'；默认为 'y'，上下是尖
 * @return {Array}   [[x, y], ...]
 */
-export function getHexagonPoints (width = 1, height = 1, axis = 'y') {
+export function getHexagonPoints(width = 1, height = 1, axis = 'y') {
   return getPolygonPoints(hexagonPoints, width, height, axis);
 };
 
@@ -111,7 +111,7 @@ export function getHexagonPoints (width = 1, height = 1, axis = 'y') {
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}   [[x, y], ...]
  */
-export function getHexagonPositions (mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown', stagger = 'odd') {
+export function getHexagonPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown', stagger = 'odd') {
   return getTilesPositions(TQUA, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
 }
 
@@ -122,7 +122,7 @@ export function getHexagonPositions (mainAxisRange = [0, 0], subAxisRange = [0, 
  * @param  {String}    axis          主轴方向 'x' || 'y'；默认为 'y'，上下是尖
  * @return {Array}     [x, y]
  */
-function getPolygonPoints (basePoints, width = 1, height = 1, axis = 'y') {
+function getPolygonPoints(basePoints, width = 1, height = 1, axis = 'y') {
   let fun = ([x, y]) => [x * width, y * height];
   // 如果是要将多边形图案横过来的，旋转90度（六边形会比较大的不同）
   if (axis === 'x') {
@@ -131,20 +131,20 @@ function getPolygonPoints (basePoints, width = 1, height = 1, axis = 'y') {
   return basePoints.map(fun);
 };
 
-function _for (min, max, iterator) {
+function _for(min, max, iterator) {
   for (let i = min; i <= max; i++) iterator(i);
 }
 const forEachConfs = {
-  RightDown (minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
+  RightDown(minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
     _for(minX, maxX, (x) => _for(minY, maxY, (y) => iterator(x, y)));
   },
-  RightUp (minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
+  RightUp(minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
     _for(minX, maxX, (x) => _for(-maxY, -minY, (y) => iterator(x, y)));
   },
-  LeftDown (minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
+  LeftDown(minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
     _for(-maxX, -minX, (x) => _for(minY, maxY, (y) => iterator(x, y)));
   },
-  LeftUp (minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
+  LeftUp(minX = 0, maxX = 0, minY = 0, maxY = 0, iterator) {
     _for(-maxX, -minX, (x) => _for(-maxY, -minY, (y) => iterator(x, y)));
   }
 };
@@ -156,7 +156,7 @@ const forEachConfs = {
  * @param  {Function}  iterator    迭代函数，如：(x, y) => [x, y]
  * @return {Array}    [x, y]
  */
-export function twoDimForEach (mainAxisRange = [0, 0], subAxisRange = [0, 0], renderOrder = 'RightDown', iterator = (x, y) => [x, y]) {
+export function twoDimForEach(mainAxisRange = [0, 0], subAxisRange = [0, 0], renderOrder = 'RightDown', iterator = (x, y) => [x, y]) {
   const forEachFun = forEachConfs[renderOrder] || forEachConfs.RightDown;
   const retArr = [];
   forEachFun(
@@ -181,7 +181,7 @@ const staggerConfs = {
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}   [[x, y], ...]
  */
-function getTilesPositions (offsetRate = 1, mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], stagger = 'odd', renderOrder = 'RightDown') {
+function getTilesPositions(offsetRate = 1, mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], stagger = 'odd', renderOrder = 'RightDown') {
   const [width, _height] = tileSize;
   // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 offsetRate
   const height = _height * offsetRate;
