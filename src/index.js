@@ -4,8 +4,8 @@
 // 公布tiled基本工具方法
 export * from './utils';
 
-export * from './ellipse';
-export * from './polygon';
+// export * from './ellipse';
+// export * from './polygon';
 
 import astar from './astar';
 // 公布A*寻路
