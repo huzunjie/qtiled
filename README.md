@@ -26,7 +26,7 @@
 
 ## DEMO
 
-结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled.html
+结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled
 
 ## 安装引用
 
