@@ -1,2 +1,3 @@
 import getConf from './rollup.config.base.js';
-export default getConf('umd', 'browser');
+
+export default getConf('cjs');

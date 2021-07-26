@@ -1,140 +1,48 @@
-const { version, name, author, license, dependencies } = require('../package.json');
+import babel from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+
+const { version, name, author, license } = require('../package.json');
 const banner = `
 /**
  * ${name} v${version}
- * (c) 2018 ${author}
+ * (c) ${new Date().getFullYear()} ${author}
  * Released under ${license}
  */
 `;
-import babel from 'rollup-plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import replace from 'rollup-plugin-replace';
-// import visualizer from 'rollup-plugin-visualizer';
-const babelConfig = {
-  common: {
-    presets: [
-      [ 'env', {
-        modules: false,
-        targets: {
-          browsers: [ 'last 2 versions', 'not ie <= 8' ],
-        },
-      }],
-      'stage-0',
-    ],
-    exclude: 'node_modules/**',
-    plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
-    ],
-    externalHelpers: true,
-    runtimeHelpers: true,
+
+export const moduleName = name;
+const _name = name.toLocaleLowerCase();
+export default (format, suffix) => {
+  format = format || 'umd';
+  const babelOptions = {
+    presets: ['@babel/preset-env'],
     babelrc: false,
-  },
-  es: {
-    presets: [
-      [ 'env', {
-        modules: false,
-        targets: {
-          browsers: [ 'last 2 versions', 'not ie <= 8' ],
-        },
-      }],
-      'stage-0',
-    ],
     exclude: 'node_modules/**',
-    plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
-    ],
-    externalHelpers: true,
-    runtimeHelpers: true,
-    babelrc: false,
-  },
-  umd: {
-    presets: [
-      [ 'env', {
-        modules: false,
-        targets: {
-          browsers: [ 'last 2 versions', 'not ie <= 8' ],
-        },
-      }],
-      'stage-0',
-    ],
-    exclude: 'node_modules/**',
-    plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
-    ],
-    externalHelpers: true,
-    runtimeHelpers: true,
-    babelrc: false,
-  },
-  iife: {
-    presets: [
-      [ 'env', {
-        modules: false,
-        targets: {
-          browsers: [ 'last 2 versions', 'not ie <= 8' ],
-        },
-      }],
-      'stage-0',
-    ],
-    exclude: 'node_modules/**',
-    plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
-    ],
-    externalHelpers: true,
-    runtimeHelpers: true,
-    babelrc: false,
-  },
-  min: {
-    presets: [
-      [ 'env', {
-        modules: false,
-        targets: {
-          browsers: [ 'last 2 versions', 'not ie <= 8' ],
-        },
-      }],
-      'stage-0',
-    ],
-    exclude: 'node_modules/**',
-    plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-    ],
-    externalHelpers: true,
-    babelrc: false,
-  },
-};
-const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
-export default function (mode, useConf) {
-  const _conf = {
+    babelHelpers: 'bundled',
+  };
+  if (suffix !== 'min') {
+    babelOptions.babelHelpers = 'runtime';
+    babelOptions.plugins = [
+      '@babel/plugin-transform-runtime'
+    ];
+  }
+  return {
     input: 'src/index.js',
-    banner,
-    external (id) {
-      return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
-    },
     plugins: [
-      babel(babelConfig[mode]),
+      babel(babelOptions),
       resolve({
         customResolveOptions: {
-          moduleDirectory: [ 'src', 'node_modules' ],
+          moduleDirectories: ['src', 'node_modules'],
         },
       }),
       commonjs(),
-      replace({
-        'process.env.PLAYER_VERSION': `'${version}'`,
-      }),
-      /* visualizer({
-        filename: `bundle-size/${mode}.html`,
-      }),*/
     ],
+    output: {
+      banner,
+      format,
+      file: `dist/${_name}.${suffix || format}.js`,
+      name: _name,
+    }
   };
-  useConf && Object.assign(_conf, useConf);
-  return _conf;
-}
+};

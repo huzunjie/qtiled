@@ -5,8 +5,9 @@
 export * from './utils';
 
 export * from './ellipse';
+export * from './polygon';
 
+import astar from './astar';
 // 公布A*寻路
-export searchPath from './astar';
+export const searchPath = astar;
 
-export const version = process.env.PLAYER_VERSION;

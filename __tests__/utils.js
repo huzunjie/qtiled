@@ -1,119 +1,119 @@
-import * as qtiled from 'index';
+import * as utils from 'utils';
 
-test('qtiled.getUnitsByRowCol', () => {
-  expect(qtiled.getUnitsByRowCol(2, 2)).toHaveLength(4);
+test('utils.getUnitsByRowCol', () => {
+  expect(utils.getUnitsByRowCol(2, 2)).toHaveLength(4);
 });
-test('qtiled.getUnitsByRowCol.def', () => {
-  expect(qtiled.getUnitsByRowCol()).toHaveLength(1);
-});
-
-test('qtiled.getNeighbourUnitsByRowCol', () => {
-  expect(qtiled.getNeighbourUnitsByRowCol(2, 2)).toHaveLength(12);
-});
-test('qtiled.getNeighbourUnitsByRowCol.def', () => {
-  expect(qtiled.getNeighbourUnitsByRowCol()).toHaveLength(8);
+test('utils.getUnitsByRowCol.def', () => {
+  expect(utils.getUnitsByRowCol()).toHaveLength(1);
 });
 
-test('qtiled.getDiagonalUnitsByRowCol', () => {
-  expect(qtiled.getDiagonalUnitsByRowCol(3, 3)).toHaveLength(5);
+test('utils.getNeighbourUnitsByRowCol', () => {
+  expect(utils.getNeighbourUnitsByRowCol(2, 2)).toHaveLength(12);
 });
-test('qtiled.getDiagonalUnitsByRowCol.def', () => {
-  const ret = qtiled.getDiagonalUnitsByRowCol();
+test('utils.getNeighbourUnitsByRowCol.def', () => {
+  expect(utils.getNeighbourUnitsByRowCol()).toHaveLength(8);
+});
+
+test('utils.getDiagonalUnitsByRowCol', () => {
+  expect(utils.getDiagonalUnitsByRowCol(3, 3)).toHaveLength(5);
+});
+test('utils.getDiagonalUnitsByRowCol.def', () => {
+  const ret = utils.getDiagonalUnitsByRowCol();
   expect(ret).toHaveLength(0);
 });
 
-test('qtiled.getUnitsByDiagonal', () => {
+test('utils.getUnitsByDiagonal', () => {
   const start = [0, 0];
   const end = [2, 2];
-  const ret = qtiled.getUnitsByDiagonal(start, end);
+  const ret = utils.getUnitsByDiagonal(start, end);
   expect(ret).toHaveLength(9);
 });
-test('qtiled.getUnitsByDiagonal.def', () => {
-  const ret = qtiled.getUnitsByDiagonal();
+test('utils.getUnitsByDiagonal.def', () => {
+  const ret = utils.getUnitsByDiagonal();
   expect(ret.join()).toBe([0, 0].join());
 });
 
-test('qtiled.rotateUnit', () => {
+test('utils.rotateUnit', () => {
   const start = [0, 1];
-  const ret = qtiled.rotateUnit(start, 90);
+  const ret = utils.rotateUnit(start, 90);
   expect(ret.join()).toBe([-1, 0].join());
 });
-test('qtiled.rotateUnit.def', () => {
-  const ret = qtiled.rotateUnit();
+test('utils.rotateUnit.def', () => {
+  const ret = utils.rotateUnit();
   expect(ret.join()).toBe([0, 0].join());
 });
 
-test('qtiled.unit2pixel', () => {
+test('utils.unit2pixel', () => {
   const start = [0, 1];
-  const ret = qtiled.unit2pixel(start, [10, 10]);
+  const ret = utils.unit2pixel(start, [10, 10]);
   expect(ret.join()).toBe([0, 10].join());
 });
-test('qtiled.unit2pixel.def', () => {
-  const ret = qtiled.unit2pixel();
+test('utils.unit2pixel.def', () => {
+  const ret = utils.unit2pixel();
   expect(ret.join()).toBe([0, 0].join());
 });
 
-test('qtiled.pixel2unit', () => {
+test('utils.pixel2unit', () => {
   const start = [0, 10];
-  const ret = qtiled.pixel2unit(start, [10, 10]);
+  const ret = utils.pixel2unit(start, [10, 10]);
   expect(ret.join()).toBe([0, 1].join());
 });
-test('qtiled.pixel2unit.def', () => {
-  const ret = qtiled.pixel2unit();
+test('utils.pixel2unit.def', () => {
+  const ret = utils.pixel2unit();
   expect(ret.join()).toBe([0, 0].join());
 });
 
-test('qtiled.unit2rhombusPixel', () => {
+test('utils.unit2rhombusPixel', () => {
   const start = [0, 1];
-  const ret = qtiled.unit2rhombusPixel(start, [10, 10]);
+  const ret = utils.unit2rhombusPixel(start, [10, 10]);
   expect(ret.join()).toBe([5, -5].join());
 });
-test('qtiled.unit2rhombusPixel.def', () => {
-  const ret = qtiled.unit2rhombusPixel();
+test('utils.unit2rhombusPixel.def', () => {
+  const ret = utils.unit2rhombusPixel();
   expect(ret.join()).toBe([0, 0].join());
 });
 
-test('qtiled.rhombusPixel2unit', () => {
+test('utils.rhombusPixel2unit', () => {
   const start = [5, -5];
-  const ret = qtiled.rhombusPixel2unit(start, [10, 10]);
+  const ret = utils.rhombusPixel2unit(start, [10, 10]);
   expect(ret.join()).toBe([0, 1].join());
 });
-test('qtiled.rhombusPixel2unit.def', () => {
-  const ret = qtiled.rhombusPixel2unit();
+test('utils.rhombusPixel2unit.def', () => {
+  const ret = utils.rhombusPixel2unit();
   expect(ret.join()).toBe([0, 0].join());
 });
 
-test('qtiled.getStaggeredUnitsByRowCol.1', () => {
-  const ret = qtiled.getStaggeredUnitsByRowCol(2, 2);
+test('utils.getStaggeredUnitsByRowCol.1', () => {
+  const ret = utils.getStaggeredUnitsByRowCol(2, 2);
   // console.log(ret)
   expect(ret + '').toBe('1,0,0,1,1,-1,0,0');
-  // qtiled.getStaggeredUnitsByRowCol(4, 5, ()=>1, (...args)=>console.log(args));
+  // utils.getStaggeredUnitsByRowCol(4, 5, ()=>1, (...args)=>console.log(args));
 });
 
-test('qtiled.getStaggeredUnitsByRowCol.def', () => {
-  const ret = qtiled.getStaggeredUnitsByRowCol();
+test('utils.getStaggeredUnitsByRowCol.def', () => {
+  const ret = utils.getStaggeredUnitsByRowCol();
   expect(ret + '').toBe('0,0');
 });
 
-test('qtiled.getStaggeredUnitsByRowCol.2', () => {
-  const ret = qtiled.getStaggeredUnitsByRowCol(1, 2);
+test('utils.getStaggeredUnitsByRowCol.2', () => {
+  const ret = utils.getStaggeredUnitsByRowCol(1, 2);
   expect(ret + '').toBe('0,1,0,0');
 });
 
-test('qtiled.getStaggeredUnitsByRowCol.3', () => {
-  const ret = qtiled.getStaggeredUnitsByRowCol(2, 1);
+test('utils.getStaggeredUnitsByRowCol.3', () => {
+  const ret = utils.getStaggeredUnitsByRowCol(2, 1);
   expect(ret + '').toBe('1,-1,0,0');
 });
 
-test('qtiled.staggeredUnitRound.def', () => {
-  const ret = qtiled.staggeredUnitRound();
+test('utils.staggeredUnitRound.def', () => {
+  const ret = utils.staggeredUnitRound();
   expect(ret + '').toBe('0,0');
 });
 
-test('qtiled.staggeredUnitRound', () => {
-  const ret = qtiled.staggeredUnitRound([40, 25], [78, 40]);
+test('utils.staggeredUnitRound', () => {
+  const ret = utils.staggeredUnitRound([40, 25], [78, 40]);
   expect(ret + '').toBe('39,20');
 
-  const ret1 = qtiled.staggeredUnitRound([78, 100], [78, 40]);
+  const ret1 = utils.staggeredUnitRound([78, 100], [78, 40]);
   expect(ret1 + '').toBe('117,100');
 });

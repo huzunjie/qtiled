@@ -1,3 +1,5 @@
+/* 椭圆形 */
+
 export const PI = Math.PI; // π；180度对应的弧度值
 export const PI_DBL = PI * 2; // 2 倍的 π；360度对应的弧度值
 export const PI_HALF = PI / 2; // 一半的 π；90度对应的弧度值

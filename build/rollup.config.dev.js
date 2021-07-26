@@ -1,20 +1,20 @@
-import base from './rollup.config.base';
+import getConf from './rollup.config.base.js';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
-import replace from 'rollup-plugin-replace';
-const { name } = require('../package.json');
-const config = base('iife', {
-  output: {
-    format: 'umd',
-    file: 'lib/index.dev.js',
-  },
-  name: name.toLocaleLowerCase(),
+
+const config = getConf('umd');
+Object.assign(config.output, {
+  file: 'demo/static/js/qtiled.dev.js',
+  sourcemap: true,
 });
 config.plugins.push(
-  serve(),
+  serve({
+    open: true,
+    openPage: '/demo/index.html',
+    host: 'localhost',
+    port: 8033,
+    verbose: true,
+  }),
   livereload()
 );
-config.plugins.unshift(replace({
-  'process.env.NODE_ENV': '"development"',
-}));
 export default config;

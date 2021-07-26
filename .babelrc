@@ -1,15 +1,10 @@
 {
- "presets": [
-    ["env",
-      {
-        "targets": {
-          "browsers": [ "last 2 versions", "not ie <= 8"]
-        }
-      }
-    ],
-    "stage-0"
-  ],
-  "plugins": [
-    "transform-decorators-legacy"
-  ]
+  "ignore": [],
+  "env": {
+    "test": {
+      "presets": [
+        "@babel/preset-env"
+      ],
+    }
+  }
 }
