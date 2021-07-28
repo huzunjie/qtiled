@@ -1,3 +1,6 @@
+import * as shapesFuns from './shapes';
+export const shapes = shapesFuns;
+
 /**  这里的坐标都是以1位单位，按四象限原点为(0, 0)为基准的   **/
 /**  错列或偶数个元素基于原点排列  **/
 

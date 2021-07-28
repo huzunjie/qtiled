@@ -26,8 +26,8 @@ export function getHexagonVertexes(width = 1, height = 1, axis = 'y') {
  * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
  * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
- * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
+ * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @return {Array}   [[x, y], ...]
  */
 export function getHexagonPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown', stagger = 'odd') {

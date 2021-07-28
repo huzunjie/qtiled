@@ -62,7 +62,9 @@ export function twoDimForEach(mainAxisRange = [0, 0], subAxisRange = [0, 0], ren
 // 根据偏移行设定，计算偏移量的方法集
 const staggerConfs = {
   none: (m) => m,
-  def: (m, s, rem, minS) => Math.round(s - minS) % 2 === rem ? m + HALF : m,
+  def: (m, s, rem, minS) => {
+    return Math.round(s - minS) % 2 === rem ? m + HALF : m;
+  },
 };
 
 /* 得到一组错列布局正多边形地图Tile的坐标偏移位置集合

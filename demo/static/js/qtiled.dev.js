@@ -11,6 +11,135 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.qtiled = {}));
 }(this, (function (exports) { 'use strict';
 
+  /* 椭圆形 */
+  var PI = Math.PI; // π；180度对应的弧度值
+
+  var PI_DBL = PI * 2; // 2 倍的 π；360度对应的弧度值
+
+  var PI_HALF = PI / 2; // 一半的 π；90度对应的弧度值
+
+  var PI_OPF = PI + PI_HALF; // 1.5 倍的π One point five；270度对应弧度值
+
+  var PI_OA = PI / 180; // One Angle 1角度换算为弧度值
+
+  /* 角度转弧度
+  * @param {Number}  angle    角度值 0 ~ 360+N
+  * @return {Number} 弧度值
+  */
+
+  function angle2Radian() {
+    var angle = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    return angle * PI_OA;
+  }
+  /* 弧度转角度
+  * @param {Number}  radian    弧度值 0 ~ PI*N
+  * @return {Number} 角度值
+  */
+
+  function radian2Angle() {
+    var radian = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    return radian / PI_OA;
+  }
+  /* 根据椭圆的原点、X轴半径、Y轴半径、弧度，求得圆周上的点坐标
+  * @param  {Number}  x0        圆心X点坐标值
+  * @param  {Number}  y0        圆心Y点坐标值
+  * @param  {Number}  radiusX   X轴半径值
+  * @param  {Number}  radiusY   Y轴半径值
+  * @param  {Number}  radian    弧度值
+  * @return {Array}   [x, y]
+  */
+
+  function getEllipsePoint(x0, y0, radiusX, radiusY, radian) {
+    radian %= PI_DBL;
+    if (radian < 0) radian += PI_DBL;
+    var k = Math.tan(radian);
+
+    if (Math.abs(k) > 1e5) {
+      return [x0, y0 + (radian < PI ? radiusY : -radiusY)];
+    } // 第一或第四象限取正、其他象限取负
+
+
+    var d = radian <= PI_HALF || radian > PI_OPF ? 1 : -1;
+    var v = 1 / Math.pow(radiusX, 2) + Math.pow(k, 2) / Math.pow(radiusY, 2);
+    var x = d * Math.sqrt(1 / v) + x0;
+    return [x, k * x + y0 - k * x0];
+  }
+  /* 根据椭圆的原点、X轴半径、Y轴半径、角度，求得圆周上的点坐标
+  * @param  {Number}  x0        圆心X点坐标值
+  * @param  {Number}  y0        圆心Y点坐标值
+  * @param  {Number}  radiusX   X轴半径值
+  * @param  {Number}  radiusY   Y轴半径值
+  * @param  {Number}  angle     角度值
+  * @return {Array}   [x, y]
+  */
+
+  function getEllipsePointByAngle(x0, y0, radiusX, radiusY, angle) {
+    return getEllipsePoint(x0, y0, radiusX, radiusY, angle2Radian(angle));
+  }
+  /* 根据椭圆的X轴半径、Y轴半径、圆周等分数量、等分点序号、起始弧度，求得圆周上的点坐标
+  * @param  {Number}  radiusX   X轴半径值
+  * @param  {Number}  radiusY   Y轴半径值
+  * @param  {Number}  count     圆周等分数量
+  * @param  {Number}  num       圆周等分点序号
+  * @param  {Number}  radian    起始弧度
+  * @return {Array}   [x, y]
+  */
+
+  function getEllipseIsometryPoint(radiusX, radiusY, count, num) {
+    var radian = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+    radian += PI_DBL * num / count;
+    return [radiusX * Math.cos(radian), radiusY * Math.sin(radian)];
+  }
+
+  var ellipseFuns = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    PI: PI,
+    PI_DBL: PI_DBL,
+    PI_HALF: PI_HALF,
+    PI_OPF: PI_OPF,
+    PI_OA: PI_OA,
+    angle2Radian: angle2Radian,
+    radian2Angle: radian2Angle,
+    getEllipsePoint: getEllipsePoint,
+    getEllipsePointByAngle: getEllipsePointByAngle,
+    getEllipseIsometryPoint: getEllipseIsometryPoint
+  });
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
   }
@@ -45,25 +174,6 @@
     return _arr;
   }
 
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-
-    for (var i = 0, arr2 = new Array(len); i < len; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
-
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-
   function _nonIterableRest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
@@ -71,6 +181,323 @@
   function _slicedToArray(arr, i) {
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
+
+  /* 二维多边形相关配置及基础方法 */
+
+  /* 基础配置参数（个别参数调整涉及算法变化，所以放全局配置，以示特殊）*/
+  var HALF = 0.5;
+  var FLAH = -HALF;
+  var QUAR = 0.25; // 四分之一
+
+  var RAUQ = -QUAR;
+  var TQUA = 1 - QUAR; // 正六边形两行重合部分高度
+
+  /* 得到一个多边形折线顶点坐标集合
+   * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
+   * @param  {Number}    width         渲染时的宽度值
+   * @param  {Number}    height        渲染时的高度值
+   * @param  {String}    axis          主轴方向 'x' || 'y'；默认为 'y'，上下是尖
+   * @return {Array}     [x, y]
+   */
+
+  function getPolygonVertexes(baseVertexes) {
+    var width = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var height = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+    var axis = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'y';
+
+    var fun = function fun(_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          x = _ref2[0],
+          y = _ref2[1];
+
+      return [x * width, y * height];
+    }; // 如果是要将多边形图案横过来的，旋转90度（六边形会比较大的不同）
+
+
+    if (axis === 'x') {
+      fun = function fun(_ref3) {
+        var _ref4 = _slicedToArray(_ref3, 2),
+            x = _ref4[0],
+            y = _ref4[1];
+
+        return [y * width, x * height];
+      };
+    }
+
+    return baseVertexes.map(fun);
+  }
+
+  function _for(min, max, cbk) {
+    for (var i = min; i <= max; i++) {
+      cbk(i);
+    }
+  }
+
+  var forEachConfs = {
+    RightDown: function RightDown() {
+      var minX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var maxX = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var minY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var maxY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      var cbk = arguments.length > 4 ? arguments[4] : undefined;
+
+      _for(minX, maxX, function (x) {
+        return _for(minY, maxY, function (y) {
+          return cbk(x, y);
+        });
+      });
+    },
+    RightUp: function RightUp() {
+      var minX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var maxX = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var minY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var maxY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      var cbk = arguments.length > 4 ? arguments[4] : undefined;
+
+      _for(minX, maxX, function (x) {
+        return _for(-maxY, -minY, function (y) {
+          return cbk(x, y);
+        });
+      });
+    },
+    LeftDown: function LeftDown() {
+      var minX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var maxX = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var minY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var maxY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      var cbk = arguments.length > 4 ? arguments[4] : undefined;
+
+      _for(-maxX, -minX, function (x) {
+        return _for(minY, maxY, function (y) {
+          return cbk(x, y);
+        });
+      });
+    },
+    LeftUp: function LeftUp() {
+      var minX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var maxX = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var minY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var maxY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      var cbk = arguments.length > 4 ? arguments[4] : undefined;
+
+      _for(-maxX, -minX, function (x) {
+        return _for(-maxY, -minY, function (y) {
+          return cbk(x, y);
+        });
+      });
+    }
+  };
+  /* 按renderOrder循环遍历主副轴二维数组
+   * @param  {Array}     mainAxisRange  主轴总行数
+   * @param  {Array}     subAxisRange   副轴总行数
+   * @param  {String}    renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
+   * @param  {Function}  iterator    迭代函数，如：(x, y) => [x, y]
+   * @return {Array}    [x, y]
+   */
+
+  function twoDimForEach() {
+    var mainAxisRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var subAxisRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var renderOrder = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'RightDown';
+    var iterator = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function (x, y) {
+      return [x, y];
+    };
+    var forEachFun = forEachConfs[renderOrder] || forEachConfs.RightDown;
+    var retArr = [];
+    forEachFun.apply(void 0, _toConsumableArray(mainAxisRange).concat(_toConsumableArray(subAxisRange), [function (x, y) {
+      return retArr.push(iterator(x, y));
+    }]));
+    return retArr;
+  } // 根据偏移行设定，计算偏移量的方法集
+
+  var staggerConfs = {
+    none: function none(m) {
+      return m;
+    },
+    def: function def(m, s, rem, minS) {
+      return Math.round(s - minS) % 2 === rem ? m + HALF : m;
+    }
+  };
+  /* 得到一组错列布局正多边形地图Tile的坐标偏移位置集合
+   * @param  {Number}  offsetRate     偏移量比率
+   * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
+   * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
+   * @return {Array}   [[x, y], ...]
+   */
+
+  function getPolygonPositions() {
+    var offsetRate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var mainAxisRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var subAxisRange = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
+    var tileSize = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [8, 4];
+    var stagger = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'odd';
+    var renderOrder = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 'RightDown';
+
+    var _tileSize = _slicedToArray(tileSize, 2),
+        width = _tileSize[0],
+        _height = _tileSize[1]; // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 offsetRate
+
+
+    var height = _height * offsetRate;
+    var rem = Number(stagger === 'odd'); // 多边形错列布局副轴上需要偏移来达成错列布局
+
+    var staggerFun = staggerConfs[stagger] || staggerConfs.def;
+    var minS = subAxisRange[0];
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (m, s) {
+      return [staggerFun(m, s, rem, minS) * width, s * height, m, s];
+    });
+  }
+
+  /* 正矩形地图元件方法 */
+
+  var rectVertexes = [[FLAH, FLAH], [HALF, FLAH], [HALF, HALF], [FLAH, HALF]];
+  /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
+  * @param  {Number}  width    宽度
+  * @param  {Number}  height   高度
+  * @return {Array}   [[x, y], ...]
+  */
+
+  function getRectVertexes() {
+    var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var height = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    return getPolygonVertexes(rectVertexes, width, height);
+  }
+  /* 得到一组矩形地图瓦片的坐标偏移位置集合
+   * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
+   * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
+   * @return {Array}   [[x, y], ...]
+   */
+
+  function getRectPositions() {
+    var mainAxisRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var subAxisRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    var renderOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'RightDown';
+    return getPolygonPositions(1, mainAxisRange, subAxisRange, tileSize, 'none', renderOrder);
+  }
+
+  var rectFuns = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    getRectVertexes: getRectVertexes,
+    getRectPositions: getRectPositions
+  });
+
+  /* 正六边形地图元件方法 */
+
+  var hexagonVertexes = [[0, FLAH], [HALF, RAUQ], [HALF, QUAR], [0, HALF], [FLAH, QUAR], [FLAH, RAUQ]];
+  /* 根据计划渲染的六边形宽高值得到顶点坐标集
+  * @param  {Number}  width    宽度
+  * @param  {Number}  height   高度
+  * @param  {String}  axis     主轴方向 'x' || 'y'；默认为 'y'，上下是尖
+  * @return {Array}   [[x, y], ...]
+  */
+
+  function getHexagonVertexes() {
+    var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var height = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var axis = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'y';
+    return getPolygonVertexes(hexagonVertexes, width, height, axis);
+  }
+  /* 得到一组错列布局六边形地图瓦片的坐标偏移位置集合
+   * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
+   * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
+   * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @return {Array}   [[x, y], ...]
+   */
+
+  function getHexagonPositions() {
+    var mainAxisRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var subAxisRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    var renderOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'RightDown';
+    var stagger = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'odd';
+    return getPolygonPositions(TQUA, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
+  }
+
+  var hexagonFuns = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    getHexagonVertexes: getHexagonVertexes,
+    getHexagonPositions: getHexagonPositions
+  });
+
+  /* 正菱形地图元件方法 */
+
+  var rhombusVertexes = [[0, FLAH], [HALF, 0], [0, HALF], [FLAH, 0]];
+  /* 根据计划渲染的菱形宽高值，得到顶点坐标集合
+  * @param  {Number}  width    宽度
+  * @param  {Number}  height   高度
+  * @return {Array}   [[x, y], ...]
+  */
+
+  function getRhombusVertexes() {
+    var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var height = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    return getPolygonVertexes(rhombusVertexes, width, height);
+  }
+  /* 得到一组错列布局菱形地图瓦片的坐标偏移位置集合
+   * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
+   * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
+   * @return {Array}   [[x, y], ...]
+   */
+
+  function getRhombusPositions() {
+    var mainAxisRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var subAxisRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    var renderOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'RightDown';
+    var stagger = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'odd';
+    return getPolygonPositions(HALF, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
+  }
+  /* 得到一组等距正菱形地图瓦片的坐标偏移位置集合
+   * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
+   * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
+   * @return {Array}   [[x, y]...]
+   */
+
+  function getIsometricRhombusPositions() {
+    var mainAxisRange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var subAxisRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    var renderOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'RightDown';
+    var halfWidth = tileSize[0] / 2;
+    var halfHeight = tileSize[1] / 2;
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (m, s) {
+      return [(m + s) * halfWidth, (s - m) * halfHeight, m, s];
+    });
+  }
+
+  var rhombusFuns = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    getRhombusVertexes: getRhombusVertexes,
+    getRhombusPositions: getRhombusPositions,
+    getIsometricRhombusPositions: getIsometricRhombusPositions
+  });
+
+  var ellipse = ellipseFuns;
+  var rect = rectFuns;
+  var hexagon = hexagonFuns;
+  var rhombus = rhombusFuns;
+
+  var shapesFuns = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    ellipse: ellipse,
+    rect: rect,
+    hexagon: hexagon,
+    rhombus: rhombus
+  });
 
   /* 根据行列数设定，取得对应元坐标集合
   * @param {Number}   column       列数
@@ -552,7 +979,7 @@
     return path;
   }
 
-  /**  这里的坐标都是以1位单位，按四象限原点为(0, 0)为基准的   **/
+  var shapes = shapesFuns;
 
   var searchPath = astar;
 
@@ -566,6 +993,7 @@
   exports.rhombusPixel2unit = rhombusPixel2unit;
   exports.rotateUnit = rotateUnit;
   exports.searchPath = searchPath;
+  exports.shapes = shapes;
   exports.staggeredUnitRound = staggeredUnitRound;
   exports.unit2pixel = unit2pixel;
   exports.unit2rhombusPixel = unit2rhombusPixel;
