@@ -12,13 +12,16 @@
 + [x] Rect - 矩形
   + [x] getRectVertexes 获取矩形顶点坐标集
   + [x] getRectPositions 获取多个矩形位置坐标集
+  + [ ] 根据原点坐标+目标点坐标值，获得行号&列号
 + [x] Rhombus - 菱形
   + [x] getRhombusVertexes 获取菱形顶点坐标集
   + [x] getRhombusPositions 按目标区间方向获取多个菱形的错列布局位置坐标集
   + [x] getIsometricRhombusPositions 按目标区间方向获取多个菱形的等距布局位置坐标集
+  + [ ] 根据原点坐标+目标点坐标值，获得行号&列号
 + [x] Hexagon - 六边形
   + [x] getHexagonVertexes 获取六边形顶点坐标集
   + [x] getRhombusPositions 按目标区间方向获取多个六边形的错列布局位置坐标集
+  + [ ] 根据原点坐标+目标点坐标值，获得行号&列号
 + [x] ellipse - 椭圆形
   + [x] angle2Radian 角度转弧度
   + [x] radian2Angle 弧度转角度
