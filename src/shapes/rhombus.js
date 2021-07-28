@@ -15,7 +15,7 @@ const rhombusVertexes = [
 * @param  {Number}  height   高度
 * @return {Array}   [[x, y], ...]
 */
-export function getRhombusVertexes (width = 1, height = 1) {
+export function getRhombusVertexes(width = 1, height = 1) {
   return getPolygonVertexes(rhombusVertexes, width, height);
 };
 
@@ -27,7 +27,7 @@ export function getRhombusVertexes (width = 1, height = 1) {
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}   [[x, y], ...]
  */
-export function getRhombusPositions (mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown', stagger = 'odd') {
+export function getRhombusPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown', stagger = 'odd') {
   return getPolygonPositions(HALF, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
 }
 
@@ -39,7 +39,7 @@ export function getRhombusPositions (mainAxisRange = [0, 0], subAxisRange = [0, 
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}   [[x, y]...]
  */
-export function getIsometricRhombusPositions (mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
+export function getIsometricRhombusPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
   const halfWidth = tileSize[0] / 2;
   const halfHeight = tileSize[1] / 2;
   return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (m, s) => [

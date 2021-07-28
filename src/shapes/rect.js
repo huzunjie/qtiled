@@ -26,6 +26,6 @@ export function getRectVertexes(width = 1, height = 1) {
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}   [[x, y], ...]
  */
-export function getRectPositions (mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
+export function getRectPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
   return getPolygonPositions(1, mainAxisRange, subAxisRange, tileSize, 'none', renderOrder);
 }

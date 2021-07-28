@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rect 矩形方法使用示例</title>
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+  <style type="text/css">
+    #container {
+      width: 800px;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rect 正矩形</h1>
+  <div id="container"></div>
+  <script src="https://unpkg.com/spritejs@3/dist/spritejs.js"></script>
+    <script src="./static/js/qtiled.dev.js"></script>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 800,
+          mode: 'static',
+      });
+      const layer = scene.layer();
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const width = 40;
+      const height = 30;
+      const size = [width, height];
+
+      const { getRectVertexes, getRectPositions } = qtiled.shapes.rect;
+
+      // 一个矩形顶点坐标集
+      const rectVertexes = getRectVertexes(width, height);
+
+      let xDiff = 40;
+      let yDiff = 70;
+      shapesEls.push(
+        // 坐标系原点
+        new Polyline({
+          pos: [xDiff, yDiff],
+          points: [0, 0, lineWidth, 0],
+          strokeColor: 'red',
+          lineWidth,
+          close: true,
+        }),
+        new Polyline({
+          pos: [xDiff, yDiff],
+          points: rectVertexes,
+          strokeColor: 'rgba(0, 0, 0, 0.5)',
+          lineWidth,
+          close: true,
+        }),
+        new Label({
+          pos: [20, 20],
+          text: '↓ 一个矩形',
+        }),
+      );
+      // 得到错列布局坐标集
+      xDiff = 40;
+      yDiff = 180;
+      let rectTiles = getRectPositions([0, 4], [0, 6], size).map(
+        ([x, y]) => new Polyline({
+          pos: [x + xDiff, y + yDiff],
+          points: rectVertexes,
+          strokeColor: 'rgba(0, 0, 0, 0.5)',
+          fillColor: 'rgba(0, 255, 255, 0.1)',
+          lineWidth,
+          close: true,
+        })
+      );
+      shapesEls.push(
+        ...rectTiles,
+        // 坐标系原点
+        new Polyline({
+          pos: [xDiff, yDiff],
+          points: [0, 0, lineWidth, 0],
+          strokeColor: 'red',
+          lineWidth,
+          close: true,
+        }),
+        new Label({
+          pos: [20, 120],
+          text: '↓ 一个矩形网格图',
+        }),
+      );
+
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+</body>
+</html>

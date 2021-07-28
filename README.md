@@ -6,10 +6,25 @@
 
 ### Basic Shapes - 基础图形
 + [x] Polygon - 多边形
-	+ [x] Rect - 矩形
-	+ [x] Rhombus - 菱形
-	+ [x] Hexagon - 六边形
+  + [x] getPolygonVertexes 获取多边形顶点坐标集
+  + [x] getPolygonPositions 按目标区间方向获取多个多边形位置坐标集
+  + [x] twoDimForEach 按目标区间方向进行二维遍历
++ [x] Rect - 矩形
+  + [x] getRectVertexes 获取矩形顶点坐标集
+  + [x] getRectPositions 获取多个矩形位置坐标集
++ [x] Rhombus - 菱形
+  + [x] getRhombusVertexes 获取菱形顶点坐标集
+  + [x] getRhombusPositions 按目标区间方向获取多个菱形的错列布局位置坐标集
+  + [x] getIsometricRhombusPositions 按目标区间方向获取多个菱形的等距布局位置坐标集
++ [x] Hexagon - 六边形
+  + [x] getHexagonVertexes 获取六边形顶点坐标集
+  + [x] getRhombusPositions 按目标区间方向获取多个六边形的错列布局位置坐标集
 + [x] ellipse - 椭圆形
+  + [x] angle2Radian 角度转弧度
+  + [x] radian2Angle 弧度转角度
+  + [x] getEllipsePoint 根据椭圆的原点、X轴半径、Y轴半径、旋转弧度，求得圆周上的点坐标
+  + [x] getEllipsePointByAngle 根据椭圆的原点、X轴半径、Y轴半径、旋转角度，求得圆周上的点坐标
+  + [x] getEllipseIsometryPoint 根据椭圆的X轴半径、Y轴半径、圆周等分数量、等分点序号、起始弧度，求得圆周上的点坐标
 
 ### Pathfinding - 寻路
 * [x] AStar

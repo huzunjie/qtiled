@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ellipse 椭圆方法使用示例</title>
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+  <style type="text/css">
+    #container {
+      width: 800px;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ellipse 椭圆形</h1>
+  <div id="container"></div>
+  <script src="https://unpkg.com/spritejs@3/dist/spritejs.js"></script>
+    <script src="./static/js/qtiled.dev.js"></script>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container');
+      const {Scene, Ellipse, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 800,
+          mode: 'static',
+      });
+      const layer = scene.layer();
+      const lineWidth = 6;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const radiusX = 120;
+      const radiusY = 80;
+
+      const { getEllipseIsometryPoint, getEllipsePoint, getEllipsePointByAngle, PI_DBL } = qtiled.shapes.ellipse;
+      
+      // 获取椭圆圆周上的等距坐标点
+      const isometryPoints = [];
+      const count = 6; // 圆周等分6份
+      let radian = 0; // Math.PI * 0.5; // 起始弧度值
+      for (let num = 0;num < count; num++) {
+        isometryPoints.push(getEllipseIsometryPoint(radiusX, radiusY, count, num, radian));
+      }
+      let pos = [150, 100];
+      shapesEls.push(
+        // 圆心
+        new Polyline({
+          pos,
+          points: [0, 0, lineWidth, 0],
+          strokeColor: 'red',
+          lineWidth,
+          close: true,
+        }),
+        // 椭圆参照物
+        new Ellipse({
+          pos,
+          radiusX,
+          radiusY,
+          lineWidth,
+          strokeColor: 'rgba(0, 125, 125, 0.3)',
+          closeType: 'sector',
+        }),
+        new Polyline({
+          pos,
+          points: isometryPoints,
+          strokeColor: 'rgba(0, 0, 0, 0.5)',
+          lineWidth,
+          close: true,
+        }),
+        new Label({
+          pos: [pos[0] + 150 , pos[1] - 10],
+          text: '← 按弧长等分圆周上的点',
+        }),
+      );
+
+      // 根据椭圆的原点、X轴半径、Y轴半径、弧度，求得圆周上的点坐标
+      const points0 = [];
+      pos = [150, 300];
+      for (let radian = 0; radian < PI_DBL; radian += PI_DBL / 6) {
+        // 这里前两个参数（圆心 x y）需要设置为0，以保证上下文参考系一致
+        points0.push(getEllipsePoint(0, 0, radiusX, radiusY, radian));
+      }
+      shapesEls.push(
+        // 圆心
+        new Polyline({
+          pos,
+          points: [0, 0, lineWidth, 0],
+          strokeColor: 'red',
+          lineWidth,
+          close: true,
+        }),
+        // 椭圆参照物
+        new Ellipse({
+          pos,
+          radiusX,
+          radiusY,
+          lineWidth,
+          strokeColor: 'rgba(0, 125, 125, 0.3)',
+          closeType: 'sector',
+        }),
+        new Polyline({
+          pos,
+          points: points0,
+          strokeColor: 'rgba(0, 0, 0, 0.5)',
+          lineWidth,
+          close: true,
+        }),
+        new Label({
+          pos: [pos[0] + 150 , pos[1] - 10],
+          text: '← 按弧度等分圆周上的点',
+        }),
+      );
+
+      // 根据椭圆的原点、X轴半径、Y轴半径、角度，求得圆周上的点坐标
+      const points1 = [];
+      pos = [150, 500];
+      for (let angle = 0; angle < 360; angle += 60) {
+        // 这里前两个参数（圆心 x y）需要设置为0，以保证上下文参考系一致
+        points1.push(getEllipsePointByAngle(0, 0, radiusX, radiusY, angle));
+      }
+      shapesEls.push(
+        // 圆心
+        new Polyline({
+          pos,
+          points: [0, 0, lineWidth, 0],
+          strokeColor: 'red',
+          lineWidth,
+          close: true,
+        }),
+        // 椭圆参照物
+        new Ellipse({
+          pos,
+          radiusX,
+          radiusY,
+          lineWidth,
+          strokeColor: 'rgba(0, 125, 125, 0.3)',
+          closeType: 'sector',
+        }),
+        new Polyline({
+          pos,
+          points: points1,
+          strokeColor: 'rgba(0, 0, 0, 0.5)',
+          lineWidth,
+          close: true,
+        }),
+        new Label({
+          pos: [pos[0] + 150 , pos[1] - 10],
+          text: '← 按角度等分圆周上的点',
+        }),
+      );
+
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+</body>
+</html>
