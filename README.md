@@ -9,19 +9,21 @@
   + [x] getPolygonVertexes 获取多边形顶点坐标集
   + [x] getPolygonPositions 按目标区间方向获取多个多边形位置坐标集
   + [x] twoDimForEach 按目标区间方向进行二维遍历
+  + [x] getPolygonInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
 + [x] Rect - 矩形
   + [x] getRectVertexes 获取矩形顶点坐标集
   + [x] getRectPositions 获取多个矩形位置坐标集
-  + [ ] 根据原点坐标+目标点坐标值，获得行号&列号
+  + [x] getRectInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
 + [x] Rhombus - 菱形
   + [x] getRhombusVertexes 获取菱形顶点坐标集
   + [x] getRhombusPositions 按目标区间方向获取多个菱形的错列布局位置坐标集
+  + [x] getRhombusInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
   + [x] getIsometricRhombusPositions 按目标区间方向获取多个菱形的等距布局位置坐标集
-  + [ ] 根据原点坐标+目标点坐标值，获得行号&列号
+  + [ ] getIsometricRhombusInfoByPos 在等距布局坐标系中，根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
 + [x] Hexagon - 六边形
   + [x] getHexagonVertexes 获取六边形顶点坐标集
-  + [x] getRhombusPositions 按目标区间方向获取多个六边形的错列布局位置坐标集
-  + [ ] 根据原点坐标+目标点坐标值，获得行号&列号
+  + [x] getHexagonPositions 按目标区间方向获取多个六边形的错列布局位置坐标集
+  + [x] getHexagonInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
 + [x] ellipse - 椭圆形
   + [x] angle2Radian 角度转弧度
   + [x] radian2Angle 弧度转角度
