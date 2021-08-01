@@ -9,6 +9,10 @@
   <style type="text/css">
     #container {
       width: 800px;
+      height: 520px;
+    }
+    #container2 {
+      width: 1000px;
       height: 800px;
     }
   </style>
@@ -16,8 +20,9 @@
 <body>
   <h1>Rhombus 正菱形</h1>
   <div id="container"></div>
-  <script src="https://unpkg.com/spritejs@3/dist/spritejs.js"></script>
-    <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -42,7 +47,7 @@
       const { getRhombusVertexes, getRhombusPositions, getIsometricRhombusPositions } = qtiled.shapes.rhombus;
 
       // 一个菱形顶点坐标集
-      const hexagonVertexes = getRhombusVertexes(width, height); // axis = 'y'
+      const rhombusVertexes = getRhombusVertexes(width, height); // axis = 'y'
       let pos = [60, 40];
       shapesEls.push(
         // 坐标系原点
@@ -55,7 +60,7 @@
         }),
         new Polyline({
           pos,
-          points: hexagonVertexes,
+          points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
           close: true,
@@ -72,7 +77,7 @@
       let hexTiles = getRhombusPositions([0, 4], [0, 6], size).map(
         ([x, y]) => new Polyline({
           pos: [x + xDiff, y + yDiff],
-          points: hexagonVertexes,
+          points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
           close: true,
@@ -100,7 +105,7 @@
       hexTiles = getRhombusPositions([-4.5, -0.5], [-6, 0], size, 'leftUp', 'even').map(
         ([x, y]) => new Polyline({
           pos: [x + xDiff, y + yDiff],
-          points: hexagonVertexes,
+          points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
           close: true,
@@ -122,21 +127,21 @@
         ...hexTiles,
       );
 
-      // 纵向带边框的网格
-      xDiff = 330;
-      yDiff = 480;
+      // 中心点为原点的错列带边框的倒序菱形网格图
+      xDiff = 185;
+      yDiff = 420;
       let minX = Infinity;
       let minY = Infinity;
       let maxX = -Infinity;
       let maxY = -Infinity;
-      hexTiles = getRhombusPositions([-4.5, -0.5], [-8, 1], size, 'leftUp', 'even').map(([x, y]) => {
+      hexTiles = getRhombusPositions([-2, 2], [-4, 4], size, 'leftUp', 'odd').map(([x, y]) => {
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
         maxX = Math.max(maxX, x);
         maxY = Math.max(maxY, y);
         return new Polyline({
           pos: [x + xDiff, y + yDiff],
-          points: hexagonVertexes,
+          points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
           close: true,
@@ -157,7 +162,7 @@
         }),
         new Label({
           pos: [30, 310],
-          text: '↓ 一个偶数行错列带边框的纵向菱形网格图',
+          text: '↓ 中心点为原点的错列带边框的倒序菱形网格图',
         }),
         // 边框
         new Polyline({
@@ -189,7 +194,7 @@
         maxY = Math.max(maxY, y);
         return new Polyline({
           pos: [x + xDiff, y + yDiff],
-          points: hexagonVertexes,
+          points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
           close: true,
@@ -209,7 +214,7 @@
           close: true,
         }),
         new Label({
-          pos: [xDiff - 40, 310],
+          pos: [xDiff - 150, 310],
           text: '↓ 等距带边框的网格',
         }),
         // 边框
@@ -232,5 +237,120 @@
       layer.append(...shapesEls);
     }());
   </script>
+
+
+  <h1>鼠标交互示例</h1>
+  <div id="container2"></div>
+  <!-- 单元格定位 -->
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container2');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 1000,
+          height: 800,
+          mode: 'static',
+      });
+      const layer = scene.layer();
+      const lineWidth = 2;
+
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 390;
+      const yPos = 180;
+      const pos = [xPos, yPos];
+      const width = 70;
+      const height = 32;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+      const stagger = 'odd';
+
+      const { getRhombusVertexes, getRhombusPositions, getRhombusInfoByPos } = qtiled.shapes.rhombus;
+
+      // 一个矩形顶点坐标集
+      const rhombusVertexes = getRhombusVertexes(width, height);
+
+      // 文案输出
+      const mouseMoveLabel = new Label({
+        pos: [30, 10],
+        text:  '选中元素文案展示在这里',
+        fontSize,
+        fillColor: '#999',
+      });
+      shapesEls.push(mouseMoveLabel);
+
+      const xNumRange = [-5, 5];
+      const yNumRange = [-8, 11];
+      let focusPos = pos;
+      let focusText = '';
+      getRhombusPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        const text = xNum + ',' + yNum;
+        if (!focusText) {
+          focusText = text;
+          focusPos = pos;
+        }
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: rhombusVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const focusRhombusTile = new Polyline({
+        pos: focusPos,
+        points: rhombusVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.8)',
+        lineWidth,
+        close: true,
+      });
+      const focusRhombusLabel = new Label({
+        anchor,
+        pos: focusPos,
+        text: focusText,
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+      shapesEls.push(focusRhombusTile, focusRhombusLabel);
+
+
+      const { offsetTop, offsetLeft } = container;
+      container.addEventListener('mousemove', (e) => {
+        const tileX = e.pageX - offsetLeft;
+        const tileY = e.pageY - offsetTop;
+
+        // 得到焦点元素索引及渲染坐标
+        const {xNum, yNum, x, y} = getRhombusInfoByPos([tileX, tileY], pos, size, stagger)
+
+        // 更新文案
+        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，tileX: ${tileX}, tileY: ${tileY}`;
+
+        // 越界与未越界颜色区分
+        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
+        // 更新焦点区域标识位置
+        focusRhombusTile.attr({ x, y, strokeColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+      });
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
 </body>
 </html>

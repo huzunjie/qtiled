@@ -9,15 +9,20 @@
   <style type="text/css">
     #container {
       width: 800px;
-      height: 800px;
+      height: 700px;
+    }
+    #container2 {
+      width: 800px;
+      height: 500px;
     }
   </style>
 </head>
 <body>
   <h1>Hexagon 六边形</h1>
   <div id="container"></div>
-  <script src="https://unpkg.com/spritejs@3/dist/spritejs.js"></script>
-    <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -230,6 +235,121 @@
       );
       
       /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
+
+  <h1>鼠标交互示例</h1>
+  <div id="container2"></div>
+  <!-- 单元格定位 -->
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container2');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 500,
+          mode: 'static',
+      });
+      const layer = scene.layer();
+      const lineWidth = 2;
+
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 390;
+      const yPos = 180;
+      const pos = [xPos, yPos];
+      const width = 58;
+      const height = 40;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+      const stagger = 'odd';
+
+
+      const { getHexagonVertexes, getHexagonPositions, getHexagonInfoByPos } = qtiled.shapes.hexagon;
+
+      // 一个矩形顶点坐标集
+      const hexagonVertexes = getHexagonVertexes(width, height);
+
+      // 文案输出
+      const mouseMoveLabel = new Label({
+        pos: [30, 10],
+        text:  '选中元素文案展示在这里',
+        fontSize,
+        fillColor: '#999',
+      });
+      shapesEls.push(mouseMoveLabel);
+
+      const xNumRange = [-6, 6];
+      const yNumRange = [-4, 8];
+      let focusPos = pos;
+      let focusText = '';
+      getHexagonPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        const text = xNum + ',' + yNum;
+        if (!focusText) {
+          focusText = text;
+          focusPos = pos;
+        }
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: hexagonVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const focusHexagonTile = new Polyline({
+        pos: focusPos,
+        points: hexagonVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.8)',
+        lineWidth,
+        close: true,
+      });
+      const focusHexagonLabel = new Label({
+        anchor,
+        pos: focusPos,
+        text: focusText,
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+      shapesEls.push(focusHexagonTile, focusHexagonLabel);
+
+
+      const { offsetTop, offsetLeft } = container;
+      container.addEventListener('mousemove', (e) => {
+        const tileX = e.pageX - offsetLeft;
+        const tileY = e.pageY - offsetTop;
+
+        // 得到焦点元素索引及渲染坐标
+        const {xNum, yNum, x, y} = getHexagonInfoByPos([tileX, tileY], pos, size, stagger)
+
+        // 更新文案
+        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，tileX: ${tileX}, tileY: ${tileY}`;
+
+        // 越界与未越界颜色区分
+        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
+        // 更新焦点区域标识位置
+        focusHexagonTile.attr({ x, y, strokeColor: color });
+        focusHexagonLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+      });
 
       layer.append(...shapesEls);
     }());

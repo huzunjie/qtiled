@@ -233,6 +233,12 @@
     }
   }
 
+  function for_(min, max, cbk) {
+    for (var i = max; i >= min; i--) {
+      cbk(i);
+    }
+  }
+
   var forEachConfs = {
     RightDown: function RightDown() {
       var minX = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -255,7 +261,7 @@
       var cbk = arguments.length > 4 ? arguments[4] : undefined;
 
       _for(minX, maxX, function (x) {
-        return _for(-maxY, -minY, function (y) {
+        return for_(minY, maxY, function (y) {
           return cbk(x, y);
         });
       });
@@ -266,8 +272,7 @@
       var minY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
       var maxY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
       var cbk = arguments.length > 4 ? arguments[4] : undefined;
-
-      _for(-maxX, -minX, function (x) {
+      for_(minX, maxX, function (x) {
         return _for(minY, maxY, function (y) {
           return cbk(x, y);
         });
@@ -279,9 +284,8 @@
       var minY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
       var maxY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
       var cbk = arguments.length > 4 ? arguments[4] : undefined;
-
-      _for(-maxX, -minX, function (x) {
-        return _for(-maxY, -minY, function (y) {
+      for_(minX, maxX, function (x) {
+        return for_(minY, maxY, function (y) {
           return cbk(x, y);
         });
       });
@@ -308,16 +312,7 @@
       return retArr.push(iterator(x, y));
     }]));
     return retArr;
-  } // 根据偏移行设定，计算偏移量的方法集
-
-  var staggerConfs = {
-    none: function none(m) {
-      return m;
-    },
-    def: function def(m, s, rem, minS) {
-      return Math.round(s - minS) % 2 === rem ? m + HALF : m;
-    }
-  };
+  }
   /* 得到一组错列布局正多边形地图Tile的坐标偏移位置集合
    * @param  {Number}  offsetRate     偏移量比率
    * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
@@ -325,7 +320,7 @@
    * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
    * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
    * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
-   * @return {Array}   [[x, y], ...]
+   * @return {Array}   [[x, y, xNum, yNum], ...]
    */
 
   function getPolygonPositions() {
@@ -342,13 +337,61 @@
 
 
     var height = _height * offsetRate;
-    var rem = Number(stagger === 'odd'); // 多边形错列布局副轴上需要偏移来达成错列布局
+    var needOffset = stagger !== 'none';
+    var isOddNum = Number(stagger === 'odd'); // 多边形错列布局副轴上需要偏移来达成错列布局
 
-    var staggerFun = staggerConfs[stagger] || staggerConfs.def;
-    var minS = subAxisRange[0];
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (m, s) {
-      return [staggerFun(m, s, rem, minS) * width, s * height, m, s];
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (mainAxisNum, subAxisNum) {
+      var offsetRate = mainAxisNum;
+
+      if (needOffset && Math.abs(Math.round(subAxisNum) % 2) === isOddNum) {
+        offsetRate += HALF; // 补充错列偏移量
+      }
+
+      return [offsetRate * width, subAxisNum * height, mainAxisNum, subAxisNum];
     });
+  }
+  /* 通过大致的像素坐标值获取该位置tile元素的[Num, yNum]
+   * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+   * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @return {Object}  {xNum, yNum, x, y}
+   */
+
+  function getPolygonInfoByPos() {
+    var offsetRate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+    var pos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var originPos = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
+    var tileSize = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [8, 4];
+    var stagger = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'odd';
+
+    var _originPos = _slicedToArray(originPos, 2),
+        originX = _originPos[0],
+        originY = _originPos[1];
+
+    var _tileSize2 = _slicedToArray(tileSize, 2),
+        width = _tileSize2[0],
+        height = _tileSize2[1];
+
+    var rateHeight = height * offsetRate;
+    var posTop = pos[1] - originY;
+    var yNum = Math.round(posTop / rateHeight);
+    var posLeft = pos[0] - originX; // 多边形错列布局需要补充偏移量
+
+    var xOffset = 0;
+
+    if (stagger !== 'none' && Math.abs(yNum % 2) === Number(stagger === 'odd')) {
+      xOffset = width * HALF;
+      posLeft -= xOffset;
+    }
+
+    var xNum = Math.round(posLeft / width);
+    return {
+      xNum: xNum,
+      yNum: yNum,
+      x: xNum * width + originX + xOffset,
+      y: yNum * rateHeight + originY
+    };
   }
 
   /* 正矩形地图元件方法 */
@@ -380,11 +423,25 @@
     var renderOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'RightDown';
     return getPolygonPositions(1, mainAxisRange, subAxisRange, tileSize, 'none', renderOrder);
   }
+  /* 获得与pos坐标有交集的tile元素的{xNum, yNum, x, y}
+   * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+   * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @return {Object}  {xNum, yNum, x, y}
+   */
+
+  function getRectInfoByPos() {
+    var pos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var originPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    return getPolygonInfoByPos(1, pos, originPos, tileSize, 'none');
+  }
 
   var rectFuns = /*#__PURE__*/Object.freeze({
     __proto__: null,
     getRectVertexes: getRectVertexes,
-    getRectPositions: getRectPositions
+    getRectPositions: getRectPositions,
+    getRectInfoByPos: getRectInfoByPos
   });
 
   /* 正六边形地图元件方法 */
@@ -408,7 +465,7 @@
    * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
    * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
    * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
-   * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
    * @return {Array}   [[x, y], ...]
    */
 
@@ -420,11 +477,27 @@
     var stagger = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'odd';
     return getPolygonPositions(TQUA, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
   }
+  /* 通过大致的像素坐标值获取该位置tile元素的[Num, yNum]
+   * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+   * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @return {Object}  {xNum, yNum, x, y}
+   */
+
+  function getHexagonInfoByPos() {
+    var pos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var originPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    var stagger = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'odd';
+    return getPolygonInfoByPos(TQUA, pos, originPos, tileSize, stagger);
+  }
 
   var hexagonFuns = /*#__PURE__*/Object.freeze({
     __proto__: null,
     getHexagonVertexes: getHexagonVertexes,
-    getHexagonPositions: getHexagonPositions
+    getHexagonPositions: getHexagonPositions,
+    getHexagonInfoByPos: getHexagonInfoByPos
   });
 
   /* 正菱形地图元件方法 */
@@ -474,16 +547,32 @@
     var renderOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'RightDown';
     var halfWidth = tileSize[0] / 2;
     var halfHeight = tileSize[1] / 2;
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (m, s) {
-      return [(m + s) * halfWidth, (s - m) * halfHeight, m, s];
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (mainAxisNum, subAxisNum) {
+      return [(mainAxisNum + subAxisNum) * halfWidth, (subAxisNum - mainAxisNum) * halfHeight, mainAxisNum, subAxisNum];
     });
+  }
+  /* 通过大致的像素坐标值获取该位置tile元素的[Num, yNum]
+   * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+   * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+   * @return {Object}  {xNum, yNum, x, y}
+   */
+
+  function getRhombusInfoByPos() {
+    var pos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var originPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    var stagger = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'odd';
+    return getPolygonInfoByPos(HALF, pos, originPos, tileSize, stagger);
   }
 
   var rhombusFuns = /*#__PURE__*/Object.freeze({
     __proto__: null,
     getRhombusVertexes: getRhombusVertexes,
     getRhombusPositions: getRhombusPositions,
-    getIsometricRhombusPositions: getIsometricRhombusPositions
+    getIsometricRhombusPositions: getIsometricRhombusPositions,
+    getRhombusInfoByPos: getRhombusInfoByPos
   });
 
   var ellipse = ellipseFuns;
