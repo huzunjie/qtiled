@@ -5,7 +5,7 @@ html, body {
 }
 html {
   background-color: #f4f4f4;
-  font-family: "Oswald", "HelveticaNeue-CondensedBold", "Arial Narrow", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei",  sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   background-repeat: no-repeat;
   min-height: 100%;
 }
@@ -42,4 +42,93 @@ h1 {
 }
 button:active {
   background-color: #36384A;
+}
+
+.navs {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  max-width: 280px;
+  background: #fff;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+.navs.closed {
+  bottom: initial;
+  max-width: none;
+  opacity: 0.6;
+}
+.navs h3 {
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px 12px;
+  color: #333;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  margin: 0;
+}
+.navs.closed h3 {
+  font-size: 14px;
+}
+.navs h3 a {
+  color: #333;
+  text-decoration: none;
+}
+.navs h3 a.nav-switch:after {
+  content: '↗';
+}
+.navs.closed h3 a.nav-switch:after {
+  content: '↙';
+}
+.navs h3 a.nav-switch {
+  color: #888;
+  float: right;
+  cursor: pointer;
+  background-color: #f3f3f3;
+  width: 20px;
+  font-size: 14px;
+  height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  text-shadow: 0 0 2px #fff;
+  margin-left: 8px;
+}
+.navs div {
+  flex: 1;
+  overflow: auto;
+  padding: 2px 0;
+}
+.navs.closed div {
+  display: none;
+}
+.navs div a {
+  display: block;
+  font-size: 14px;
+  text-decoration: none;
+  color: #606770;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 4px;
+  border-bottom: solid 1px #f9f9f9;
+}
+.navs div a.active,
+.navs div a:hover {
+  border-bottom-color: #fff;
+  background-color: #f7f7f7;
+  color: #0057c2;
+}
+.github {
+  position: fixed;
+  bottom: 5px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 2;
+  color: #c6d2ff;
+  text-shadow: 0 0 2px #fff;
+  text-decoration: none;
+  font-size: 12px;
 }

@@ -1,6 +1,6 @@
 /* 正矩形地图元件方法 */
 
-import { HALF, FLAH, getPolygonVertexes, getPolygonPositions } from './polygon';
+import { HALF, FLAH, getPolygonVertexes, getPolygonPositions, getPolygonInfoByPos } from './polygon';
 
 // 宽高为1的正矩形顶点集合
 const rectVertexes = [
@@ -28,4 +28,14 @@ export function getRectVertexes(width = 1, height = 1) {
  */
 export function getRectPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
   return getPolygonPositions(1, mainAxisRange, subAxisRange, tileSize, 'none', renderOrder);
+}
+
+/* 获得与pos坐标有交集的tile元素的{xNum, yNum, x, y}
+ * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+ * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+ * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+ * @return {Object}  {xNum, yNum, x, y}
+ */
+export function getRectInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]) {
+  return getPolygonInfoByPos(1, pos, originPos, tileSize, 'none');
 }

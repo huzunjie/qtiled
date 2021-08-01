@@ -1,6 +1,6 @@
 /* 正六边形地图元件方法 */
 
-import { HALF, FLAH, QUAR, RAUQ, TQUA, getPolygonVertexes, getPolygonPositions } from './polygon';
+import { HALF, FLAH, QUAR, RAUQ, TQUA, getPolygonVertexes, getPolygonPositions, getPolygonInfoByPos } from './polygon';
 
 // 宽高为1的六边形顶点集合（上下为尖）
 const hexagonVertexes = [
@@ -27,9 +27,20 @@ export function getHexagonVertexes(width = 1, height = 1, axis = 'y') {
  * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
  * @param  {String}  renderOrder    渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
- * @param  {String}  stagger        需要挫列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+ * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @return {Array}   [[x, y], ...]
  */
 export function getHexagonPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown', stagger = 'odd') {
   return getPolygonPositions(TQUA, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
+}
+
+/* 通过大致的像素坐标值获取该位置tile元素的[Num, yNum]
+ * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+ * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+ * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+ * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+ * @return {Object}  {xNum, yNum, x, y}
+ */
+export function getHexagonInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
+  return getPolygonInfoByPos(TQUA, pos, originPos, tileSize, stagger);
 }
