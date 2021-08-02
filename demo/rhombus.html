@@ -11,13 +11,20 @@
       width: 800px;
       height: 520px;
     }
+    #container4,
     #container2 {
       width: 1000px;
       height: 400px;
     }
     #container3 {
       width: 800px;
-      height: 800px;
+      height: 300px;
+    }
+    em {
+      font-style: normal;
+      font-size: 14px;
+      color: #999;
+      font-weight: 400;
     }
   </style>
 </head>
@@ -250,7 +257,7 @@
   </script>
 
 
-  <h1>鼠标交互示例-错列布局</h1>
+  <h1>鼠标交互示例-错列布局<em>(基于矩形定位，会存在鼠标交互偏差，比如鼠标放到接近菱形顶角的位置)</em></h1>
   <div id="container2"></div>
   <!-- 单元格定位 -->
   <script type="text/javascript">
@@ -363,7 +370,7 @@
     }());
   </script>
 
-  <h1>鼠标交互示例-等距布局</h1>
+  <h1>鼠标交互示例-等距布局<em>(基于等距定位判定，相对错列交互定位准确)</em></h1>
   <div id="container3"></div>
   <!-- 单元格定位 -->
   <script type="text/javascript">
@@ -373,7 +380,7 @@
       const scene = new Scene({
           container,
           width: 800,
-          height: 800,
+          height: 300,
           mode: 'static',
       });
       const layer = scene.layer('def', { handleEvent: false });
@@ -497,6 +504,125 @@
         focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
       });
   
+    }());
+  </script>
+
+
+
+  <h1>鼠标交互示例-错列转等距<em>(保持错列布局的高UI利用率，等距布局的鼠标交互准确度)</em></h1>
+  <div id="container4"></div>
+  <!-- 单元格定位 -->
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container4');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 1000,
+          height: 400,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 390;
+      const yPos = 180;
+      const pos = [xPos, yPos];
+      const width = 70;
+      const height = 32;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+      const stagger = 'odd';
+
+      const { getRhombusVertexes, getRhombusPositions, getRhombusInfoByPos, getIsometricRhombusInfoByPos } = qtiled.shapes.rhombus;
+
+      // 一个矩形顶点坐标集
+      const rhombusVertexes = getRhombusVertexes(width, height);
+
+      // 文案输出
+      const mouseMoveLabel = new Label({
+        pos: [30, 10],
+        text:  '选中元素文案展示在这里',
+        fontSize,
+        fillColor: '#999',
+      });
+      shapesEls.push(mouseMoveLabel);
+
+      const xNumRange = [-5, 5];
+      const yNumRange = [-8, 11];
+      let focusPos = pos;
+      let focusText = '';
+      const xyNumsMap = {};
+      getRhombusPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y/*, xNum, yNum*/]) => {
+        const pos = [x + xPos, y + yPos];
+        const [xNum, yNum] = getIsometricRhombusInfoByPos(pos, [xPos, yPos], size);
+        const text = xNum + ',' + yNum;
+        xyNumsMap[text] = true;
+        if (!focusText) {
+          focusText = text;
+          focusPos = pos;
+        }
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: rhombusVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const focusRhombusTile = new Polyline({
+        pos: focusPos,
+        points: rhombusVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.8)',
+        lineWidth,
+        close: true,
+      });
+      const focusRhombusLabel = new Label({
+        anchor,
+        pos: focusPos,
+        text: focusText,
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+      shapesEls.push(focusRhombusTile, focusRhombusLabel);
+
+
+      const { offsetTop, offsetLeft } = container;
+      container.addEventListener('mousemove', (e) => {
+        const offsetX = e.pageX - offsetLeft;
+        const offsetY = e.pageY - offsetTop;
+
+        // 得到焦点元素索引及渲染坐标
+        // const {xNum, yNum, x, y} = getRhombusInfoByPos([offsetX, offsetY], pos, size, stagger);
+        const [xNum, yNum, x, y] = getIsometricRhombusInfoByPos([offsetX, offsetY], pos, size);
+
+        // 更新文案
+        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
+
+        // 越界与未越界颜色区分
+        const color = `rgba(${xyNumsMap[xNum+','+yNum] ? '0, 136' : '255, 0'}, 0, 0.8)`
+        // 更新焦点区域标识位置
+        focusRhombusTile.attr({ x, y, strokeColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+      });
+
+      layer.append(...shapesEls);
     }());
   </script>
 </body>
