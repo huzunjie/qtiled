@@ -413,20 +413,11 @@
       let xDiff = 290;
       let yDiff = 140;
       const pos = [xDiff, yDiff];
-      let minX = Infinity;
-      let minY = Infinity;
-      let maxX = -Infinity;
-      let maxY = -Infinity;
-      const hexTiles = [];
       const xNumRange = [-4, 4];
       const yNumRange = [-4, 6];
       getIsometricRhombusPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x);
-        maxY = Math.max(maxY, y);
         const pos = [x + xDiff, y + yDiff];
-        hexTiles.push(
+        shapesEls.push(
           new Polyline({
             pos,
             points: rhombusVertexes,
@@ -442,34 +433,6 @@
           }),
         );
       });
-      minY -= height / 2;
-      minX -= width / 2;
-      maxY += height / 2;
-      maxX += width / 2;
-      shapesEls.push(
-        // 坐标系原点
-        new Polyline({
-          pos,
-          points: [0, 0, lineWidth, 0],
-          strokeColor: 'red',
-          lineWidth,
-          close: true,
-        }),
-        // 边框
-        new Polyline({
-          pos,
-          points: [
-            [minX, minY],
-            [minX, maxY],
-            [maxX, maxY],
-            [maxX, minY],
-          ],
-          strokeColor: 'rgba(0, 0, 0, 0.2)',
-          lineWidth,
-          close: true,
-        }),
-        ...hexTiles,
-      );
       /* 图形处理试验代码 end */
 
       const focusRhombusTile = new Polyline({
@@ -625,5 +588,7 @@
       layer.append(...shapesEls);
     }());
   </script>
+  <p><script src='//s13.cnzz.com/stat.php?id=41666&web_id=41666&online=1&show=line' type='text/javascript' charset='gb2312'></script></p>
+
 </body>
 </html>
