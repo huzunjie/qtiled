@@ -19,7 +19,7 @@
   + [x] getRhombusPositions 按目标区间方向获取多个菱形的错列布局位置坐标集
   + [x] getRhombusInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
   + [x] getIsometricRhombusPositions 按目标区间方向获取多个菱形的等距布局位置坐标集
-  + [ ] getIsometricRhombusInfoByPos 在等距布局坐标系中，根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
+  + [x] getIsometricRhombusInfoByPos 在等距布局坐标系中，根据任意点&原点&单瓦片尺寸，取得改点瓦片的二维坐标及渲染坐标
 + [x] Hexagon - 六边形
   + [x] getHexagonVertexes 获取六边形顶点坐标集
   + [x] getHexagonPositions 按目标区间方向获取多个六边形的错列布局位置坐标集

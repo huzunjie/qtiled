@@ -31,6 +31,11 @@ export function getRhombusPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0
   return getPolygonPositions(HALF, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
 }
 
+/* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值 */
+export function getIsometricXY(xNum, yNum, halfWidth, halfHeight) {
+  return [(xNum + yNum) * halfWidth, (yNum - xNum) * halfHeight];
+}
+
 /* 得到一组等距正菱形地图瓦片的坐标偏移位置集合
  * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
  * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
@@ -42,15 +47,14 @@ export function getRhombusPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0
 export function getIsometricRhombusPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown') {
   const halfWidth = tileSize[0] / 2;
   const halfHeight = tileSize[1] / 2;
-  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (mainAxisNum, subAxisNum) => [
-    (mainAxisNum + subAxisNum) * halfWidth,
-    (subAxisNum - mainAxisNum) * halfHeight,
-    mainAxisNum,
-    subAxisNum,
+  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (xNum, yNum) => [
+    ...getIsometricXY(xNum, yNum, halfWidth, halfHeight),
+    xNum,
+    yNum,
   ]);
 }
 
-/* 通过大致的像素坐标值获取该位置tile元素的[Num, yNum]
+/* 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
  * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
  * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
@@ -59,4 +63,27 @@ export function getIsometricRhombusPositions(mainAxisRange = [0, 0], subAxisRang
  */
 export function getRhombusInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
   return getPolygonInfoByPos(HALF, pos, originPos, tileSize, stagger);
+}
+
+/* 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
+ * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+ * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+ * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+ * @return {Object}  {xNum, yNum, x, y}
+ */
+export function getIsometricRhombusInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]) {
+  const halfHeight = tileSize[1] * HALF;
+  const halfWidth = tileSize[0] * HALF;
+  const [originX, originY] = originPos;
+  const xSteps = (pos[0] - originX) / halfWidth * HALF;
+  const ySteps = (pos[1] - originY) / halfHeight * HALF;
+  const yNum = Math.round(ySteps + xSteps);
+  const xNum = Math.round(xSteps - ySteps);
+  const [x, y] = getIsometricXY(xNum, yNum, halfWidth, halfHeight);
+  return [
+    xNum,
+    yNum,
+    x + originX,
+    y + originY,
+  ];
 }
