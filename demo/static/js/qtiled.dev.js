@@ -1,6 +1,6 @@
 
 /**
- * QTiled v0.2.0
+ * qtiled v0.2.0
  * (c) 2008-2021 huzunjie
  * Released under MIT
  */
@@ -500,8 +500,6 @@
     getHexagonInfoByPos: getHexagonInfoByPos
   });
 
-  /* 正菱形地图元件方法 */
-
   var rhombusVertexes = [[0, FLAH], [HALF, 0], [0, HALF], [FLAH, 0]];
   /* 根据计划渲染的菱形宽高值，得到顶点坐标集合
   * @param  {Number}  width    宽度
@@ -531,6 +529,11 @@
     var stagger = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'odd';
     return getPolygonPositions(HALF, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
   }
+  /* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值 */
+
+  function getIsometricXY(xNum, yNum, halfWidth, halfHeight) {
+    return [(xNum + yNum) * halfWidth, (yNum - xNum) * halfHeight];
+  }
   /* 得到一组等距正菱形地图瓦片的坐标偏移位置集合
    * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
    * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
@@ -547,11 +550,11 @@
     var renderOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'RightDown';
     var halfWidth = tileSize[0] / 2;
     var halfHeight = tileSize[1] / 2;
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (mainAxisNum, subAxisNum) {
-      return [(mainAxisNum + subAxisNum) * halfWidth, (subAxisNum - mainAxisNum) * halfHeight, mainAxisNum, subAxisNum];
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (xNum, yNum) {
+      return [].concat(_toConsumableArray(getIsometricXY(xNum, yNum, halfWidth, halfHeight)), [xNum, yNum]);
     });
   }
-  /* 通过大致的像素坐标值获取该位置tile元素的[Num, yNum]
+  /* 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
    * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
    * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
    * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
@@ -566,13 +569,45 @@
     var stagger = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'odd';
     return getPolygonInfoByPos(HALF, pos, originPos, tileSize, stagger);
   }
+  /* 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
+   * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
+   * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
+   * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+   * @return {Object}  {xNum, yNum, x, y}
+   */
+
+  function getIsometricRhombusInfoByPos() {
+    var pos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var originPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
+    var halfHeight = tileSize[1] * HALF;
+    var halfWidth = tileSize[0] * HALF;
+
+    var _originPos = _slicedToArray(originPos, 2),
+        originX = _originPos[0],
+        originY = _originPos[1];
+
+    var xSteps = (pos[0] - originX) / halfWidth * HALF;
+    var ySteps = (pos[1] - originY) / halfHeight * HALF;
+    var yNum = Math.round(ySteps + xSteps);
+    var xNum = Math.round(xSteps - ySteps);
+
+    var _getIsometricXY = getIsometricXY(xNum, yNum, halfWidth, halfHeight),
+        _getIsometricXY2 = _slicedToArray(_getIsometricXY, 2),
+        x = _getIsometricXY2[0],
+        y = _getIsometricXY2[1];
+
+    return [xNum, yNum, x + originX, y + originY];
+  }
 
   var rhombusFuns = /*#__PURE__*/Object.freeze({
     __proto__: null,
     getRhombusVertexes: getRhombusVertexes,
     getRhombusPositions: getRhombusPositions,
+    getIsometricXY: getIsometricXY,
     getIsometricRhombusPositions: getIsometricRhombusPositions,
-    getRhombusInfoByPos: getRhombusInfoByPos
+    getRhombusInfoByPos: getRhombusInfoByPos,
+    getIsometricRhombusInfoByPos: getIsometricRhombusInfoByPos
   });
 
   var ellipse = ellipseFuns;
