@@ -26,7 +26,7 @@
   <div id="container"></div>
   <script src="./static/js/navs.js"></script>
   <script src="./static/js/spritejs3.js"></script>
-  <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/qtiled.dev.js?11"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -37,7 +37,7 @@
           height: 800,
           mode: 'static',
       });
-      const layer = scene.layer();
+      const layer = scene.layer('def', { handleEvent: false });
 
       const lineWidth = 2;
 
@@ -138,18 +138,25 @@
       let minY = Infinity;
       let maxX = -Infinity;
       let maxY = -Infinity;
-      hexTiles = getRhombusPositions([-2, 2], [-4, 4], size, 'leftUp', 'odd').map(([x, y]) => {
+      const maxXNum = 2;
+      hexTiles = [];
+      getRhombusPositions([-2, maxXNum], [-4, 4], size, 'leftUp', 'odd').forEach(([x, y, xNum, yNum]) => {
+        if (xNum === maxXNum && Math.abs(yNum % 2) === 1) {
+          return; // 错列行最右侧元素隐去
+        }
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
         maxX = Math.max(maxX, x);
         maxY = Math.max(maxY, y);
-        return new Polyline({
-          pos: [x + xDiff, y + yDiff],
-          points: rhombusVertexes,
-          strokeColor: 'rgba(0, 0, 0, 0.5)',
-          lineWidth,
-          close: true,
-        });
+        hexTiles.push(
+          new Polyline({
+            pos: [x + xDiff, y + yDiff],
+            points: rhombusVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.5)',
+            lineWidth,
+            close: true,
+          })
+        );
       });
       minY -= height / 2;
       minX -= width / 2;
@@ -369,7 +376,7 @@
           height: 800,
           mode: 'static',
       });
-      const layer = scene.layer();
+      const layer = scene.layer('def', { handleEvent: false });
 
       const lineWidth = 2;
       const fontSize = '12px';
@@ -416,7 +423,7 @@
           new Polyline({
             pos,
             points: rhombusVertexes,
-            strokeColor: 'rgba(0, 0, 0, 0.5)',
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
             lineWidth,
             close: true,
           }),

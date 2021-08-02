@@ -33,7 +33,7 @@
           height: 800,
           mode: 'static',
       });
-      const layer = scene.layer();
+      const layer = scene.layer('def', { handleEvent: false });
 
       const lineWidth = 2;
 
@@ -254,7 +254,7 @@
           height: 500,
           mode: 'static',
       });
-      const layer = scene.layer();
+      const layer = scene.layer('def', { handleEvent: false });
       const lineWidth = 2;
 
       const shapesEls = [];
