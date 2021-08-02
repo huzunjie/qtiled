@@ -2,6 +2,12 @@
 
 这是一套 Tiled 布局基础库。
 
+## DEMO
+
+结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled
+
+![菱形地图示例](https://p5.ssl.qhimg.com/t01f3742c0b820f93e1.png)
+
 ## 计划列表
 
 ### Basic Shapes - 基础图形
@@ -19,7 +25,7 @@
   + [x] getRhombusPositions 按目标区间方向获取多个菱形的错列布局位置坐标集
   + [x] getRhombusInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
   + [x] getIsometricRhombusPositions 按目标区间方向获取多个菱形的等距布局位置坐标集
-  + [x] getIsometricRhombusInfoByPos 在等距布局坐标系中，根据任意点&原点&单瓦片尺寸，取得改点瓦片的二维坐标及渲染坐标
+  + [x] getIsometricRhombusInfoByPos 根据任意点&原点&单瓦片尺寸，取得瓦片的等距二维坐标及渲染坐标
 + [x] Hexagon - 六边形
   + [x] getHexagonVertexes 获取六边形顶点坐标集
   + [x] getHexagonPositions 按目标区间方向获取多个六边形的错列布局位置坐标集
@@ -42,11 +48,6 @@
 
 ### Map Editor - 地图编辑器
 * [ ] ToDo - 待开发
-
-
-## DEMO
-
-结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled
 
 ## 安装引用
 
