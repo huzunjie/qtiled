@@ -6,7 +6,7 @@
 
 结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled
 
-![菱形地图示例](https://p5.ssl.qhimg.com/t01f3742c0b820f93e1.png)
+![菱形地图示例](https://p1.ssl.qhimg.com/t01e8950d2debce4408.png)
 
 ## 计划列表
 
