@@ -443,7 +443,7 @@
       const addRoadbock = (xNum, yNum, x, y) => {
         const cacheKey = xNum + ',' + yNum;
         if (roadblocksRmCaches[cacheKey]) return; // 阻止重复设置路障
-        const [appendBlock, removeBlock] = getBlock('路障', 'rgba(0, 0, 0, 0.8)', 1, 1.5, 'rgba(0, 0, 0, 0.2)');
+        const [appendBlock, removeBlock] = getBlock('路障 ', 'rgba(0, 0, 0, 0.8)', 1, 1.5, 'rgba(0, 0, 0, 0.2)');
         appendBlock(xNum, yNum, x, y);
         roadblocksRmCaches[cacheKey] = () => {
           delete roadblocksRmCaches[cacheKey];
@@ -467,7 +467,10 @@
       // 方向控制
       const dirConfs = [];
       const { rect } = qtiled.shapes;
-      const dirBtnEls = Array.from($id('dirs').querySelectorAll('[data-type'));
+      const dirBtnEls = [
+        ...Array.from($id('dirs').querySelectorAll('[data-type="rectDirections"]')),
+        ...Array.from($id('dirs').querySelectorAll('[data-type="rectCorners"]')),
+      ];
       const updateDirConfs = () => {
         dirConfs.length = 0;
         dirBtnEls.forEach((el) => {
@@ -488,8 +491,8 @@
 
       const { aStarPathFinding } = qtiled.pathFinding;
       // 道路
-      const addRoad = (xNum, yNum, x, y) => {
-        const [appendBlock, removeBlock] = getBlock('道路', '#a28a0f', 0.5, -0.5, 'rgba(180, 140, 90, 0.2)');
+      const addRoad = (xNum, yNum, x, y, cost = 0) => {
+        const [appendBlock, removeBlock] = getBlock(`道路 ${cost}`, '#a28a0f', 0.5, -0.5, 'rgba(180, 140, 90, 0.2)');
         appendBlock(xNum, yNum, x, y);
         const cacheKey = xNum + ',' + yNum;
         roadsRmCaches[cacheKey] = () => {
@@ -517,10 +520,10 @@
         const pathXyNums = aStarPathFinding(staXYNum, endXYNum, dirConfs, filterFun);
         if (!pathXyNums) return alert('没有通行路径。');
         clearPath();
-        pathXyNums.forEach(([xNum, yNum]) => {
+        pathXyNums.forEach(([xNum, yNum, cost]) => {
           const poss = getRectPositions([xNum, xNum], [yNum, yNum], size, 'RightDown');
           const [x, y] = poss[0];
-          addRoad(xNum, yNum, x + xPos, y + yPos);
+          addRoad(xNum, yNum, x + xPos, y + yPos, cost);
         });
       };
       $id('clear_path').onclick = clearPath;

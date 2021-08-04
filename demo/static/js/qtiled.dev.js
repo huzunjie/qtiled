@@ -1182,23 +1182,24 @@
         endXNum = _endXyNum[0],
         endYNum = _endXyNum[1];
 
+    var staPoint = [staXNum, staYNum, 0];
     var n = 0; // 起止点相同直接返回当前点
 
     if (staXNum === endXNum && staYNum === endYNum) {
-      path.push(staXyNum);
+      path.push(staPoint);
     } else {
       (function () {
         var parents = {};
-        var staXyStr = staXyNum.join();
+        var staXyStr = "".concat(staXNum, ",").concat(staYNum);
 
         var costs = _defineProperty({}, staXyStr, 0);
 
-        var openlist = [staXyNum]; // 防止重复判断
+        var openlist = [staPoint]; // 防止重复判断
 
         var _loop = function _loop() {
-          var currXyNum = openlist.pop();
-          var currCost = costs["".concat(currXyNum[0], ",").concat(currXyNum[1])];
-          getNeighborsPoints$1(currXyNum, referenceMatrix, function (neiXyNum, xyDiff) {
+          var currPoint = openlist.pop();
+          var currCost = costs["".concat(currPoint[0], ",").concat(currPoint[1])];
+          getNeighborsPoints$1(currPoint, referenceMatrix, function (neiXyNum, xyDiff) {
             if (!filterFun(neiXyNum, xyDiff)) return;
 
             var _neiXyNum = _slicedToArray(neiXyNum, 2),
@@ -1207,19 +1208,20 @@
 
             var neiXYStr = "".concat(neiXNum, ",").concat(neiYNum);
             var oldCost = costs[neiXYStr];
-            var nextCost = currCost + (xyDiff[2] || 1);
-            if (oldCost !== undefined && nextCost >= oldCost) return;
-            costs[neiXYStr] = nextCost;
-            parents[neiXYStr] = currXyNum;
+            var neiCost = Math.round((currCost + (xyDiff[2] || 1)) * 1e3) / 1e3;
+            if (oldCost !== undefined && neiCost >= oldCost) return;
+            costs[neiXYStr] = neiCost;
+            parents[neiXYStr] = currPoint;
             n++;
-            if (n > maximizable) throw new Error('循环次数超过了 maximizable：' + maximizable); // 到达终点生成路径
+            if (n > maximizable) throw new Error('循环次数超过了 maximizable：' + maximizable);
+            var neiPoint = [neiXNum, neiYNum, neiCost]; // 到达终点生成路径
 
             if (neiXNum === endXNum && neiYNum === endYNum) {
-              path.push(endXyNum); // 回查链表得到完整路径数组
+              path.push(neiPoint); // 回查链表得到完整路径数组
 
               var prevXyNum = endXyNum;
 
-              while (prevXyNum = parents[prevXyNum.join()]) {
+              while (prevXyNum = parents["".concat(prevXyNum[0], ",").concat(prevXyNum[1])]) {
                 path.unshift(prevXyNum);
               }
 
@@ -1227,7 +1229,7 @@
               return 'break';
             } else {
               // 没到达终点，将当前点放入开放点列表，继续查找
-              openlist.unshift(neiXyNum);
+              openlist.unshift(neiPoint);
             }
           });
         };
