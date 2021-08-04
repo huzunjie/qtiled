@@ -10,6 +10,22 @@ const rectVertexes = [
   [FLAH, HALF],
 ];
 
+/* 上、右、下、左，四个边邻居 [xNum, yNum, cost] 差值及距离成本 */
+export const rectDirections = [
+  [0, -1, 1],
+  [1, 0, 1],
+  [0, 1, 1],
+  [-1, 0, 1],
+];
+
+/* 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本 */
+export const rectCorners = [
+  [-1, -1, 1.414],
+  [1, -1, 1.414],
+  [1, 1, 1.414],
+  [-1, 1, 1.414],
+];
+
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
 * @param  {Number}  width    宽度
 * @param  {Number}  height   高度

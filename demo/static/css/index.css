@@ -44,6 +44,11 @@ button:active {
   background-color: #36384A;
 }
 
+p {
+  font-size: 12px;
+  opacity: 0.3;
+}
+
 .navs {
   position: fixed;
   top: 0;

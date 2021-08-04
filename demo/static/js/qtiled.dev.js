@@ -397,6 +397,12 @@
   /* 正矩形地图元件方法 */
 
   var rectVertexes = [[FLAH, FLAH], [HALF, FLAH], [HALF, HALF], [FLAH, HALF]];
+  /* 上、右、下、左，四个边邻居 [xNum, yNum, cost] 差值及距离成本 */
+
+  var rectDirections = [[0, -1, 1], [1, 0, 1], [0, 1, 1], [-1, 0, 1]];
+  /* 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本 */
+
+  var rectCorners = [[-1, -1, 1.414], [1, -1, 1.414], [1, 1, 1.414], [-1, 1, 1.414]];
   /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
   * @param  {Number}  width    宽度
   * @param  {Number}  height   高度
@@ -439,6 +445,8 @@
 
   var rectFuns = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    rectDirections: rectDirections,
+    rectCorners: rectCorners,
     getRectVertexes: getRectVertexes,
     getRectPositions: getRectPositions,
     getRectInfoByPos: getRectInfoByPos
@@ -1103,9 +1111,149 @@
     return path;
   }
 
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  /* 查找二维坐标系相邻元素
+  * @param {Array}     xyNum              瓦片坐标值，如：[xNum, yNum]
+  * @param {Array}     referenceMatrix    相邻元素差值矩阵，也就是[xNum, yNum]与相邻坐标差集合，如：[[-1, -1], [1, 1], ...]
+  * @param {Function}  filter             自行过滤方法，参数示例：(xyNum = [xNum, yNum], rmXY = [-1, -1])
+  * @return {Array}    匹配的邻居坐标集合或空数组
+  */
+  function getNeighborsPoints$1() {
+    var xyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var referenceMatrix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [[1, 0], [0, 1], [-1, 0], [0, -1]];
+    var filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (xyNum, diffXY) {
+      return true;
+    };
+    var points = [];
+
+    var _xyNum = _slicedToArray(xyNum, 2),
+        xNum = _xyNum[0],
+        yNum = _xyNum[1];
+
+    referenceMatrix.some(function (diffXY) {
+      var xyNumCurr = [xNum + diffXY[0], yNum + diffXY[1]];
+      var filterRet = filter(xyNumCurr, diffXY);
+      if (filterRet === 'break') return false;
+
+      if (filterRet) {
+        points.push(xyNumCurr);
+      }
+    });
+    return points;
+  }
+
+  /* A*寻径
+  * @param {Array}     staXyNum           数据坐标值，如：[xNum, yNum]
+  * @param {Array}     endXyNum           数据坐标值，如：[xNum, yNum]
+  * @param {Array}     referenceMatrix    相邻元素差值矩阵，也就是[xNum, yNum, cost]与相邻坐标差集合，如：[[-1, -1, 1.414], [1, 1, 1], ...]
+  * @param {Function}  filterFun          自行过滤方法，参数示例：(xyNum = [xNum, yNum], xyDiff = [-1, -1])
+  * @return {Array} 匹配的路径集合或空数组
+  */
+
+  function aStarPathFinding$1() {
+    var staXyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+    var endXyNum = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
+    var referenceMatrix = arguments.length > 2 ? arguments[2] : undefined;
+    var filterFun = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function (xyNum, xyDiff) {
+      return true;
+    };
+    var maximizable = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1e6;
+    var path = [];
+
+    var _staXyNum = _slicedToArray(staXyNum, 2),
+        staXNum = _staXyNum[0],
+        staYNum = _staXyNum[1];
+
+    var _endXyNum = _slicedToArray(endXyNum, 2),
+        endXNum = _endXyNum[0],
+        endYNum = _endXyNum[1];
+
+    var n = 0; // 起止点相同直接返回当前点
+
+    if (staXNum === endXNum && staYNum === endYNum) {
+      path.push(staXyNum);
+    } else {
+      (function () {
+        var parents = {};
+        var staXyStr = staXyNum.join();
+
+        var costs = _defineProperty({}, staXyStr, 0);
+
+        var openlist = [staXyNum]; // 防止重复判断
+
+        var _loop = function _loop() {
+          var currXyNum = openlist.pop();
+          var currCost = costs["".concat(currXyNum[0], ",").concat(currXyNum[1])];
+          getNeighborsPoints$1(currXyNum, referenceMatrix, function (neiXyNum, xyDiff) {
+            if (!filterFun(neiXyNum, xyDiff)) return;
+
+            var _neiXyNum = _slicedToArray(neiXyNum, 2),
+                neiXNum = _neiXyNum[0],
+                neiYNum = _neiXyNum[1];
+
+            var neiXYStr = "".concat(neiXNum, ",").concat(neiYNum);
+            var oldCost = costs[neiXYStr];
+            var nextCost = currCost + (xyDiff[2] || 1);
+            if (oldCost !== undefined && nextCost >= oldCost) return;
+            costs[neiXYStr] = nextCost;
+            parents[neiXYStr] = currXyNum;
+            n++;
+            if (n > maximizable) throw new Error('循环次数超过了 maximizable：' + maximizable); // 到达终点生成路径
+
+            if (neiXNum === endXNum && neiYNum === endYNum) {
+              path.push(endXyNum); // 回查链表得到完整路径数组
+
+              var prevXyNum = endXyNum;
+
+              while (prevXyNum = parents[prevXyNum.join()]) {
+                path.unshift(prevXyNum);
+              }
+
+              openlist.length = 0;
+              return 'break';
+            } else {
+              // 没到达终点，将当前点放入开放点列表，继续查找
+              openlist.unshift(neiXyNum);
+            }
+          });
+        };
+
+        while (openlist.length) {
+          _loop();
+        }
+      })();
+    }
+
+    return path.length ? path : null;
+  }
+
+  var aStarPathFinding = aStarPathFinding$1;
+  var getNeighborsPoints = getNeighborsPoints$1;
+
+  var pathFindingFuns = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    aStarPathFinding: aStarPathFinding,
+    getNeighborsPoints: getNeighborsPoints
+  });
+
   var shapes = shapesFuns;
 
-  var searchPath = astar;
+  var searchPath = astar; // 寻路
+  var pathFinding = pathFindingFuns;
 
   exports._half_precision = _half_precision;
   exports.getDiagonalUnitsByRowCol = getDiagonalUnitsByRowCol;
@@ -1113,6 +1261,7 @@
   exports.getStaggeredUnitsByRowCol = getStaggeredUnitsByRowCol;
   exports.getUnitsByDiagonal = getUnitsByDiagonal;
   exports.getUnitsByRowCol = getUnitsByRowCol;
+  exports.pathFinding = pathFinding;
   exports.pixel2unit = pixel2unit;
   exports.rhombusPixel2unit = rhombusPixel2unit;
   exports.rotateUnit = rotateUnit;
