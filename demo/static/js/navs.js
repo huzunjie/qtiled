@@ -3,6 +3,7 @@ var navsArr = [
   ['hexagon.html', '六边形 - Hexagon'],
   ['rhombus.html', '正菱形 - Rhombus'],
   ['ellipse.html', '椭圆形 - Ellipse'],
+  ['path-finding.html', 'A*寻路 - 正矩形'],
   ['vast.html', '大量菱形单元交互测试'],
   ['old.html', '一个旧思路试验 一个旧思路试验一个旧思路试验一个旧思路试验一个旧思路试验一个旧思路试验'],
 ];

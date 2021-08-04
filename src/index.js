@@ -14,3 +14,6 @@ import astar from './astar';
 // 公布A*寻路
 export const searchPath = astar;
 
+// 寻路
+import * as pathFindingFuns from './path-finding';
+export const pathFinding = pathFindingFuns;
