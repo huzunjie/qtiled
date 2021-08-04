@@ -17,44 +17,46 @@ export default function aStarPathFinding(
   const path = [];
   const [staXNum, staYNum] = staXyNum;
   const [endXNum, endYNum] = endXyNum;
+  const staPoint = [staXNum, staYNum, 0];
   let n = 0;
   // 起止点相同直接返回当前点
   if(staXNum === endXNum && staYNum === endYNum) {
-    path.push(staXyNum);
+    path.push(staPoint);
   } else {
     const parents = {};
-    const staXyStr = staXyNum.join();
+    const staXyStr = `${staXNum},${staYNum}`;
     const costs = { [staXyStr]: 0 };
-    const openlist = [ staXyNum ];
+    const openlist = [staPoint];
     // 防止重复判断
     while(openlist.length) {
-      const currXyNum = openlist.pop();
-      const currCost = costs[`${currXyNum[0]},${currXyNum[1]}`];
-      getNeighborsPoints(currXyNum, referenceMatrix, (neiXyNum, xyDiff) => {
+      const currPoint = openlist.pop();
+      const currCost = costs[`${currPoint[0]},${currPoint[1]}`];
+      getNeighborsPoints(currPoint, referenceMatrix, (neiXyNum, xyDiff) => {
         if (!filterFun(neiXyNum, xyDiff)) return;
         const [neiXNum, neiYNum] = neiXyNum;
         const neiXYStr = `${neiXNum},${neiYNum}`;
         const oldCost = costs[neiXYStr];
-        const nextCost = currCost + (xyDiff[2] || 1);
-        if (oldCost !== undefined && nextCost >= oldCost) return;
-        costs[neiXYStr] = nextCost;
-        parents[neiXYStr] = currXyNum;
+        const neiCost = Math.round((currCost + (xyDiff[2] || 1)) * 1e3) / 1e3;
+        if (oldCost !== undefined && neiCost >= oldCost) return;
+        costs[neiXYStr] = neiCost;
+        parents[neiXYStr] = currPoint;
 
         n++;
         if (n > maximizable) throw new Error('循环次数超过了 maximizable：' + maximizable);
+        const neiPoint = [neiXNum, neiYNum, neiCost];
         // 到达终点生成路径
         if(neiXNum === endXNum && neiYNum === endYNum) {
-          path.push(endXyNum);
+          path.push(neiPoint);
           // 回查链表得到完整路径数组
           let prevXyNum = endXyNum;
-          while((prevXyNum = parents[prevXyNum.join()])) {
+          while((prevXyNum = parents[`${prevXyNum[0]},${prevXyNum[1]}`])) {
             path.unshift(prevXyNum);
           }
           openlist.length = 0;
           return 'break';
         } else {
           // 没到达终点，将当前点放入开放点列表，继续查找
-          openlist.unshift(neiXyNum);
+          openlist.unshift(neiPoint);
         }
       });
     }
