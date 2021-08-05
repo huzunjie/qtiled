@@ -36,6 +36,7 @@
       margin: 0;
       padding: 0;
       font-weight: normal;
+      font-size: 12px;
     }
     .frm a {
       color: #666;
@@ -82,7 +83,7 @@
     }
     .frm label { 
       font-size: 12px;
-      margin-left: 30px;
+      margin-left: 20px;
       color: #666;
       cursor: pointer;
     }
@@ -123,7 +124,7 @@
       /* 图形处理试验代码 sta */
 
       const xPos = 345;
-      const yPos = 220;
+      const yPos = 200;
       const pos = [xPos, yPos];
       const width = 50;
       const height = 40;
@@ -131,20 +132,10 @@
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
-      const { getRectVertexes, getRectPositions, getRectInfoByPos, rectDirections, rectCorners } = qtiled.shapes.rect;
-      const { getNeighborsPoints } = qtiled.pathFinding;
+      const { getRectVertexes, getRectPositions, rectDirections, rectCorners } = qtiled.shapes.rect;
 
       // 一个矩形顶点坐标集
       const rectVertexes = getRectVertexes(width, height);
-
-      // 文案输出
-      const mouseMoveLabel = new Label({
-        pos: [30, 10],
-        text:  '选中元素文案展示在这里',
-        fontSize,
-        fillColor: '#999',
-      });
-      shapesEls.push(mouseMoveLabel);
 
       const xNumRange = [-6, 6];
       const yNumRange = [-4, 5];
@@ -259,19 +250,19 @@
         <a data-type="rectDirections" data-idx="2" class="active">↓</a>
         <a data-type="rectCorners" data-idx="2">↘</a>
       </span>
-      <label><input type="checkbox" id="ckb">网格外允许通行(慎重，无限查找有死循环风险)</label>
+      <label><input type="checkbox" id="ckb">网格外允许通行(无限查找，慎用！)</label>
       <span class="btns-submit">
-        <a class="btn-big" id="start_path_finding"><b>开始寻路</b></a>
         <a class="btn-big btn-clear" id="clear_path">清理路径</a>
+        <a class="btn-big" id="start_path_finding"><b>开始寻路</b></a>
       </span>
     </div>
     <div class="frm frm-btns">
-      <a class="btn-big" id="set_sta">设置起点</a>
       <a class="btn-big btn-clear" id="clear_sta">清理起点</a>
-      <a class="btn-big" id="set_end">设置终点</a>
+      <a class="btn-big" id="set_sta">设置起点</a>
       <a class="btn-big btn-clear" id="clear_end">清理终点</a>
-      <a class="btn-big" id="set_roadblock">设置路障</a>
+      <a class="btn-big" id="set_end">设置终点</a>
       <a class="btn-big btn-clear" id="clear_roadblock">清理路障</a>
+      <a class="btn-big" id="set_roadblock">设置路障</a>
     </div>
   </div>
   <!-- 单元格定位 -->
@@ -421,7 +412,7 @@
           // getXyNum
           () => [blockXNum, blockYNum],
         ];
-      }
+      };
 
       let actFun = null;
       // 起点
@@ -467,10 +458,10 @@
       // 方向控制
       const dirConfs = [];
       const { rect } = qtiled.shapes;
-      const dirBtnEls = [
-        ...Array.from($id('dirs').querySelectorAll('[data-type="rectDirections"]')),
-        ...Array.from($id('dirs').querySelectorAll('[data-type="rectCorners"]')),
-      ];
+
+      const dirsEl = $id('dirs');
+      // 边邻居与角邻居行进成本不同
+      const dirBtnEls = Array.from(dirsEl.querySelectorAll('[data-type]'));
       const updateDirConfs = () => {
         dirConfs.length = 0;
         dirBtnEls.forEach((el) => {

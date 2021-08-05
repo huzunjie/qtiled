@@ -1,5 +1,7 @@
 import getNeighborsPoints from './neighbors';
 
+const xyNum2Str = ([xNum, yNum]) => `${xNum}_${yNum}`;
+
 /* A*寻径
 * @param {Array}     staXyNum           数据坐标值，如：[xNum, yNum]
 * @param {Array}     endXyNum           数据坐标值，如：[xNum, yNum]
@@ -20,21 +22,19 @@ export default function aStarPathFinding(
   const staPoint = [staXNum, staYNum, 0];
   let n = 0;
   // 起止点相同直接返回当前点
-  if(staXNum === endXNum && staYNum === endYNum) {
+  if(staXyNum === endXNum && staYNum === endYNum) {
     path.push(staPoint);
   } else {
     const parents = {};
-    const staXyStr = `${staXNum},${staYNum}`;
-    const costs = { [staXyStr]: 0 };
+    const costs = { [xyNum2Str(staXyNum)]: 0 };
     const openlist = [staPoint];
-    // 防止重复判断
     while(openlist.length) {
       const currPoint = openlist.pop();
-      const currCost = costs[`${currPoint[0]},${currPoint[1]}`];
+      const currCost = costs[xyNum2Str(currPoint)];
+      // 从邻居中查找可以更低成本通过的节点
       getNeighborsPoints(currPoint, referenceMatrix, (neiXyNum, xyDiff) => {
         if (!filterFun(neiXyNum, xyDiff)) return;
-        const [neiXNum, neiYNum] = neiXyNum;
-        const neiXYStr = `${neiXNum},${neiYNum}`;
+        const neiXYStr = xyNum2Str(neiXyNum);
         const oldCost = costs[neiXYStr];
         const neiCost = Math.round((currCost + (xyDiff[2] || 1)) * 1e3) / 1e3;
         if (oldCost !== undefined && neiCost >= oldCost) return;
@@ -42,14 +42,15 @@ export default function aStarPathFinding(
         parents[neiXYStr] = currPoint;
 
         n++;
-        if (n > maximizable) throw new Error('循环次数超过了 maximizable：' + maximizable);
+        if (n > maximizable) throw new Error('[aStarPathFinding] The number of loops exceeds the maximum value:' + maximizable);
+        const [neiXNum, neiYNum] = neiXyNum;
         const neiPoint = [neiXNum, neiYNum, neiCost];
         // 到达终点生成路径
         if(neiXNum === endXNum && neiYNum === endYNum) {
           path.push(neiPoint);
           // 回查链表得到完整路径数组
           let prevXyNum = endXyNum;
-          while((prevXyNum = parents[`${prevXyNum[0]},${prevXyNum[1]}`])) {
+          while((prevXyNum = parents[xyNum2Str(prevXyNum)])) {
             path.unshift(prevXyNum);
           }
           openlist.length = 0;
