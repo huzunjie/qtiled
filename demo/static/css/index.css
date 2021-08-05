@@ -102,6 +102,18 @@ p {
   text-shadow: 0 0 2px #fff;
   margin-left: 8px;
 }
+.navs h3 a.qgl svg {
+  fill: #666;
+  vertical-align: sub;
+  margin-right: 4px;
+  width: 20px;
+  height: 20px;
+}
+.navs h3 a.qgl:hover,
+.navs h3 a.qgl:hover svg {
+  color: #0366d6;
+  fill: #0366d6;
+}
 .navs div {
   flex: 1;
   overflow: auto;

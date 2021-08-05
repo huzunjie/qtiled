@@ -1,6 +1,8 @@
 # QTiled
 
-这是一套 Tiled 布局基础库。
+[![npm](https://img.shields.io/npm/v/qtiled.svg?colorB=brightgreen&style=flat-square)](https://www.npmjs.com/package/qtiled)   [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)    [![Total Alerts](https://img.shields.io/lgtm/alerts/g/huzunjie/qtiled.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/huzunjie/qtiled/alerts)
+
+这是一套 Tiled 多边形布局基础库。
 
 ## DEMO
 

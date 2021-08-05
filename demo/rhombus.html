@@ -455,7 +455,7 @@
       container.addEventListener('mousemove', (e) => {
         const offsetX = e.pageX - container.offsetLeft;
         const offsetY = e.pageY - container.offsetTop;
-        const [xNum, yNum, x, y] = getIsometricRhombusInfoByPos([offsetX, offsetY], pos, size)
+        const [xNum, yNum, x, y] = getIsometricRhombusInfoByPos([offsetX, offsetY], pos, size);
         const currPos = [x, y];
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
@@ -502,7 +502,7 @@
       const fontSize = '14px';
       const stagger = 'odd';
 
-      const { getRhombusVertexes, getRhombusPositions, getRhombusInfoByPos, getIsometricRhombusInfoByPos } = qtiled.shapes.rhombus;
+      const { getRhombusVertexes, getRhombusPositions, /*getRhombusInfoByPos,*/ getIsometricRhombusInfoByPos } = qtiled.shapes.rhombus;
 
       // 一个矩形顶点坐标集
       const rhombusVertexes = getRhombusVertexes(width, height);
