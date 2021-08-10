@@ -44,10 +44,10 @@
       const height = 40;
       const size = [width, height];
 
-      const { getHexagonVertexes, getHexagonPositions } = qtiled.shapes.hexagon;
+      const { getVertexes, getPositions } = qtiled.shapes.hexagon;
 
       // 一个六边形顶点坐标集
-      const hexagonVertexes = getHexagonVertexes(width, height); // axis = 'y'
+      const hexagonVertexes = getVertexes(size); // axis = 'y'
       let pos = [60, 40];
       shapesEls.push(
         // 坐标系原点
@@ -72,7 +72,7 @@
       );
 
       // 一个六边形顶点坐标集
-      const hexagonVertexes2 = getHexagonVertexes(width, height, 'x'); // axis = 'x'
+      const hexagonVertexes2 = getVertexes(size, 'x'); // axis = 'x'
       pos = [60, 100];
       shapesEls.push(
         // 坐标系原点
@@ -99,7 +99,7 @@
       // 得到错列布局坐标集
       let xDiff = 60;
       let yDiff = 190;
-      let hexTiles = getHexagonPositions([0, 4], [0, 6], size).map(
+      let hexTiles = getPositions([0, 4], [0, 6], size).map(
         ([x, y]) => new Polyline({
           pos: [x + xDiff, y + yDiff],
           points: hexagonVertexes,
@@ -127,7 +127,7 @@
       // 得到纵向错列布局坐标集
       xDiff = 420;
       yDiff = 190;
-      hexTiles = getHexagonPositions([0, 4], [0, 6], [height, width]).map(
+      hexTiles = getPositions([0, 4], [0, 6], [height, width]).map(
         ([y, x]) => new Polyline({
           pos: [x + xDiff, y + yDiff],
           points: hexagonVertexes2,
@@ -156,7 +156,7 @@
       // 得到另一组错列布局坐标集
       xDiff = 330;
       yDiff = 640;
-      hexTiles = getHexagonPositions([-4.5, -0.5], [-6, 0], size, 'leftUp', 'even').map(
+      hexTiles = getPositions([-4.5, -0.5], [-6, 0], size, 'leftUp', 'even').map(
         ([x, y]) => new Polyline({
           pos: [x + xDiff, y + yDiff],
           points: hexagonVertexes,
@@ -188,7 +188,7 @@
       let minY = Infinity;
       let maxX = -Infinity;
       let maxY = -Infinity;
-      hexTiles = getHexagonPositions([-4.5, -0.5], [-6, 0], [height, width], 'leftUp', 'even').map(([y, x]) => {
+      hexTiles = getPositions([-4.5, -0.5], [-6, 0], [height, width], 'leftUp', 'even').map(([y, x]) => {
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
         maxX = Math.max(maxX, x);
@@ -272,10 +272,10 @@
       const stagger = 'odd';
 
 
-      const { getHexagonVertexes, getHexagonPositions, getHexagonInfoByPos } = qtiled.shapes.hexagon;
+      const { getVertexes, getPositions, getInfoByPos } = qtiled.shapes.hexagon;
 
       // 一个矩形顶点坐标集
-      const hexagonVertexes = getHexagonVertexes(width, height);
+      const hexagonVertexes = getVertexes(size);
 
       // 文案输出
       const mouseMoveLabel = new Label({
@@ -290,7 +290,7 @@
       const yNumRange = [-4, 8];
       let focusPos = pos;
       let focusText = '';
-      getHexagonPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         const text = xNum + ',' + yNum;
         if (!focusText) {
@@ -339,7 +339,7 @@
         const tileY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        const {xNum, yNum, x, y} = getHexagonInfoByPos([tileX, tileY], pos, size, stagger)
+        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size, stagger)
 
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，tileX: ${tileX}, tileY: ${tileY}`;

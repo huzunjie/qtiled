@@ -38,14 +38,14 @@
       const radiusX = 120;
       const radiusY = 80;
 
-      const { getEllipseIsometryPoint, getEllipsePoint, getEllipsePointByAngle, PI_DBL } = qtiled.shapes.ellipse;
+      const { getIsometryPoint, getPoint, getPointByAngle, PI_DBL } = qtiled.shapes.ellipse;
       
       // 获取椭圆圆周上的等距坐标点
       const isometryPoints = [];
       const count = 6; // 圆周等分6份
       let radian = 0; // Math.PI * 0.5; // 起始弧度值
       for (let num = 0;num < count; num++) {
-        isometryPoints.push(getEllipseIsometryPoint(radiusX, radiusY, count, num, radian));
+        isometryPoints.push(getIsometryPoint(radiusX, radiusY, count, num, radian));
       }
       let pos = [150, 100];
       shapesEls.push(
@@ -84,7 +84,7 @@
       pos = [150, 300];
       for (let radian = 0; radian < PI_DBL; radian += PI_DBL / 6) {
         // 这里前两个参数（圆心 x y）需要设置为0，以保证上下文参考系一致
-        points0.push(getEllipsePoint(0, 0, radiusX, radiusY, radian));
+        points0.push(getPoint(0, 0, radiusX, radiusY, radian));
       }
       shapesEls.push(
         // 圆心
@@ -122,7 +122,7 @@
       pos = [150, 500];
       for (let angle = 0; angle < 360; angle += 60) {
         // 这里前两个参数（圆心 x y）需要设置为0，以保证上下文参考系一致
-        points1.push(getEllipsePointByAngle(0, 0, radiusX, radiusY, angle));
+        points1.push(getPointByAngle(0, 0, radiusX, radiusY, angle));
       }
       shapesEls.push(
         // 圆心

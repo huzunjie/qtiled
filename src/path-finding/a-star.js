@@ -3,10 +3,10 @@ import getNeighborsPoints from './neighbors';
 const xyNum2Str = ([xNum, yNum]) => `${xNum}_${yNum}`;
 
 /* A*寻径
-* @param {Array}     staXyNum           数据坐标值，如：[xNum, yNum]
-* @param {Array}     endXyNum           数据坐标值，如：[xNum, yNum]
-* @param {Array}     referenceMatrix    相邻元素差值矩阵，也就是[xNum, yNum, cost]与相邻坐标差集合，如：[[-1, -1, 1.414], [1, 1, 1], ...]
-* @param {Function}  filterFun          自行过滤方法，参数示例：(xyNum = [xNum, yNum], xyDiff = [-1, -1])
+* @param {Array}                 staXyNum           数据坐标值，如：[xNum, yNum]
+* @param {Array}                 endXyNum           数据坐标值，如：[xNum, yNum]
+* @param {Array || Function}     referenceMatrix    相邻元素差值矩阵，也就是[xNum, yNum, cost]与相邻坐标差集合，如：[[-1, -1, 1.414], [1, 1, 1], ...]
+* @param {Function}              filterFun          自行过滤方法，参数示例：(xyNum = [xNum, yNum], xyDiff = [-1, -1])
 * @return {Array} 匹配的路径集合或空数组
 */
 export default function aStarPathFinding(
@@ -22,9 +22,10 @@ export default function aStarPathFinding(
   const staPoint = [staXNum, staYNum, 0];
   let n = 0;
   // 起止点相同直接返回当前点
-  if(staXyNum === endXNum && staYNum === endYNum) {
+  if(staXNum === endXNum && staYNum === endYNum) {
     path.push(staPoint);
   } else {
+    const refMatrixFun = referenceMatrix.constructor !== Function ? () => referenceMatrix : referenceMatrix;
     const parents = {};
     const costs = { [xyNum2Str(staXyNum)]: 0 };
     const openlist = [staPoint];
@@ -32,7 +33,7 @@ export default function aStarPathFinding(
       const currPoint = openlist.pop();
       const currCost = costs[xyNum2Str(currPoint)];
       // 从邻居中查找可以更低成本通过的节点
-      getNeighborsPoints(currPoint, referenceMatrix, (neiXyNum, xyDiff) => {
+      getNeighborsPoints(currPoint, refMatrixFun(currPoint), (neiXyNum, xyDiff) => {
         if (!filterFun(neiXyNum, xyDiff)) return;
         const neiXYStr = xyNum2Str(neiXyNum);
         const oldCost = costs[neiXYStr];

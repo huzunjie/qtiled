@@ -29,11 +29,11 @@
   </style>
 </head>
 <body>
-  <h1>Rhombus 正菱形</h1>
-  <div id="container"></div>
   <script src="./static/js/navs.js"></script>
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js?11"></script>
+  <h1>Rhombus 正菱形</h1>
+  <div id="container"></div>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -55,10 +55,10 @@
       const height = 30;
       const size = [width, height];
 
-      const { getRhombusVertexes, getRhombusPositions, getIsometricRhombusPositions } = qtiled.shapes.rhombus;
+      const { getVertexes, getPositions, getIsometricPositions } = qtiled.shapes.rhombus;
 
       // 一个菱形顶点坐标集
-      const rhombusVertexes = getRhombusVertexes(width, height); // axis = 'y'
+      const rhombusVertexes = getVertexes(size); // axis = 'y'
       let pos = [60, 40];
       shapesEls.push(
         // 坐标系原点
@@ -85,7 +85,7 @@
       // 得到错列布局坐标集
       let xDiff = 60;
       let yDiff = 140;
-      let hexTiles = getRhombusPositions([0, 4], [0, 6], size).map(
+      let hexTiles = getPositions([0, 4], [0, 6], size).map(
         ([x, y]) => new Polyline({
           pos: [x + xDiff, y + yDiff],
           points: rhombusVertexes,
@@ -113,7 +113,7 @@
       // 一个偶数行错列的倒序菱形网格图
       xDiff = 680;
       yDiff = 230;
-      hexTiles = getRhombusPositions([-4.5, -0.5], [-6, 0], size, 'leftUp', 'even').map(
+      hexTiles = getPositions([-4.5, -0.5], [-6, 0], size, 'leftUp', 'even').map(
         ([x, y]) => new Polyline({
           pos: [x + xDiff, y + yDiff],
           points: rhombusVertexes,
@@ -147,7 +147,7 @@
       let maxY = -Infinity;
       const maxXNum = 2;
       hexTiles = [];
-      getRhombusPositions([-2, maxXNum], [-4, 4], size, 'leftUp', 'odd').forEach(([x, y, xNum, yNum]) => {
+      getPositions([-2, maxXNum], [-4, 4], size, 'leftUp', 'odd').forEach(([x, y, xNum, yNum]) => {
         if (xNum === maxXNum && Math.abs(yNum % 2) === 1) {
           return; // 错列行最右侧元素隐去
         }
@@ -205,7 +205,7 @@
       minY = Infinity;
       maxX = -Infinity;
       maxY = -Infinity;
-      hexTiles = getIsometricRhombusPositions([-2, 2], [-2, 2], size, 'RightDown').map(([x, y]) => {
+      hexTiles = getIsometricPositions([-2, 2], [-2, 2], size, 'RightDown').map(([x, y]) => {
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
         maxX = Math.max(maxX, x);
@@ -259,7 +259,6 @@
 
   <h1>鼠标交互示例-错列布局<em>(基于矩形定位，会存在鼠标交互偏差，比如鼠标放到接近菱形顶角的位置)</em></h1>
   <div id="container2"></div>
-  <!-- 单元格定位 -->
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container2');
@@ -287,10 +286,22 @@
       const fontSize = '14px';
       const stagger = 'odd';
 
-      const { getRhombusVertexes, getRhombusPositions, getRhombusInfoByPos } = qtiled.shapes.rhombus;
+      const { getVertexes, getPositions, getInfoByPos } = qtiled.shapes.rhombus;
+
+      /*const { getVertexes: getRectVertexes } = qtiled.shapes.rect;
+      // 一个矩形顶点坐标集
+      const rectVertexes = getRectVertexes(size);
+      const rectEl = new Polyline({
+        pos,
+        points: rectVertexes,
+        strokeColor: 'rgba(0, 0, 0, 0.5)',
+        lineWidth,
+        close: true,
+      });
+      shapesEls.push(rectEl);*/
 
       // 一个矩形顶点坐标集
-      const rhombusVertexes = getRhombusVertexes(width, height);
+      const rhombusVertexes = getVertexes(size);
 
       // 文案输出
       const mouseMoveLabel = new Label({
@@ -305,7 +316,7 @@
       const yNumRange = [-8, 11];
       let focusPos = pos;
       let focusText = '';
-      getRhombusPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         const text = xNum + ',' + yNum;
         if (!focusText) {
@@ -347,14 +358,13 @@
       });
       shapesEls.push(focusRhombusTile, focusRhombusLabel);
 
-
       const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
         const offsetX = e.pageX - offsetLeft;
         const offsetY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        const {xNum, yNum, x, y} = getRhombusInfoByPos([offsetX, offsetY], pos, size, stagger)
+        const [xNum, yNum, x, y] = getInfoByPos([offsetX, offsetY], pos, size, stagger)
 
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
@@ -363,6 +373,7 @@
         const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y, strokeColor: color });
+        // rectEl.attr({ x, y });
         focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
       });
 
@@ -372,7 +383,6 @@
 
   <h1>鼠标交互示例-等距布局<em>(基于等距定位判定，相对错列交互定位准确)</em></h1>
   <div id="container3"></div>
-  <!-- 单元格定位 -->
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container3');
@@ -404,10 +414,10 @@
       const height = 24;
       const size = [width, height];
 
-      const { getRhombusVertexes, getIsometricRhombusPositions, getIsometricRhombusInfoByPos } = qtiled.shapes.rhombus;
+      const { getVertexes, getIsometricPositions, getIsometricInfoByPos } = qtiled.shapes.rhombus;
 
       // 一个菱形顶点坐标集
-      const rhombusVertexes = getRhombusVertexes(width, height);
+      const rhombusVertexes = getVertexes(size);
 
       // 等距带边框的网格
       let xDiff = 290;
@@ -415,7 +425,7 @@
       const pos = [xDiff, yDiff];
       const xNumRange = [-4, 4];
       const yNumRange = [-4, 6];
-      getIsometricRhombusPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+      getIsometricPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xDiff, y + yDiff];
         shapesEls.push(
           new Polyline({
@@ -455,7 +465,7 @@
       container.addEventListener('mousemove', (e) => {
         const offsetX = e.pageX - container.offsetLeft;
         const offsetY = e.pageY - container.offsetTop;
-        const [xNum, yNum, x, y] = getIsometricRhombusInfoByPos([offsetX, offsetY], pos, size);
+        const [xNum, yNum, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);
         const currPos = [x, y];
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
@@ -474,7 +484,6 @@
 
   <h1>鼠标交互示例-错列转等距<em>(保持错列布局的高UI利用率，等距布局的鼠标交互准确度)</em></h1>
   <div id="container4"></div>
-  <!-- 单元格定位 -->
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container4');
@@ -502,10 +511,10 @@
       const fontSize = '14px';
       const stagger = 'odd';
 
-      const { getRhombusVertexes, getRhombusPositions, /*getRhombusInfoByPos,*/ getIsometricRhombusInfoByPos } = qtiled.shapes.rhombus;
+      const { getVertexes, getPositions, getIsometricInfoByPos } = qtiled.shapes.rhombus;
 
       // 一个矩形顶点坐标集
-      const rhombusVertexes = getRhombusVertexes(width, height);
+      const rhombusVertexes = getVertexes(size);
 
       // 文案输出
       const mouseMoveLabel = new Label({
@@ -521,9 +530,9 @@
       let focusPos = pos;
       let focusText = '';
       const xyNumsMap = {};
-      getRhombusPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y/*, xNum, yNum*/]) => {
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y/*, xNum, yNum*/]) => {
         const pos = [x + xPos, y + yPos];
-        const [xNum, yNum] = getIsometricRhombusInfoByPos(pos, [xPos, yPos], size);
+        const [xNum, yNum] = getIsometricInfoByPos(pos, [xPos, yPos], size);
         const text = xNum + ',' + yNum;
         xyNumsMap[text] = true;
         if (!focusText) {
@@ -572,8 +581,7 @@
         const offsetY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        // const {xNum, yNum, x, y} = getRhombusInfoByPos([offsetX, offsetY], pos, size, stagger);
-        const [xNum, yNum, x, y] = getIsometricRhombusInfoByPos([offsetX, offsetY], pos, size);
+        const [xNum, yNum, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);
 
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
