@@ -44,10 +44,10 @@
       const height = 30;
       const size = [width, height];
 
-      const { getRectVertexes, getRectPositions } = qtiled.shapes.rect;
+      const { getVertexes, getPositions } = qtiled.shapes.rect;
 
       // 一个矩形顶点坐标集
-      const rectVertexes = getRectVertexes(width, height);
+      const rectVertexes = getVertexes(size);
 
       let xPos = 40;
       let yPos = 70;
@@ -75,7 +75,7 @@
       // 得到错列布局坐标集
       xPos = 40;
       yPos = 180;
-      let rectTiles = getRectPositions([0, 4], [0, 6], size).map(
+      let rectTiles = getPositions([0, 4], [0, 6], size).map(
         ([x, y]) => new Polyline({
           pos: [x + xPos, y + yPos],
           points: rectVertexes,
@@ -136,10 +136,10 @@
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
-      const { getRectVertexes, getRectPositions, getRectInfoByPos } = qtiled.shapes.rect;
+      const { getVertexes, getPositions, getInfoByPos } = qtiled.shapes.rect;
 
       // 一个矩形顶点坐标集
-      const rectVertexes = getRectVertexes(width, height);
+      const rectVertexes = getVertexes(size);
 
       // 文案输出
       const mouseMoveLabel = new Label({
@@ -152,7 +152,7 @@
 
       const xNumRange = [-6, 6];
       const yNumRange = [-4, 5];
-      getRectPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         shapesEls.push(
           new Polyline({
@@ -196,7 +196,7 @@
         const tileX = e.pageX - offsetLeft;
         const tileY = e.pageY - offsetTop;
         // 得到索引序号&渲染位置
-        const {xNum, yNum, x, y} = getRectInfoByPos([tileX, tileY], pos, size);
+        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size);
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}; tileX: ${tileX}, tileY: ${tileY}, x: ${x}, y:${y}`;
         

@@ -49,10 +49,10 @@
       const fontSize = '8px';
       const stagger = 'odd';
 
-      const { getRhombusVertexes, getRhombusPositions, getRhombusInfoByPos } = qtiled.shapes.rhombus;
+      const { getVertexes, getPositions, getInfoByPos } = qtiled.shapes.rhombus;
 
       // 一个矩形顶点坐标集
-      const rhombusVertexes = getRhombusVertexes(width, height);
+      const rhombusVertexes = getVertexes(size);
 
       // 文案输出
       const mouseMoveLabel = new Label({
@@ -68,7 +68,7 @@
       const yNumRange = [-14, 86];
       let focusPos = pos;
       let focusText = '';
-      getRhombusPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         const text = xNum + ',' + yNum;
         if (!focusText) {
@@ -118,7 +118,7 @@
         const tileY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        const {xNum, yNum, x, y} = getRhombusInfoByPos([tileX, tileY], pos, size, stagger)
+        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size, stagger)
 
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，tileX: ${tileX}, tileY: ${tileY}`;

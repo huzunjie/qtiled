@@ -30,7 +30,7 @@ export function radian2Angle(radian = 0) {
 * @param  {Number}  radian    弧度值
 * @return {Array}   [x, y]
 */
-export function getEllipsePoint(x0, y0, radiusX, radiusY, radian) {
+export function getPoint(x0, y0, radiusX, radiusY, radian) {
   radian %= PI_DBL;
   if(radian < 0) radian += PI_DBL;
   const k = Math.tan(radian);
@@ -52,8 +52,8 @@ export function getEllipsePoint(x0, y0, radiusX, radiusY, radian) {
 * @param  {Number}  angle     角度值
 * @return {Array}   [x, y]
 */
-export function getEllipsePointByAngle(x0, y0, radiusX, radiusY, angle) {
-  return getEllipsePoint(x0, y0, radiusX, radiusY, angle2Radian(angle));
+export function getPointByAngle(x0, y0, radiusX, radiusY, angle) {
+  return getPoint(x0, y0, radiusX, radiusY, angle2Radian(angle));
 }
 
 /* 根据椭圆的X轴半径、Y轴半径、圆周等分数量、等分点序号、起始弧度，求得圆周上的点坐标
@@ -64,7 +64,7 @@ export function getEllipsePointByAngle(x0, y0, radiusX, radiusY, angle) {
 * @param  {Number}  radian    起始弧度
 * @return {Array}   [x, y]
 */
-export function getEllipseIsometryPoint(radiusX, radiusY, count, num, radian = 0) {
+export function getIsometryPoint(radiusX, radiusY, count, num, radian = 0) {
   radian += PI_DBL * num / count;
   return [radiusX * Math.cos(radian), radiusY * Math.sin(radian)];
 }

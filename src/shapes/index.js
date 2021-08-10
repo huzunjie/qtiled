@@ -9,3 +9,6 @@ export const hexagon = hexagonFuns;
 
 import * as rhombusFuns from './rhombus';
 export const rhombus = rhombusFuns;
+
+import * as polygonFuns from './polygon';
+export const polygon = polygonFuns;
