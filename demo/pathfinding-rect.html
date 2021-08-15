@@ -171,176 +171,6 @@
     }());
   </script>
 
-
-  <h1>查找相邻tile</h1>
-  <div class="ipts">
-    邻居距离：<input type="range" step="1" max="6" id="ipt_dis" value="1" />
-    <span id="val">1</span>
-  </div>
-  <div class="ipts">
-    邻居类型：<select id="sei_type">
-      <option value="all">全部</option>
-      <option value="no_self">排除自己</option>
-      <option value="border">边框</option>
-      <option value="vertex" selected>顶点</option>
-    </select>
-  </div>
-  <div id="container3" class="container"></div>
-  <script type="text/javascript">
-    (function() {
-      const container = document.getElementById('container3');
-      const {Scene, Label, Polyline} = spritejs;
-      const scene = new Scene({
-          container,
-          width: 800,
-          height: 500,
-          mode: 'static',
-      });
-      const layer = scene.layer('def', { handleEvent: false });
-      const lineWidth = 2;
-      const shapesEls = [];
-
-      /* 图形处理试验代码 sta */
-
-      const xPos = 280;
-      const yPos = 180;
-      const pos = [xPos, yPos];
-      const width = 40;
-      const height = 30;
-      const size = [width, height];
-      const anchor = [0.5, 0.5];
-      const fontSize = '12px';
-
-      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighbors } = qtiled.shapes.rect;
-
-      // 一个矩形顶点坐标集
-      const rectVertexes = getVertexes(size);
-
-      const xNumRange = [-6, 6];
-      const yNumRange = [-4, 5];
-      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
-        shapesEls.push(
-          new Polyline({
-            pos,
-            points: rectVertexes,
-            strokeColor: 'rgba(0, 0, 0, 0.2)',
-            fillColor: 'rgba(255, 255, 255, 0.5)',
-            lineWidth,
-            close: true,
-          }),
-          new Label({
-            anchor,
-            pos,
-            text:  xNum + ',' + yNum,
-            fontSize,
-          })
-        );
-      });
-
-      // 焦点矩形
-      const focusXYNum = [0, 0];
-      const focusRectTile = new Polyline({
-        pos,
-        points: rectVertexes,
-        strokeColor: 'rgba(0, 136, 0, 0.9)',
-        lineWidth,
-        close: true,
-      });
-      const focusRectLabel = new Label({
-        anchor,
-        pos,
-        text:  '0,0',
-        fontSize,
-        fillColor: 'rgba(0, 136, 0, 0.8)',
-      });
-      // 邻居元素
-      const neighborsEls = [];
-      const disEl = document.getElementById('ipt_dis');
-      const typeEl = document.getElementById('sei_type');
-      const typsConfs = {
-        all: (x, y) => [x, y],
-        no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-        border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-        vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
-      };
-      const updateNeis = () => {
-        const distance = Number(disEl.value);
-        neighborsEls.forEach((el) => el.remove());
-        neighborsEls.length = 0;
-        const focusPos = focusRectTile.attr('pos');
-        // 邻居位置更新
-        getNeighbors(focusXYNum, distance, (x, y) => typsConfs[typeEl.value](x, y, distance)).forEach((xyNum, i) => {
-          const xyNumOut = [xyNum[0] + focusXYNum[0], xyNum[1] + focusXYNum[1]];
-          const _pos = getPosition(xyNumOut, size, pos);
-          neighborsEls.push(
-            new Polyline({
-              pos: _pos,
-              points: rectVertexes,
-              strokeColor: 'rgba(0, 0, 125, 0.2)',
-              fillColor: 'rgba(0, 0, 125, 0.08)',
-              lineWidth,
-              close: true,
-            }),
-            new Label({
-              anchor,
-              pos: _pos,
-              text: xyNumOut.join(','),
-              fontSize,
-              xyNum,
-              fillColor: 'rgba(0, 136, 0, 0.8)',
-            })
-          );
-        });
-        layer.append(...neighborsEls);
-      };
-
-      const valEl = document.getElementById('val');
-      disEl.onchange = (e) => {
-        valEl.innerText = e.target.value;
-        updateNeis();
-      };
-      typeEl.onchange = updateNeis;
-      updateNeis();
-      
-      const { offsetTop, offsetLeft } = container;
-      container.addEventListener('mousemove', (e) => {
-        // 得到索引序号&渲染位置
-        const [xNum, yNum, x, y] = getInfoByPos(
-          [e.pageX - offsetLeft, e.pageY - offsetTop],
-          pos,
-          size
-        );
-
-        // 焦点下标索引
-        focusXYNum[0] = xNum;
-        focusXYNum[1] = yNum;
-
-        const [oldX, oldY] = focusRectTile.attr('pos');
-        // 更新焦点区域标识位置
-        focusRectTile.attr({ x, y });
-        focusRectLabel.attr({ x, y, text: `${xNum},${yNum}` });
-
-        const xDiff = x - oldX;
-        const yDiff = y - oldY;
-        neighborsEls.forEach((el) => {
-          const [x, y] = el.attr('pos');
-          el.attr('pos', [x + xDiff, y + yDiff]);
-          const txtXyNum = el.attr('xyNum');
-          if (txtXyNum) {
-            const [xNumTxt, yNumTxt] = txtXyNum;
-            el.attr('text', [xNumTxt + xNum, yNumTxt + yNum].join(','));
-          }
-        });
-      });
-      shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
-
-      /* 图形处理试验代码 end */
-
-      layer.append(...shapesEls);
-    }());
-  </script>
-
   <h1>寻找连通路径</h1>
   <div id="container2"></div>
   <div class="frm-wrap">
@@ -623,6 +453,176 @@
         });
       };
       $id('clear_path').onclick = clearPath;
+    }());
+  </script>
+  
+
+
+  <h1>查找相邻tile</h1>
+  <div class="ipts">
+    邻居距离：<input type="range" step="1" max="6" id="ipt_dis" value="1" />
+    <span id="val">1</span>
+  </div>
+  <div class="ipts">
+    邻居类型：<select id="sei_type">
+      <option value="all">全部</option>
+      <option value="no_self">排除自己</option>
+      <option value="border">边框</option>
+      <option value="vertex" selected>顶点</option>
+    </select>
+  </div>
+  <div id="container3" class="container"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container3');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 500,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 280;
+      const yPos = 180;
+      const pos = [xPos, yPos];
+      const width = 40;
+      const height = 30;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '12px';
+
+      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighbors } = qtiled.shapes.rect;
+
+      // 一个矩形顶点坐标集
+      const rectVertexes = getVertexes(size);
+
+      const xNumRange = [-6, 6];
+      const yNumRange = [-4, 5];
+      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: rectVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text:  xNum + ',' + yNum,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const focusXYNum = [0, 0];
+      const focusRectTile = new Polyline({
+        pos,
+        points: rectVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.9)',
+        lineWidth,
+        close: true,
+      });
+      const focusRectLabel = new Label({
+        anchor,
+        pos,
+        text:  '0,0',
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+      // 邻居元素
+      const neighborsEls = [];
+      const disEl = document.getElementById('ipt_dis');
+      const typeEl = document.getElementById('sei_type');
+      const typsConfs = {
+        all: (x, y) => [x, y],
+        no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
+        border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
+        vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
+      };
+      const updateNeis = () => {
+        const distance = Number(disEl.value);
+        neighborsEls.forEach((el) => el.remove());
+        neighborsEls.length = 0;
+        // 邻居位置更新
+        getNeighbors(focusXYNum, distance, (x, y) => typsConfs[typeEl.value](x, y, distance)).forEach((xyNum, i) => {
+          const xyNumOut = [xyNum[0] + focusXYNum[0], xyNum[1] + focusXYNum[1]];
+          const _pos = getPosition(xyNumOut, size, pos);
+          neighborsEls.push(
+            new Polyline({
+              pos: _pos,
+              points: rectVertexes,
+              strokeColor: 'rgba(0, 0, 125, 0.2)',
+              fillColor: 'rgba(0, 0, 125, 0.08)',
+              lineWidth,
+              close: true,
+            }),
+            new Label({
+              anchor,
+              pos: _pos,
+              text: xyNumOut.join(','),
+              fontSize,
+              xyNum,
+              fillColor: 'rgba(0, 136, 0, 0.8)',
+            })
+          );
+        });
+        layer.append(...neighborsEls);
+      };
+
+      const valEl = document.getElementById('val');
+      disEl.onchange = (e) => {
+        valEl.innerText = e.target.value;
+        updateNeis();
+      };
+      typeEl.onchange = updateNeis;
+      updateNeis();
+      
+      const { offsetTop, offsetLeft } = container;
+      container.addEventListener('mousemove', (e) => {
+        // 得到索引序号&渲染位置
+        const [xNum, yNum, x, y] = getInfoByPos(
+          [e.pageX - offsetLeft, e.pageY - offsetTop],
+          pos,
+          size
+        );
+
+        // 焦点下标索引
+        focusXYNum[0] = xNum;
+        focusXYNum[1] = yNum;
+
+        const [oldX, oldY] = focusRectTile.attr('pos');
+        // 更新焦点区域标识位置
+        focusRectTile.attr({ x, y });
+        focusRectLabel.attr({ x, y, text: `${xNum},${yNum}` });
+
+        const xDiff = x - oldX;
+        const yDiff = y - oldY;
+        neighborsEls.forEach((el) => {
+          const [x, y] = el.attr('pos');
+          el.attr('pos', [x + xDiff, y + yDiff]);
+          const txtXyNum = el.attr('xyNum');
+          if (txtXyNum) {
+            const [xNumTxt, yNumTxt] = txtXyNum;
+            el.attr('text', [xNumTxt + xNum, yNumTxt + yNum].join(','));
+          }
+        });
+      });
+      shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
+
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
     }());
   </script>
   
