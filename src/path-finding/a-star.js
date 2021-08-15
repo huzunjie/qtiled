@@ -65,4 +65,3 @@ export default function aStarPathFinding(
   }
   return path.length ? path : null;
 };
-

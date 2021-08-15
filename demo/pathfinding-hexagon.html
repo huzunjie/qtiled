@@ -19,7 +19,7 @@
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
-      const {Scene, Label, Polyline, Ellipse} = spritejs;
+      const {Scene, Label, Polyline} = spritejs;
       const scene = new Scene({
           container,
           width: 800,
@@ -41,7 +41,7 @@
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
-      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighbors } = qtiled.shapes.hexagon;
+      const { getVertexes, getPosition, getPositions, getNeighbors } = qtiled.shapes.hexagon;
 
       // 一个矩形顶点坐标集
       const tileVertexes = getVertexes(size);
