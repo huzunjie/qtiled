@@ -63,19 +63,7 @@
 ```html
 <script src="xxx.js"></script>
 <script>
-const {
-  getUnitsByRowCol,
-  unit2pixel,
-  getNeighbourUnitsByRowCol,
-  unit2rhombusPixel,
-  searchPath,
-  getDiagonalUnitsByRowCol,
-  getUnitsByDiagonal,
-  rotateUnit,
-  getStaggeredUnitsByRowCol,
-  pixel2unit,
-  rhombusPixel2unit
-} = qtiled;
+const { shapes, pathFinding, ... } = qtiled;
 ... 
 </script>
 ```
