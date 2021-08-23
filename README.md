@@ -8,7 +8,13 @@
 
 结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled
 
-![菱形地图示例](https://p1.ssl.qhimg.com/t01e8950d2debce4408.png)
+### 菱形布局示例
+
+![菱形布局示例](https://p1.ssl.qhimg.com/t01e8950d2debce4408.png)
+
+### 六边形布局示例
+
+![六边形布局示例](https://user-images.githubusercontent.com/3885060/130447738-98519f73-dfec-460b-a89e-791c37d1bbab.png)
 
 ## 计划列表
 
