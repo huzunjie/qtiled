@@ -1,5 +1,3 @@
-import aStarPathFindingFun from './a-star';
-export const aStarPathFinding = aStarPathFindingFun;
+import aStarFun from './a-star';
+export const aStar = aStarFun;
 
-import getNeighborsPointsFun from './neighbors';
-export const getNeighborsPoints = getNeighborsPointsFun;

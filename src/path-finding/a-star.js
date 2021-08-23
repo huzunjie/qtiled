@@ -1,19 +1,16 @@
-import getNeighborsPoints from './neighbors';
-
-const xyNum2Str = ([xNum, yNum]) => `${xNum}_${yNum}`;
-
 /* A*寻径
-* @param {Array}                 staXyNum           数据坐标值，如：[xNum, yNum]
-* @param {Array}                 endXyNum           数据坐标值，如：[xNum, yNum]
-* @param {Array || Function}     referenceMatrix    相邻元素差值矩阵，也就是[xNum, yNum, cost]与相邻坐标差集合，如：[[-1, -1, 1.414], [1, 1, 1], ...]
-* @param {Function}              filterFun          自行过滤方法，参数示例：(xyNum = [xNum, yNum], xyDiff = [-1, -1])
+* @param {Array}                 staXyNum              数据坐标值，如：[xNum, yNum]
+* @param {Array}                 endXyNum              数据坐标值，如：[xNum, yNum]
+* @param {Function}              getNeighbors          需要外部传入获取邻居坐标的方法（等距、错列、正矩形方案不同）
+*                                                      参数示例：(currXyNum = [xNum, yNum])
+*                                                      需要返回邻居坐标值、权重的tile二维数组：[[xNum1, yNum1, cost1], [xNum2, yNum2, cost2], ...]
+* @param {Number}                maximizable           最大可循环次数（默认为1e6，用于防止死循环）
 * @return {Array} 匹配的路径集合或空数组
 */
-export default function aStarPathFinding(
+export default function aStar(
   staXyNum = [0, 0],
   endXyNum = [0, 0],
-  referenceMatrix,
-  filterFun = (xyNum, xyDiff) => true,
+  getNeighbors = (currPointXyNum) => [],
   maximizable = 1e6,
 ) {
   const path = [];
@@ -25,7 +22,6 @@ export default function aStarPathFinding(
   if(staXNum === endXNum && staYNum === endYNum) {
     path.push(staPoint);
   } else {
-    const refMatrixFun = referenceMatrix.constructor !== Function ? () => referenceMatrix : referenceMatrix;
     const parents = {};
     const costs = { [xyNum2Str(staXyNum)]: 0 };
     const openlist = [staPoint];
@@ -33,21 +29,21 @@ export default function aStarPathFinding(
       const currPoint = openlist.pop();
       const currCost = costs[xyNum2Str(currPoint)];
       // 从邻居中查找可以更低成本通过的节点
-      getNeighborsPoints(currPoint, refMatrixFun(currPoint), (neiXyNum, xyDiff) => {
-        if (!filterFun(neiXyNum, xyDiff)) return;
-        const neiXYStr = xyNum2Str(neiXyNum);
+      getNeighbors(currPoint).some(([xNum, yNum, cost]) => {
+        const neiXYStr = xyNum2Str([xNum, yNum]);
         const oldCost = costs[neiXYStr];
-        const neiCost = Math.round((currCost + (xyDiff[2] || 1)) * 1e3) / 1e3;
+        const neiCost = Math.round((currCost + (cost || 1)) * 1e3) / 1e3;
+        // 当前点通行成本还不如已经确定的成本低，那么舍弃路径方案
         if (oldCost !== undefined && neiCost >= oldCost) return;
         costs[neiXYStr] = neiCost;
         parents[neiXYStr] = currPoint;
 
+        // 循环次数达到上限，抛出异常终止查找
         n++;
-        if (n > maximizable) throw new Error('[aStarPathFinding] The number of loops exceeds the maximum value:' + maximizable);
-        const [neiXNum, neiYNum] = neiXyNum;
-        const neiPoint = [neiXNum, neiYNum, neiCost];
+        if (n > maximizable) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maximizable);
+        const neiPoint = [xNum, yNum, neiCost];
         // 到达终点生成路径
-        if(neiXNum === endXNum && neiYNum === endYNum) {
+        if(xNum === endXNum && yNum === endYNum) {
           path.push(neiPoint);
           // 回查链表得到完整路径数组
           let prevXyNum = endXyNum;
@@ -55,7 +51,7 @@ export default function aStarPathFinding(
             path.unshift(prevXyNum);
           }
           openlist.length = 0;
-          return 'break';
+          return false;
         } else {
           // 没到达终点，将当前点放入开放点列表，继续查找
           openlist.unshift(neiPoint);
@@ -65,3 +61,7 @@ export default function aStarPathFinding(
   }
   return path.length ? path : null;
 };
+
+function xyNum2Str([xNum, yNum]) {
+  return `${xNum}_${yNum}`;
+}

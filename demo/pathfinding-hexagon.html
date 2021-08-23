@@ -136,13 +136,13 @@
     <div class="frm">
       <h4>可用方向：</h4>
       <span id="dirs">
-        <a data-idx="0" class="active" style="margin-left: 10px;">↖</a>
-        <a data-idx="1" class="active">↗</a>
-        <a data-idx="4" class="active">←</a>
+        <a data-dir="0" class="active" style="margin-left: 10px;">↖</a>
+        <a data-dir="1" class="active">↗</a>
+        <a data-dir="4" class="active">←</a>
         <a disable>○</a>
-        <a data-idx="5" class="active">→</a>
-        <a data-idx="3" class="active" style="margin-left: 10px;">↙</a>
-        <a data-idx="2" class="active">↘</a>
+        <a data-dir="5" class="active">→</a>
+        <a data-dir="3" class="active" style="margin-left: 10px;">↙</a>
+        <a data-dir="2" class="active">↘</a>
       </span>
       <label><input type="checkbox" id="ckb">网格外允许通行(无限查找，慎用！)</label>
       <span class="btns-submit">
@@ -354,28 +354,22 @@
       });
 
       // 方向控制
-      let dirConfs = {};
-      const dirBtnEls = Array.from($id('dirs').querySelectorAll('[data-idx]'));
-      const updateDirConfs = () => {
-        dirConfs = {};
-        dirBtnEls.forEach((el) => {
-          if (el.className === 'active') {
-            dirConfs[el.dataset.idx]= true;
-          }
-        });
-      };
-      updateDirConfs();
+      const dirConfs = {};
+      const dirBtnEls = Array.from($id('dirs').querySelectorAll('[data-dir]'));
+      dirBtnEls.forEach((el) => {
+        dirConfs[el.innerText] = el.className === 'active';
+      });
       // 选中与取消某个方向
       dirBtnEls.forEach((el) => {
         el.onclick = () => {
-          el.className = el.className === 'active' ? '' : 'active';
-          updateDirConfs();
+          const hasActive = el.className === 'active';
+          el.className = hasActive ? '' : 'active';
+          dirConfs[el.innerText] = !hasActive;
         };
       });
 
-      const { aStarPathFinding } = qtiled.pathFinding;
-      const { isStaggerLine } = qtiled.shapes.polygon;
-      const { directionsOffset, directionsNormal } = qtiled.shapes.hexagon;
+      const { aStar } = qtiled.pathFinding;
+      const { getNeighbors } = qtiled.shapes.hexagon;
 
       // 道路
       const addRoad = (xNum, yNum, x, y, cost = 0) => {
@@ -391,27 +385,30 @@
       const ckbEl = $id('ckb');
       const [minXNum, maxXNum] = xNumRange;
       const [minYNum, maxYNum] = yNumRange;
-      const filterFun = ([xNum, yNum]) => {
-        return (
-          // 不是路障
-          !roadblocksRmCaches[xNum + ',' + yNum]
-          // 限定在网格地图区域内查找
-          && (ckbEl.checked || (xNum >= minXNum && xNum <= maxXNum && yNum >= minYNum && yNum <= maxYNum))
-        );
-      };
+      const tileVerify = (xNum, yNum) => (
+        // 不是路障
+        !roadblocksRmCaches[xNum + ',' + yNum]
+        // 限定在网格地图区域内查找
+        && (ckbEl.checked || (xNum >= minXNum && xNum <= maxXNum && yNum >= minYNum && yNum <= maxYNum))
+      );
       $id('start_path_finding').onclick = () => {
         const staXYNum = getStaXyNum();
-        if (!filterFun(staXYNum)) return alert('错误的起点，不可通行');
+        if (!tileVerify(...staXYNum)) return alert('错误的起点，不可通行');
         const endXYNum = getEndXyNum();
-        if (!filterFun(endXYNum)) return alert('错误的终点，不可通行');
-        const pathXyNums = aStarPathFinding(
+        if (!tileVerify(...endXYNum)) return alert('错误的终点，不可通行');
+        const pathXyNums = aStar(
           staXYNum,
           endXYNum,
-          (xyNum) => {
-            const dirs = isStaggerLine(xyNum[1], stagger) ? directionsOffset : directionsNormal;
-            return dirs.filter((v, i) => dirConfs[i]); 
-          },
-          filterFun
+          (originXyNum) => {
+            return getNeighbors(originXyNum, stagger).filter(([xNum, yNum, cost, angStr]) => {
+              return (
+                // 启用的寻路方向
+                dirConfs[angStr] &&
+                // 合法可通行元素
+                tileVerify(xNum, yNum)
+              );
+            });
+          }
         );
         if (!pathXyNums) return alert('没有通行路径。');
         clearPath();

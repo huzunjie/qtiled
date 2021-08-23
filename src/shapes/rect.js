@@ -29,8 +29,8 @@ export const directions = [
 export const corners = [
   [-1, -1, 1.414, '↖'],
   [1, -1, 1.414, '↗'],
-  [1, 1, 1.414, '↙'],
-  [-1, 1, 1.414, '↘'],
+  [1, 1, 1.414, '↘'],
+  [-1, 1, 1.414, '↙'],
 ];
 
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
@@ -73,12 +73,21 @@ export function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]
 }
 
 /* 获得指定tile下标周边的邻居元素们
- * @param  {Array}     xyNum           XY轴序号，如：[0, 0]
+ * @param  {Array}     originXyNum    XY轴序号，如：[0, 0]
+ * @return {Array}  [[xNum, yNum]]
+ */
+export function getNeighbors(originXyNum = [0, 0], neisConf = [...directions, ...corners]) {
+  const [originXNum, originYNum] = originXyNum;
+  return neisConf.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+}
+
+/* 按距离获得指定tile下标周边区域内的元素们
+ * @param  {Array}     originXyNum     XY轴序号，如：[0, 0]
  * @param  {Number}    distance        下标间隔量，目标元素的第几圈邻居，0 ~ N
  * @param  {Function}  iterator        迭代函数，如：(x, y) => [x, y]
  * @param  {String}    renderOrder     渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}  [[xNum, yNum]]
  */
-export function getNeighbors(xyNum = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
+export function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
   return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, iterator);
 }
