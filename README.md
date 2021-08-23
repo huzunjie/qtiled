@@ -14,7 +14,7 @@
 
 ### 六边形布局示例
 
-![六边形布局示例](https://user-images.githubusercontent.com/3885060/130447738-98519f73-dfec-460b-a89e-791c37d1bbab.png)
+![六边形布局示例](https://user-images.githubusercontent.com/3885060/130448321-ae63115e-e336-430f-a09a-a7e8186f6425.png)
 
 ## 计划列表
 
