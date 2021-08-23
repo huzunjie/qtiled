@@ -22,7 +22,7 @@
   + [x] getRectVertexes 获取矩形顶点坐标集
   + [x] getRectPositions 获取多个矩形位置坐标集
   + [x] getRectInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
-  + [ ] pathfinding - Demo 完毕，方法待实现
+  + [x] getNeighbors - 获得当前点周边的邻居，可用于寻路等
 + [x] Rhombus - 菱形
   + [x] getRhombusVertexes 获取菱形顶点坐标集
   + [x] getRhombusPositions 按目标区间方向获取多个菱形的错列布局位置坐标集
@@ -34,7 +34,7 @@
   + [x] getHexagonVertexes 获取六边形顶点坐标集
   + [x] getHexagonPositions 按目标区间方向获取多个六边形的错列布局位置坐标集
   + [x] getHexagonInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
-  + [ ] pathfinding - Demo 完毕，方法待实现
+  + [x] getNeighbors 获得指定tile下标周边紧邻的邻居们
 + [x] ellipse - 椭圆形
   + [x] angle2Radian 角度转弧度
   + [x] radian2Angle 弧度转角度

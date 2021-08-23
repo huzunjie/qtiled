@@ -446,7 +446,7 @@ var vertexes$2 = [[FLAH, FLAH], [HALF, FLAH], [HALF, HALF], [FLAH, HALF]];
 var directions = [[0, -1, 1, '↑'], [1, 0, 1, '→'], [0, 1, 1, '↓'], [-1, 0, 1, '←']];
 /* 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本 */
 
-var corners = [[-1, -1, 1.414, '↖'], [1, -1, 1.414, '↗'], [1, 1, 1.414, '↙'], [-1, 1, 1.414, '↘']];
+var corners = [[-1, -1, 1.414, '↖'], [1, -1, 1.414, '↗'], [1, 1, 1.414, '↘'], [-1, 1, 1.414, '↙']];
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
 * @param  {Array}   size    如： [width{Number}, height{Number}]
 * @return {Array}   [[x, y], ...]
@@ -502,14 +502,37 @@ function getInfoByPos$2() {
   return getInfoByPos$3(1, pos, originPos, tileSize, 'none');
 }
 /* 获得指定tile下标周边的邻居元素们
- * @param  {Array}     xyNum           XY轴序号，如：[0, 0]
+ * @param  {Array}     originXyNum    XY轴序号，如：[0, 0]
+ * @return {Array}  [[xNum, yNum]]
+ */
+
+function getNeighbors$1() {
+  var originXyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+  var neisConf = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [].concat(directions, corners);
+
+  var _originXyNum = _slicedToArray(originXyNum, 2),
+      originXNum = _originXyNum[0],
+      originYNum = _originXyNum[1];
+
+  return neisConf.map(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 4),
+        xNum = _ref4[0],
+        yNum = _ref4[1],
+        cost = _ref4[2],
+        angStr = _ref4[3];
+
+    return [xNum + originXNum, yNum + originYNum, cost, angStr];
+  });
+}
+/* 按距离获得指定tile下标周边区域内的元素们
+ * @param  {Array}     originXyNum     XY轴序号，如：[0, 0]
  * @param  {Number}    distance        下标间隔量，目标元素的第几圈邻居，0 ~ N
  * @param  {Function}  iterator        迭代函数，如：(x, y) => [x, y]
  * @param  {String}    renderOrder     渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}  [[xNum, yNum]]
  */
 
-function getNeighbors$1() {
+function getNeighborsByDistance() {
   var distance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
   var iterator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (x, y) {
     return [x, y];
@@ -527,7 +550,8 @@ var rectFuns = /*#__PURE__*/Object.freeze({
   getPosition: getPosition$1,
   getPositions: getPositions$2,
   getInfoByPos: getInfoByPos$2,
-  getNeighbors: getNeighbors$1
+  getNeighbors: getNeighbors$1,
+  getNeighborsByDistance: getNeighborsByDistance
 });
 
 var vertexes$1 = [[0, FLAH], [HALF, RAUQ], [HALF, QUAR], [0, HALF], [FLAH, QUAR], [FLAH, RAUQ]];
@@ -618,11 +642,13 @@ function getNeighbors() {
 
   var directions = isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal;
   return directions.map(function (_ref3) {
-    var _ref4 = _slicedToArray(_ref3, 2),
+    var _ref4 = _slicedToArray(_ref3, 4),
         xNum = _ref4[0],
-        yNum = _ref4[1];
+        yNum = _ref4[1],
+        cost = _ref4[2],
+        angStr = _ref4[3];
 
-    return [xNum + originXNum, yNum + originYNum];
+    return [xNum + originXNum, yNum + originYNum, cost, angStr];
   });
 }
 
@@ -640,6 +666,44 @@ var hexagonFuns = /*#__PURE__*/Object.freeze({
 });
 
 var vertexes = [[0, FLAH], [HALF, 0], [0, HALF], [FLAH, 0]];
+/*
+// 左上、右上、右下、左下、左边、右边，6个边邻居 [xNum, yNum, cost, angle] 差值及距离成本及渲染角度
+export const directionsNormal = [
+  [-1, -1, 1, '↖'],
+  [0, -1, 1, '↗'],
+  [0, 1, 1, '↘'],
+  [-1, 1, 1, '↙'],
+  [-1, 0, 1, '←'],
+  [1, 0, 1, '→'],
+];
+
+// 错列行邻居下标差值
+export const directionsOffset = [
+  [0, -1, 1, '↖'],
+  [1, -1, 1, '↗'],
+  [1, 1, 1, '↘'],
+  [0, 1, 1, '↙'],
+  [-1, 0, 1, '←'],
+  [1, 0, 1, '→'],
+];
+
+Isometric
+// 上、右、下、左，四个边邻居 [xNum, yNum, cost] 差值及距离成本
+export const directions = [
+  [0, -1, 1, '↑'],
+  [1, 0, 1, '→'],
+  [0, 1, 1, '↓'],
+  [-1, 0, 1, '←'],
+];
+
+// 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
+export const corners = [
+  [-1, -1, 1.414, '↖'],
+  [1, -1, 1.414, '↗'],
+  [1, 1, 1.414, '↘'],
+  [-1, 1, 1.414, '↙'],
+];*/
+
 /* 获取宽高的一半（菱形中心点在顶点坐标系中的值）
 * @param  {Array}   size    如： [width{Number}, height{Number}]
 * @return {Array}   [halfWidth, halfHeight]
@@ -764,6 +828,17 @@ function getIsometricInfoByPos() {
 
   return [xNum, yNum, x + originX, y + originY];
 }
+/* 获得指定tile下标周边紧邻的邻居们
+ * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
+ * @param  {String}    stagger         需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+ * @return {Array}  [[xNum, yNum]]
+ */
+
+/*export function getNeighbors(originXyNum = [0, 0], stagger = 'odd') {
+  const [originXNum, originYNum] = originXyNum;
+  const directions = isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal;
+  return directions.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+}*/
 
 var rhombusFuns = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -782,7 +857,7 @@ var hexagon = hexagonFuns;
 var rhombus = rhombusFuns;
 var polygon = polygonFuns;
 
-var shapesFuns = /*#__PURE__*/Object.freeze({
+var shapesObj = /*#__PURE__*/Object.freeze({
   __proto__: null,
   ellipse: ellipse,
   rect: rect,
@@ -790,486 +865,6 @@ var shapesFuns = /*#__PURE__*/Object.freeze({
   rhombus: rhombus,
   polygon: polygon
 });
-
-/* 根据行列数设定，取得对应元坐标集合
-* @param {Number}   column       列数
-* @param {Number}   row          行数
-* @param {Function} processor    加工：可以用于将单位为1的坐标值换算为目标值或对象
-* @param {Function} filter       过滤
-* @return {Array} 生成的坐标集合
-*/
-function getUnitsByRowCol() {
-  var column = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-  var row = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  var processor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (xId, yId) {
-    return [xId, yId];
-  };
-  var filter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {
-    return true;
-  };
-  var ret = [];
-  var halfCol = Math.round(column / 2);
-  var halfRow = Math.round(row / 2);
-
-  for (var x = 1; x <= column; x++) {
-    var xId = x - halfCol;
-
-    for (var y = 1; y <= row; y++) {
-      var yId = y - halfRow;
-      filter(xId, yId, x, y, column, row) && ret.push(processor(xId, yId, x, y, column, row));
-    }
-  }
-
-  return ret;
-}
-/* 根据行列数设定，取得与其最近的邻居元坐标集合
-* @param {Number}   column    列数
-* @param {Number}   row       行数
-* @param {Function} filter    过滤
-* @return {Array} 生成的坐标集合
-*/
-
-function getNeighbourUnitsByRowCol() {
-  var column = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-  var row = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  var processor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (xId, yId) {
-    return [xId, yId];
-  };
-  var filter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {
-    return true;
-  };
-  return getUnitsByRowCol(column + 2, row + 2, processor, function (xId, yId, x, y, column, row) {
-    return filter(xId, yId, x, y, column, row) && (x === 1 || x === column || y === 1 || y === row);
-  });
-}
-/* 根据斜对角元素数设定，取得斜对角范围内的错列元坐标集合（可用于将正规布局裁切掉四个角，生成菱形布局）
-* @param {Number}   column    列数
-* @param {Number}   row       行数
-* @param {Function} filter    过滤
-* @return {Array} 生成的坐标集合
-*/
-
-function getDiagonalUnitsByRowCol() {
-  var column = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-  var row = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  var processor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (xId, yId) {
-    return [xId, yId];
-  };
-  var filter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {
-    return true;
-  };
-  var halfCol = Math.round(column / 2) - column % 2;
-  var halfRow = Math.round(row / 2) - row % 2;
-  return getUnitsByRowCol(column, row, processor, function (xId, yId, x, y, column, row) {
-    return filter(xId, yId, x, y, column, row) && Math.abs(xId) / halfCol + Math.abs(yId) / halfRow <= 1;
-  });
-}
-/* 根据设定的起始点与结束点，取得这两点作为对角线对应矩形范围内的元坐标集合
-* @param {Array}   startUnitXY  X、Y元坐标值
-* @param {Array}   endUnitXY    X、Y元坐标值
-* @return {Array}  元坐标集合
-*/
-
-function getUnitsByDiagonal() {
-  var startUnitXY = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var endUnitXY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var processor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (xId, yId) {
-    return [xId, yId];
-  };
-  var filter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {
-    return true;
-  };
-
-  var _startUnitXY = _slicedToArray(startUnitXY, 2),
-      _startUnitXY$ = _startUnitXY[0],
-      startX = _startUnitXY$ === void 0 ? 0 : _startUnitXY$,
-      _startUnitXY$2 = _startUnitXY[1],
-      startY = _startUnitXY$2 === void 0 ? 0 : _startUnitXY$2;
-
-  var _endUnitXY = _slicedToArray(endUnitXY, 2),
-      _endUnitXY$ = _endUnitXY[0],
-      endX = _endUnitXY$ === void 0 ? 0 : _endUnitXY$,
-      _endUnitXY$2 = _endUnitXY[1],
-      endY = _endUnitXY$2 === void 0 ? 0 : _endUnitXY$2;
-
-  var minX = Math.min(startX, endX);
-  var maxX = Math.max(startX, endX);
-  var minY = Math.min(startY, endY);
-  var maxY = Math.max(startY, endY);
-  var ret = [];
-
-  for (var xId = minX; xId <= maxX; xId++) {
-    for (var yId = minY; yId <= maxY; yId++) {
-      filter(xId, yId, minX, minY, maxX, maxY, startUnitXY, endUnitXY) && ret.push(processor(xId, yId, minX, minY, maxX, maxY, startUnitXY, endUnitXY));
-    }
-  }
-
-  return ret;
-}
-/* 根据设定角度，将指定的坐标绕原点旋转，并返回旋转后的坐标值
-* @param {Array}   unitXY   X、Y元坐标值
-* @param {Number}  angle    要旋转的角度值
-* @return {Array}  旋转后的坐标值
-*/
-
-var oneArc = Math.PI / 180;
-function rotateUnit() {
-  var unitXY = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var angle = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-  var _unitXY = _slicedToArray(unitXY, 2),
-      _unitXY$ = _unitXY[0],
-      x = _unitXY$ === void 0 ? 0 : _unitXY$,
-      _unitXY$2 = _unitXY[1],
-      y = _unitXY$2 === void 0 ? 0 : _unitXY$2; // 角度转弧度
-
-
-  var arc = angle * oneArc; // 弧度转正余弦(考虑浮点溢出精度问题，这里 *10 计算后使用 Math.round 取整回去)
-
-  var sinv = Math.sin(arc) * 10;
-  var cosv = Math.cos(arc) * 10; // 计算得到新坐标点
-
-  return [Math.round(x * cosv - y * sinv) / 10, Math.round(x * sinv + y * cosv) / 10];
-}
-/* 根据元坐标、渲染宽高、原点像素坐标，取得矩形元素渲染时的像素坐标
-* @param {Array}   unitXY   X、Y元坐标值
-* @param {Array}   size     width, height 元素宽高值
-* @param {Array}   originXY 基准像素点的X、Y像素坐标值
-* @return {Array} x,y 对应的像素值
-*/
-
-function unit2pixel() {
-  var unitXY = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
-  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [10, 10];
-  var originXY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
-  return unitXY.map(function (XY, i) {
-    return _half_precision(XY * size[i] + originXY[i]);
-  });
-} // 精确到0.5个单位
-
-function _half_precision(v) {
-  return Math.round(v * 2) / 2;
-}
-/* 根据像素坐标、渲染宽高、原点像素坐标，取得元坐标
-* @param {Array}   pixelXY   X、Y像素坐标值
-* @param {Array}   size     width, height 元素宽高值
-* @param {Array}   originXY 基准像素点的X、Y像素坐标值
-* @return {Array} x,y 对应的元坐标
-*/
-
-function pixel2unit() {
-  var pixelXY = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
-  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [10, 10];
-  var originXY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
-  return pixelXY.map(function (XY, i) {
-    return _half_precision((XY - originXY[i]) / size[i]);
-  });
-}
-/* 将像素坐标按照tile宽高取整
-* @param {Array}   pixelXY  X、Y像素坐标值
-* @param {Array}   size     width, height 元素宽高值
-* @param {Array}   originXY 基准像素点的X、Y像素坐标值
-* @return {Array} x,y 对应的元坐标
-*/
-
-/* export function pixelRound (pixelXY = [0, 0], size = [10, 10], originXY = [0, 0]) {
-  return pixelXY.map((XY, i)=> _half_precision( (XY-originXY[i])/size[i] ) );
-}
-*/
-
-/* 根据元坐标、菱形X-Y两个方向对角线长度、原点像素坐标，取得正菱形元素渲染时的像素坐标
-* @param {Array}   unitXY    X、Y 元坐标值
-* @param {Array}   diagonal  x, y 轴对应对角线长度值
-* @param {Array}   originXY  基准像素点的X、Y像素坐标值
-* @return {Array}  x,y 对应的像素值
-*/
-
-var sqrt2 = Math.sqrt(2); // 45度的正余弦值
-
-var sincos45 = sqrt2 / 2; // 元坐标45度变换后的差值补充
-
-var unitDiff = -1 / sqrt2;
-function unit2rhombusPixel() {
-  var unitXY = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var diagonal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var originXY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-  var _unitXY2 = _slicedToArray(unitXY, 2),
-      _unitXY2$ = _unitXY2[0],
-      X = _unitXY2$ === void 0 ? 0 : _unitXY2$,
-      _unitXY2$2 = _unitXY2[1],
-      Y = _unitXY2$2 === void 0 ? 0 : _unitXY2$2;
-
-  var _diagonal = _slicedToArray(diagonal, 2),
-      _diagonal$ = _diagonal[0],
-      W = _diagonal$ === void 0 ? 10 : _diagonal$,
-      _diagonal$2 = _diagonal[1],
-      H = _diagonal$2 === void 0 ? 10 : _diagonal$2;
-
-  var _originXY = _slicedToArray(originXY, 2),
-      _originXY$ = _originXY[0],
-      ox = _originXY$ === void 0 ? 0 : _originXY$,
-      _originXY$2 = _originXY[1],
-      oy = _originXY$2 === void 0 ? 0 : _originXY$2; // 45度变换
-
-
-  var x = (X - Y) * sincos45;
-  var y = (X + Y) * sincos45; // 变换后的元坐标换算为像素坐标
-
-  var pixelX = _half_precision(x * unitDiff * W + ox);
-
-  var pixelY = _half_precision(y * unitDiff * H + oy);
-
-  return [pixelX, pixelY];
-}
-/* 根据像素坐标、菱形X-Y两个方向对角线长度、原点像素坐标，取得正菱形元坐标
-* @param {Array}   pixelXY    X、Y 像素坐标值
-* @param {Array}   diagonal  x, y 轴对应对角线长度值
-* @param {Array}   originXY  基准像素点的X、Y像素坐标值
-* @return {Array}  x,y 对应元坐标值
-*/
-
-function rhombusPixel2unit() {
-  var pixelXY = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var diagonal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var originXY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-  var _pixelXY = _slicedToArray(pixelXY, 2),
-      _pixelXY$ = _pixelXY[0],
-      pixelX = _pixelXY$ === void 0 ? 0 : _pixelXY$,
-      _pixelXY$2 = _pixelXY[1],
-      pixelY = _pixelXY$2 === void 0 ? 0 : _pixelXY$2;
-
-  var _diagonal2 = _slicedToArray(diagonal, 2),
-      _diagonal2$ = _diagonal2[0],
-      W = _diagonal2$ === void 0 ? 10 : _diagonal2$,
-      _diagonal2$2 = _diagonal2[1],
-      H = _diagonal2$2 === void 0 ? 10 : _diagonal2$2;
-
-  var _originXY2 = _slicedToArray(originXY, 2),
-      _originXY2$ = _originXY2[0],
-      ox = _originXY2$ === void 0 ? 0 : _originXY2$,
-      _originXY2$2 = _originXY2[1],
-      oy = _originXY2$2 === void 0 ? 0 : _originXY2$2; // 像素坐标换算为元坐标
-
-
-  var uX = (pixelX - ox) / (unitDiff * W);
-  var uY = (pixelY - oy) / (unitDiff * H); // 45度变换
-
-  var unitX = _half_precision((uX + uY) / sincos45 / 2);
-
-  var unitY = _half_precision(uY / sincos45 - unitX);
-
-  return [unitX, unitY];
-}
-/* 根据行列数设定，取得错列布局元坐标集合
-* @param {Number}   column       列数
-* @param {Number}   row          行数
-* @param {Function} filter       过滤
-* @param {Function} processor    加工：可以用于将单位为1的坐标值换算为目标值或对象
-* @return {Array} 生成的坐标集合
-*/
-
-function getStaggeredUnitsByRowCol() {
-  var column = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-  var row = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  var processor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (x, y) {
-    return [x, y];
-  };
-  var filter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function (x, y) {
-    return true;
-  };
-  var ret = []; // const xIsSingle = column === 1;
-  // const yIsSingle = row === 1;
-
-  var minCol = -Math.floor(column / 2);
-  var maxCol = column + minCol - 1;
-  var minRow = -Math.floor(row / 2);
-  var maxRow = row + minRow - 1;
-  var size = [1, 1];
-  var pos = [0, 0];
-
-  for (var rowNum = minRow; rowNum <= maxRow; rowNum++) {
-    var pxY = rowNum * 0.5;
-    var isOdd = Math.abs(pxY % 1) === 0.5; // 奇数行右移，实现错列对齐
-
-    var xDiff = isOdd ? 0.5 : 0;
-
-    for (var colNum = minCol; colNum <= maxCol; colNum++) {
-      var pxX = colNum + xDiff;
-
-      var _rhombusPixel2unit = rhombusPixel2unit([pxX, pxY], size, pos),
-          _rhombusPixel2unit2 = _slicedToArray(_rhombusPixel2unit, 2),
-          xId = _rhombusPixel2unit2[0],
-          yId = _rhombusPixel2unit2[1]; // -del- 排除掉奇数末个，实现整齐效果 -del- ，不再干预、自行 filter
-      // if (yIsSingle || xIsSingle || !isOdd || colNum !== maxCol) {
-
-
-      filter(xId, yId, colNum, rowNum, minCol, minRow, maxCol, maxRow, column, row) && ret.push(processor(xId, yId, colNum, rowNum, minCol, minRow, maxCol, maxRow, column, row)); // }
-    }
-  }
-
-  return ret;
-}
-/*
-export function getStaggeredUnitsByRowCol (column = 1, row = 1, processor = (x, y)=>[x, y], filter = (x, y)=>true) {
-  const ret = [];
-  const xIsSingle = column === 1;
-  const halfX = Math.round(column / 2);
-  const halfY = Math.round(row / 2);
-  const size = [1, 1];
-  const pos = [0, 0];
-  for(let yNum = 1; yNum <= row; yNum++) {
-    const pxY = ((yNum - halfY) / 2);
-    const isOdd = yNum % 2 === 1;
-    // 奇数行右移，实现错列对齐
-    const xDiff = isOdd ? 0.5 : 0;
-    for(let xNum = 0; xNum < column; xNum++) {
-      const pxX = xNum + xDiff - halfX;
-      let [xId, yId] = rhombusPixel2unit([pxX, pxY], size, pos);
-      xId = Math.round(xId);
-      yId = Math.round(yId);
-      // 排除掉奇数第一个，实现整齐效果
-      if(xIsSingle || isOdd || xNum !== 0) {filter(xId, yId, xNum, yNum, column, row) && ret.push(processor(xId, yId, xNum, yNum, column, row));}
-    }
-  }
-  return ret;
-};*/
-
-/* 将任意像素坐标按错列布局中单元格尺寸取整，对应到相应像素坐标
-* @param {Array}    pos       像素坐标 x y 值
-* @param {Array}    size      单元格宽高 w h 值
-* @param {Array}    offsetPos 要累加到结果 x y 值上的偏移量
-* @return {Array} 生成的坐标集合
-*/
-
-function staggeredUnitRound() {
-  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [],
-      _ref2 = _slicedToArray(_ref, 2),
-      _ref2$ = _ref2[0],
-      vX = _ref2$ === void 0 ? 0 : _ref2$,
-      _ref2$2 = _ref2[1],
-      vY = _ref2$2 === void 0 ? 0 : _ref2$2;
-
-  var _ref3 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [],
-      _ref4 = _slicedToArray(_ref3, 2),
-      _ref4$ = _ref4[0],
-      w = _ref4$ === void 0 ? 78 : _ref4$,
-      _ref4$2 = _ref4[1],
-      h = _ref4$2 === void 0 ? 40 : _ref4$2;
-
-  var _ref5 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [],
-      _ref6 = _slicedToArray(_ref5, 2),
-      _ref6$ = _ref6[0],
-      oX = _ref6$ === void 0 ? 0 : _ref6$,
-      _ref6$2 = _ref6[1],
-      oY = _ref6$2 === void 0 ? 0 : _ref6$2;
-
-  var halfW = w / 2;
-  var halfH = h / 2;
-  var y = Math.round(vY / halfH) * halfH;
-  var x = Math.round(vX / w) * w; // 偶数行错列布局右移部分回填
-
-  if (y % h === halfH) {
-    // 鼠标位置大于半个则回移，小于半个则右移；保证在单元格内
-    x += vX - x >= 0 ? halfW : -halfW;
-  }
-
-  return [x + oX, y + oY];
-}
-
-// 上下左右8个方位邻居单元的坐标差值及评分权重
-var referenceArr = [[1, 0, 10], [0, 1, 10], [0, -1, 10], [-1, 0, 10], [-1, -1, 14], [-1, 1, 14], [1, -1, 14], [1, 1, 14]];
-
-function astar () {
-  var startUnitXY = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var endUnitXY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (xId, yId, cost, refX, refY) {
-    return true;
-  };
-
-  // console.log(fromX + ',' + fromY, 'to', toX + ',' + toY);
-  var _startUnitXY = _slicedToArray(startUnitXY, 2),
-      _startUnitXY$ = _startUnitXY[0],
-      fromX = _startUnitXY$ === void 0 ? 0 : _startUnitXY$,
-      _startUnitXY$2 = _startUnitXY[1],
-      fromY = _startUnitXY$2 === void 0 ? 0 : _startUnitXY$2;
-
-  var _endUnitXY = _slicedToArray(endUnitXY, 2),
-      _endUnitXY$ = _endUnitXY[0],
-      toX = _endUnitXY$ === void 0 ? 0 : _endUnitXY$,
-      _endUnitXY$2 = _endUnitXY[1],
-      toY = _endUnitXY$2 === void 0 ? 0 : _endUnitXY$2; // 起止点相同直接返回当前点
-
-
-  if (fromX === toX && fromY === toY) {
-    return [startUnitXY];
-  } // 排除不可能到达的点，避免死循环
-
-
-  if (Math.abs(fromX % 1) !== Math.abs(toX % 1) || Math.abs(fromY % 1) !== Math.abs(toY % 1)) {
-    return [];
-  }
-
-  var cost = {};
-  var parentsPoints = {};
-  cost[startUnitXY.join()] = 0; // const _limit = 0;
-
-  function checker(x, y) {
-    var eligiblePoints = [];
-    var currentCost = cost[x + ',' + y];
-
-    for (var refI = 0; refI < 8; refI++) {
-      var ref = referenceArr[refI];
-      var nextX = x + ref[0];
-      var nextY = y + ref[1];
-      var refCost = ref[2];
-      var nextKey = nextX + ',' + nextY;
-      var nextCost = cost[nextKey];
-
-      if (filter(nextX, nextY, refCost, x, y) && (nextCost === undefined || currentCost + refCost < nextCost)) {
-        cost[nextKey] = currentCost + refCost;
-        parentsPoints[nextKey] = [x, y];
-        eligiblePoints.push([nextX, nextY]);
-
-        if (nextX === toX && nextY === toY) {
-          break;
-        }
-      }
-    }
-
-    return eligiblePoints;
-  }
-  var openlist = [startUnitXY];
-  var path = [];
-
-  while (openlist.length) {
-    var curPoint = openlist.pop();
-    var eligiblePoints = checker(curPoint[0], curPoint[1]);
-    var epLen = eligiblePoints.length;
-
-    for (var i = 0; i < epLen; i++) {
-      var extPoint = eligiblePoints[i]; // 到达终点生成路径
-
-      if (extPoint[0] === toX && extPoint[1] === toY) {
-        path.push(endUnitXY);
-        var pathPoint = endUnitXY; // 回查到完整路径
-
-        while (pathPoint[0] !== fromX || pathPoint[1] !== fromY) {
-          pathPoint = parentsPoints[pathPoint.join()];
-          path.unshift(pathPoint);
-        } // console.log(JSON.stringify(path));
-
-
-        return path;
-      }
-
-      openlist.unshift(extPoint);
-    }
-  }
-
-  return path;
-}
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -1286,60 +881,22 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-/* 查找二维坐标系相邻元素
-* @param {Array}     xyNum              瓦片坐标值，如：[xNum, yNum]
-* @param {Array}     referenceMatrix    相邻元素差值矩阵，也就是[xNum, yNum]与相邻坐标差集合，如：[[-1, -1], [1, 1], ...]
-* @param {Function}  filter             自行过滤方法，参数示例：(xyNum = [xNum, yNum], rmXY = [-1, -1])
-* @return {Array}    匹配的邻居坐标集合或空数组
-*/
-function getNeighborsPoints$1() {
-  var xyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
-  var referenceMatrix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [[1, 0], [0, 1], [-1, 0], [0, -1]];
-  var filter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (xyNum, diffXY) {
-    return true;
-  };
-  var points = [];
-
-  var _xyNum = _slicedToArray(xyNum, 2),
-      xNum = _xyNum[0],
-      yNum = _xyNum[1];
-
-  referenceMatrix.some(function (diffXY) {
-    var xyNumCurr = [xNum + diffXY[0], yNum + diffXY[1]];
-    var filterRet = filter(xyNumCurr, diffXY);
-    if (filterRet === 'break') return false;
-
-    if (filterRet) {
-      points.push(xyNumCurr);
-    }
-  });
-  return points;
-}
-
-var xyNum2Str = function xyNum2Str(_ref) {
-  var _ref2 = _slicedToArray(_ref, 2),
-      xNum = _ref2[0],
-      yNum = _ref2[1];
-
-  return "".concat(xNum, "_").concat(yNum);
-};
 /* A*寻径
-* @param {Array}                 staXyNum           数据坐标值，如：[xNum, yNum]
-* @param {Array}                 endXyNum           数据坐标值，如：[xNum, yNum]
-* @param {Array || Function}     referenceMatrix    相邻元素差值矩阵，也就是[xNum, yNum, cost]与相邻坐标差集合，如：[[-1, -1, 1.414], [1, 1, 1], ...]
-* @param {Function}              filterFun          自行过滤方法，参数示例：(xyNum = [xNum, yNum], xyDiff = [-1, -1])
+* @param {Array}                 staXyNum              数据坐标值，如：[xNum, yNum]
+* @param {Array}                 endXyNum              数据坐标值，如：[xNum, yNum]
+* @param {Function}              getNeighbors          需要外部传入获取邻居坐标的方法（等距、错列、正矩形方案不同）
+*                                                      参数示例：(currXyNum = [xNum, yNum])
+*                                                      需要返回邻居坐标值、权重的tile二维数组：[[xNum1, yNum1, cost1], [xNum2, yNum2, cost2], ...]
+* @param {Number}                maximizable           最大可循环次数（默认为1e6，用于防止死循环）
 * @return {Array} 匹配的路径集合或空数组
 */
-
-
-function aStarPathFinding$1() {
+function aStar$1() {
   var staXyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
   var endXyNum = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
-  var referenceMatrix = arguments.length > 2 ? arguments[2] : undefined;
-  var filterFun = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function (xyNum, xyDiff) {
-    return true;
+  var getNeighbors = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (currPointXyNum) {
+    return [];
   };
-  var maximizable = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1e6;
+  var maximizable = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1e6;
   var path = [];
 
   var _staXyNum = _slicedToArray(staXyNum, 2),
@@ -1357,9 +914,6 @@ function aStarPathFinding$1() {
     path.push(staPoint);
   } else {
     (function () {
-      var refMatrixFun = referenceMatrix.constructor !== Function ? function () {
-        return referenceMatrix;
-      } : referenceMatrix;
       var parents = {};
 
       var costs = _defineProperty({}, xyNum2Str(staXyNum), 0);
@@ -1370,24 +924,25 @@ function aStarPathFinding$1() {
         var currPoint = openlist.pop();
         var currCost = costs[xyNum2Str(currPoint)]; // 从邻居中查找可以更低成本通过的节点
 
-        getNeighborsPoints$1(currPoint, refMatrixFun(currPoint), function (neiXyNum, xyDiff) {
-          if (!filterFun(neiXyNum, xyDiff)) return;
-          var neiXYStr = xyNum2Str(neiXyNum);
+        getNeighbors(currPoint).some(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 3),
+              xNum = _ref2[0],
+              yNum = _ref2[1],
+              cost = _ref2[2];
+
+          var neiXYStr = xyNum2Str([xNum, yNum]);
           var oldCost = costs[neiXYStr];
-          var neiCost = Math.round((currCost + (xyDiff[2] || 1)) * 1e3) / 1e3;
+          var neiCost = Math.round((currCost + (cost || 1)) * 1e3) / 1e3; // 当前点通行成本还不如已经确定的成本低，那么舍弃路径方案
+
           if (oldCost !== undefined && neiCost >= oldCost) return;
           costs[neiXYStr] = neiCost;
-          parents[neiXYStr] = currPoint;
+          parents[neiXYStr] = currPoint; // 循环次数达到上限，抛出异常终止查找
+
           n++;
-          if (n > maximizable) throw new Error('[aStarPathFinding] The number of loops exceeds the maximum value:' + maximizable);
+          if (n > maximizable) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maximizable);
+          var neiPoint = [xNum, yNum, neiCost]; // 到达终点生成路径
 
-          var _neiXyNum = _slicedToArray(neiXyNum, 2),
-              neiXNum = _neiXyNum[0],
-              neiYNum = _neiXyNum[1];
-
-          var neiPoint = [neiXNum, neiYNum, neiCost]; // 到达终点生成路径
-
-          if (neiXNum === endXNum && neiYNum === endYNum) {
+          if (xNum === endXNum && yNum === endYNum) {
             path.push(neiPoint); // 回查链表得到完整路径数组
 
             var prevXyNum = endXyNum;
@@ -1397,7 +952,7 @@ function aStarPathFinding$1() {
             }
 
             openlist.length = 0;
-            return 'break';
+            return false;
           } else {
             // 没到达终点，将当前点放入开放点列表，继续查找
             openlist.unshift(neiPoint);
@@ -1414,32 +969,24 @@ function aStarPathFinding$1() {
   return path.length ? path : null;
 }
 
-var aStarPathFinding = aStarPathFinding$1;
-var getNeighborsPoints = getNeighborsPoints$1;
+function xyNum2Str(_ref3) {
+  var _ref4 = _slicedToArray(_ref3, 2),
+      xNum = _ref4[0],
+      yNum = _ref4[1];
 
-var pathFindingFuns = /*#__PURE__*/Object.freeze({
+  return "".concat(xNum, "_").concat(yNum);
+}
+
+var aStar = aStar$1;
+
+var pathFindingObj = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  aStarPathFinding: aStarPathFinding,
-  getNeighborsPoints: getNeighborsPoints
+  aStar: aStar
 });
 
-var shapes = shapesFuns;
+// 基础图形方法
+var shapes = shapesObj; // 寻路方法
+var pathFinding = pathFindingObj;
 
-var searchPath = astar; // 寻路
-var pathFinding = pathFindingFuns;
-
-exports._half_precision = _half_precision;
-exports.getDiagonalUnitsByRowCol = getDiagonalUnitsByRowCol;
-exports.getNeighbourUnitsByRowCol = getNeighbourUnitsByRowCol;
-exports.getStaggeredUnitsByRowCol = getStaggeredUnitsByRowCol;
-exports.getUnitsByDiagonal = getUnitsByDiagonal;
-exports.getUnitsByRowCol = getUnitsByRowCol;
 exports.pathFinding = pathFinding;
-exports.pixel2unit = pixel2unit;
-exports.rhombusPixel2unit = rhombusPixel2unit;
-exports.rotateUnit = rotateUnit;
-exports.searchPath = searchPath;
 exports.shapes = shapes;
-exports.staggeredUnitRound = staggeredUnitRound;
-exports.unit2pixel = unit2pixel;
-exports.unit2rhombusPixel = unit2rhombusPixel;

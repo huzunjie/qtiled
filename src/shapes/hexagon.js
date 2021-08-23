@@ -96,5 +96,5 @@ export function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]
 export function getNeighbors(originXyNum = [0, 0], stagger = 'odd') {
   const [originXNum, originYNum] = originXyNum;
   const directions = isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal;
-  return directions.map(([xNum, yNum]) => [xNum + originXNum, yNum + originYNum]);
+  return directions.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
 }

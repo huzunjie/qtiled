@@ -14,178 +14,21 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
 
-  <h1>相邻tile</h1>
-  <div class="ipts">
-    邻居距离：<input type="range" step="1" max="6" id="ipt_range1" value="1" />
-    <span id="val1">1</span>
-  </div>
-  <div id="container"></div>
-  <script type="text/javascript">
-    (function() {
-      const container = document.getElementById('container');
-      const {Scene, Label, Polyline} = spritejs;
-      const scene = new Scene({
-          container,
-          width: 800,
-          height: 500,
-          mode: 'static',
-      });
-      const layer = scene.layer('def', { handleEvent: false });
-      const lineWidth = 2;
-      const shapesEls = [];
-
-      /* 图形处理试验代码 sta */
-
-      const xPos = 345;
-      const yPos = 200;
-      const pos = [xPos, yPos];
-      const width = 50;
-      const height = 40;
-      const size = [width, height];
-      const anchor = [0.5, 0.5];
-      const fontSize = '14px';
-
-      const { getVertexes, getPosition, getPositions, directions, corners } = qtiled.shapes.rect;
-
-      // 一个矩形顶点坐标集
-      const rectVertexes = getVertexes(size);
-
-      const xNumRange = [-6, 6];
-      const yNumRange = [-4, 5];
-      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
-        shapesEls.push(
-          new Polyline({
-            pos,
-            points: rectVertexes,
-            strokeColor: 'rgba(0, 0, 0, 0.2)',
-            fillColor: 'rgba(255, 255, 255, 0.5)',
-            lineWidth,
-            close: true,
-          }),
-          new Label({
-            anchor,
-            pos,
-            text:  xNum + ',' + yNum,
-            fontSize,
-          })
-        );
-      });
-
-      // 焦点矩形
-      const focusRectTile = new Polyline({
-        pos,
-        points: rectVertexes,
-        strokeColor: 'rgba(0, 136, 0, 0.9)',
-        lineWidth,
-        close: true,
-      });
-      const focusRectLabel = new Label({
-        anchor,
-        pos,
-        text:  '0,0',
-        fontSize,
-        fillColor: 'rgba(0, 136, 0, 0.8)',
-      });
-
-
-      const neighborsEls = [];
-      // 四个边的邻居
-      directions.forEach((xyNum, i) => {
-        neighborsEls.push(
-          new Polyline({
-            pos: getPosition(xyNum, size, pos),
-            points: rectVertexes,
-            strokeColor: 'rgba(0, 0, 255, 0.5)',
-            fillColor: 'rgba(0, 0, 255, 0.05)',
-            lineWidth,
-            close: true,
-          })
-        );
-      });
-      // 四个角的邻居
-      corners.forEach((xyNum, i) => {
-        neighborsEls.push(
-          new Polyline({
-            pos: getPosition(xyNum, size, pos),
-            points: rectVertexes,
-            strokeColor: 'rgba(125, 0, 255, 0.5)',
-            fillColor: 'rgba(125, 0, 255, 0.05)',
-            lineWidth,
-            close: true,
-          })
-        );
-      });
-      let neiDis = 1;
-      let neiX = xPos;
-      let neiY = yPos;
-      const neiEls = [];
-      const addEl = (xyNum, tmp) => {
-        if (tmp[xyNum[0] + ',' + xyNum[1]]) return;
-        neiEls.push(
-          new Polyline({
-            pos: getPosition(xyNum, size, pos),
-            points: rectVertexes,
-            strokeColor: 'rgba(0, 0, 0, 0.2)',
-            fillColor: 'rgba(0, 0, 0, 0.08)',
-            lineWidth,
-            close: true,
-          })
-        );
-      };
-      const updateNeisPos = (x, y, dis = 1) => {
-        neiX = x;
-        neiY = y;
-        neiDis = dis;
-        const tmp = {};
-        // 邻居位置更新
-        [...corners, ...directions].forEach(([xDiff, yDiff], i) => {
-          const xyNum = [xDiff * dis, yDiff * dis];
-          tmp[xyNum[0] + ',' + xyNum[1]] = 1;
-          const [x, y] = getPosition(xyNum, size, [neiX, neiY]);
-          neighborsEls[i].attr({ x, y });
-        });
-        neiEls.forEach((el) => el.remove());
-        neiEls.length = 0;
-        for (let i = -dis; i < dis; i++) {
-          addEl([dis, i], tmp);
-          addEl([-dis, i], tmp);
-          addEl([i, -dis], tmp);
-          addEl([i, dis], tmp);
-        }
-        layer.append(...neiEls);
-      };
-
-      const valEl = document.getElementById('val1');
-      document.getElementById('ipt_range1').onchange = (e) => {
-        const val = e.target.value;
-        valEl.innerText = val;
-        updateNeisPos(neiX, neiY, Number(val));
-      };
-      
-      shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
-
-      /* 图形处理试验代码 end */
-
-      layer.append(...shapesEls);
-    }());
-  </script>
-
   <h1>寻找连通路径</h1>
   <div id="container2"></div>
   <div class="frm-wrap">
     <div class="frm">
       <h4>可用方向：</h4>
       <span id="dirs">
-        <a data-type="corners" data-idx="0">↖</a>
-        <a data-type="directions" data-idx="0" class="active">↑</a>
-        <a data-type="corners" data-idx="1">↗</a>
-        <a data-type="directions" data-idx="3" class="active">←</a>
+        <a data-dir="corners">↖</a>
+        <a data-dir="directions" class="active">↑</a>
+        <a data-dir="corners">↗</a>
+        <a data-dir="directions" class="active">←</a>
         <a disable>○</a>
-        <a data-type="directions" data-idx="1" class="active">→</a>
-        <a data-type="corners" data-idx="3">↙</a>
-        <a data-type="directions" data-idx="2" class="active">↓</a>
-        <a data-type="corners" data-idx="2">↘</a>
+        <a data-dir="directions" class="active">→</a>
+        <a data-dir="corners">↙</a>
+        <a data-dir="directions" class="active">↓</a>
+        <a data-dir="corners">↘</a>
       </span>
       <label><input type="checkbox" id="ckb">网格外允许通行(无限查找，慎用！)</label>
       <span class="btns-submit">
@@ -392,31 +235,22 @@
       });
 
       // 方向控制
-      const dirConfs = [];
-      const { rect } = qtiled.shapes;
-
-      const dirsEl = $id('dirs');
-      // 边邻居与角邻居行进成本不同
-      const dirBtnEls = Array.from(dirsEl.querySelectorAll('[data-type]'));
-      const updateDirConfs = () => {
-        dirConfs.length = 0;
-        dirBtnEls.forEach((el) => {
-          if (el.className === 'active') {
-            const { type, idx } = el.dataset;
-            dirConfs.push(rect[type][idx]);
-          }
-        });
-      };
-      updateDirConfs();
+      const dirConfs = {};
+      const dirBtnEls = Array.from($id('dirs').querySelectorAll('[data-dir]'));
+      dirBtnEls.forEach((el) => {
+        dirConfs[el.innerText] = el.className === 'active';
+      });
       // 选中与取消某个方向
       dirBtnEls.forEach((el) => {
         el.onclick = () => {
-          el.className = el.className === 'active' ? '' : 'active';
-          updateDirConfs();
+          const hasActive = el.className === 'active';
+          el.className = hasActive ? '' : 'active';
+          dirConfs[el.innerText] = !hasActive;
         };
       });
 
-      const { aStarPathFinding } = qtiled.pathFinding;
+      const { getNeighbors } = qtiled.shapes.rect;
+      const { aStar } = qtiled.pathFinding;
       // 道路
       const addRoad = (xNum, yNum, x, y, cost = 0) => {
         const [appendBlock, removeBlock] = getBlock(`道路 ${cost}`, '#a28a0f', 0.5, -0.5, 'rgba(180, 140, 90, 0.2)');
@@ -431,20 +265,28 @@
       const ckbEl = $id('ckb');
       const [minXNum, maxXNum] = xNumRange;
       const [minYNum, maxYNum] = yNumRange;
-      const filterFun = ([xNum, yNum]) => {
-        return (
-          // 不是路障
-          !roadblocksRmCaches[xNum + ',' + yNum]
-          // 限定在网格地图区域内查找
-          && (ckbEl.checked || (xNum >= minXNum && xNum <= maxXNum && yNum >= minYNum && yNum <= maxYNum))
-        );
-      };
+      // 校验是否合法可通行元素
+      const tileVerify = (xNum, yNum) => (
+        // 不是路障
+        !roadblocksRmCaches[xNum + ',' + yNum]
+        // 限定在网格地图区域内查找
+        && (ckbEl.checked || (xNum >= minXNum && xNum <= maxXNum && yNum >= minYNum && yNum <= maxYNum))
+      );
       $id('start_path_finding').onclick = () => {
         const staXYNum = getStaXyNum();
-        if (!filterFun(staXYNum)) return alert('错误的起点，不可通行');
+        if (!tileVerify(...staXYNum)) return alert('错误的起点，不可通行');
         const endXYNum = getEndXyNum();
-        if (!filterFun(endXYNum)) return alert('错误的终点，不可通行');
-        const pathXyNums = aStarPathFinding(staXYNum, endXYNum, dirConfs, filterFun);
+        if (!tileVerify(...endXYNum)) return alert('错误的终点，不可通行');
+        const pathXyNums = aStar(staXYNum, endXYNum, (originXyNum) => {
+          return getNeighbors(originXyNum).filter(([xNum, yNum, cost, angStr]) => {
+            return (
+              // 启用的寻路方向
+              dirConfs[angStr] &&
+              // 合法可通行元素
+              tileVerify(xNum, yNum)
+            );
+          });
+        });
         if (!pathXyNums) return alert('没有通行路径。');
         clearPath();
         pathXyNums.forEach(([xNum, yNum, cost]) => {
@@ -456,6 +298,163 @@
     }());
   </script>
   
+
+  <h1>相邻tile</h1>
+  <div class="ipts">
+    邻居距离：<input type="range" step="1" max="6" id="ipt_range1" value="1" />
+    <span id="val1">1</span>
+  </div>
+  <div id="container"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 500,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 345;
+      const yPos = 200;
+      const pos = [xPos, yPos];
+      const width = 50;
+      const height = 40;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+
+      const { getVertexes, getPosition, getPositions, directions, corners } = qtiled.shapes.rect;
+
+      // 一个矩形顶点坐标集
+      const rectVertexes = getVertexes(size);
+
+      const xNumRange = [-6, 6];
+      const yNumRange = [-4, 5];
+      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: rectVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text:  xNum + ',' + yNum,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const focusRectTile = new Polyline({
+        pos,
+        points: rectVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.9)',
+        lineWidth,
+        close: true,
+      });
+      const focusRectLabel = new Label({
+        anchor,
+        pos,
+        text:  '0,0',
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+
+
+      const neighborsEls = [];
+      // 四个边的邻居
+      directions.forEach((xyNum, i) => {
+        neighborsEls.push(
+          new Polyline({
+            pos: getPosition(xyNum, size, pos),
+            points: rectVertexes,
+            strokeColor: 'rgba(0, 0, 255, 0.5)',
+            fillColor: 'rgba(0, 0, 255, 0.05)',
+            lineWidth,
+            close: true,
+          })
+        );
+      });
+      // 四个角的邻居
+      corners.forEach((xyNum, i) => {
+        neighborsEls.push(
+          new Polyline({
+            pos: getPosition(xyNum, size, pos),
+            points: rectVertexes,
+            strokeColor: 'rgba(125, 0, 255, 0.5)',
+            fillColor: 'rgba(125, 0, 255, 0.05)',
+            lineWidth,
+            close: true,
+          })
+        );
+      });
+      let neiDis = 1;
+      let neiX = xPos;
+      let neiY = yPos;
+      const neiEls = [];
+      const addEl = (xyNum, tmp) => {
+        if (tmp[xyNum[0] + ',' + xyNum[1]]) return;
+        neiEls.push(
+          new Polyline({
+            pos: getPosition(xyNum, size, pos),
+            points: rectVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(0, 0, 0, 0.08)',
+            lineWidth,
+            close: true,
+          })
+        );
+      };
+      const updateNeisPos = (x, y, dis = 1) => {
+        neiX = x;
+        neiY = y;
+        neiDis = dis;
+        const tmp = {};
+        // 邻居位置更新
+        [...corners, ...directions].forEach(([xDiff, yDiff], i) => {
+          const xyNum = [xDiff * dis, yDiff * dis];
+          tmp[xyNum[0] + ',' + xyNum[1]] = 1;
+          const [x, y] = getPosition(xyNum, size, [neiX, neiY]);
+          neighborsEls[i].attr({ x, y });
+        });
+        neiEls.forEach((el) => el.remove());
+        neiEls.length = 0;
+        for (let i = -dis; i < dis; i++) {
+          addEl([dis, i], tmp);
+          addEl([-dis, i], tmp);
+          addEl([i, -dis], tmp);
+          addEl([i, dis], tmp);
+        }
+        layer.append(...neiEls);
+      };
+
+      const valEl = document.getElementById('val1');
+      document.getElementById('ipt_range1').onchange = (e) => {
+        const val = e.target.value;
+        valEl.innerText = val;
+        updateNeisPos(neiX, neiY, Number(val));
+      };
+      
+      shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
+
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
 
 
   <h1>查找相邻tile</h1>
@@ -497,7 +496,7 @@
       const anchor = [0.5, 0.5];
       const fontSize = '12px';
 
-      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighbors } = qtiled.shapes.rect;
+      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighborsByDistance } = qtiled.shapes.rect;
 
       // 一个矩形顶点坐标集
       const rectVertexes = getVertexes(size);
@@ -544,7 +543,7 @@
       const neighborsEls = [];
       const disEl = document.getElementById('ipt_dis');
       const typeEl = document.getElementById('sei_type');
-      const typsConfs = {
+      const typeConfs = {
         all: (x, y) => [x, y],
         no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
         border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
@@ -555,7 +554,7 @@
         neighborsEls.forEach((el) => el.remove());
         neighborsEls.length = 0;
         // 邻居位置更新
-        getNeighbors(focusXYNum, distance, (x, y) => typsConfs[typeEl.value](x, y, distance)).forEach((xyNum, i) => {
+        getNeighborsByDistance(focusXYNum, distance, (x, y) => typeConfs[typeEl.value](x, y, distance)).forEach((xyNum, i) => {
           const xyNumOut = [xyNum[0] + focusXYNum[0], xyNum[1] + focusXYNum[1]];
           const _pos = getPosition(xyNumOut, size, pos);
           neighborsEls.push(

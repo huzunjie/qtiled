@@ -14,12 +14,8 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
 
-  <h1>查找相邻tile</h1>
-  <div class="ipts">
-    邻居距离：<input type="range" step="1" max="6" id="ipt_range" value="1" />
-    <span id="val">1</span>
-  </div>
-  <div id="container"></div>
+  <h1>查找紧邻Tile</h1>
+  <div id="container" style="height: 350px;"></div>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -27,7 +23,7 @@
       const scene = new Scene({
           container,
           width: 800,
-          height: 500,
+          height: 350,
           mode: 'static',
       });
       const layer = scene.layer('def', { handleEvent: false });
@@ -37,7 +33,7 @@
       /* 图形处理试验代码 sta */
 
       const xPos = 345;
-      const yPos = 200;
+      const yPos = 160;
       const pos = [xPos, yPos];
       const width = 50;
       const height = 40;
@@ -45,19 +41,21 @@
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
-      const { getVertexes, getPositions, directions, corners } = qtiled.shapes.rect;
+      const { getVertexes, getPosition, getPositions, getNeighbors } = qtiled.shapes.hexagon;
 
       // 一个矩形顶点坐标集
-      const rectVertexes = getVertexes(size);
+      const tileVertexes = getVertexes(size);
 
       const xNumRange = [-6, 6];
       const yNumRange = [-4, 5];
-      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+      const stagger = 'even'; // odd even
+
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         shapesEls.push(
           new Polyline({
             pos,
-            points: rectVertexes,
+            points: tileVertexes,
             strokeColor: 'rgba(0, 0, 0, 0.2)',
             fillColor: 'rgba(255, 255, 255, 0.5)',
             lineWidth,
@@ -73,74 +71,38 @@
       });
 
       // 焦点矩形
-      const focusRectTile = new Polyline({
-        pos,
-        points: rectVertexes,
-        strokeColor: 'rgba(0, 136, 0, 0.9)',
-        lineWidth,
-        close: true,
-      });
-      const focusRectLabel = new Label({
-        anchor,
-        pos,
-        text:  '0,0',
-        fontSize,
-        fillColor: 'rgba(0, 136, 0, 0.8)',
-      });
+      const createFocusAndNeis = (focusXYNum = [-3, -2]) => {
+        const focusPos = getPosition(focusXYNum, size, stagger, pos);
+        const focusRectTile = new Polyline({
+          pos: focusPos,
+          points: tileVertexes,
+          strokeColor: 'rgba(0, 136, 0, 0.9)',
+          lineWidth,
+          close: true,
+        });
+        const focusRectLabel = new Label({
+          anchor,
+          pos: focusPos,
+          text:  focusXYNum.join(),
+          fontSize,
+          fillColor: 'rgba(0, 136, 0, 0.8)',
+        });
 
-
-      const neighborsRects = [];
-      // 四个边的邻居
-      directions.forEach(([xDiff, yDiff]) => {
-        neighborsRects.push(
-          new Polyline({
-            pos: [xPos + xDiff * width, yPos + yDiff * height],
-            points: rectVertexes,
+        const neighborsEls = getNeighbors(focusXYNum, stagger).map((xyNum) => {
+          return new Polyline({
+            pos: getPosition(xyNum, size, stagger, pos),
+            points: tileVertexes,
             strokeColor: 'rgba(0, 0, 255, 0.5)',
             fillColor: 'rgba(0, 0, 255, 0.05)',
             lineWidth,
             close: true,
-          })
-        );
-      });
-      // 四个角的邻居
-      corners.forEach(([xDiff, yDiff]) => {
-        neighborsRects.push(
-          new Polyline({
-            pos: [xPos + xDiff * width, yPos + yDiff * height],
-            points: rectVertexes,
-            strokeColor: 'rgba(125, 0, 255, 0.5)',
-            fillColor: 'rgba(125, 0, 255, 0.05)',
-            lineWidth,
-            close: true,
-          })
-        );
-      });
-      let neiDis = 1;
-      let neiX = xPos;
-      let neiY = yPos;
-      const updateNeisPos = (x, y, dis = 1) => {
-        neiX = x;
-        neiY = y;
-        neiDis = dis;
-        // 邻居位置更新
-        [...directions, ...corners].forEach(([xDiff, yDiff], i) => {
-          neighborsRects[i].attr({
-            x: x + xDiff * width * dis,
-            y: y + yDiff * height * dis,
           });
         });
-      };
 
-      const valEl = document.getElementById('val');
-      document.getElementById('ipt_range').onchange = (e) => {
-        const val = e.target.value;
-        valEl.innerText = val;
-        updateNeisPos(neiX, neiY, Number(val));
+        shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
       };
-      
-      shapesEls.push(...neighborsRects, focusRectTile, focusRectLabel);
-
+      createFocusAndNeis([0, 0]);
+      createFocusAndNeis([4, 1]);
       /* 图形处理试验代码 end */
 
       layer.append(...shapesEls);
@@ -153,15 +115,13 @@
     <div class="frm">
       <h4>可用方向：</h4>
       <span id="dirs">
-        <a data-type="corners" data-idx="0">↖</a>
-        <a data-type="directions" data-idx="0" class="active">↑</a>
-        <a data-type="corners" data-idx="1">↗</a>
-        <a data-type="directions" data-idx="3" class="active">←</a>
+        <a data-dir="0" class="active" style="margin-left: 10px;">↖</a>
+        <a data-dir="1" class="active">↗</a>
+        <a data-dir="4" class="active">←</a>
         <a disable>○</a>
-        <a data-type="directions" data-idx="1" class="active">→</a>
-        <a data-type="corners" data-idx="3">↙</a>
-        <a data-type="directions" data-idx="2" class="active">↓</a>
-        <a data-type="corners" data-idx="2">↘</a>
+        <a data-dir="5" class="active">→</a>
+        <a data-dir="3" class="active" style="margin-left: 10px;">↙</a>
+        <a data-dir="2" class="active">↘</a>
       </span>
       <label><input type="checkbox" id="ckb">网格外允许通行(无限查找，慎用！)</label>
       <span class="btns-submit">
@@ -178,7 +138,6 @@
       <a class="btn-big" id="set_roadblock">设置路障</a>
     </div>
   </div>
-  <!-- 单元格定位 -->
   <script type="text/javascript">
     (function() {
       const $id = (id) => document.getElementById(id);
@@ -206,10 +165,10 @@
       const anchor = [0.5, 0.5];
       const fontSize = '12px';
 
-      const { getVertexes, getPositions, getInfoByPos } = qtiled.shapes.rect;
+      const { getVertexes, getPosition, getPositions, getInfoByPos } = qtiled.shapes.hexagon;
 
       // 一个矩形顶点坐标集
-      const rectVertexes = getVertexes(size);
+      const tileVertexes = getVertexes(size);
 
       // 文案输出
       const mouseMoveLabel = new Label({
@@ -222,12 +181,13 @@
 
       const xNumRange = [-6, 6];
       const yNumRange = [-4, 6];
-      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+      const stagger = 'even';
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         shapesEls.push(
           new Polyline({
             pos,
-            points: rectVertexes,
+            points: tileVertexes,
             strokeColor: 'rgba(0, 0, 0, 0.1)',
             fillColor: 'rgba(255, 255, 255, 0.2)',
             lineWidth,
@@ -244,16 +204,18 @@
       });
 
       // 焦点矩形
+      const focusXYNum = [0, 0];
+      const focusPos = getPosition(focusXYNum, size, stagger, pos);
       const focusRectTile = new Polyline({
-        pos,
-        points: rectVertexes,
+        pos: focusPos,
+        points: tileVertexes,
         strokeColor: 'rgba(0, 136, 0, 0.9)',
         lineWidth,
         close: true,
       });
       const focusRectLabel = new Label({
         anchor,
-        pos,
+        pos: focusPos,
         text:  '0,0',
         fontSize,
         fillColor: 'rgba(0, 136, 0, 0.8)',
@@ -268,7 +230,9 @@
         const tileX = e.pageX - offsetLeft;
         const tileY = e.pageY - offsetTop;
         // 得到索引序号&渲染位置
-        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size);
+        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size, stagger);
+        focusXYNum[0] = xNum;
+        focusXYNum[1] = yNum;
         // 更新文案
         mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}; tileX: ${tileX}, tileY: ${tileY}, x: ${x}, y:${y}`;
         
@@ -290,7 +254,7 @@
       const getBlock = (txt = '起点', color = 'blue', opacity = 1, txtYPos = 1.5, fillColor = 'rgba(255, 255, 255, 0.2)') => {
         const blockTile = new Polyline({
           pos,
-          points: rectVertexes,
+          points: tileVertexes,
           strokeColor: color,
           fillColor,
           lineWidth,
@@ -364,36 +328,28 @@
       container.addEventListener('click', (e) => {
         if (!actFun) return;
         // 得到索引序号&渲染位置
-        const [xNum, yNum, x, y] = getInfoByPos([e.pageX - offsetLeft, e.pageY - offsetTop], pos, size);
+        const [xNum, yNum, x, y] = getInfoByPos([e.pageX - offsetLeft, e.pageY - offsetTop], pos, size, stagger);
         actFun(xNum, yNum, x, y);
       });
 
       // 方向控制
-      const dirConfs = [];
-      const { rect } = qtiled.shapes;
-
-      const dirsEl = $id('dirs');
-      // 边邻居与角邻居行进成本不同
-      const dirBtnEls = Array.from(dirsEl.querySelectorAll('[data-type]'));
-      const updateDirConfs = () => {
-        dirConfs.length = 0;
-        dirBtnEls.forEach((el) => {
-          if (el.className === 'active') {
-            const { type, idx } = el.dataset;
-            dirConfs.push(rect[type][idx]);
-          }
-        });
-      };
-      updateDirConfs();
+      const dirConfs = {};
+      const dirBtnEls = Array.from($id('dirs').querySelectorAll('[data-dir]'));
+      dirBtnEls.forEach((el) => {
+        dirConfs[el.innerText] = el.className === 'active';
+      });
       // 选中与取消某个方向
       dirBtnEls.forEach((el) => {
         el.onclick = () => {
-          el.className = el.className === 'active' ? '' : 'active';
-          updateDirConfs();
+          const hasActive = el.className === 'active';
+          el.className = hasActive ? '' : 'active';
+          dirConfs[el.innerText] = !hasActive;
         };
       });
 
-      const { aStarPathFinding } = qtiled.pathFinding;
+      const { aStar } = qtiled.pathFinding;
+      const { getNeighbors } = qtiled.shapes.hexagon;
+
       // 道路
       const addRoad = (xNum, yNum, x, y, cost = 0) => {
         const [appendBlock, removeBlock] = getBlock(`道路 ${cost}`, '#a28a0f', 0.5, -0.5, 'rgba(180, 140, 90, 0.2)');
@@ -408,24 +364,35 @@
       const ckbEl = $id('ckb');
       const [minXNum, maxXNum] = xNumRange;
       const [minYNum, maxYNum] = yNumRange;
-      const filterFun = ([xNum, yNum]) => {
-        return (
-          // 不是路障
-          !roadblocksRmCaches[xNum + ',' + yNum]
-          // 限定在网格地图区域内查找
-          && (ckbEl.checked || (xNum >= minXNum && xNum <= maxXNum && yNum >= minYNum && yNum <= maxYNum))
-        );
-      };
+      const tileVerify = (xNum, yNum) => (
+        // 不是路障
+        !roadblocksRmCaches[xNum + ',' + yNum]
+        // 限定在网格地图区域内查找
+        && (ckbEl.checked || (xNum >= minXNum && xNum <= maxXNum && yNum >= minYNum && yNum <= maxYNum))
+      );
       $id('start_path_finding').onclick = () => {
         const staXYNum = getStaXyNum();
-        if (!filterFun(staXYNum)) return alert('错误的起点，不可通行');
+        if (!tileVerify(...staXYNum)) return alert('错误的起点，不可通行');
         const endXYNum = getEndXyNum();
-        if (!filterFun(endXYNum)) return alert('错误的终点，不可通行');
-        const pathXyNums = aStarPathFinding(staXYNum, endXYNum, dirConfs, filterFun);
+        if (!tileVerify(...endXYNum)) return alert('错误的终点，不可通行');
+        const pathXyNums = aStar(
+          staXYNum,
+          endXYNum,
+          (originXyNum) => {
+            return getNeighbors(originXyNum, stagger).filter(([xNum, yNum, cost, angStr]) => {
+              return (
+                // 启用的寻路方向
+                dirConfs[angStr] &&
+                // 合法可通行元素
+                tileVerify(xNum, yNum)
+              );
+            });
+          }
+        );
         if (!pathXyNums) return alert('没有通行路径。');
         clearPath();
         pathXyNums.forEach(([xNum, yNum, cost]) => {
-          const poss = getPositions([xNum, xNum], [yNum, yNum], size, 'RightDown');
+          const poss = getPositions([xNum, xNum], [yNum, yNum], size, 'RightDown', stagger);
           const [x, y] = poss[0];
           addRoad(xNum, yNum, x + xPos, y + yPos, cost);
         });

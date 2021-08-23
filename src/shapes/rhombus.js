@@ -5,6 +5,7 @@ import {
   HALF,
   FLAH,
   twoDimForEach,
+  /*isStaggerLine,*/
   getVertexes as getPolygonVertexes,
   getPositions as getPolygonPositions,
   getInfoByPos as getPolygonInfoByPos,
@@ -17,6 +18,43 @@ const vertexes = [
   [0, HALF],
   [FLAH, 0],
 ];
+/*
+// 左上、右上、右下、左下、左边、右边，6个边邻居 [xNum, yNum, cost, angle] 差值及距离成本及渲染角度
+export const directionsNormal = [
+  [-1, -1, 1, '↖'],
+  [0, -1, 1, '↗'],
+  [0, 1, 1, '↘'],
+  [-1, 1, 1, '↙'],
+  [-1, 0, 1, '←'],
+  [1, 0, 1, '→'],
+];
+
+// 错列行邻居下标差值
+export const directionsOffset = [
+  [0, -1, 1, '↖'],
+  [1, -1, 1, '↗'],
+  [1, 1, 1, '↘'],
+  [0, 1, 1, '↙'],
+  [-1, 0, 1, '←'],
+  [1, 0, 1, '→'],
+];
+
+Isometric
+// 上、右、下、左，四个边邻居 [xNum, yNum, cost] 差值及距离成本
+export const directions = [
+  [0, -1, 1, '↑'],
+  [1, 0, 1, '→'],
+  [0, 1, 1, '↓'],
+  [-1, 0, 1, '←'],
+];
+
+// 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
+export const corners = [
+  [-1, -1, 1.414, '↖'],
+  [1, -1, 1.414, '↗'],
+  [1, 1, 1.414, '↘'],
+  [-1, 1, 1.414, '↙'],
+];*/
 
 /* 获取宽高的一半（菱形中心点在顶点坐标系中的值）
 * @param  {Array}   size    如： [width{Number}, height{Number}]
@@ -100,3 +138,14 @@ export function getIsometricInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize
     y + originY,
   ];
 }
+
+/* 获得指定tile下标周边紧邻的邻居们
+ * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
+ * @param  {String}    stagger         需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+ * @return {Array}  [[xNum, yNum]]
+ */
+/*export function getNeighbors(originXyNum = [0, 0], stagger = 'odd') {
+  const [originXNum, originYNum] = originXyNum;
+  const directions = isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal;
+  return directions.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+}*/

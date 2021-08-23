@@ -9,7 +9,6 @@
     ['pathfinding-hexagon.html', 'A*寻路 - 六边形'],
     // ['pathfinding-rhombus.html', 'A*寻路 - 正菱形'],
     ['vast.html', '大量菱形单元交互测试'],
-    ['old.html', '一个旧思路试验 一个旧思路试验一个旧思路试验一个旧思路试验一个旧思路试验一个旧思路试验'],
   ];
 
   var navsEl = doc.createElement('div');
