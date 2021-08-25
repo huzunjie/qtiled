@@ -1,6 +1,6 @@
 
 /**
- * qtiled v0.2.2
+ * qtiled v0.2.5
  * (c) 2008-2021 huzunjie
  * Released under MIT
  */
@@ -321,7 +321,7 @@ function isStaggerLine(lineNum, stagger) {
  * @return {Array}   [x, y, xNum, yNum]
  */
 
-function getPosition$2() {
+function getPosition$3() {
   var lineRate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
   var xyNum = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0];
   var tileSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [8, 4];
@@ -431,16 +431,16 @@ var polygonFuns = /*#__PURE__*/Object.freeze({
   getVertexes: getVertexes$3,
   twoDimForEach: twoDimForEach,
   isStaggerLine: isStaggerLine,
-  getPosition: getPosition$2,
+  getPosition: getPosition$3,
   getPositions: getPositions$3,
   getInfoByPos: getInfoByPos$3
 });
 
 var vertexes$2 = [[FLAH, FLAH], [HALF, FLAH], [HALF, HALF], [FLAH, HALF]];
-/* 上、右、下、左，四个边邻居 [xNum, yNum, cost] 差值及距离成本 */
+/* 上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 
 var directions = [[0, -1, 1, '↑'], [1, 0, 1, '→'], [0, 1, 1, '↓'], [-1, 0, 1, '←']];
-/* 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本 */
+/* 左上、右上、左下、右下，四个角邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 
 var corners = [[-1, -1, 1.414, '↖'], [1, -1, 1.414, '↗'], [1, 1, 1.414, '↘'], [-1, 1, 1.414, '↙']];
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
@@ -463,7 +463,7 @@ function getVertexes$2() {
  * @return {Array}   [x, y]
  */
 
-function getPosition$1() {
+function getPosition$2() {
   var xyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
   var tileSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [8, 4];
   var originXY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
@@ -502,7 +502,7 @@ function getInfoByPos$2() {
  * @return {Array}  [[xNum, yNum]]
  */
 
-function getNeighbors$1() {
+function getNeighbors$2() {
   var originXyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
   var neisConf = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [].concat(directions, corners);
 
@@ -543,21 +543,21 @@ var rectFuns = /*#__PURE__*/Object.freeze({
   directions: directions,
   corners: corners,
   getVertexes: getVertexes$2,
-  getPosition: getPosition$1,
+  getPosition: getPosition$2,
   getPositions: getPositions$2,
   getInfoByPos: getInfoByPos$2,
-  getNeighbors: getNeighbors$1,
+  getNeighbors: getNeighbors$2,
   getNeighborsByDistance: getNeighborsByDistance
 });
 
 var vertexes$1 = [[0, FLAH], [HALF, RAUQ], [HALF, QUAR], [0, HALF], [FLAH, QUAR], [FLAH, RAUQ]];
 var TQUA = TQUA$1;
-/* 左上、右上、右下、左下、左边、右边，6个边邻居 [xNum, yNum, cost, angle] 差值及距离成本及渲染角度 */
+/* 左上、右上、右下、左下、左边、右边，6个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本及渲染角度 */
 
-var directionsNormal = [[-1, -1, 1, '↖'], [0, -1, 1, '↗'], [0, 1, 1, '↘'], [-1, 1, 1, '↙'], [-1, 0, 1, '←'], [1, 0, 1, '→']];
-/* 错列行邻居下标差值 */
+var directionsNormal$1 = [[-1, -1, 1, '↖'], [0, -1, 1, '↗'], [0, 1, 1, '↘'], [-1, 1, 1, '↙'], [-1, 0, 1, '←'], [1, 0, 1, '→']];
+/* 错列行邻居下标差值 [xNum, yNum, cost, angStr] */
 
-var directionsOffset = [[0, -1, 1, '↖'], [1, -1, 1, '↗'], [1, 1, 1, '↘'], [0, 1, 1, '↙'], [-1, 0, 1, '←'], [1, 0, 1, '→']];
+var directionsOffset$1 = [[0, -1, 1, '↖'], [1, -1, 1, '↗'], [1, 1, 1, '↘'], [0, 1, 1, '↙'], [-1, 0, 1, '←'], [1, 0, 1, '→']];
 /* 根据计划渲染的六边形宽高值得到顶点坐标集
 * @param  {Array}   size    如： [width{Number}, height{Number}]
 * @param  {String}  axis     主轴方向 'x' || 'y'；默认为 'y'，上下是尖
@@ -583,12 +583,12 @@ function getVertexes$1() {
  * @return {Array}   [x, y]
  */
 
-function getPosition() {
+function getPosition$1() {
   var xyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
   var tileSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [8, 4];
   var stagger = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'odd';
   var originXY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [0, 0];
-  return getPosition$2(TQUA, xyNum, tileSize, stagger, originXY);
+  return getPosition$3(TQUA, xyNum, tileSize, stagger, originXY);
 }
 /* 得到一组错列布局六边形地图瓦片的坐标偏移位置集合
  * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
@@ -628,7 +628,7 @@ function getInfoByPos$1() {
  * @return {Array}  [[xNum, yNum]]
  */
 
-function getNeighbors() {
+function getNeighbors$1() {
   var originXyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
   var stagger = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'odd';
 
@@ -636,7 +636,7 @@ function getNeighbors() {
       originXNum = _originXyNum[0],
       originYNum = _originXyNum[1];
 
-  var directions = isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal;
+  var directions = isStaggerLine(originYNum, stagger) ? directionsOffset$1 : directionsNormal$1;
   return directions.map(function (_ref3) {
     var _ref4 = _slicedToArray(_ref3, 4),
         xNum = _ref4[0],
@@ -652,54 +652,27 @@ var hexagonFuns = /*#__PURE__*/Object.freeze({
   __proto__: null,
   vertexes: vertexes$1,
   TQUA: TQUA,
-  directionsNormal: directionsNormal,
-  directionsOffset: directionsOffset,
+  directionsNormal: directionsNormal$1,
+  directionsOffset: directionsOffset$1,
   getVertexes: getVertexes$1,
-  getPosition: getPosition,
+  getPosition: getPosition$1,
   getPositions: getPositions$1,
   getInfoByPos: getInfoByPos$1,
-  getNeighbors: getNeighbors
+  getNeighbors: getNeighbors$1
 });
 
-var vertexes = [[0, FLAH], [HALF, 0], [0, HALF], [FLAH, 0]];
-/*
-// 左上、右上、右下、左下、左边、右边，6个边邻居 [xNum, yNum, cost, angle] 差值及距离成本及渲染角度
-export const directionsNormal = [
-  [-1, -1, 1, '↖'],
-  [0, -1, 1, '↗'],
-  [0, 1, 1, '↘'],
-  [-1, 1, 1, '↙'],
-  [-1, 0, 1, '←'],
-  [1, 0, 1, '→'],
-];
+var vertexes = [[0, FLAH], [HALF, 0], [0, HALF], [FLAH, 0]]; // 非错列元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 
-// 错列行邻居下标差值
-export const directionsOffset = [
-  [0, -1, 1, '↖'],
-  [1, -1, 1, '↗'],
-  [1, 1, 1, '↘'],
-  [0, 1, 1, '↙'],
-  [-1, 0, 1, '←'],
-  [1, 0, 1, '→'],
-];
+var directionsNormal = [[-1, -1, 1, '↖'], [0, -1, 1, '↗'], [0, 1, 1, '↘'], [-1, 1, 1, '↙']]; // 错列元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 
-Isometric
-// 上、右、下、左，四个边邻居 [xNum, yNum, cost] 差值及距离成本
-export const directions = [
-  [0, -1, 1, '↑'],
-  [1, 0, 1, '→'],
-  [0, 1, 1, '↓'],
-  [-1, 0, 1, '←'],
-];
+var directionsOffset = [[0, -1, 1, '↖'], [1, -1, 1, '↗'], [1, 1, 1, '↘'], [0, 1, 1, '↙']]; // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
+// 没错，错列与非错列的角的邻居坐标系差值一样
 
-// 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
-export const corners = [
-  [-1, -1, 1.414, '↖'],
-  [1, -1, 1.414, '↗'],
-  [1, 1, 1.414, '↘'],
-  [-1, 1, 1.414, '↙'],
-];*/
+var cornersNormalOrOffset = [[0, -2, 1.414, '↑'], [1, 0, 1.414, '→'], [0, 2, 1.414, '↓'], [-1, 0, 1.414, '←']]; // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 
+var directionsIsometric = [[0, -1, 1, '↖'], [1, 0, 1, '↗'], [0, 1, 1, '↘'], [-1, 0, 1, '↙']]; // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
+
+var cornersIsometric = [[1, -1, 1.414, '↑'], [1, 1, 1.414, '→'], [-1, 1, 1.414, '↓'], [-1, -1, 1.414, '←']];
 /* 获取宽高的一半（菱形中心点在顶点坐标系中的值）
 * @param  {Array}   size    如： [width{Number}, height{Number}]
 * @return {Array}   [halfWidth, halfHeight]
@@ -730,6 +703,21 @@ function getVertexes() {
 
   return getVertexes$3(vertexes, width, height);
 }
+/* 得到一个错列布局菱形地图瓦片的坐标位置
+ * @param  {Array}   xyNum          目标元素XY索引值，如：[0, 0]
+ * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
+ * @param  {String}  stagger        需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
+ * @param  {Array}   originXY       原点像素坐标值，如：[0, 0]
+ * @return {Array}   [x, y]
+ */
+
+function getPosition() {
+  var xyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+  var tileSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [8, 4];
+  var stagger = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'odd';
+  var originXY = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [0, 0];
+  return getPosition$3(HALF, xyNum, tileSize, stagger, originXY);
+}
 /* 得到一组错列布局菱形地图瓦片的坐标偏移位置集合
  * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
  * @param  {Array}   subAxisRange   副轴行序号区间，如：[0, 0]
@@ -749,7 +737,25 @@ function getPositions() {
 }
 /* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值 */
 
-function getIsometricPosition(xNum, yNum, halfWidth, halfHeight) {
+function getIsometricPosition() {
+  var _ref5 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [],
+      _ref6 = _slicedToArray(_ref5, 2),
+      xNum = _ref6[0],
+      yNum = _ref6[1];
+
+  var tileSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [8, 4];
+  var originXY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 0];
+
+  var _getIsometricPosByHal = getIsometricPosByHalfSize.apply(void 0, [xNum, yNum].concat(_toConsumableArray(getHalfSize(tileSize)))),
+      _getIsometricPosByHal2 = _slicedToArray(_getIsometricPosByHal, 2),
+      x = _getIsometricPosByHal2[0],
+      y = _getIsometricPosByHal2[1];
+
+  return [x + originXY[0], y + originXY[1]];
+}
+/* 按等距布局菱形单元横纵坐标值及单元格宽高的一半得到渲染坐标值 */
+
+function getIsometricPosByHalfSize(xNum, yNum, halfWidth, halfHeight) {
   return [(xNum + yNum) * halfWidth, (yNum - xNum) * halfHeight];
 }
 /* 得到一组等距正菱形地图瓦片的坐标偏移位置集合
@@ -773,7 +779,7 @@ function getIsometricPositions() {
       halfHeight = _getHalfSize2[1];
 
   return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, function (xNum, yNum) {
-    return [].concat(_toConsumableArray(getIsometricPosition(xNum, yNum, halfWidth, halfHeight)), [xNum, yNum]);
+    return [].concat(_toConsumableArray(getIsometricPosByHalfSize(xNum, yNum, halfWidth, halfHeight)), [xNum, yNum]);
   });
 }
 /* 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
@@ -817,34 +823,80 @@ function getIsometricInfoByPos() {
   var yNum = Math.round(ySteps + xSteps);
   var xNum = Math.round(xSteps - ySteps);
 
-  var _getIsometricPosition = getIsometricPosition(xNum, yNum, halfWidth, halfHeight),
-      _getIsometricPosition2 = _slicedToArray(_getIsometricPosition, 2),
-      x = _getIsometricPosition2[0],
-      y = _getIsometricPosition2[1];
+  var _getIsometricPosByHal3 = getIsometricPosByHalfSize(xNum, yNum, halfWidth, halfHeight),
+      _getIsometricPosByHal4 = _slicedToArray(_getIsometricPosByHal3, 2),
+      x = _getIsometricPosByHal4[0],
+      y = _getIsometricPosByHal4[1];
 
   return [xNum, yNum, x + originX, y + originY];
 }
-/* 获得指定tile下标周边紧邻的邻居们
+/* 获得错列布局中指定tile下标周边紧邻的邻居们
  * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
  * @param  {String}    stagger         需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @return {Array}  [[xNum, yNum]]
  */
 
-/*export function getNeighbors(originXyNum = [0, 0], stagger = 'odd') {
-  const [originXNum, originYNum] = originXyNum;
-  const directions = isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal;
-  return directions.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
-}*/
+function getNeighbors() {
+  var originXyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+  var stagger = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'odd';
+
+  var _originXyNum = _slicedToArray(originXyNum, 2),
+      originXNum = _originXyNum[0],
+      originYNum = _originXyNum[1];
+
+  var neisArr = [].concat(cornersNormalOrOffset, _toConsumableArray(isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal));
+  return neisArr.map(function (_ref7) {
+    var _ref8 = _slicedToArray(_ref7, 4),
+        xNum = _ref8[0],
+        yNum = _ref8[1],
+        cost = _ref8[2],
+        angStr = _ref8[3];
+
+    return [xNum + originXNum, yNum + originYNum, cost, angStr];
+  });
+}
+/* 获得等距布局中指定tile下标周边紧邻的邻居们
+ * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
+ * @return {Array}  [[xNum, yNum]]
+ */
+
+function getIsometricNeighbors() {
+  var originXyNum = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [0, 0];
+
+  var _originXyNum2 = _slicedToArray(originXyNum, 2),
+      originXNum = _originXyNum2[0],
+      originYNum = _originXyNum2[1];
+
+  var neisArr = [].concat(cornersIsometric, directionsIsometric);
+  return neisArr.map(function (_ref9) {
+    var _ref10 = _slicedToArray(_ref9, 4),
+        xNum = _ref10[0],
+        yNum = _ref10[1],
+        cost = _ref10[2],
+        angStr = _ref10[3];
+
+    return [xNum + originXNum, yNum + originYNum, cost, angStr];
+  });
+}
 
 var rhombusFuns = /*#__PURE__*/Object.freeze({
   __proto__: null,
+  directionsNormal: directionsNormal,
+  directionsOffset: directionsOffset,
+  cornersNormalOrOffset: cornersNormalOrOffset,
+  directionsIsometric: directionsIsometric,
+  cornersIsometric: cornersIsometric,
   getHalfSize: getHalfSize,
   getVertexes: getVertexes,
+  getPosition: getPosition,
   getPositions: getPositions,
   getIsometricPosition: getIsometricPosition,
+  getIsometricPosByHalfSize: getIsometricPosByHalfSize,
   getIsometricPositions: getIsometricPositions,
   getInfoByPos: getInfoByPos,
-  getIsometricInfoByPos: getIsometricInfoByPos
+  getIsometricInfoByPos: getIsometricInfoByPos,
+  getNeighbors: getNeighbors,
+  getIsometricNeighbors: getIsometricNeighbors
 });
 
 var ellipse = ellipseFuns;

@@ -14,7 +14,7 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
 
-  <h1>查找紧邻Tile</h1>
+  <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
   <script type="text/javascript">
     (function() {
@@ -32,22 +32,22 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 345;
+      const xPos = 225;
       const yPos = 160;
       const pos = [xPos, yPos];
-      const width = 50;
-      const height = 40;
+      const width = 60;
+      const height = 30;
       const size = [width, height];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
-      const { getVertexes, getPosition, getPositions, getNeighbors } = qtiled.shapes.hexagon;
+      const { getVertexes, getPosition, getPositions, getNeighbors } = qtiled.shapes.rhombus;
 
       // 一个矩形顶点坐标集
       const tileVertexes = getVertexes(size);
 
-      const xNumRange = [-6, 6];
-      const yNumRange = [-4, 5];
+      const xNumRange = [-3, 6];
+      const yNumRange = [-8, 8];
       const stagger = 'even'; // odd even
 
       getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
@@ -109,19 +109,21 @@
     }());
   </script>
 
-  <h1>寻找连通路径</h1>
+  <h1>在错列布局中寻找连通路径</h1>
   <div id="container2"></div>
   <div class="frm-wrap">
     <div class="frm">
       <h4>可用方向：</h4>
-      <span id="dirs">
-        <a data-dir="0" class="active" style="margin-left: 10px;">↖</a>
-        <a data-dir="1" class="active">↗</a>
-        <a data-dir="4" class="active">←</a>
+      <span id="dirs" class="dirs">
+        <a data-dir class="active">↖</a>
+        <a data-dir>↑</a>
+        <a data-dir class="active">↗</a>
+        <a data-dir>←</a>
         <a disable>○</a>
-        <a data-dir="5" class="active">→</a>
-        <a data-dir="3" class="active" style="margin-left: 10px;">↙</a>
-        <a data-dir="2" class="active">↘</a>
+        <a data-dir>→</a>
+        <a data-dir class="active">↙</a>
+        <a data-dir>↓</a>
+        <a data-dir class="active">↘</a>
       </span>
       <label><input type="checkbox" id="ckb">网格外允许通行(无限查找，慎用！)</label>
       <span class="btns-submit">
@@ -156,16 +158,16 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 345;
+      const xPos = 360;
       const yPos = 220;
       const pos = [xPos, yPos];
-      const width = 50;
-      const height = 40;
+      const width = 78;
+      const height = 36;
       const size = [width, height];
       const anchor = [0.5, 0.5];
-      const fontSize = '12px';
+      const fontSize = '10px';
 
-      const { getVertexes, getPosition, getPositions, getInfoByPos } = qtiled.shapes.hexagon;
+      const { getVertexes, getPosition, getPositions, getInfoByPos } = qtiled.shapes.rhombus;
 
       // 一个矩形顶点坐标集
       const tileVertexes = getVertexes(size);
@@ -179,9 +181,9 @@
       });
       shapesEls.push(mouseMoveLabel);
 
-      const xNumRange = [-6, 6];
-      const yNumRange = [-4, 6];
-      const stagger = 'even';
+      const xNumRange = [-4, 6];
+      const yNumRange = [-10, 14];
+      const stagger = 'odd';
       getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         shapesEls.push(
@@ -251,7 +253,7 @@
       const clearPath = () => Object.values(roadsRmCaches).forEach((fun) => fun());
 
       // 创建tile块，并得到 append remove 方法
-      const getBlock = (txt = '起点', color = 'blue', opacity = 1, txtYPos = 1.5, fillColor = 'rgba(255, 255, 255, 0.2)') => {
+      const getBlock = (txt = '起点', color = 'blue', opacity = 1, txtYPos = 1.3, fillColor = 'rgba(255, 255, 255, 0.2)') => {
         const blockTile = new Polyline({
           pos,
           points: tileVertexes,
@@ -311,7 +313,7 @@
       const addRoadbock = (xNum, yNum, x, y) => {
         const cacheKey = xNum + ',' + yNum;
         if (roadblocksRmCaches[cacheKey]) return; // 阻止重复设置路障
-        const [appendBlock, removeBlock] = getBlock('路障 ', 'rgba(0, 0, 0, 0.8)', 1, 1.5, 'rgba(0, 0, 0, 0.2)');
+        const [appendBlock, removeBlock] = getBlock('路障 ', 'rgba(0, 0, 0, 0.8)', 1, 1.3, 'rgba(0, 0, 0, 0.2)');
         appendBlock(xNum, yNum, x, y);
         roadblocksRmCaches[cacheKey] = () => {
           delete roadblocksRmCaches[cacheKey];
@@ -348,11 +350,11 @@
       });
 
       const { aStar } = qtiled.pathFinding;
-      const { getNeighbors } = qtiled.shapes.hexagon;
+      const { getNeighbors } = qtiled.shapes.rhombus;
 
       // 道路
       const addRoad = (xNum, yNum, x, y, cost = 0) => {
-        const [appendBlock, removeBlock] = getBlock(`道路 ${cost}`, '#a28a0f', 0.5, -0.5, 'rgba(180, 140, 90, 0.2)');
+        const [appendBlock, removeBlock] = getBlock(`路${cost}`, '#a28a0f', 0.5, -0.35, 'rgba(180, 140, 90, 0.2)');
         appendBlock(xNum, yNum, x, y);
         const cacheKey = xNum + ',' + yNum;
         roadsRmCaches[cacheKey] = () => {
@@ -400,7 +402,394 @@
       $id('clear_path').onclick = clearPath;
     }());
   </script>
-  
+  <hr style="border-color: #fff;" />
+  <h1 style="margin-top: 50px;">在等距布局中查找相邻Tile</h1>
+  <div id="container1" style="height: 350px;"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container1');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 350,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 240;
+      const yPos = 170;
+      const pos = [xPos, yPos];
+      const width = 60;
+      const height = 30;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+
+      const { getVertexes, getIsometricPosition, getIsometricPositions, getIsometricNeighbors } = qtiled.shapes.rhombus;
+
+      // 一个矩形顶点坐标集
+      const tileVertexes = getVertexes(size);
+
+      const xNumRange = [-3, 6];
+      const yNumRange = [-4, 6];
+
+      getIsometricPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: tileVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text:  xNum + ',' + yNum,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const createFocusAndNeis = (focusXYNum = [-3, -2]) => {
+        const focusPos = getIsometricPosition(focusXYNum, size, pos);
+        const focusRectTile = new Polyline({
+          pos: focusPos,
+          points: tileVertexes,
+          strokeColor: 'rgba(0, 136, 0, 0.9)',
+          lineWidth,
+          close: true,
+        });
+        const focusRectLabel = new Label({
+          anchor,
+          pos: focusPos,
+          text:  focusXYNum.join(),
+          fontSize,
+          fillColor: 'rgba(0, 136, 0, 0.8)',
+        });
+
+        const neighborsEls = getIsometricNeighbors(focusXYNum).map((neisConf) => {
+          return new Polyline({
+            pos: getIsometricPosition(neisConf, size, pos),
+            points: tileVertexes,
+            strokeColor: 'rgba(0, 0, 255, 0.5)',
+            fillColor: 'rgba(0, 0, 255, 0.05)',
+            lineWidth,
+            close: true,
+          });
+        });
+
+        shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
+      };
+      createFocusAndNeis([0, 0]);
+      createFocusAndNeis([3, 3]);
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
+  <h1>在等距布局中寻找连通路径</h1>
+  <div id="container3" class="container" style="width: 1500px; height: 600px;"></div>
+  <div class="frm-wrap">
+    <div class="frm">
+      <h4>可用方向：</h4>
+      <span id="dirs1" class="dirs">
+        <a data-dir class="active">↖</a>
+        <a data-dir>↑</a>
+        <a data-dir class="active">↗</a>
+        <a data-dir>←</a>
+        <a disable>○</a>
+        <a data-dir>→</a>
+        <a data-dir class="active">↙</a>
+        <a data-dir>↓</a>
+        <a data-dir class="active">↘</a>
+      </span>
+      <label><input type="checkbox" id="ckb1">网格外允许通行(无限查找，慎用！)</label>
+      <span class="btns-submit">
+        <a class="btn-big btn-clear" id="clear_path1">清理路径</a>
+        <a class="btn-big" id="start_path_finding1"><b>开始寻路</b></a>
+      </span>
+    </div>
+    <div class="frm frm-btns">
+      <a class="btn-big btn-clear" id="clear_sta1">清理起点</a>
+      <a class="btn-big" id="set_sta1">设置起点</a>
+      <a class="btn-big btn-clear" id="clear_end1">清理终点</a>
+      <a class="btn-big" id="set_end1">设置终点</a>
+      <a class="btn-big btn-clear" id="clear_roadblock1">清理路障</a>
+      <a class="btn-big" id="set_roadblock1">设置路障</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+    (function() {
+      const $id = (id) => document.getElementById(id);
+
+      const container = $id('container3');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 1500,
+          height: 800,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 560;
+      const yPos = 240;
+      const pos = [xPos, yPos];
+      const width = 78;
+      const height = 36;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '10px';
+
+      const { getVertexes, getIsometricPosition, getIsometricPositions, getIsometricInfoByPos } = qtiled.shapes.rhombus;
+
+      // 一个矩形顶点坐标集
+      const tileVertexes = getVertexes(size);
+
+      // 文案输出
+      const mouseMoveLabel = new Label({
+        pos: [30, 10],
+        text:  '鼠标交互实时展示',
+        fontSize,
+        fillColor: '#999',
+      });
+      shapesEls.push(mouseMoveLabel);
+
+      const xNumRange = [-9, 6];
+      const yNumRange = [-5, 9];
+      getIsometricPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: tileVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.1)',
+            fillColor: 'rgba(255, 255, 255, 0.2)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text:  xNum + ',' + yNum,
+            fontSize,
+            opacity: 0.4,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const focusXYNum = [0, 0];
+      const focusPos = getIsometricPosition(focusXYNum, size, pos);
+      const focusRectTile = new Polyline({
+        pos: focusPos,
+        points: tileVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.9)',
+        lineWidth,
+        close: true,
+      });
+      const focusRectLabel = new Label({
+        anchor,
+        pos: focusPos,
+        text:  '0,0',
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+
+      shapesEls.push(focusRectTile, focusRectLabel);
+
+      /* 图形处理试验代码 end */
+
+      const { offsetTop, offsetLeft } = container;
+      container.addEventListener('mousemove', (e) => {
+        const tileX = e.pageX - offsetLeft;
+        const tileY = e.pageY - offsetTop;
+        // 得到索引序号&渲染位置
+        const [xNum, yNum, x, y] = getIsometricInfoByPos([tileX, tileY], pos, size);
+        focusXYNum[0] = xNum;
+        focusXYNum[1] = yNum;
+        // 更新文案
+        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}; tileX: ${tileX}, tileY: ${tileY}, x: ${x}, y:${y}`;
+        
+        // 越界与未越界颜色区分
+        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.3)`
+        // 更新焦点区域标识位置
+        focusRectTile.attr({ x, y, strokeColor: color });
+        focusRectLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+      });
+
+      layer.append(...shapesEls);
+
+      // 寻路相关
+      const layerRoad = scene.layer('roadblock', { handleEvent: false });
+      const roadsRmCaches = {/* [xNum + ',' + yNum]: removeFunction*/};
+      const clearPath = () => Object.values(roadsRmCaches).forEach((fun) => fun());
+
+      // 创建tile块，并得到 append remove 方法
+      const getBlock = (txt = '起点', color = 'blue', opacity = 1, txtYPos = 1.3, fillColor = 'rgba(255, 255, 255, 0.2)') => {
+        const blockTile = new Polyline({
+          pos,
+          points: tileVertexes,
+          strokeColor: color,
+          fillColor,
+          lineWidth,
+          close: true,
+          opacity,
+        });
+        const blockLabel = new Label({
+          anchor: [0.5, txtYPos],
+          pos,
+          text:  txt,
+          fontSize: '10px',
+          fillColor: color,
+        });
+        let blockXNum = 0;
+        let blockYNum = 0;
+        return [
+          // append
+          (xNum, yNum, x, y) => {
+            blockXNum = xNum;
+            blockYNum = yNum;
+            blockTile.attr({ x, y });
+            blockLabel.attr({ x, y });
+            layerRoad.append(blockTile, blockLabel);
+          },
+          // remove
+          () => {
+            blockXNum = 0;
+            blockYNum = 0;
+            blockTile.remove();
+            blockLabel.remove();
+          },
+          // getXyNum
+          () => [blockXNum, blockYNum],
+        ];
+      };
+
+      let actFun = null;
+      // 起点
+      const [appendStaBlock, removeStaBlock, getStaXyNum] = getBlock('起点', 'rgba(0, 125, 255, 0.8)');
+      $id('set_sta1').onclick = () => {
+        actFun = appendStaBlock;
+        clearPath();
+      };
+      $id('clear_sta1').onclick = removeStaBlock;
+      // 终点
+      const [appendEndBlock, removeEndBlock, getEndXyNum] = getBlock('终点', 'rgba(125, 0, 255, 0.8)');
+      $id('set_end1').onclick = () => {
+        actFun = appendEndBlock;
+        clearPath();
+      };
+      $id('clear_end1').onclick = removeEndBlock;
+      // 路障
+      const roadblocksRmCaches = {/* [xNum + ',' + yNum]: removeFunction*/}; // 路障集
+      const addRoadbock = (xNum, yNum, x, y) => {
+        const cacheKey = xNum + ',' + yNum;
+        if (roadblocksRmCaches[cacheKey]) return; // 阻止重复设置路障
+        const [appendBlock, removeBlock] = getBlock('路障 ', 'rgba(0, 0, 0, 0.8)', 1, 1.3, 'rgba(0, 0, 0, 0.2)');
+        appendBlock(xNum, yNum, x, y);
+        roadblocksRmCaches[cacheKey] = () => {
+          delete roadblocksRmCaches[cacheKey];
+          removeBlock();
+        };
+      };
+      $id('set_roadblock1').onclick = () => {
+        actFun = addRoadbock;
+        clearPath();
+      };
+      $id('clear_roadblock1').onclick = () => Object.values(roadblocksRmCaches).forEach((fun) => fun());
+
+      // 点击瓦片，执行具体行为
+      container.addEventListener('click', (e) => {
+        if (!actFun) return;
+        // 得到索引序号&渲染位置
+        const [xNum, yNum, x, y] = getIsometricInfoByPos([e.pageX - offsetLeft, e.pageY - offsetTop], pos, size);
+        actFun(xNum, yNum, x, y);
+      });
+
+      // 方向控制
+      const dirConfs = {};
+      const dirBtnEls = Array.from($id('dirs1').querySelectorAll('[data-dir]'));
+      dirBtnEls.forEach((el) => {
+        dirConfs[el.innerText] = el.className === 'active';
+      });
+      // 选中与取消某个方向
+      dirBtnEls.forEach((el) => {
+        el.onclick = () => {
+          const hasActive = el.className === 'active';
+          el.className = hasActive ? '' : 'active';
+          dirConfs[el.innerText] = !hasActive;
+        };
+      });
+
+      const { aStar } = qtiled.pathFinding;
+      const { getIsometricNeighbors } = qtiled.shapes.rhombus;
+
+      // 道路
+      const addRoad = (xNum, yNum, x, y, cost = 0) => {
+        const [appendBlock, removeBlock] = getBlock(`路${cost}`, '#a28a0f', 0.5, -0.35, 'rgba(180, 140, 90, 0.2)');
+        appendBlock(xNum, yNum, x, y);
+        const cacheKey = xNum + ',' + yNum;
+        roadsRmCaches[cacheKey] = () => {
+          delete roadsRmCaches[cacheKey];
+          removeBlock();
+        };
+      };
+
+      const ckbEl = $id('ckb1');
+      const [minXNum, maxXNum] = xNumRange;
+      const [minYNum, maxYNum] = yNumRange;
+      const tileVerify = (xNum, yNum) => (
+        // 不是路障
+        !roadblocksRmCaches[xNum + ',' + yNum]
+        // 限定在网格地图区域内查找
+        && (ckbEl.checked || (xNum >= minXNum && xNum <= maxXNum && yNum >= minYNum && yNum <= maxYNum))
+      );
+      $id('start_path_finding1').onclick = () => {
+        const staXYNum = getStaXyNum();
+        if (!tileVerify(...staXYNum)) return alert('错误的起点，不可通行');
+        const endXYNum = getEndXyNum();
+        if (!tileVerify(...endXYNum)) return alert('错误的终点，不可通行');
+        const pathXyNums = aStar(
+          staXYNum,
+          endXYNum,
+          (originXyNum) => {
+            return getIsometricNeighbors(originXyNum).filter(([xNum, yNum, cost, angStr]) => {
+              return (
+                // 启用的寻路方向
+                dirConfs[angStr] &&
+                // 合法可通行元素
+                tileVerify(xNum, yNum)
+              );
+            });
+          }
+        );
+        if (!pathXyNums) return alert('没有通行路径。');
+        clearPath();
+        pathXyNums.forEach(([xNum, yNum, cost]) => {
+          const poss = getIsometricPositions([xNum, xNum], [yNum, yNum], size, 'RightDown');
+          const [x, y] = poss[0];
+          addRoad(xNum, yNum, x + xPos, y + yPos, cost);
+        });
+      };
+      $id('clear_path1').onclick = clearPath;
+    }());
+  </script>
+
   <p><script src='//s13.cnzz.com/stat.php?id=41666&web_id=41666&online=1&show=line' type='text/javascript' charset='gb2312'></script></p>
  
 </body>

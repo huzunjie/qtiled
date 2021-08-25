@@ -48,19 +48,19 @@
   color: #999;
   background-color: #f6f6f6;
 }
-#dirs {
+.dirs {
   display: flex;
   flex-wrap: wrap;
   width: 54px;
   min-width: 54px;
   max-width: 54px;
 }
-#dirs a {
+.dirs a {
   text-align: center;
   width: 16px;
   color:  #999;
 }
-#dirs a.active {
+.dirs a.active {
   background-color: #96d1ff;
   color: #333;
   text-shadow: 1px 0px 0 #fff;

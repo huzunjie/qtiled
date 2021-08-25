@@ -17,7 +17,7 @@ export const vertexes = [
   [FLAH, HALF],
 ];
 
-/* 上、右、下、左，四个边邻居 [xNum, yNum, cost] 差值及距离成本 */
+/* 上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 export const directions = [
   [0, -1, 1, '↑'],
   [1, 0, 1, '→'],
@@ -25,7 +25,7 @@ export const directions = [
   [-1, 0, 1, '←'],
 ];
 
-/* 左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本 */
+/* 左上、右上、左下、右下，四个角邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 export const corners = [
   [-1, -1, 1.414, '↖'],
   [1, -1, 1.414, '↗'],

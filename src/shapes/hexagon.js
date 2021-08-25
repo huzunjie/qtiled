@@ -25,7 +25,7 @@ export const vertexes = [
 
 export const TQUA = TQUA_VAL;
 
-/* 左上、右上、右下、左下、左边、右边，6个边邻居 [xNum, yNum, cost, angle] 差值及距离成本及渲染角度 */
+/* 左上、右上、右下、左下、左边、右边，6个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本及渲染角度 */
 export const directionsNormal = [
   [-1, -1, 1, '↖'],
   [0, -1, 1, '↗'],
@@ -35,7 +35,7 @@ export const directionsNormal = [
   [1, 0, 1, '→'],
 ];
 
-/* 错列行邻居下标差值 */
+/* 错列行邻居下标差值 [xNum, yNum, cost, angStr] */
 export const directionsOffset = [
   [0, -1, 1, '↖'],
   [1, -1, 1, '↗'],
