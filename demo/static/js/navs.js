@@ -1,13 +1,13 @@
 (function(doc) {
   if (location.href.indexOf('no_nav') !== -1) return;
   var navsArr = [
-    ['rhombus.html', '正菱形 - Rhombus'],
-    ['hexagon.html', '六边形 - Hexagon'],
-    ['rect.html', '正矩形 - Rect'],
     ['ellipse.html', '椭圆形 - Ellipse'],
+    ['rect.html', '正矩形 - Rect'],
+    ['hexagon.html', '六边形 - Hexagon'],
+    ['rhombus.html', '正菱形 - Rhombus'],
     ['pathfinding-rect.html', 'A*寻路 - 正矩形'],
     ['pathfinding-hexagon.html', 'A*寻路 - 六边形'],
-    // ['pathfinding-rhombus.html', 'A*寻路 - 正菱形'],
+    ['pathfinding-rhombus.html', 'A*寻路 - 正菱形'],
     ['vast.html', '大量菱形单元交互测试'],
   ];
 
