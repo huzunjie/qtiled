@@ -52,6 +52,12 @@
 ### Pathfinding - 寻路
 * [x] AStar
 
+### Tile Data - 瓦片数据格式约定
+* [ ] ToDo - 待开发
+
+### Tile Renderer - 瓦片渲染器
+* [ ] ToDo - 待开发
+
 ### Tile Editor - 瓦片编辑器
 * [ ] ToDo - 待开发
 
