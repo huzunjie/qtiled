@@ -1,5 +1,5 @@
-// import * as utils from 'utils';
+// 通用工具方法测试（待扩展）
+test('placeholder', () => {
+  expect(true).toBe(true);
+});
 
-/*test('utils.getUnitsByRowCol', () => {
-  expect(utils.getUnitsByRowCol(2, 2)).toHaveLength(4);
-});*/

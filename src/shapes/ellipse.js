@@ -64,7 +64,7 @@ export function getPointByAngle(x0, y0, radiusX, radiusY, angle) {
 * @param  {Number}  radian    起始弧度
 * @return {Array}   [x, y]
 */
-export function getIsometryPoint(radiusX, radiusY, count, num, radian = 0) {
+export function getEquidistantPoint(radiusX, radiusY, count, num, radian = 0) {
   radian += PI_DBL * num / count;
   return [radiusX * Math.cos(radian), radiusY * Math.sin(radian)];
 }

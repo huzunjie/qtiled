@@ -6,13 +6,13 @@
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="stylesheet" type="text/css" href="./static/css/index.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20210825">
 </head>
 <body>
 
-  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/navs.js?20210825"></script>
   <script src="./static/js/spritejs3.js"></script>
-  <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/qtiled.dev.js?20210825"></script>
 
   <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -546,8 +546,8 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 560;
-      const yPos = 240;
+      const xPos = 620;
+      const yPos = 30;
       const pos = [xPos, yPos];
       const width = 78;
       const height = 36;
@@ -569,8 +569,8 @@
       });
       shapesEls.push(mouseMoveLabel);
 
-      const xNumRange = [-9, 6];
-      const yNumRange = [-5, 9];
+      const xNumRange = [-15, 0];
+      const yNumRange = [0, 14];
       getIsometricPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
         const pos = [x + xPos, y + yPos];
         shapesEls.push(

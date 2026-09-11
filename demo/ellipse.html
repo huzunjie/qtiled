@@ -16,9 +16,9 @@
 <body>
   <h1>Ellipse 椭圆形</h1>
   <div id="container"></div>
-  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/navs.js?20210825"></script>
   <script src="./static/js/spritejs3.js"></script>
-  <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/qtiled.dev.js?20210825"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -38,14 +38,14 @@
       const radiusX = 120;
       const radiusY = 80;
 
-      const { getIsometryPoint, getPoint, getPointByAngle, PI_DBL } = qtiled.shapes.ellipse;
+      const { getEquidistantPoint, getPoint, getPointByAngle, PI_DBL } = qtiled.shapes.ellipse;
       
       // 获取椭圆圆周上的等距坐标点
       const isometryPoints = [];
       const count = 6; // 圆周等分6份
       let radian = 0; // Math.PI * 0.5; // 起始弧度值
       for (let num = 0;num < count; num++) {
-        isometryPoints.push(getIsometryPoint(radiusX, radiusY, count, num, radian));
+        isometryPoints.push(getEquidistantPoint(radiusX, radiusY, count, num, radian));
       }
       let pos = [150, 100];
       shapesEls.push(

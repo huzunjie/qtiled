@@ -36,13 +36,15 @@ export const directionsOffset = [
   [0, 1, 1, '↙'],
 ];
 
+const { SQRT2 } = Math;
+
 // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
 // 没错，错列与非错列的角的邻居坐标系差值一样
 export const cornersNormalOrOffset = [
-  [0, -2, 1.414, '↑'],
-  [1, 0, 1.414, '→'],
-  [0, 2, 1.414, '↓'],
-  [-1, 0, 1.414, '←'],
+  [0, -2, SQRT2, '↑'],
+  [1, 0, SQRT2, '→'],
+  [0, 2, SQRT2, '↓'],
+  [-1, 0, SQRT2, '←'],
 ];
 
 // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
@@ -55,10 +57,10 @@ export const directionsIsometric = [
 
 // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 export const cornersIsometric = [
-  [1, -1, 1.414, '↑'],
-  [1, 1, 1.414, '→'],
-  [-1, 1, 1.414, '↓'],
-  [-1, -1, 1.414, '←'],
+  [1, -1, SQRT2, '↑'],
+  [1, 1, SQRT2, '→'],
+  [-1, 1, SQRT2, '↓'],
+  [-1, -1, SQRT2, '←'],
 ];
 
 /* 获取宽高的一半（菱形中心点在顶点坐标系中的值）

@@ -1,7 +1,7 @@
 
 /**
- * qtiled v0.2.5
- * (c) 2008-2021 huzunjie
+ * qtiled v0.2.6
+ * (c) 2008-2026 huzunjie
  * Released under MIT
  */
 
@@ -85,7 +85,7 @@
   * @return {Array}   [x, y]
   */
 
-  function getIsometryPoint(radiusX, radiusY, count, num) {
+  function getEquidistantPoint(radiusX, radiusY, count, num) {
     var radian = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
     radian += PI_DBL * num / count;
     return [radiusX * Math.cos(radian), radiusY * Math.sin(radian)];
@@ -102,7 +102,7 @@
     radian2Angle: radian2Angle,
     getPoint: getPoint,
     getPointByAngle: getPointByAngle,
-    getIsometryPoint: getIsometryPoint
+    getEquidistantPoint: getEquidistantPoint
   });
 
   function _arrayWithHoles(arr) {
@@ -446,9 +446,10 @@
   /* 上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 
   var directions = [[0, -1, 1, '↑'], [1, 0, 1, '→'], [0, 1, 1, '↓'], [-1, 0, 1, '←']];
+  var SQRT2$1 = Math.SQRT2;
   /* 左上、右上、左下、右下，四个角邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 
-  var corners = [[-1, -1, 1.414, '↖'], [1, -1, 1.414, '↗'], [1, 1, 1.414, '↘'], [-1, 1, 1.414, '↙']];
+  var corners = [[-1, -1, SQRT2$1, '↖'], [1, -1, SQRT2$1, '↗'], [1, 1, SQRT2$1, '↘'], [-1, 1, SQRT2$1, '↙']];
   /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
   * @param  {Array}   size    如： [width{Number}, height{Number}]
   * @return {Array}   [[x, y], ...]
@@ -671,14 +672,15 @@
 
   var directionsNormal = [[-1, -1, 1, '↖'], [0, -1, 1, '↗'], [0, 1, 1, '↘'], [-1, 1, 1, '↙']]; // 错列元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 
-  var directionsOffset = [[0, -1, 1, '↖'], [1, -1, 1, '↗'], [1, 1, 1, '↘'], [0, 1, 1, '↙']]; // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
+  var directionsOffset = [[0, -1, 1, '↖'], [1, -1, 1, '↗'], [1, 1, 1, '↘'], [0, 1, 1, '↙']];
+  var SQRT2 = Math.SQRT2; // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
   // 没错，错列与非错列的角的邻居坐标系差值一样
 
-  var cornersNormalOrOffset = [[0, -2, 1.414, '↑'], [1, 0, 1.414, '→'], [0, 2, 1.414, '↓'], [-1, 0, 1.414, '←']]; // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
+  var cornersNormalOrOffset = [[0, -2, SQRT2, '↑'], [1, 0, SQRT2, '→'], [0, 2, SQRT2, '↓'], [-1, 0, SQRT2, '←']]; // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 
   var directionsIsometric = [[0, -1, 1, '↖'], [1, 0, 1, '↗'], [0, 1, 1, '↘'], [-1, 0, 1, '↙']]; // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 
-  var cornersIsometric = [[1, -1, 1.414, '↑'], [1, 1, 1.414, '→'], [-1, 1, 1.414, '↓'], [-1, -1, 1.414, '←']];
+  var cornersIsometric = [[1, -1, SQRT2, '↑'], [1, 1, SQRT2, '→'], [-1, 1, SQRT2, '↓'], [-1, -1, SQRT2, '←']];
   /* 获取宽高的一半（菱形中心点在顶点坐标系中的值）
   * @param  {Array}   size    如： [width{Number}, height{Number}]
   * @return {Array}   [halfWidth, halfHeight]
