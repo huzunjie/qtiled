@@ -52,6 +52,35 @@
 ### Pathfinding - 寻路
 * [x] AStar
 
+### Elevation - 海拔管理
++ [x] ElevationMap - 海拔地图数据类
+  + [x] get/set 海拔值存取
+  + [x] setBatch 批量设置海拔值
+  + [x] inBounds 边界判断
+  + [x] getDiffs 获取相邻瓦片海拔差
+  + [x] validateFlatArea 验证平整区域
+  + [x] getMaxElevation/getMinElevation 海拔范围
+  + [x] getElevationGroups 按海拔分组瓦片
+  + [x] toArray/fromArray 二维数组序列化
+  + [x] toJSON/fromJSON JSON 序列化
++ [x] Slope - 斜坡系统
+  + [x] SLOPE_TYPES 斜坡类型枚举（NONE/UP/DOWN/EDGE/CLIFF）
+  + [x] SLOPE_DIRECTIONS 斜坡方向定义
+  + [x] getSlopeType 获取瓦片斜坡类型
+  + [x] detectSlopes 自动检测地图斜坡
+  + [x] isWalkable 判断瓦片可通行性
+  + [x] getSlopeCost 获取斜坡通行成本
+  + [x] getSlopeVertexes 计算斜坡顶点坐标
++ [x] Elevation Render - 海拔渲染
+  + [x] getElevatedPosition 错列布局海拔渲染坐标
+  + [x] getElevatedIsometricPosition 等距布局海拔渲染坐标
+  + [x] getElevatedPositions 批量错列布局海拔渲染坐标
+  + [x] getElevatedIsometricPositions 批量等距布局海拔渲染坐标
+  + [x] getRenderOrder 按海拔生成渲染顺序
++ [x] A* Elevation - 海拔感知寻路
+  + [x] aStarElevation 海拔约束 A* 寻路
+  + [x] getElevationAwareNeighbors 海拔感知邻居获取器
+
 ### Tile Data - 瓦片数据格式约定
 * [ ] ToDo - 待开发
 
@@ -76,7 +105,7 @@
 ```html
 <script src="xxx.js"></script>
 <script>
-const { shapes, pathFinding, ... } = qtiled;
+const { shapes, pathFinding, elevation, ... } = qtiled;
 ... 
 </script>
 ```

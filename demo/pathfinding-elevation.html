@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Path Finding Elevation 海拔感知寻路</title>
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20210825">
+  <style type="text/css">
+    #container {
+      width: 900px;
+      height: 500px;
+    }
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+
+  <script src="./static/js/navs.js?20260915"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js?20260915"></script>
+
+  <h1>海拔感知寻路 - 错列布局菱形地图</h1>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: #e8f5e9;"></div><span>海拔 0</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #c8e6c9;"></div><span>海拔 1</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #81c784;"></div><span>海拔 2</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #4caf50;"></div><span>海拔 3</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #ff5722;"></div><span>悬崖（不可通行）</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #2196f3;"></div><span>寻路路径</span></div>
+  </div>
+  <div id="container"></div>
+  <div class="frm-wrap">
+    <div class="frm">
+      <span class="btns-submit">
+        <a class="btn-big btn-clear" id="clear_path">清理路径</a>
+        <a class="btn-big" id="start_path_finding"><b>开始寻路</b></a>
+      </span>
+    </div>
+    <div class="frm frm-btns">
+      <a class="btn-big btn-clear" id="clear_sta">清理起点</a>
+      <a class="btn-big" id="set_sta">设置起点</a>
+      <a class="btn-big btn-clear" id="clear_end">清理终点</a>
+      <a class="btn-big" id="set_end">设置终点</a>
+    </div>
+  </div>
+  <script type="text/javascript">
+    (function() {
+      const $id = (id) => document.getElementById(id);
+
+      const container = $id('container');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 900,
+          height: 500,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      const xPos = 100;
+      const yPos = 100;
+      const width = 60;
+      const height = 30;
+      const size = [width, height];
+      const elevationHeight = 12;
+      const stagger = 'odd';
+
+      const { getVertexes, getPosition, getNeighbors } = qtiled.shapes.rhombus;
+      const { ElevationMap, aStarElevation, getElevationAwareNeighbors } = qtiled.elevation;
+
+      // 创建海拔地图
+      const mapWidth = 12;
+      const mapHeight = 10;
+      const elevationMap = new ElevationMap([mapWidth, mapHeight], 0);
+
+      // 设置中央高地
+      for (let x = 4; x <= 7; x++) {
+        for (let y = 3; y <= 6; y++) {
+          elevationMap.set(x, y, 1);
+        }
+      }
+      for (let x = 5; x <= 6; x++) {
+        for (let y = 4; y <= 5; y++) {
+          elevationMap.set(x, y, 2);
+        }
+      }
+
+      // 设置悬崖（海拔差 > 1）
+      for (let y = 0; y < mapHeight; y++) {
+        elevationMap.set(9, y, 3);
+      }
+
+      const tileVertexes = getVertexes(size);
+
+      const elevationColors = {
+        0: { fill: 'rgba(232, 245, 233, 0.8)', stroke: 'rgba(76, 175, 80, 0.3)' },
+        1: { fill: 'rgba(200, 230, 201, 0.8)', stroke: 'rgba(76, 175, 80, 0.5)' },
+        2: { fill: 'rgba(129, 199, 132, 0.8)', stroke: 'rgba(76, 175, 80, 0.7)' },
+        3: { fill: 'rgba(255, 87, 34, 0.6)', stroke: 'rgba(198, 40, 40, 0.8)' },
+      };
+
+      // 渲染地图
+      function renderMap() {
+        shapesEls.length = 0;
+
+        for (let y = 0; y < mapHeight; y++) {
+          for (let x = 0; x < mapWidth; x++) {
+            const elevation = elevationMap.get(x, y);
+            const [px, py] = getPosition([x, y], size, stagger, [xPos, yPos]);
+            const offsetY = -elevation * elevationHeight;
+            const colors = elevationColors[elevation] || elevationColors[0];
+
+            shapesEls.push(
+              new Polyline({
+                pos: [px, py + offsetY],
+                points: tileVertexes,
+                strokeColor: colors.stroke,
+                fillColor: colors.fill,
+                lineWidth,
+                close: true,
+              }),
+              new Label({
+                anchor: [0.5, 0.5],
+                pos: [px, py + offsetY],
+                text: elevation.toString(),
+                fontSize: '11px',
+                fillColor: '#333',
+              })
+            );
+          }
+        }
+
+        layer.append(...shapesEls);
+      }
+
+      renderMap();
+
+      // 寻路逻辑
+      let startPoint = null;
+      let endPoint = null;
+      let pathEls = [];
+
+      // 构建邻居获取器（限制在地图范围内）
+      function makeBaseNeighborsFn() {
+        return function(currXyNum) {
+          const [cx, cy] = currXyNum;
+          return getNeighbors([cx, cy], stagger).filter(([x, y]) => {
+            return x >= 0 && x < mapWidth && y >= 0 && y < mapHeight;
+          });
+        };
+      }
+
+      function renderPoint(xyNum, color, label) {
+        const [px, py] = getPosition(xyNum, size, stagger, [xPos, yPos]);
+        const elevation = elevationMap.get(xyNum[0], xyNum[1]);
+        const offsetY = -elevation * elevationHeight;
+        const el = new Polyline({
+          pos: [px, py + offsetY],
+          points: tileVertexes,
+          strokeColor: color,
+          fillColor: color,
+          lineWidth: 3,
+          close: true,
+        });
+        pathEls.push(el);
+        layer.append(el);
+      }
+
+      function renderPath(path) {
+        path.forEach(([xNum, yNum]) => {
+          const [px, py] = getPosition([xNum, yNum], size, stagger, [xPos, yPos]);
+          const elevation = elevationMap.get(xNum, yNum);
+          const offsetY = -elevation * elevationHeight;
+          const el = new Polyline({
+            pos: [px, py + offsetY],
+            points: tileVertexes,
+            strokeColor: 'rgba(33, 150, 243, 0.8)',
+            fillColor: 'rgba(33, 150, 243, 0.3)',
+            lineWidth: 3,
+            close: true,
+          });
+          pathEls.push(el);
+          layer.append(el);
+        });
+      }
+
+      function clearPath() {
+        pathEls.forEach(el => el.remove());
+        pathEls = [];
+      }
+
+      // 按钮事件
+      let actFun = null;
+      const { offsetTop, offsetLeft } = container;
+
+      $id('set_sta').addEventListener('click', function() {
+        actFun = (xNum, yNum, x, y) => {
+          if (xNum >= 0 && xNum < mapWidth && yNum >= 0 && yNum < mapHeight) {
+            startPoint = [xNum, yNum];
+            clearPath();
+            renderPoint(startPoint, 'rgba(0, 200, 0, 0.6)', '起点');
+          }
+        };
+      });
+
+      $id('set_end').addEventListener('click', function() {
+        actFun = (xNum, yNum, x, y) => {
+          if (xNum >= 0 && xNum < mapWidth && yNum >= 0 && yNum < mapHeight) {
+            endPoint = [xNum, yNum];
+            clearPath();
+            if (startPoint) renderPoint(startPoint, 'rgba(0, 200, 0, 0.6)', '起点');
+            renderPoint(endPoint, 'rgba(200, 0, 0, 0.6)', '终点');
+          }
+        };
+      });
+
+      // 点击瓦片，执行具体行为
+      container.addEventListener('click', (e) => {
+        if (!actFun) return;
+        const [xNum, yNum, x, y] = qtiled.shapes.rhombus.getInfoByPos([e.pageX - offsetLeft, e.pageY - offsetTop], [xPos, yPos], size, stagger);
+        actFun(xNum, yNum, x, y);
+      });
+
+      $id('start_path_finding').addEventListener('click', function() {
+        if (!startPoint || !endPoint) {
+          alert('请先设置起点和终点');
+          return;
+        }
+        clearPath();
+        renderPoint(startPoint, 'rgba(0, 200, 0, 0.6)', '起点');
+        renderPoint(endPoint, 'rgba(200, 0, 0, 0.6)', '终点');
+
+        const path = aStarElevation(startPoint, endPoint, elevationMap, makeBaseNeighborsFn(), {
+          maxElevationDiff: 1,
+          slopeCostMultiplier: 2,
+        });
+
+        if (path) {
+          renderPath(path);
+        } else {
+          alert('无法找到路径（可能被悬崖阻挡）');
+        }
+      });
+
+      $id('clear_path').addEventListener('click', function() {
+        clearPath();
+        startPoint = null;
+        endPoint = null;
+      });
+
+      $id('clear_sta').addEventListener('click', function() {
+        startPoint = null;
+        clearPath();
+      });
+
+      $id('clear_end').addEventListener('click', function() {
+        endPoint = null;
+        clearPath();
+        if (startPoint) renderPoint(startPoint, 'rgba(0, 200, 0, 0.6)', '起点');
+      });
+
+    }());
+  </script>
+
+</body>
+</html>

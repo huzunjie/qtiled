@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Elevation 海拔地图渲染</title>
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+  <style type="text/css">
+    #container {
+      width: 900px;
+      height: 600px;
+    }
+    #container2 {
+      width: 900px;
+      height: 500px;
+    }
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+
+  <script src="./static/js/navs.js?20260915"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js?20260915"></script>
+
+  <h1>海拔地图渲染 - 错列布局</h1>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background: #e8f5e9;"></div><span>海拔 0（平地）</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #c8e6c9;"></div><span>海拔 1</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #81c784;"></div><span>海拔 2</span></div>
+    <div class="legend-item"><div class="legend-color" style="background: #4caf50;"></div><span>海拔 3</span></div>
+  </div>
+  <div id="container"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 900,
+          height: 600,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      const xPos = 100;
+      const yPos = 100;
+      const width = 60;
+      const height = 30;
+      const size = [width, height];
+      const elevationHeight = 15; // 每级海拔的像素高度
+
+      const { getVertexes } = qtiled.shapes.rhombus;
+      const { ElevationMap, getElevatedPositions, getRenderOrder } = qtiled.elevation;
+
+      // 创建海拔地图
+      const mapWidth = 10;
+      const mapHeight = 8;
+      const elevationMap = new ElevationMap([mapWidth, mapHeight], 0);
+
+      // 设置一些海拔区域
+      // 中央高地
+      for (let x = 3; x <= 6; x++) {
+        for (let y = 2; y <= 5; y++) {
+          elevationMap.set(x, y, 2);
+        }
+      }
+      // 最高点
+      elevationMap.set(4, 3, 3);
+      elevationMap.set(5, 3, 3);
+      elevationMap.set(4, 4, 3);
+      elevationMap.set(5, 4, 3);
+
+      // 获取菱形顶点
+      const tileVertexes = getVertexes(size);
+
+      // 海拔颜色映射
+      const elevationColors = {
+        0: { fill: 'rgba(232, 245, 233, 0.8)', stroke: 'rgba(76, 175, 80, 0.5)' },
+        1: { fill: 'rgba(200, 230, 201, 0.8)', stroke: 'rgba(76, 175, 80, 0.6)' },
+        2: { fill: 'rgba(129, 199, 132, 0.8)', stroke: 'rgba(76, 175, 80, 0.7)' },
+        3: { fill: 'rgba(76, 175, 80, 0.8)', stroke: 'rgba(56, 142, 60, 0.9)' },
+      };
+
+      // 获取渲染顺序（按海拔升序）
+      const renderOrder = getRenderOrder(elevationMap, 'RightDown');
+
+      // 渲染所有瓦片
+      renderOrder.forEach(([xNum, yNum, elevation]) => {
+        const [x, y] = qtiled.shapes.rhombus.getPosition([xNum, yNum], size, 'odd', [xPos, yPos]);
+        const offsetY = -elevation * elevationHeight;
+        const colors = elevationColors[elevation] || elevationColors[0];
+
+        shapesEls.push(
+          new Polyline({
+            pos: [x, y + offsetY],
+            points: tileVertexes,
+            strokeColor: colors.stroke,
+            fillColor: colors.fill,
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor: [0.5, 0.5],
+            pos: [x, y + offsetY],
+            text: elevation.toString(),
+            fontSize: '12px',
+            fillColor: '#333',
+          })
+        );
+      });
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
+  <h1>海拔地图渲染 - 等距布局</h1>
+  <div id="container2"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container2');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 900,
+          height: 500,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      const xPos = 400;
+      const yPos = 200;
+      const width = 60;
+      const height = 30;
+      const size = [width, height];
+      const elevationHeight = 12;
+
+      const { getVertexes, getIsometricPosition } = qtiled.shapes.rhombus;
+      const { ElevationMap, getElevatedIsometricPositions } = qtiled.elevation;
+
+      // 创建海拔地图
+      const mapWidth = 8;
+      const mapHeight = 8;
+      const elevationMap = new ElevationMap([mapWidth, mapHeight], 0);
+
+      // 设置阶梯式海拔
+      for (let i = 0; i < 4; i++) {
+        for (let x = i; x < mapWidth - i; x++) {
+          for (let y = i; y < mapHeight - i; y++) {
+            elevationMap.set(x, y, i);
+          }
+        }
+      }
+
+      const tileVertexes = getVertexes(size);
+
+      const elevationColors = {
+        0: { fill: 'rgba(232, 245, 233, 0.8)', stroke: 'rgba(76, 175, 80, 0.5)' },
+        1: { fill: 'rgba(200, 230, 201, 0.8)', stroke: 'rgba(76, 175, 80, 0.6)' },
+        2: { fill: 'rgba(129, 199, 132, 0.8)', stroke: 'rgba(76, 175, 80, 0.7)' },
+        3: { fill: 'rgba(76, 175, 80, 0.8)', stroke: 'rgba(56, 142, 60, 0.9)' },
+      };
+
+      // 获取所有瓦片位置
+      const positions = getElevatedIsometricPositions([0, mapWidth - 1], [0, mapHeight - 1], size, elevationMap, elevationHeight);
+
+      positions.forEach(([x, y, xNum, yNum, elevation]) => {
+        const colors = elevationColors[elevation] || elevationColors[0];
+        shapesEls.push(
+          new Polyline({
+            pos: [x + xPos, y + yPos],
+            points: tileVertexes,
+            strokeColor: colors.stroke,
+            fillColor: colors.fill,
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor: [0.5, 0.5],
+            pos: [x + xPos, y + yPos],
+            text: elevation.toString(),
+            fontSize: '10px',
+            fillColor: '#333',
+          })
+        );
+      });
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
+</body>
+</html>
