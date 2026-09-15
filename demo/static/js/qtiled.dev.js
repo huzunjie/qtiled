@@ -1,6 +1,6 @@
 
 /**
- * qtiled v0.2.6
+ * qtiled v0.2.7
  * (c) 2008-2026 huzunjie
  * Released under MIT
  */

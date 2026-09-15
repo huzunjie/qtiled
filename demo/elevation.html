@@ -156,7 +156,7 @@
       const elevationHeight = 12;
 
       const { getVertexes, getIsometricPosition } = qtiled.shapes.rhombus;
-      const { ElevationMap, getElevatedIsometricPositions } = qtiled.elevation;
+      const { ElevationMap, getRenderOrder } = qtiled.elevation;
 
       // 创建海拔地图
       const mapWidth = 8;
@@ -181,14 +181,19 @@
         3: { fill: 'rgba(76, 175, 80, 0.8)', stroke: 'rgba(56, 142, 60, 0.9)' },
       };
 
-      // 获取所有瓦片位置
-      const positions = getElevatedIsometricPositions([0, mapWidth - 1], [0, mapHeight - 1], size, elevationMap, elevationHeight);
+      // 获取渲染顺序（按海拔升序，同海拔内按 RightDown 顺序）
+      const renderOrder = getRenderOrder(elevationMap, 'RightDown');
 
-      positions.forEach(([x, y, xNum, yNum, elevation]) => {
+      // 渲染所有瓦片
+      renderOrder.forEach(([xNum, yNum, elevation]) => {
+        const [baseX, baseY] = getIsometricPosition([xNum, yNum], size, [xPos, yPos]);
+        const offsetY = -elevation * elevationHeight;
+        const x = baseX;
+        const y = baseY + offsetY;
         const colors = elevationColors[elevation] || elevationColors[0];
         shapesEls.push(
           new Polyline({
-            pos: [x + xPos, y + yPos],
+            pos: [x, y],
             points: tileVertexes,
             strokeColor: colors.stroke,
             fillColor: colors.fill,
@@ -197,7 +202,7 @@
           }),
           new Label({
             anchor: [0.5, 0.5],
-            pos: [x + xPos, y + yPos],
+            pos: [x, y],
             text: elevation.toString(),
             fontSize: '10px',
             fillColor: '#333',
