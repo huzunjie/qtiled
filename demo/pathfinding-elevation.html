@@ -236,8 +236,45 @@
       // 点击瓦片，执行具体行为
       container.addEventListener('click', (e) => {
         if (!actFun) return;
-        const [xNum, yNum, x, y] = qtiled.shapes.rhombus.getInfoByPos([e.pageX - offsetLeft, e.pageY - offsetTop], [xPos, yPos], size, stagger);
-        actFun(xNum, yNum, x, y);
+        const clickX = e.pageX - offsetLeft;
+        const clickY = e.pageY - offsetTop;
+        
+        // 由于海拔偏移，需要遍历所有瓦片，找到点击位置对应的瓦片
+        let bestMatch = null;
+        let minDistance = Infinity;
+        
+        // 瓦片半径（菱形的对角线长度的一半）
+        const tileRadius = Math.max(size[0], size[1]) / 2;
+        
+        // 遍历所有瓦片
+        for (let y = 0; y < mapHeight; y++) {
+          for (let x = 0; x < mapWidth; x++) {
+            const xNum = x;
+            const yNum = y;
+            
+            // 获取瓦片的原始位置
+            const [px, py] = qtiled.shapes.rhombus.getPosition([xNum, yNum], size, stagger, [xPos, yPos]);
+            
+            // 获取瓦片的海拔
+            const elevation = elevationMap.get(xNum, yNum);
+            
+            // 计算瓦片的渲染位置
+            const renderedY = py - elevation * elevationHeight;
+            
+            // 计算点击位置到瓦片中心的距离
+            const distance = Math.sqrt(Math.pow(clickX - px, 2) + Math.pow(clickY - renderedY, 2));
+            
+            // 如果距离小于瓦片半径，则认为点击在该瓦片内
+            if (distance < tileRadius && distance < minDistance) {
+              minDistance = distance;
+              bestMatch = [xNum, yNum, px, py];
+            }
+          }
+        }
+        
+        if (bestMatch) {
+          actFun(...bestMatch);
+        }
       });
 
       $id('start_path_finding').addEventListener('click', function() {
