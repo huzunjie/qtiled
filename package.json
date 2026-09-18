@@ -33,7 +33,10 @@
     "url": "https://github.com/huzunjie/qtiled/issues"
   },
   "homepage": "https://github.com/huzunjie/qtiled#readme",
-  "dependencies": {},
+  "dependencies": {
+    "baseline-browser-mapping": "^2.11.25",
+    "caniuse-lite": "^1.0.30001810"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/plugin-transform-runtime": "^7.14.5",
@@ -48,6 +51,13 @@
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-uglify": "^6.0.4"
   },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Edge versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions"
+  ],
   "jest": {
     "modulePaths": [
       "src"
