@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>六边形 查找相邻Tile</title>
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918105740">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918105740">
+</head>
+<body>
+
+  <script src="./static/js/navs.js?20260918105740"></script>
+  <script src="./static/js/spritejs3.js?20260918105740"></script>
+  <script src="./static/js/qtiled.dev.js?20260918105740"></script>
+
+  <h1>查找紧邻Tile</h1>
+  <div id="container" style="height: 350px;"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 350,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 345;
+      const yPos = 160;
+      const pos = [xPos, yPos];
+      const width = 50;
+      const height = 40;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+
+      const { getVertexes, getPosition, getPositions, getNeighbors } = qtiled.shapes.hexagon;
+
+      // 一个矩形顶点坐标集
+      const tileVertexes = getVertexes(size);
+
+      const xNumRange = [-6, 6];
+      const yNumRange = [-4, 5];
+      const stagger = 'even'; // odd even
+
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: tileVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text:  xNum + ',' + yNum,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点矩形
+      const createFocusAndNeis = (focusXYNum = [-3, -2]) => {
+        const focusPos = getPosition(focusXYNum, size, stagger, pos);
+        const focusRectTile = new Polyline({
+          pos: focusPos,
+          points: tileVertexes,
+          strokeColor: 'rgba(0, 136, 0, 0.9)',
+          lineWidth,
+          close: true,
+        });
+        const focusRectLabel = new Label({
+          anchor,
+          pos: focusPos,
+          text:  focusXYNum.join(),
+          fontSize,
+          fillColor: 'rgba(0, 136, 0, 0.8)',
+        });
+
+        const neighborsEls = getNeighbors(focusXYNum, stagger).map((xyNum) => {
+          return new Polyline({
+            pos: getPosition(xyNum, size, stagger, pos),
+            points: tileVertexes,
+            strokeColor: 'rgba(0, 0, 255, 0.5)',
+            fillColor: 'rgba(0, 0, 255, 0.05)',
+            lineWidth,
+            close: true,
+          });
+        });
+
+        shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
+      };
+      createFocusAndNeis([0, 0]);
+      createFocusAndNeis([4, 1]);
+
+      /*const neisPos = direxxxXXXX.map((xyNum) => {
+        const [x, y] = getPosition(xyNum, size, stagger, [0, 0]);
+        const hypotenuse = Math.sqrt(x ** 2 + y ** 2);
+        return [x, y, hypotenuse, x / hypotenuse, y / hypotenuse];
+      });
+      console.log('neisPos', neisPos)
+
+      directions.forEach(([xDiff, yDiff], i) => {
+        const [xB, yB, hypotenuse, x_h, y_h] = neisPos[i];
+        const currHypotenuse = hypotenuse * dis;
+        const x = currHypotenuse * x_h;
+        const y = currHypotenuse * y_h;
+        console.log([x, y]);
+        neighborsEls[i].attr({
+          x: pos[0] + x,
+          y: pos[1] + y,
+        });
+      });
+      */
+
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
+ 
+</body>
+</html>

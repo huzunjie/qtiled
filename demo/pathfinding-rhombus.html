@@ -5,109 +5,14 @@
   <title>Path Finding 正菱形 寻路</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20210825">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918105740">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918105740">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20210825"></script>
-  <script src="./static/js/spritejs3.js"></script>
-  <script src="./static/js/qtiled.dev.js?20210825"></script>
-
-  <h1>在错列布局中查找相邻Tile</h1>
-  <div id="container" style="height: 350px;"></div>
-  <script type="text/javascript">
-    (function() {
-      const container = document.getElementById('container');
-      const {Scene, Label, Polyline} = spritejs;
-      const scene = new Scene({
-          container,
-          width: 800,
-          height: 350,
-          mode: 'static',
-      });
-      const layer = scene.layer('def', { handleEvent: false });
-      const lineWidth = 2;
-      const shapesEls = [];
-
-      /* 图形处理试验代码 sta */
-
-      const xPos = 225;
-      const yPos = 160;
-      const pos = [xPos, yPos];
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
-      const anchor = [0.5, 0.5];
-      const fontSize = '14px';
-
-      const { getVertexes, getPosition, getPositions, getNeighbors } = qtiled.shapes.rhombus;
-
-      // 一个矩形顶点坐标集
-      const tileVertexes = getVertexes(size);
-
-      const xNumRange = [-3, 6];
-      const yNumRange = [-8, 8];
-      const stagger = 'even'; // odd even
-
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
-        shapesEls.push(
-          new Polyline({
-            pos,
-            points: tileVertexes,
-            strokeColor: 'rgba(0, 0, 0, 0.2)',
-            fillColor: 'rgba(255, 255, 255, 0.5)',
-            lineWidth,
-            close: true,
-          }),
-          new Label({
-            anchor,
-            pos,
-            text:  xNum + ',' + yNum,
-            fontSize,
-          })
-        );
-      });
-
-      // 焦点矩形
-      const createFocusAndNeis = (focusXYNum = [-3, -2]) => {
-        const focusPos = getPosition(focusXYNum, size, stagger, pos);
-        const focusRectTile = new Polyline({
-          pos: focusPos,
-          points: tileVertexes,
-          strokeColor: 'rgba(0, 136, 0, 0.9)',
-          lineWidth,
-          close: true,
-        });
-        const focusRectLabel = new Label({
-          anchor,
-          pos: focusPos,
-          text:  focusXYNum.join(),
-          fontSize,
-          fillColor: 'rgba(0, 136, 0, 0.8)',
-        });
-
-        const neighborsEls = getNeighbors(focusXYNum, stagger).map((xyNum) => {
-          return new Polyline({
-            pos: getPosition(xyNum, size, stagger, pos),
-            points: tileVertexes,
-            strokeColor: 'rgba(0, 0, 255, 0.5)',
-            fillColor: 'rgba(0, 0, 255, 0.05)',
-            lineWidth,
-            close: true,
-          });
-        });
-
-        shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
-      };
-      createFocusAndNeis([0, 0]);
-      createFocusAndNeis([4, 1]);
-      /* 图形处理试验代码 end */
-
-      layer.append(...shapesEls);
-    }());
-  </script>
+  <script src="./static/js/navs.js?20260918105740"></script>
+  <script src="./static/js/spritejs3.js?20260918105740"></script>
+  <script src="./static/js/qtiled.dev.js?20260918105740"></script>
 
   <h1>在错列布局中寻找连通路径</h1>
   <div id="container2"></div>
@@ -400,100 +305,6 @@
         });
       };
       $id('clear_path').onclick = clearPath;
-    }());
-  </script>
-  <hr style="border-color: #fff;" />
-  <h1 style="margin-top: 50px;">在等距布局中查找相邻Tile</h1>
-  <div id="container1" style="height: 350px;"></div>
-  <script type="text/javascript">
-    (function() {
-      const container = document.getElementById('container1');
-      const {Scene, Label, Polyline} = spritejs;
-      const scene = new Scene({
-          container,
-          width: 800,
-          height: 350,
-          mode: 'static',
-      });
-      const layer = scene.layer('def', { handleEvent: false });
-      const lineWidth = 2;
-      const shapesEls = [];
-
-      /* 图形处理试验代码 sta */
-
-      const xPos = 240;
-      const yPos = 170;
-      const pos = [xPos, yPos];
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
-      const anchor = [0.5, 0.5];
-      const fontSize = '14px';
-
-      const { getVertexes, getIsometricPosition, getIsometricPositions, getIsometricNeighbors } = qtiled.shapes.rhombus;
-
-      // 一个矩形顶点坐标集
-      const tileVertexes = getVertexes(size);
-
-      const xNumRange = [-3, 6];
-      const yNumRange = [-4, 6];
-
-      getIsometricPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
-        shapesEls.push(
-          new Polyline({
-            pos,
-            points: tileVertexes,
-            strokeColor: 'rgba(0, 0, 0, 0.2)',
-            fillColor: 'rgba(255, 255, 255, 0.5)',
-            lineWidth,
-            close: true,
-          }),
-          new Label({
-            anchor,
-            pos,
-            text:  xNum + ',' + yNum,
-            fontSize,
-          })
-        );
-      });
-
-      // 焦点矩形
-      const createFocusAndNeis = (focusXYNum = [-3, -2]) => {
-        const focusPos = getIsometricPosition(focusXYNum, size, pos);
-        const focusRectTile = new Polyline({
-          pos: focusPos,
-          points: tileVertexes,
-          strokeColor: 'rgba(0, 136, 0, 0.9)',
-          lineWidth,
-          close: true,
-        });
-        const focusRectLabel = new Label({
-          anchor,
-          pos: focusPos,
-          text:  focusXYNum.join(),
-          fontSize,
-          fillColor: 'rgba(0, 136, 0, 0.8)',
-        });
-
-        const neighborsEls = getIsometricNeighbors(focusXYNum).map((neisConf) => {
-          return new Polyline({
-            pos: getIsometricPosition(neisConf, size, pos),
-            points: tileVertexes,
-            strokeColor: 'rgba(0, 0, 255, 0.5)',
-            fillColor: 'rgba(0, 0, 255, 0.05)',
-            lineWidth,
-            close: true,
-          });
-        });
-
-        shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
-      };
-      createFocusAndNeis([0, 0]);
-      createFocusAndNeis([3, 3]);
-      /* 图形处理试验代码 end */
-
-      layer.append(...shapesEls);
     }());
   </script>
 
