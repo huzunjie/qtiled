@@ -130,9 +130,9 @@
     邻居类型：<select id="sei_type_stagger">
       <option value="all">全部</option>
       <option value="no_self">排除自己</option>
-      <option value="border">边框</option>
-      <option value="vertex">顶点</option>
-      <option value="diamond">菱形内</option>
+      <option value="border">命中区域几何图形边框</option>
+      <option value="vertex">命中区域几何图形顶点</option>
+      <option value="diamond">矩形范围内</option>
     </select>
   </div>
   <div id="container2" class="container" style="height: 500px;"></div>
@@ -213,84 +213,30 @@
       const disEl = document.getElementById('ipt_dis_stagger');
       const typeEl = document.getElementById('sei_type_stagger');
       const typeConfs = {
-        all: (xyNum, distance) => xyNum,
-        no_self: (xyNum, distance, isSelf) => isSelf ? false : xyNum,
-        border: (xyNum, distance, isSelf, isBorder) => isBorder ? xyNum : false,
-        vertex: (xyNum, distance, isSelf, isBorder, isVertex) => isVertex ? xyNum : false,
+        all: (x, y) => [x, y],
+        no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
+        border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
+        vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
         // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-        diamond: (xyNum, distance, isSelf, isBorder, isVertex, manhattan) => manhattan <= distance ? xyNum : false,
+        diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
       };
-      
-      // 按距离获取邻居坐标（使用 BFS 算法，基于 getNeighbors 逐层扩展）
+
+      // 在瓦片的两条斜轴上遍历相对坐标，筛选规则完全由 iterator 决定。
       const getNeighborsByDistance = (originXyNum, distance, iterator) => {
-        const result = [];
-        const visited = new Map(); // 记录每个点的层级
-        const queue = [[originXyNum[0], originXyNum[1], 0]];
-        visited.set(`${originXyNum[0]},${originXyNum[1]}`, 0);
-        
-        // 第一遍：BFS 收集所有点
-        while (queue.length > 0) {
-          const [x, y, d] = queue.shift();
-          if (d > distance) continue;
-          
-          if (d < distance) {
-            const neighbors = getNeighbors([x, y], stagger);
-            neighbors.forEach(([nx, ny]) => {
-              const key = `${nx},${ny}`;
-              if (!visited.has(key)) {
-                visited.set(key, d + 1);
-                queue.push([nx, ny, d + 1]);
-              }
-            });
-          }
-        }
-        
-        // 第二遍：识别顶点（边界上四个极值点：上、右、下、左）
-        const vertexKeys = new Set();
-        if (distance >= 1) {
-          const borderPoints = [];
-          visited.forEach((d, key) => {
-            if (d === distance) {
-              const [x, y] = key.split(',').map(Number);
-              borderPoints.push({ key, x, y });
-            }
-          });
-          
-          // 找出四个方向的极值点
-          if (borderPoints.length > 0) {
-            // 上：y 最小
-            const top = borderPoints.reduce((min, p) => p.y < min.y ? p : min, borderPoints[0]);
-            // 右：x 最大
-            const right = borderPoints.reduce((max, p) => p.x > max.x ? p : max, borderPoints[0]);
-            // 下：y 最大
-            const bottom = borderPoints.reduce((max, p) => p.y > max.y ? p : max, borderPoints[0]);
-            // 左：x 最小
-            const left = borderPoints.reduce((min, p) => p.x < min.x ? p : min, borderPoints[0]);
-            
-            vertexKeys.add(top.key);
-            vertexKeys.add(right.key);
-            vertexKeys.add(bottom.key);
-            vertexKeys.add(left.key);
-          }
-        }
-        
-        // 第三遍：应用过滤器
-        visited.forEach((d, key) => {
-          const [x, y] = key.split(',').map(Number);
-          const isSelf = d === 0;
-          const isBorder = d === distance;
-          const isVertex = vertexKeys.has(key);
-          const manhattan = d;
-          
-          const ret = iterator([x, y], d, isSelf, isBorder, isVertex, manhattan);
+        const [originX, originY] = getPosition(originXyNum, size, stagger);
+        return qtiled.shapes.polygon.twoDimForEach([-distance, distance], [-distance, distance], 'RightDown', (x, y) => {
+          const ret = iterator(x, y, distance);
           if (ret) {
-            result.push(ret);
+            // 将回调返回的斜轴偏移转换为实际中心位置，再换算为错列下标。
+            const [xNum, yNum] = getInfoByPos([
+              originX + (ret[0] + ret[1]) * width / 2,
+              originY + (ret[1] - ret[0]) * height / 2,
+            ], [0, 0], size, stagger);
+            return [xNum, yNum];
           }
         });
-        
-        return result;
       };
-      
+
       const updateNeis = () => {
         const distance = Number(disEl.value);
         neighborsEls.forEach((el) => el.remove());
@@ -473,9 +419,9 @@
     邻居类型：<select id="sei_type_iso">
       <option value="all">全部</option>
       <option value="no_self">排除自己</option>
-      <option value="border">边框</option>
-      <option value="vertex">顶点</option>
-      <option value="diamond">菱形内</option>
+      <option value="border">命中区域几何图形边框</option>
+      <option value="vertex">命中区域几何图形顶点</option>
+      <option value="diamond">矩形范围内</option>
     </select>
   </div>
   <div id="container3" class="container" style="height: 500px;"></div>
