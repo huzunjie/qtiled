@@ -20,6 +20,13 @@ QTiled 是一套零依赖的轻量级 Tiled 多边形布局库，提供基础图
 - `npm run dev` —— Rollup 监听构建到 `demo/static/js/qtiled.dev.js`，并在 `http://localhost:8033/demo/index.html` 提供示例预览。
 - `npm run build` —— 在 `dist/` 生成全部产物（`qtiled.cjs.js`、`qtiled.mjs.js`、`qtiled.umd.js`、`qtiled.min.js`）；也可单独执行 `npm run cjs`、`mjs`、`umd`、`min`、`debug`。
 
+## 基础行为准则
+
+- 禁止盲目扩大代码调整量及业务影响范围。
+- 禁止在保持原有代码逻辑时，随意移除代码原有的注释内容。
+- 每个迭代应该尽量收敛、具体、可测试、可跟踪，不应该是一个大批量内容调整。
+- 涉及以上问题的时候，可以通过多次追问沟通来明确下一步行为。
+
 ## 代码风格与命名规范
 
 - 使用 ES Module 写法，2 空格缩进，单引号，语句结尾加分号，文件末尾保留空行，行尾不留空格。
