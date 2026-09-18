@@ -5,14 +5,14 @@
   <title>正菱形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918153508">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918153508">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918210839">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260918153508"></script>
-  <script src="./static/js/spritejs3.js?20260918153508"></script>
-  <script src="./static/js/qtiled.dev.js?20260918153508"></script>
+  <script src="./static/js/navs.js?20260918210839"></script>
+  <script src="./static/js/spritejs3.js?20260918210839"></script>
+  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
 
   <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -224,35 +224,70 @@
       // 按距离获取邻居坐标（使用 BFS 算法，基于 getNeighbors 逐层扩展）
       const getNeighborsByDistance = (originXyNum, distance, iterator) => {
         const result = [];
-        const visited = new Set();
+        const visited = new Map(); // 记录每个点的层级
         const queue = [[originXyNum[0], originXyNum[1], 0]];
-        visited.add(`${originXyNum[0]},${originXyNum[1]}`);
+        visited.set(`${originXyNum[0]},${originXyNum[1]}`, 0);
         
+        // 第一遍：BFS 收集所有点
         while (queue.length > 0) {
           const [x, y, d] = queue.shift();
           if (d > distance) continue;
-          
-          const isSelf = d === 0;
-          const isBorder = d === distance;
-          const isVertex = false; // 错列布局没有传统意义的顶点邻居
-          const manhattan = d; // 简化处理
-          
-          const ret = iterator([x, y], d, isSelf, isBorder, isVertex, manhattan);
-          if (ret) {
-            result.push(ret);
-          }
           
           if (d < distance) {
             const neighbors = getNeighbors([x, y], stagger);
             neighbors.forEach(([nx, ny]) => {
               const key = `${nx},${ny}`;
               if (!visited.has(key)) {
-                visited.add(key);
+                visited.set(key, d + 1);
                 queue.push([nx, ny, d + 1]);
               }
             });
           }
         }
+        
+        // 第二遍：识别顶点（边界上四个极值点：上、右、下、左）
+        const vertexKeys = new Set();
+        if (distance >= 1) {
+          const borderPoints = [];
+          visited.forEach((d, key) => {
+            if (d === distance) {
+              const [x, y] = key.split(',').map(Number);
+              borderPoints.push({ key, x, y });
+            }
+          });
+          
+          // 找出四个方向的极值点
+          if (borderPoints.length > 0) {
+            // 上：y 最小
+            const top = borderPoints.reduce((min, p) => p.y < min.y ? p : min, borderPoints[0]);
+            // 右：x 最大
+            const right = borderPoints.reduce((max, p) => p.x > max.x ? p : max, borderPoints[0]);
+            // 下：y 最大
+            const bottom = borderPoints.reduce((max, p) => p.y > max.y ? p : max, borderPoints[0]);
+            // 左：x 最小
+            const left = borderPoints.reduce((min, p) => p.x < min.x ? p : min, borderPoints[0]);
+            
+            vertexKeys.add(top.key);
+            vertexKeys.add(right.key);
+            vertexKeys.add(bottom.key);
+            vertexKeys.add(left.key);
+          }
+        }
+        
+        // 第三遍：应用过滤器
+        visited.forEach((d, key) => {
+          const [x, y] = key.split(',').map(Number);
+          const isSelf = d === 0;
+          const isBorder = d === distance;
+          const isVertex = vertexKeys.has(key);
+          const manhattan = d;
+          
+          const ret = iterator([x, y], d, isSelf, isBorder, isVertex, manhattan);
+          if (ret) {
+            result.push(ret);
+          }
+        });
+        
         return result;
       };
       
