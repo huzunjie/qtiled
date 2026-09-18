@@ -5,14 +5,14 @@
   <title>正菱形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918110058">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918110058">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918153508">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918153508">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260918110058"></script>
-  <script src="./static/js/spritejs3.js?20260918110058"></script>
-  <script src="./static/js/qtiled.dev.js?20260918110058"></script>
+  <script src="./static/js/navs.js?20260918153508"></script>
+  <script src="./static/js/spritejs3.js?20260918153508"></script>
+  <script src="./static/js/qtiled.dev.js?20260918153508"></script>
 
   <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -32,9 +32,9 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 225;
-      const yPos = 160;
-      const pos = [xPos, yPos];
+      const xPos = 225; // 中心点位置
+      const yPos = 160; // 中心点位置
+      const pos = [xPos, yPos]; // 中心点位置
       const width = 60;
       const height = 30;
       const size = [width, height];
@@ -43,7 +43,7 @@
 
       const { getVertexes, getPosition, getPositions, getNeighbors } = qtiled.shapes.rhombus;
 
-      // 一个矩形顶点坐标集
+      // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
 
       const xNumRange = [-3, 6];
@@ -70,17 +70,17 @@
         );
       });
 
-      // 焦点矩形
+      // 焦点菱形
       const createFocusAndNeis = (focusXYNum = [-3, -2]) => {
         const focusPos = getPosition(focusXYNum, size, stagger, pos);
-        const focusRectTile = new Polyline({
+        const focusRhombusTile = new Polyline({
           pos: focusPos,
           points: tileVertexes,
           strokeColor: 'rgba(0, 136, 0, 0.9)',
           lineWidth,
           close: true,
         });
-        const focusRectLabel = new Label({
+        const focusRhombusLabel = new Label({
           anchor,
           pos: focusPos,
           text:  focusXYNum.join(),
@@ -88,21 +88,245 @@
           fillColor: 'rgba(0, 136, 0, 0.8)',
         });
 
-        const neighborsEls = getNeighbors(focusXYNum, stagger).map((xyNum) => {
-          return new Polyline({
-            pos: getPosition(xyNum, size, stagger, pos),
-            points: tileVertexes,
-            strokeColor: 'rgba(0, 0, 255, 0.5)',
-            fillColor: 'rgba(0, 0, 255, 0.05)',
-            lineWidth,
-            close: true,
-          });
+        const neighborsEls = [];
+        getNeighbors(focusXYNum, stagger).map((xyNum) => {
+          const nPos = getPosition(xyNum, size, stagger, pos);
+          neighborsEls.push(
+            new Polyline({
+              pos: nPos,
+              points: tileVertexes,
+              strokeColor: 'rgba(0, 0, 255, 0.5)',
+              fillColor: 'rgba(0, 0, 255, 0.05)',
+              lineWidth,
+              close: true,
+            }),
+            new Label({
+              anchor,
+              pos: nPos,
+              text:  xyNum[0] + ',' + xyNum[1] ,
+              fontSize,
+              fillColor: 'rgba(0, 0, 255, 0.8)',
+            })
+          );
         });
 
-        shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
+        shapesEls.push(...neighborsEls, focusRhombusTile, focusRhombusLabel);
       };
       createFocusAndNeis([0, 0]);
       createFocusAndNeis([4, 1]);
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
+  <hr style="border-color: #fff;" />
+  <h1 style="margin-top: 50px;">查找相邻tile - 错列布局</h1>
+  <div class="ipts">
+    邻居距离：<input type="range" step="1" max="6" id="ipt_dis_stagger" value="1" />
+    <span id="val_stagger">1</span>
+  </div>
+  <div class="ipts">
+    邻居类型：<select id="sei_type_stagger">
+      <option value="all">全部</option>
+      <option value="no_self">排除自己</option>
+      <option value="border">边框</option>
+      <option value="vertex">顶点</option>
+      <option value="diamond">菱形内</option>
+    </select>
+  </div>
+  <div id="container2" class="container" style="height: 500px;"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container2');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 500,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 225;
+      const yPos = 200;
+      const pos = [xPos, yPos];
+      const width = 60;
+      const height = 30;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+
+      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighbors } = qtiled.shapes.rhombus;
+
+      // 一个菱形顶点坐标集
+      const tileVertexes = getVertexes(size);
+
+      const xNumRange = [-3, 6];
+      const yNumRange = [-8, 8];
+      const stagger = 'even'; // odd even
+
+      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: tileVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text:  xNum + ',' + yNum,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点菱形
+      const focusXYNum = [1, 1];
+      const focusPos = getPosition(focusXYNum, size, stagger, pos);
+      const focusRhombusTile = new Polyline({
+        pos: focusPos,
+        points: tileVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.9)',
+        lineWidth,
+        close: true,
+      });
+      const focusRhombusLabel = new Label({
+        anchor,
+        pos: focusPos,
+        text:  focusXYNum.join(),
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+      // 邻居元素
+      const neighborsEls = [];
+      const neighborsLabels = [];
+      const disEl = document.getElementById('ipt_dis_stagger');
+      const typeEl = document.getElementById('sei_type_stagger');
+      const typeConfs = {
+        all: (xyNum, distance) => xyNum,
+        no_self: (xyNum, distance, isSelf) => isSelf ? false : xyNum,
+        border: (xyNum, distance, isSelf, isBorder) => isBorder ? xyNum : false,
+        vertex: (xyNum, distance, isSelf, isBorder, isVertex) => isVertex ? xyNum : false,
+        // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
+        diamond: (xyNum, distance, isSelf, isBorder, isVertex, manhattan) => manhattan <= distance ? xyNum : false,
+      };
+      
+      // 按距离获取邻居坐标（使用 BFS 算法，基于 getNeighbors 逐层扩展）
+      const getNeighborsByDistance = (originXyNum, distance, iterator) => {
+        const result = [];
+        const visited = new Set();
+        const queue = [[originXyNum[0], originXyNum[1], 0]];
+        visited.add(`${originXyNum[0]},${originXyNum[1]}`);
+        
+        while (queue.length > 0) {
+          const [x, y, d] = queue.shift();
+          if (d > distance) continue;
+          
+          const isSelf = d === 0;
+          const isBorder = d === distance;
+          const isVertex = false; // 错列布局没有传统意义的顶点邻居
+          const manhattan = d; // 简化处理
+          
+          const ret = iterator([x, y], d, isSelf, isBorder, isVertex, manhattan);
+          if (ret) {
+            result.push(ret);
+          }
+          
+          if (d < distance) {
+            const neighbors = getNeighbors([x, y], stagger);
+            neighbors.forEach(([nx, ny]) => {
+              const key = `${nx},${ny}`;
+              if (!visited.has(key)) {
+                visited.add(key);
+                queue.push([nx, ny, d + 1]);
+              }
+            });
+          }
+        }
+        return result;
+      };
+      
+      const updateNeis = () => {
+        const distance = Number(disEl.value);
+        neighborsEls.forEach((el) => el.remove());
+        neighborsEls.length = 0;
+        neighborsLabels.forEach((label) => label.remove());
+        neighborsLabels.length = 0;
+        // 邻居位置更新
+        getNeighborsByDistance(focusXYNum, distance, typeConfs[typeEl.value]).forEach((xyNum, i) => {
+          const _pos = getPosition(xyNum, size, stagger, pos);
+          neighborsEls.push(
+            new Polyline({
+              pos: _pos,
+              points: tileVertexes,
+              strokeColor: 'rgba(0, 0, 255, 0.5)',
+              fillColor: 'rgba(0, 0, 255, 0.05)',
+              lineWidth,
+              close: true,
+            })
+          );
+          neighborsLabels.push(
+            new Label({
+              anchor,
+              pos: _pos,
+              text:  xyNum[0] + ',' + xyNum[1],
+              fontSize,
+              fillColor: 'rgba(0, 0, 255, 0.8)',
+            })
+          );
+        });
+        layer.append(...neighborsEls);
+        layer.append(...neighborsLabels);
+      };
+
+      const valEl = document.getElementById('val_stagger');
+      disEl.onchange = (e) => {
+        valEl.innerText = e.target.value;
+        updateNeis();
+      };
+      typeEl.onchange = updateNeis;
+      updateNeis();
+      
+      const { offsetTop, offsetLeft } = container;
+      container.addEventListener('mousemove', (e) => {
+        // 得到索引序号&渲染位置
+        const [xNum, yNum, x, y] = getInfoByPos(
+          [e.pageX - offsetLeft, e.pageY - offsetTop],
+          pos,
+          size,
+          stagger
+        );
+
+        // 焦点下标索引
+        focusXYNum[0] = xNum;
+        focusXYNum[1] = yNum;
+
+        const [oldX, oldY] = focusRhombusTile.attr('pos');
+        // 更新焦点区域标识位置
+        focusRhombusTile.attr({ x, y });
+        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}` });
+
+        // 邻居位置更新
+        const distance = Number(disEl.value);
+        getNeighborsByDistance(focusXYNum, distance, typeConfs[typeEl.value]).forEach((xyNum, i) => {
+          const _pos = getPosition(xyNum, size, stagger, pos);
+          neighborsEls[i].attr('pos', _pos);
+          neighborsLabels[i].attr('pos', _pos);
+          neighborsLabels[i].attr('text', xyNum[0] + ',' + xyNum[1]);
+        });
+      });
+      shapesEls.push(focusRhombusTile, focusRhombusLabel, ...neighborsEls);
+
       /* 图形处理试验代码 end */
 
       layer.append(...shapesEls);
@@ -139,7 +363,7 @@
 
       const { getVertexes, getIsometricPosition, getIsometricPositions, getIsometricNeighbors } = qtiled.shapes.rhombus;
 
-      // 一个矩形顶点坐标集
+      // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
 
       const xNumRange = [-3, 6];
@@ -165,17 +389,17 @@
         );
       });
 
-      // 焦点矩形
+      // 焦点菱形
       const createFocusAndNeis = (focusXYNum = [-3, -2]) => {
         const focusPos = getIsometricPosition(focusXYNum, size, pos);
-        const focusRectTile = new Polyline({
+        const focusRhombusTile = new Polyline({
           pos: focusPos,
           points: tileVertexes,
           strokeColor: 'rgba(0, 136, 0, 0.9)',
           lineWidth,
           close: true,
         });
-        const focusRectLabel = new Label({
+        const focusRhombusLabel = new Label({
           anchor,
           pos: focusPos,
           text:  focusXYNum.join(),
@@ -194,10 +418,196 @@
           });
         });
 
-        shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
+        shapesEls.push(...neighborsEls, focusRhombusTile, focusRhombusLabel);
       };
       createFocusAndNeis([0, 0]);
       createFocusAndNeis([3, 3]);
+      /* 图形处理试验代码 end */
+
+      layer.append(...shapesEls);
+    }());
+  </script>
+
+  <hr style="border-color: #fff;" />
+  <h1 style="margin-top: 50px;">查找相邻tile - 等距布局</h1>
+  <div class="ipts">
+    邻居距离：<input type="range" step="1" max="6" id="ipt_dis_iso" value="1" />
+    <span id="val_iso">1</span>
+  </div>
+  <div class="ipts">
+    邻居类型：<select id="sei_type_iso">
+      <option value="all">全部</option>
+      <option value="no_self">排除自己</option>
+      <option value="border">边框</option>
+      <option value="vertex">顶点</option>
+      <option value="diamond">菱形内</option>
+    </select>
+  </div>
+  <div id="container3" class="container" style="height: 500px;"></div>
+  <script type="text/javascript">
+    (function() {
+      const container = document.getElementById('container3');
+      const {Scene, Label, Polyline} = spritejs;
+      const scene = new Scene({
+          container,
+          width: 800,
+          height: 500,
+          mode: 'static',
+      });
+      const layer = scene.layer('def', { handleEvent: false });
+      const lineWidth = 2;
+      const shapesEls = [];
+
+      /* 图形处理试验代码 sta */
+
+      const xPos = 240;
+      const yPos = 200;
+      const pos = [xPos, yPos];
+      const width = 60;
+      const height = 30;
+      const size = [width, height];
+      const anchor = [0.5, 0.5];
+      const fontSize = '14px';
+
+      const renderOrder = 'RightDown'; // RightDown LeftDown LeftUp RightUp
+
+      const { getVertexes, getIsometricPosition, getIsometricPositions, getIsometricInfoByPos, getIsometricNeighbors } = qtiled.shapes.rhombus;
+      const { twoDimForEach } = qtiled.shapes.polygon;
+
+      // 一个菱形顶点坐标集
+      const tileVertexes = getVertexes(size);
+
+      const xNumRange = [-3, 6];
+      const yNumRange = [-4, 6];
+
+      getIsometricPositions(xNumRange, yNumRange, size, renderOrder).forEach(([x, y, xNum, yNum]) => {
+        const pos = [x + xPos, y + yPos];
+        shapesEls.push(
+          new Polyline({
+            pos,
+            points: tileVertexes,
+            strokeColor: 'rgba(0, 0, 0, 0.2)',
+            fillColor: 'rgba(255, 255, 255, 0.5)',
+            lineWidth,
+            close: true,
+          }),
+          new Label({
+            anchor,
+            pos,
+            text:  xNum + ',' + yNum,
+            fontSize,
+          })
+        );
+      });
+
+      // 焦点菱形
+      const focusXYNum = [0, 0];
+      const focusRhombusTile = new Polyline({
+        pos,
+        points: tileVertexes,
+        strokeColor: 'rgba(0, 136, 0, 0.9)',
+        lineWidth,
+        close: true,
+      });
+      const focusRhombusLabel = new Label({
+        anchor,
+        pos,
+        text:  '0,0',
+        fontSize,
+        fillColor: 'rgba(0, 136, 0, 0.8)',
+      });
+      // 邻居元素
+      const neighborsEls = [];
+      const disEl = document.getElementById('ipt_dis_iso');
+      const typeEl = document.getElementById('sei_type_iso');
+      const typeConfs = {
+        all: (x, y) => [x, y],
+        no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
+        border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
+        vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
+        // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
+        diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
+      };
+      
+      // 按距离获取邻居坐标（使用 twoDimForEach 方法）
+      const getNeighborsByDistance = (originXyNum, distance, iterator) => {
+        return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
+          const ret = iterator(x, y);
+          if (ret) {
+            return [ret[0] + originXyNum[0], ret[1] + originXyNum[1]];
+          }
+        });
+      };
+      
+      const updateNeis = () => {
+        const distance = Number(disEl.value);
+        neighborsEls.forEach((el) => el.remove());
+        neighborsEls.length = 0;
+        // 邻居位置更新
+        getNeighborsByDistance(focusXYNum, distance, (x, y) => typeConfs[typeEl.value](x, y, distance)).forEach((xyNum, i) => {
+          const _pos = getIsometricPosition(xyNum, size, pos);
+          neighborsEls.push(
+            new Polyline({
+              pos: _pos,
+              points: tileVertexes,
+              strokeColor: 'rgba(0, 0, 255, 0.5)',
+              fillColor: 'rgba(0, 0, 255, 0.05)',
+              lineWidth,
+              close: true,
+            }),
+            new Label({
+              anchor,
+              pos: _pos,
+              text: xyNum.join(','),
+              fontSize,
+              xyNum: [xyNum[0] - focusXYNum[0], xyNum[1] - focusXYNum[1]],
+              strokeColor: 'rgba(0, 0, 255, 0.5)',
+            })
+          );
+        });
+        layer.append(...neighborsEls);
+      };
+
+      const valEl = document.getElementById('val_iso');
+      disEl.onchange = (e) => {
+        valEl.innerText = e.target.value;
+        updateNeis();
+      };
+      typeEl.onchange = updateNeis;
+      updateNeis();
+      
+      const { offsetTop, offsetLeft } = container;
+      container.addEventListener('mousemove', (e) => {
+        // 得到索引序号&渲染位置
+        const [xNum, yNum, x, y] = getIsometricInfoByPos(
+          [e.pageX - offsetLeft, e.pageY - offsetTop],
+          pos,
+          size
+        );
+
+        // 焦点下标索引
+        focusXYNum[0] = xNum;
+        focusXYNum[1] = yNum;
+
+        const [oldX, oldY] = focusRhombusTile.attr('pos');
+        // 更新焦点区域标识位置
+        focusRhombusTile.attr({ x, y });
+        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}` });
+
+        const xDiff = x - oldX;
+        const yDiff = y - oldY;
+        neighborsEls.forEach((el) => {
+          const [x, y] = el.attr('pos');
+          el.attr('pos', [x + xDiff, y + yDiff]);
+          const txtXyNum = el.attr('xyNum');
+          if (txtXyNum) {
+            const [xNumTxt, yNumTxt] = txtXyNum;
+            el.attr('text', [xNumTxt + xNum, yNumTxt + yNum].join(','));
+          }
+        });
+      });
+      shapesEls.push(focusRhombusTile, focusRhombusLabel, ...neighborsEls);
+
       /* 图形处理试验代码 end */
 
       layer.append(...shapesEls);
