@@ -5,8 +5,8 @@
   <title>Path Finding Elevation 海拔感知寻路</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260920141620">
   <style type="text/css">
     #container {
       width: 900px;
@@ -32,9 +32,9 @@
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
 
   <h1>海拔感知寻路 - 错列布局菱形地图</h1>
   <div class="legend">
@@ -76,11 +76,11 @@
       const lineWidth = 2;
       const shapesEls = [];
 
-      const xPos = 100;
-      const yPos = 100;
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const originPixelX = 100;
+      const originPixelY = 100;
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
       const elevationHeight = 12;
       const stagger = 'odd';
 
@@ -125,7 +125,7 @@
         for (let y = 0; y < mapHeight; y++) {
           for (let x = 0; x < mapWidth; x++) {
             const elevation = elevationMap.get(x, y);
-            const [px, py] = getPosition([x, y], size, stagger, [xPos, yPos]);
+            const [px, py] = getPosition([x, y], size, stagger, [originPixelX, originPixelY]);
             const offsetY = -elevation * elevationHeight;
             const colors = elevationColors[elevation] || elevationColors[0];
 
@@ -170,7 +170,7 @@
       }
 
       function renderPoint(xyNum, color, label) {
-        const [px, py] = getPosition(xyNum, size, stagger, [xPos, yPos]);
+        const [px, py] = getPosition(xyNum, size, stagger, [originPixelX, originPixelY]);
         const elevation = elevationMap.get(xyNum[0], xyNum[1]);
         const offsetY = -elevation * elevationHeight;
         const el = new Polyline({
@@ -186,9 +186,9 @@
       }
 
       function renderPath(path) {
-        path.forEach(([xNum, yNum]) => {
-          const [px, py] = getPosition([xNum, yNum], size, stagger, [xPos, yPos]);
-          const elevation = elevationMap.get(xNum, yNum);
+        path.forEach(([gridX, gridY]) => {
+          const [px, py] = getPosition([gridX, gridY], size, stagger, [originPixelX, originPixelY]);
+          const elevation = elevationMap.get(gridX, gridY);
           const offsetY = -elevation * elevationHeight;
           const el = new Polyline({
             pos: [px, py + offsetY],
@@ -213,9 +213,9 @@
       const { offsetTop, offsetLeft } = container;
 
       $id('set_sta').addEventListener('click', function() {
-        actFun = (xNum, yNum, x, y) => {
-          if (xNum >= 0 && xNum < mapWidth && yNum >= 0 && yNum < mapHeight) {
-            startPoint = [xNum, yNum];
+        actFun = (gridX, gridY, x, y) => {
+          if (gridX >= 0 && gridX < mapWidth && gridY >= 0 && gridY < mapHeight) {
+            startPoint = [gridX, gridY];
             clearPath();
             renderPoint(startPoint, 'rgba(0, 200, 0, 0.6)', '起点');
           }
@@ -223,9 +223,9 @@
       });
 
       $id('set_end').addEventListener('click', function() {
-        actFun = (xNum, yNum, x, y) => {
-          if (xNum >= 0 && xNum < mapWidth && yNum >= 0 && yNum < mapHeight) {
-            endPoint = [xNum, yNum];
+        actFun = (gridX, gridY, x, y) => {
+          if (gridX >= 0 && gridX < mapWidth && gridY >= 0 && gridY < mapHeight) {
+            endPoint = [gridX, gridY];
             clearPath();
             if (startPoint) renderPoint(startPoint, 'rgba(0, 200, 0, 0.6)', '起点');
             renderPoint(endPoint, 'rgba(200, 0, 0, 0.6)', '终点');
@@ -249,14 +249,14 @@
         // 遍历所有瓦片
         for (let y = 0; y < mapHeight; y++) {
           for (let x = 0; x < mapWidth; x++) {
-            const xNum = x;
-            const yNum = y;
+            const gridX = x;
+            const gridY = y;
             
             // 获取瓦片的原始位置
-            const [px, py] = qtiled.shapes.rhombus.getPosition([xNum, yNum], size, stagger, [xPos, yPos]);
+            const [px, py] = qtiled.shapes.rhombus.getPosition([gridX, gridY], size, stagger, [originPixelX, originPixelY]);
             
             // 获取瓦片的海拔
-            const elevation = elevationMap.get(xNum, yNum);
+            const elevation = elevationMap.get(gridX, gridY);
             
             // 计算瓦片的渲染位置
             const renderedY = py - elevation * elevationHeight;
@@ -267,7 +267,7 @@
             // 如果距离小于瓦片半径，则认为点击在该瓦片内
             if (distance < tileRadius && distance < minDistance) {
               minDistance = distance;
-              bestMatch = [xNum, yNum, px, py];
+              bestMatch = [gridX, gridY, px, py];
             }
           }
         }

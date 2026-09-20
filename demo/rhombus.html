@@ -5,7 +5,7 @@
   <title>Rhombus 正菱形方法使用示例</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
   <style type="text/css">
     #container {
       width: 800px;
@@ -29,9 +29,9 @@
   </style>
 </head>
 <body>
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
   <h1>Rhombus 正菱形</h1>
   <div id="container"></div>
   <script type="text/javascript">
@@ -51,9 +51,9 @@
       const shapesEls = [];
 
       /* 图形处理试验代码 sta */
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
 
       const { getVertexes, getPositions, getIsometricPositions } = qtiled.shapes.rhombus;
 
@@ -83,11 +83,11 @@
       );
 
       // 得到错列布局坐标集
-      let xDiff = 60;
-      let yDiff = 140;
+      let originPixelX = 60;
+      let originPixelY = 140;
       let hexTiles = getPositions([0, 4], [0, 6], size).map(
         ([x, y]) => new Polyline({
-          pos: [x + xDiff, y + yDiff],
+          pos: [x + originPixelX, y + originPixelY],
           points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
@@ -97,25 +97,25 @@
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
           close: true,
         }),
         new Label({
-          pos: [xDiff - width / 2, yDiff - 50],
+          pos: [originPixelX - tileWidth / 2, originPixelY - 50],
           text: '↓ 一个奇数行错列的菱形网格图',
         }),
         ...hexTiles,
       );
 
       // 一个偶数行错列的倒序菱形网格图
-      xDiff = 680;
-      yDiff = 230;
+      originPixelX = 680;
+      originPixelY = 230;
       hexTiles = getPositions([-4.5, -0.5], [-6, 0], size, 'leftUp', 'even').map(
         ([x, y]) => new Polyline({
-          pos: [x + xDiff, y + yDiff],
+          pos: [x + originPixelX, y + originPixelY],
           points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
@@ -125,7 +125,7 @@
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
@@ -139,16 +139,16 @@
       );
 
       // 中心点为原点的错列带边框的倒序菱形网格图
-      xDiff = 185;
-      yDiff = 420;
+      originPixelX = 185;
+      originPixelY = 420;
       let minX = Infinity;
       let minY = Infinity;
       let maxX = -Infinity;
       let maxY = -Infinity;
-      const maxXNum = 2;
+      const maxGridX = 2;
       hexTiles = [];
-      getPositions([-2, maxXNum], [-4, 4], size, 'leftUp', 'odd').forEach(([x, y, xNum, yNum]) => {
-        if (xNum === maxXNum && Math.abs(yNum % 2) === 1) {
+      getPositions([-2, maxGridX], [-4, 4], size, 'leftUp', 'odd').forEach(([x, y, gridX, gridY]) => {
+        if (gridX === maxGridX && Math.abs(gridY % 2) === 1) {
           return; // 错列行最右侧元素隐去
         }
         minX = Math.min(minX, x);
@@ -157,7 +157,7 @@
         maxY = Math.max(maxY, y);
         hexTiles.push(
           new Polyline({
-            pos: [x + xDiff, y + yDiff],
+            pos: [x + originPixelX, y + originPixelY],
             points: rhombusVertexes,
             strokeColor: 'rgba(0, 0, 0, 0.5)',
             lineWidth,
@@ -165,14 +165,14 @@
           })
         );
       });
-      minY -= height / 2;
-      minX -= width / 2;
-      maxY += height / 2;
-      maxX += width / 2;
+      minY -= tileHeight / 2;
+      minX -= tileWidth / 2;
+      maxY += tileHeight / 2;
+      maxX += tileWidth / 2;
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
@@ -184,7 +184,7 @@
         }),
         // 边框
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [
             [minX, minY],
             [minX, maxY],
@@ -199,8 +199,8 @@
       );
       
       // 等距带边框的网格
-      xDiff = 540;
-      yDiff = 420;
+      originPixelX = 540;
+      originPixelY = 420;
       minX = Infinity;
       minY = Infinity;
       maxX = -Infinity;
@@ -211,33 +211,33 @@
         maxX = Math.max(maxX, x);
         maxY = Math.max(maxY, y);
         return new Polyline({
-          pos: [x + xDiff, y + yDiff],
+          pos: [x + originPixelX, y + originPixelY],
           points: rhombusVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
           close: true,
         });
       });
-      minY -= height / 2;
-      minX -= width / 2;
-      maxY += height / 2;
-      maxX += width / 2;
+      minY -= tileHeight / 2;
+      minX -= tileWidth / 2;
+      maxY += tileHeight / 2;
+      maxX += tileWidth / 2;
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
           close: true,
         }),
         new Label({
-          pos: [xDiff - 150, 310],
+          pos: [originPixelX - 150, 310],
           text: '↓ 等距带边框的网格',
         }),
         // 边框
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [
             [minX, minY],
             [minX, maxY],
@@ -276,12 +276,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 390;
-      const yPos = 180;
-      const pos = [xPos, yPos];
-      const width = 70;
-      const height = 32;
-      const size = [width, height];
+      const originPixelX = 390;
+      const originPixelY = 180;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 70;
+      const tileHeight = 32;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
       const stagger = 'odd';
@@ -312,13 +312,13 @@
       });
       shapesEls.push(mouseMoveLabel);
 
-      const xNumRange = [-5, 5];
-      const yNumRange = [-8, 11];
+      const gridXRange = [-5, 5];
+      const gridYRange = [-8, 11];
       let focusPos = pos;
       let focusText = '';
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
-        const text = xNum + ',' + yNum;
+      getPositions(gridXRange, gridYRange, size, 'RightDown', stagger).forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
+        const text = gridX + ',' + gridY;
         if (!focusText) {
           focusText = text;
           focusPos = pos;
@@ -364,17 +364,17 @@
         const offsetY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        const [xNum, yNum, x, y] = getInfoByPos([offsetX, offsetY], pos, size, stagger)
+        const [gridX, gridY, x, y] = getInfoByPos([offsetX, offsetY], pos, size, stagger)
 
         // 更新文案
-        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
+        mouseMoveLabel.text = `gridX: ${gridX}, gridY: ${gridY}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
 
         // 越界与未越界颜色区分
-        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
+        const color = `rgba(${gridX < gridXRange[0] || gridX > gridXRange[1] || gridY < gridYRange[0] || gridY > gridYRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y, strokeColor: color });
         // rectEl.attr({ x, y });
-        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
 
       layer.append(...shapesEls);
@@ -410,9 +410,9 @@
       shapesEls.push(mouseMoveLabel);
 
       /* 图形处理试验代码 sta */
-      const width = 60;
-      const height = 24;
-      const size = [width, height];
+      const tileWidth = 60;
+      const tileHeight = 24;
+      const size = [tileWidth, tileHeight];
 
       const { getVertexes, getIsometricPositions, getIsometricInfoByPos } = qtiled.shapes.rhombus;
 
@@ -420,13 +420,13 @@
       const rhombusVertexes = getVertexes(size);
 
       // 等距带边框的网格
-      let xDiff = 290;
-      let yDiff = 140;
-      const pos = [xDiff, yDiff];
-      const xNumRange = [-4, 4];
-      const yNumRange = [-4, 6];
-      getIsometricPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xDiff, y + yDiff];
+      let originPixelX = 290;
+      let originPixelY = 140;
+      const pos = [originPixelX, originPixelY];
+      const gridXRange = [-4, 4];
+      const gridYRange = [-4, 6];
+      getIsometricPositions(gridXRange, gridYRange, size, 'RightDown').forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
         shapesEls.push(
           new Polyline({
             pos,
@@ -438,7 +438,7 @@
           new Label({
             anchor: [0.5, 0.5],
             pos,
-            text: `${xNum},${yNum}`,
+            text: `${gridX},${gridY}`,
             fontSize: '12px',
           }),
         );
@@ -465,16 +465,16 @@
       container.addEventListener('mousemove', (e) => {
         const offsetX = e.pageX - container.offsetLeft;
         const offsetY = e.pageY - container.offsetTop;
-        const [xNum, yNum, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);
+        const [gridX, gridY, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);
         const currPos = [x, y];
         // 更新文案
-        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
+        mouseMoveLabel.text = `gridX: ${gridX}, gridY: ${gridY}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
 
         // 越界与未越界颜色区分
-        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
+        const color = `rgba(${gridX < gridXRange[0] || gridX > gridXRange[1] || gridY < gridYRange[0] || gridY > gridYRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y, strokeColor: color });
-        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
   
     }());
@@ -501,12 +501,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 390;
-      const yPos = 180;
-      const pos = [xPos, yPos];
-      const width = 70;
-      const height = 32;
-      const size = [width, height];
+      const originPixelX = 390;
+      const originPixelY = 180;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 70;
+      const tileHeight = 32;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
       const stagger = 'odd';
@@ -525,15 +525,15 @@
       });
       shapesEls.push(mouseMoveLabel);
 
-      const xNumRange = [-5, 5];
-      const yNumRange = [-8, 11];
+      const gridXRange = [-5, 5];
+      const gridYRange = [-8, 11];
       let focusPos = pos;
       let focusText = '';
       const xyNumsMap = {};
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y/*, xNum, yNum*/]) => {
-        const pos = [x + xPos, y + yPos];
-        const [xNum, yNum] = getIsometricInfoByPos(pos, [xPos, yPos], size);
-        const text = xNum + ',' + yNum;
+      getPositions(gridXRange, gridYRange, size, 'RightDown', stagger).forEach(([x, y/*, gridX, gridY*/]) => {
+        const pos = [x + originPixelX, y + originPixelY];
+        const [gridX, gridY] = getIsometricInfoByPos(pos, [originPixelX, originPixelY], size);
+        const text = gridX + ',' + gridY;
         xyNumsMap[text] = true;
         if (!focusText) {
           focusText = text;
@@ -581,16 +581,16 @@
         const offsetY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        const [xNum, yNum, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);
+        const [gridX, gridY, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);
 
         // 更新文案
-        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
+        mouseMoveLabel.text = `gridX: ${gridX}, gridY: ${gridY}, x: ${x}, y:${y}，offsetX: ${offsetX}, offsetY: ${offsetY}`;
 
         // 越界与未越界颜色区分
-        const color = `rgba(${xyNumsMap[xNum+','+yNum] ? '0, 136' : '255, 0'}, 0, 0.8)`
+        const color = `rgba(${xyNumsMap[gridX+','+gridY] ? '0, 136' : '255, 0'}, 0, 0.8)`
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y, strokeColor: color });
-        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
 
       layer.append(...shapesEls);

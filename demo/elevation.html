@@ -5,7 +5,7 @@
   <title>Elevation 海拔地图渲染</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
   <style type="text/css">
     #container {
       width: 900px;
@@ -35,9 +35,9 @@
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
 
   <h1>海拔地图渲染 - 错列布局</h1>
   <div class="legend">
@@ -61,11 +61,11 @@
       const lineWidth = 2;
       const shapesEls = [];
 
-      const xPos = 100;
-      const yPos = 100;
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const originPixelX = 100;
+      const originPixelY = 100;
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
       const elevationHeight = 15; // 每级海拔的像素高度
 
       const { getVertexes } = qtiled.shapes.rhombus;
@@ -104,8 +104,8 @@
       const renderOrder = getRenderOrder(elevationMap, 'RightDown');
 
       // 渲染所有瓦片
-      renderOrder.forEach(([xNum, yNum, elevation]) => {
-        const [x, y] = qtiled.shapes.rhombus.getPosition([xNum, yNum], size, 'odd', [xPos, yPos]);
+      renderOrder.forEach(([gridX, gridY, elevation]) => {
+        const [x, y] = qtiled.shapes.rhombus.getPosition([gridX, gridY], size, 'odd', [originPixelX, originPixelY]);
         const offsetY = -elevation * elevationHeight;
         const colors = elevationColors[elevation] || elevationColors[0];
 
@@ -148,11 +148,11 @@
       const lineWidth = 2;
       const shapesEls = [];
 
-      const xPos = 400;
-      const yPos = 200;
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const originPixelX = 400;
+      const originPixelY = 200;
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
       const elevationHeight = 12;
 
       const { getVertexes, getIsometricPosition } = qtiled.shapes.rhombus;
@@ -185,11 +185,11 @@
       const renderOrder = getRenderOrder(elevationMap, 'RightDown');
 
       // 渲染所有瓦片
-      renderOrder.forEach(([xNum, yNum, elevation]) => {
-        const [baseX, baseY] = getIsometricPosition([xNum, yNum], size, [xPos, yPos]);
+      renderOrder.forEach(([gridX, gridY, elevation]) => {
+        const [basePixelX, basePixelY] = getIsometricPosition([gridX, gridY], size, [originPixelX, originPixelY]);
         const offsetY = -elevation * elevationHeight;
-        const x = baseX;
-        const y = baseY + offsetY;
+        const x = basePixelX;
+        const y = basePixelY + offsetY;
         const colors = elevationColors[elevation] || elevationColors[0];
         shapesEls.push(
           new Polyline({

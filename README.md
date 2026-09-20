@@ -128,6 +128,22 @@ import qtiled from 'qtiled';
 
 可以参考 `demo/index.js` 中的示例，也可以直接阅读 src 目录下源码及相应注释。
 
+### 坐标变量命名速查
+
+库与 demo 统一使用带语义前缀的坐标变量名，避免把网格下标、像素位置和相对偏移混在一起：
+
+| 命名 | 含义 | 常见示例 |
+| --- | --- | --- |
+| `gridX` / `gridY` | 瓦片在网格中的列、行下标 | `originGridX`、`neighborGridY` |
+| `pixelX` / `pixelY` | 画布或屏幕上的像素坐标 | `originPixelX`、`basePixelY` |
+| `offsetX` / `offsetY` | 相对原点的网格或邻居偏移 | `neighborTypes(offsetX, offsetY)` |
+| `originGrid` | 参考瓦片的网格坐标 | `[gridX, gridY]` |
+| `originPixel` / `originXY` | 参考点或布局原点的像素坐标 | `[originPixelX, originPixelY]` |
+| `tileWidth` / `tileHeight` | 单个瓦片的像素尺寸 | `size = [tileWidth, tileHeight]` |
+| `currentElevation` / `neighborElevation` | 当前瓦片、邻居瓦片的海拔 | `elevationDiff` |
+
+涉及 API 返回数组时，仍保持原有顺序：位置数组为 `[pixelX, pixelY, gridX, gridY]`，点击定位结果为 `[gridX, gridY, pixelX, pixelY]`。
+
 ## 备注
 
 目前还只是静态方法库，希望能带来些许便利，有相应问题请随时反馈。

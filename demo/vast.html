@@ -5,7 +5,7 @@
   <title>Rhombus 大量瓦片元素鼠标交互示例</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
   <style type="text/css">
     #container2 {
       width: 1500px;
@@ -14,9 +14,9 @@
   </style>
 </head>
 <body>
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
 
   <h1>大量瓦片元素鼠标交互示例（仅测试鼠标交互效率，渲染效率未优化）</h1>
   <div id="container2"></div>
@@ -39,12 +39,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 390;
-      const yPos = 180;
-      const pos = [xPos, yPos];
-      const width = 50;
-      const height = 20;
-      const size = [width, height];
+      const originPixelX = 390;
+      const originPixelY = 180;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 50;
+      const tileHeight = 20;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '8px';
       const stagger = 'odd';
@@ -64,13 +64,13 @@
       focusLayer.append(mouseMoveLabel);
       // shapesEls.push(mouseMoveLabel);
 
-      const xNumRange = [-7, 18];
-      const yNumRange = [-14, 86];
+      const gridXRange = [-7, 18];
+      const gridYRange = [-14, 86];
       let focusPos = pos;
       let focusText = '';
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
-        const text = xNum + ',' + yNum;
+      getPositions(gridXRange, gridYRange, size, 'RightDown', stagger).forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
+        const text = gridX + ',' + gridY;
         if (!focusText) {
           focusText = text;
           focusPos = pos;
@@ -114,20 +114,20 @@
 
       const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
-        const tileX = e.pageX - offsetLeft;
-        const tileY = e.pageY - offsetTop;
+        const pixelX = e.pageX - offsetLeft;
+        const pixelY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size, stagger)
+        const [gridX, gridY, x, y] = getInfoByPos([pixelX, pixelY], pos, size, stagger)
 
         // 更新文案
-        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，tileX: ${tileX}, tileY: ${tileY}`;
+        mouseMoveLabel.text = `gridX: ${gridX}, gridY: ${gridY}, x: ${x}, y:${y}，pixelX: ${pixelX}, pixelY: ${pixelY}`;
 
         // 越界与未越界颜色区分
-        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
+        const color = `rgba(${gridX < gridXRange[0] || gridX > gridXRange[1] || gridY < gridYRange[0] || gridY > gridYRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y, strokeColor: color });
-        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
 
       layer.append(...shapesEls);

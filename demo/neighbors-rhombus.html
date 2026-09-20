@@ -5,14 +5,14 @@
   <title>正菱形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920113913">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260920113913">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260920141620">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260920113913"></script>
-  <script src="./static/js/spritejs3.js?20260920113913"></script>
-  <script src="./static/js/qtiled.dev.js?20260920113913"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
 
   <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -32,12 +32,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 225; // 中心点位置
-      const yPos = 160; // 中心点位置
-      const pos = [xPos, yPos]; // 中心点位置
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const originPixelX = 225; // 中心点位置
+      const originPixelY = 160; // 中心点位置
+      const pos = [originPixelX, originPixelY]; // 中心点位置
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
@@ -46,12 +46,12 @@
       // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
 
-      const xNumRange = [-3, 6];
-      const yNumRange = [-8, 8];
+      const gridXRange = [-3, 6];
+      const gridYRange = [-8, 8];
       const stagger = 'even'; // odd even
 
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
+      getPositions(gridXRange, gridYRange, size, 'RightDown', stagger).forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
         shapesEls.push(
           new Polyline({
             pos,
@@ -64,7 +64,7 @@
           new Label({
             anchor,
             pos,
-            text:  xNum + ',' + yNum,
+            text:  gridX + ',' + gridY,
             fontSize,
           })
         );
@@ -152,12 +152,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 225;
-      const yPos = 200;
-      const pos = [xPos, yPos];
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const originPixelX = 225;
+      const originPixelY = 200;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
@@ -166,12 +166,12 @@
       // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
 
-      const xNumRange = [-3, 6];
-      const yNumRange = [-8, 8];
+      const gridXRange = [-3, 6];
+      const gridYRange = [-8, 8];
       const stagger = 'even'; // odd even
 
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
+      getPositions(gridXRange, gridYRange, size, 'RightDown', stagger).forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
         shapesEls.push(
           new Polyline({
             pos,
@@ -184,7 +184,7 @@
           new Label({
             anchor,
             pos,
-            text:  xNum + ',' + yNum,
+            text:  gridX + ',' + gridY,
             fontSize,
           })
         );
@@ -257,7 +257,7 @@
       const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
         // 得到索引序号&渲染位置
-        const [xNum, yNum, x, y] = getInfoByPos(
+        const [gridX, gridY, x, y] = getInfoByPos(
           [e.pageX - offsetLeft, e.pageY - offsetTop],
           pos,
           size,
@@ -265,12 +265,12 @@
         );
 
         // 焦点下标索引
-        focusXYNum[0] = xNum;
-        focusXYNum[1] = yNum;
+        focusXYNum[0] = gridX;
+        focusXYNum[1] = gridY;
 
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y });
-        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}` });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}` });
 
         // 邻居位置更新
         const distance = Number(disEl.value);
@@ -308,12 +308,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 240;
-      const yPos = 170;
-      const pos = [xPos, yPos];
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const originPixelX = 240;
+      const originPixelY = 170;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
@@ -322,11 +322,11 @@
       // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
 
-      const xNumRange = [-3, 6];
-      const yNumRange = [-4, 6];
+      const gridXRange = [-3, 6];
+      const gridYRange = [-4, 6];
 
-      getIsometricPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
+      getIsometricPositions(gridXRange, gridYRange, size, 'RightDown').forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
         shapesEls.push(
           new Polyline({
             pos,
@@ -339,7 +339,7 @@
           new Label({
             anchor,
             pos,
-            text:  xNum + ',' + yNum,
+            text:  gridX + ',' + gridY,
             fontSize,
           })
         );
@@ -416,12 +416,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 240;
-      const yPos = 200;
-      const pos = [xPos, yPos];
-      const width = 60;
-      const height = 30;
-      const size = [width, height];
+      const originPixelX = 240;
+      const originPixelY = 200;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
@@ -432,11 +432,11 @@
       // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
 
-      const xNumRange = [-3, 6];
-      const yNumRange = [-4, 6];
+      const gridXRange = [-3, 6];
+      const gridYRange = [-4, 6];
 
-      getIsometricPositions(xNumRange, yNumRange, size, renderOrder).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
+      getIsometricPositions(gridXRange, gridYRange, size, renderOrder).forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
         shapesEls.push(
           new Polyline({
             pos,
@@ -449,7 +449,7 @@
           new Label({
             anchor,
             pos,
-            text:  xNum + ',' + yNum,
+            text:  gridX + ',' + gridY,
             fontSize,
           })
         );
@@ -516,19 +516,19 @@
       const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
         // 得到索引序号&渲染位置
-        const [xNum, yNum, x, y] = getIsometricInfoByPos(
+        const [gridX, gridY, x, y] = getIsometricInfoByPos(
           [e.pageX - offsetLeft, e.pageY - offsetTop],
           pos,
           size
         );
 
         // 焦点下标索引
-        focusXYNum[0] = xNum;
-        focusXYNum[1] = yNum;
+        focusXYNum[0] = gridX;
+        focusXYNum[1] = gridY;
 
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y });
-        focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}` });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}` });
 
         const distance = Number(disEl.value);
         getIsometricNeighborsByDistance(focusXYNum, distance, typeEl.value, renderOrder).forEach((xyNum, i) => {

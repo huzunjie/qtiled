@@ -5,14 +5,14 @@
   <title>六边形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260920141620">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
 
   <h1>查找紧邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -32,12 +32,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 345;
-      const yPos = 160;
-      const pos = [xPos, yPos];
-      const width = 50;
-      const height = 40;
-      const size = [width, height];
+      const originPixelX = 345;
+      const originPixelY = 160;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 50;
+      const tileHeight = 40;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
@@ -46,12 +46,12 @@
       // 一个矩形顶点坐标集
       const tileVertexes = getVertexes(size);
 
-      const xNumRange = [-6, 6];
-      const yNumRange = [-4, 5];
+      const gridXRange = [-6, 6];
+      const gridYRange = [-4, 5];
       const stagger = 'even'; // odd even
 
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
+      getPositions(gridXRange, gridYRange, size, 'RightDown', stagger).forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
         shapesEls.push(
           new Polyline({
             pos,
@@ -64,7 +64,7 @@
           new Label({
             anchor,
             pos,
-            text:  xNum + ',' + yNum,
+            text:  gridX + ',' + gridY,
             fontSize,
           })
         );
@@ -111,7 +111,7 @@
       });
       console.log('neisPos', neisPos)
 
-      directions.forEach(([xDiff, yDiff], i) => {
+      directions.forEach(([originPixelX, originPixelY], i) => {
         const [xB, yB, hypotenuse, x_h, y_h] = neisPos[i];
         const currHypotenuse = hypotenuse * dis;
         const x = currHypotenuse * x_h;

@@ -5,7 +5,7 @@
   <title>Hexagon 六边形方法使用示例</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
   <style type="text/css">
     #container {
       width: 800px;
@@ -20,9 +20,9 @@
 <body>
   <h1>Hexagon 六边形</h1>
   <div id="container"></div>
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -40,9 +40,9 @@
       const shapesEls = [];
 
       /* 图形处理试验代码 sta */
-      const width = 60;
-      const height = 40;
-      const size = [width, height];
+      const tileWidth = 60;
+      const tileHeight = 40;
+      const size = [tileWidth, tileHeight];
 
       const { getVertexes, getPositions } = qtiled.shapes.hexagon;
 
@@ -97,11 +97,11 @@
       );
 
       // 得到错列布局坐标集
-      let xDiff = 60;
-      let yDiff = 190;
+      let originPixelX = 60;
+      let originPixelY = 190;
       let hexTiles = getPositions([0, 4], [0, 6], size).map(
         ([x, y]) => new Polyline({
-          pos: [x + xDiff, y + yDiff],
+          pos: [x + originPixelX, y + originPixelY],
           points: hexagonVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
@@ -111,25 +111,25 @@
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
           close: true,
         }),
         new Label({
-          pos: [xDiff - width / 2, yDiff - 50],
+          pos: [originPixelX - tileWidth / 2, originPixelY - 50],
           text: '↓ 一个奇数行错列的六边形网格图',
         }),
         ...hexTiles,
       );
 
       // 得到纵向错列布局坐标集
-      xDiff = 420;
-      yDiff = 190;
-      hexTiles = getPositions([0, 4], [0, 6], [height, width]).map(
+      originPixelX = 420;
+      originPixelY = 190;
+      hexTiles = getPositions([0, 4], [0, 6], [tileHeight, tileWidth]).map(
         ([y, x]) => new Polyline({
-          pos: [x + xDiff, y + yDiff],
+          pos: [x + originPixelX, y + originPixelY],
           points: hexagonVertexes2,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
@@ -139,14 +139,14 @@
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
           close: true,
         }),
         new Label({
-          pos: [xDiff - width / 2, yDiff - 50],
+          pos: [originPixelX - tileWidth / 2, originPixelY - 50],
           text: '↓ 一个奇数行错列的纵向六边形网格图',
         }),
         ...hexTiles,
@@ -154,11 +154,11 @@
 
 
       // 得到另一组错列布局坐标集
-      xDiff = 330;
-      yDiff = 640;
+      originPixelX = 330;
+      originPixelY = 640;
       hexTiles = getPositions([-4.5, -0.5], [-6, 0], size, 'leftUp', 'even').map(
         ([x, y]) => new Polyline({
-          pos: [x + xDiff, y + yDiff],
+          pos: [x + originPixelX, y + originPixelY],
           points: hexagonVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
@@ -168,7 +168,7 @@
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
@@ -182,33 +182,33 @@
       );
 
       // 纵向带边框的网格
-      xDiff = 700;
-      yDiff = 640;
+      originPixelX = 700;
+      originPixelY = 640;
       let minX = Infinity;
       let minY = Infinity;
       let maxX = -Infinity;
       let maxY = -Infinity;
-      hexTiles = getPositions([-4.5, -0.5], [-6, 0], [height, width], 'leftUp', 'even').map(([y, x]) => {
+      hexTiles = getPositions([-4.5, -0.5], [-6, 0], [tileHeight, tileWidth], 'leftUp', 'even').map(([y, x]) => {
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
         maxX = Math.max(maxX, x);
         maxY = Math.max(maxY, y);
         return new Polyline({
-          pos: [x + xDiff, y + yDiff],
+          pos: [x + originPixelX, y + originPixelY],
           points: hexagonVertexes2,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
           close: true,
         });
       });
-      minY -= height / 2;
-      minX -= width / 2;
-      maxY += height / 2;
-      maxX += width / 2;
+      minY -= tileHeight / 2;
+      minX -= tileWidth / 2;
+      maxY += tileHeight / 2;
+      maxX += tileWidth / 2;
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
@@ -220,7 +220,7 @@
         }),
         // 边框
         new Polyline({
-          pos: [xDiff, yDiff],
+          pos: [originPixelX, originPixelY],
           points: [
             [minX, minY],
             [minX, maxY],
@@ -261,12 +261,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 390;
-      const yPos = 180;
-      const pos = [xPos, yPos];
-      const width = 58;
-      const height = 40;
-      const size = [width, height];
+      const originPixelX = 390;
+      const originPixelY = 180;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 58;
+      const tileHeight = 40;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
       const stagger = 'odd';
@@ -286,13 +286,13 @@
       });
       shapesEls.push(mouseMoveLabel);
 
-      const xNumRange = [-6, 6];
-      const yNumRange = [-4, 8];
+      const gridXRange = [-6, 6];
+      const gridYRange = [-4, 8];
       let focusPos = pos;
       let focusText = '';
-      getPositions(xNumRange, yNumRange, size, 'RightDown', stagger).forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
-        const text = xNum + ',' + yNum;
+      getPositions(gridXRange, gridYRange, size, 'RightDown', stagger).forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
+        const text = gridX + ',' + gridY;
         if (!focusText) {
           focusText = text;
           focusPos = pos;
@@ -335,20 +335,20 @@
 
       const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
-        const tileX = e.pageX - offsetLeft;
-        const tileY = e.pageY - offsetTop;
+        const pixelX = e.pageX - offsetLeft;
+        const pixelY = e.pageY - offsetTop;
 
         // 得到焦点元素索引及渲染坐标
-        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size, stagger)
+        const [gridX, gridY, x, y] = getInfoByPos([pixelX, pixelY], pos, size, stagger)
 
         // 更新文案
-        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}, x: ${x}, y:${y}，tileX: ${tileX}, tileY: ${tileY}`;
+        mouseMoveLabel.text = `gridX: ${gridX}, gridY: ${gridY}, x: ${x}, y:${y}，pixelX: ${pixelX}, pixelY: ${pixelY}`;
 
         // 越界与未越界颜色区分
-        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
+        const color = `rgba(${gridX < gridXRange[0] || gridX > gridXRange[1] || gridY < gridYRange[0] || gridY > gridYRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
         // 更新焦点区域标识位置
         focusHexagonTile.attr({ x, y, strokeColor: color });
-        focusHexagonLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+        focusHexagonLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
 
       layer.append(...shapesEls);

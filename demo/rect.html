@@ -5,7 +5,7 @@
   <title>Rect 矩形方法使用示例</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
   <style type="text/css">
     #container {
       width: 800px;
@@ -21,9 +21,9 @@
   <h1>Rect 正矩形</h1>
   <div id="container"></div>
 
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920141620"></script>
+  <script src="./static/js/spritejs3.js?20260920141620"></script>
+  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -40,28 +40,28 @@
 
       /* 图形处理试验代码 sta */
 
-      const width = 40;
-      const height = 30;
-      const size = [width, height];
+      const tileWidth = 40;
+      const tileHeight = 30;
+      const size = [tileWidth, tileHeight];
 
       const { getVertexes, getPositions } = qtiled.shapes.rect;
 
       // 一个矩形顶点坐标集
       const rectVertexes = getVertexes(size);
 
-      let xPos = 40;
-      let yPos = 70;
+      let originPixelX = 40;
+      let originPixelY = 70;
       shapesEls.push(
         // 坐标系原点
         new Polyline({
-          pos: [xPos, yPos],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
           close: true,
         }),
         new Polyline({
-          pos: [xPos, yPos],
+          pos: [originPixelX, originPixelY],
           points: rectVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           lineWidth,
@@ -73,11 +73,11 @@
         }),
       );
       // 得到错列布局坐标集
-      xPos = 40;
-      yPos = 180;
+      originPixelX = 40;
+      originPixelY = 180;
       let rectTiles = getPositions([0, 4], [0, 6], size).map(
         ([x, y]) => new Polyline({
-          pos: [x + xPos, y + yPos],
+          pos: [x + originPixelX, y + originPixelY],
           points: rectVertexes,
           strokeColor: 'rgba(0, 0, 0, 0.5)',
           fillColor: 'rgba(0, 255, 255, 0.1)',
@@ -89,7 +89,7 @@
         ...rectTiles,
         // 坐标系原点
         new Polyline({
-          pos: [xPos, yPos],
+          pos: [originPixelX, originPixelY],
           points: [0, 0, lineWidth, 0],
           strokeColor: 'red',
           lineWidth,
@@ -127,12 +127,12 @@
 
       /* 图形处理试验代码 sta */
 
-      const xPos = 345;
-      const yPos = 220;
-      const pos = [xPos, yPos];
-      const width = 50;
-      const height = 40;
-      const size = [width, height];
+      const originPixelX = 345;
+      const originPixelY = 220;
+      const pos = [originPixelX, originPixelY];
+      const tileWidth = 50;
+      const tileHeight = 40;
+      const size = [tileWidth, tileHeight];
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
@@ -150,10 +150,10 @@
       });
       shapesEls.push(mouseMoveLabel);
 
-      const xNumRange = [-6, 6];
-      const yNumRange = [-4, 5];
-      getPositions(xNumRange, yNumRange, size, 'RightDown').forEach(([x, y, xNum, yNum]) => {
-        const pos = [x + xPos, y + yPos];
+      const gridXRange = [-6, 6];
+      const gridYRange = [-4, 5];
+      getPositions(gridXRange, gridYRange, size, 'RightDown').forEach(([x, y, gridX, gridY]) => {
+        const pos = [x + originPixelX, y + originPixelY];
         shapesEls.push(
           new Polyline({
             pos,
@@ -166,7 +166,7 @@
           new Label({
             anchor,
             pos,
-            text:  xNum + ',' + yNum,
+            text:  gridX + ',' + gridY,
             fontSize,
           })
         );
@@ -193,18 +193,18 @@
 
       const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
-        const tileX = e.pageX - offsetLeft;
-        const tileY = e.pageY - offsetTop;
+        const pixelX = e.pageX - offsetLeft;
+        const pixelY = e.pageY - offsetTop;
         // 得到索引序号&渲染位置
-        const [xNum, yNum, x, y] = getInfoByPos([tileX, tileY], pos, size);
+        const [gridX, gridY, x, y] = getInfoByPos([pixelX, pixelY], pos, size);
         // 更新文案
-        mouseMoveLabel.text = `xNum: ${xNum}, yNum: ${yNum}; tileX: ${tileX}, tileY: ${tileY}, x: ${x}, y:${y}`;
+        mouseMoveLabel.text = `gridX: ${gridX}, gridY: ${gridY}; pixelX: ${pixelX}, pixelY: ${pixelY}, x: ${x}, y:${y}`;
         
         // 越界与未越界颜色区分
-        const color = `rgba(${xNum < xNumRange[0] || xNum > xNumRange[1] || yNum < yNumRange[0] || yNum > yNumRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
+        const color = `rgba(${gridX < gridXRange[0] || gridX > gridXRange[1] || gridY < gridYRange[0] || gridY > gridYRange[1] ? '255, 0' : '0, 136'}, 0, 0.8)`
         // 更新焦点区域标识位置
         focusRectTile.attr({ x, y, strokeColor: color });
-        focusRectLabel.attr({ x, y, text: `${xNum},${yNum}`, fillColor: color });
+        focusRectLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
 
       layer.append(...shapesEls);
