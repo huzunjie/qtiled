@@ -106,6 +106,16 @@ const QUAR = 0.25; // 四分之一
 const RAUQ = -QUAR;
 const TQUA$1 = 1 - QUAR; // 正六边形两行重合部分高度
 
+/* 按距离筛选邻居的类型配置 */
+
+const neighborTypes = {
+  all: (x, y) => [x, y],
+  no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
+  border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
+  vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
+  // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
+  diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false
+};
 /* 得到一个多边形折线顶点坐标集合
  * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
  * @param  {Number}    width         渲染时的宽度值
@@ -254,6 +264,7 @@ var polygonFuns = /*#__PURE__*/Object.freeze({
   QUAR: QUAR,
   RAUQ: RAUQ,
   TQUA: TQUA$1,
+  neighborTypes: neighborTypes,
   getVertexes: getVertexes$3,
   twoDimForEach: twoDimForEach,
   isStaggerLine: isStaggerLine,
@@ -274,16 +285,6 @@ const {
 /* 左上、右上、左下、右下，四个角邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 
 const corners = [[-1, -1, SQRT2$1, '↖'], [1, -1, SQRT2$1, '↗'], [1, 1, SQRT2$1, '↘'], [-1, 1, SQRT2$1, '↙']];
-/* 按距离筛选邻居的类型配置 */
-
-const neighborTypes = {
-  all: (x, y) => [x, y],
-  no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-  border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-  vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
-  // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-  diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false
-};
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
 * @param  {Array}   size    如： [width{Number}, height{Number}]
 * @return {Array}   [[x, y], ...]
@@ -340,7 +341,7 @@ function getNeighbors$2(originXyNum = [0, 0], neisConf = [...directions, ...corn
  * @return {Array}  [[xNum, yNum]]，返回值为基于 originXyNum 的绝对下标
  */
 
-function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
+function getNeighborsByDistance$1(originXyNum = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
   const [originXNum, originYNum] = originXyNum;
   const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
   return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
@@ -360,7 +361,7 @@ var rectFuns = /*#__PURE__*/Object.freeze({
   getPositions: getPositions$2,
   getInfoByPos: getInfoByPos$2,
   getNeighbors: getNeighbors$2,
-  getNeighborsByDistance: getNeighborsByDistance
+  getNeighborsByDistance: getNeighborsByDistance$1
 });
 
 /* 正六边形地图元件方法 */
@@ -450,7 +451,7 @@ const directionsNormal = [[-1, -1, 1, '↖'], [0, -1, 1, '↗'], [0, 1, 1, '↘'
 const directionsOffset = [[0, -1, 1, '↖'], [1, -1, 1, '↗'], [1, 1, 1, '↘'], [0, 1, 1, '↙']];
 const {
   SQRT2
-} = Math; // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
+} = Math;
 // 没错，错列与非错列的角的邻居坐标系差值一样
 
 const cornersNormalOrOffset = [[0, -2, SQRT2, '↑'], [1, 0, SQRT2, '→'], [0, 2, SQRT2, '↓'], [-1, 0, SQRT2, '←']]; // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
@@ -570,11 +571,50 @@ function getIsometricNeighbors(originXyNum = [0, 0]) {
   const neisArr = [...cornersIsometric, ...directionsIsometric];
   return neisArr.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
 }
+/* 按距离获得错列布局菱形周边区域内的元素们
+ * @param  {Array}          originXyNum  参考点元素下标，如：[0, 0]
+ * @param  {Number}         distance     下标间隔量，目标元素的第几圈邻居，0 ~ N
+ * @param  {String|Function} iterator    邻居类型或迭代函数，如：'border' 或 (x, y) => [x, y]
+ * @param  {String}          stagger      需要错位排列的行：['odd', 'even', 'none']；默认为 'odd'
+ * @param  {String}          renderOrder  渲染方向；默认为 'RightDown'
+ * @return {Array} [[xNum, yNum]]，返回基于 originXyNum 的绝对下标
+ */
+
+function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', stagger = 'odd', renderOrder = 'RightDown') {
+  const [originXNum, originYNum] = originXyNum;
+  const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
+  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
+    const ret = neighborIterator(x, y, distance);
+    if (!Array.isArray(ret)) return ret;
+    const yNum = originYNum + ret[1] - ret[0];
+    const originOffset = isStaggerLine(originYNum, stagger) ? HALF : 0;
+    const targetOffset = isStaggerLine(yNum, stagger) ? HALF : 0;
+    const xNum = originXNum + (ret[0] + ret[1]) * HALF + originOffset - targetOffset;
+    return [Math.round(xNum), yNum];
+  });
+}
+/* 按距离获得等距布局菱形周边区域内的元素们
+ * @param  {Array}          originXyNum  参考点元素下标，如：[0, 0]
+ * @param  {Number}         distance     下标间隔量，目标元素的第几圈邻居，0 ~ N
+ * @param  {String|Function} iterator    邻居类型或迭代函数，如：'border' 或 (x, y) => [x, y]
+ * @param  {String}          renderOrder  渲染方向；默认为 'RightDown'
+ * @return {Array} [[xNum, yNum]]，返回基于 originXyNum 的绝对下标
+ */
+
+function getIsometricNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', renderOrder = 'RightDown') {
+  const [originXNum, originYNum] = originXyNum;
+  const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
+  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
+    const ret = neighborIterator(x, y, distance);
+    return Array.isArray(ret) ? [ret[0] + originXNum, ret[1] + originYNum] : ret;
+  });
+}
 
 var rhombusFuns = /*#__PURE__*/Object.freeze({
   __proto__: null,
   directionsNormal: directionsNormal,
   directionsOffset: directionsOffset,
+  neighborTypes: neighborTypes,
   cornersNormalOrOffset: cornersNormalOrOffset,
   directionsIsometric: directionsIsometric,
   cornersIsometric: cornersIsometric,
@@ -588,7 +628,9 @@ var rhombusFuns = /*#__PURE__*/Object.freeze({
   getInfoByPos: getInfoByPos,
   getIsometricInfoByPos: getIsometricInfoByPos,
   getNeighbors: getNeighbors,
-  getIsometricNeighbors: getIsometricNeighbors
+  getIsometricNeighbors: getIsometricNeighbors,
+  getNeighborsByDistance: getNeighborsByDistance,
+  getIsometricNeighborsByDistance: getIsometricNeighborsByDistance
 });
 
 const ellipse = ellipseFuns;

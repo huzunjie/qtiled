@@ -15,6 +15,8 @@ import {
   getIsometricInfoByPos,
   getNeighbors,
   getIsometricNeighbors,
+  getNeighborsByDistance,
+  getIsometricNeighborsByDistance,
 } from '../src/shapes/rhombus';
 
 describe('rhombus 方向配置', () => {
@@ -238,6 +240,48 @@ describe('getIsometricNeighbors', () => {
     getIsometricNeighbors([1, 1]).forEach(nei => {
       expect(nei).toHaveLength(4);
     });
+  });
+});
+
+describe('getNeighborsByDistance', () => {
+  test('错列布局 distance=1 返回 9 个绝对坐标', () => {
+    const result = getNeighborsByDistance([1, 1], 1, 'all', 'even');
+    expect(result).toHaveLength(9);
+    expect(result).toContainEqual([1, 1]);
+  });
+
+  test('错列布局支持内置邻居类型', () => {
+    expect(getNeighborsByDistance([0, 0], 2, 'no_self', 'odd')).toHaveLength(24);
+    expect(getNeighborsByDistance([0, 0], 2, 'border', 'odd')).toHaveLength(16);
+    expect(getNeighborsByDistance([0, 0], 2, 'vertex', 'odd')).toHaveLength(4);
+    expect(getNeighborsByDistance([0, 0], 2, 'diamond', 'odd')).toHaveLength(13);
+  });
+
+  test('错列布局支持自定义 renderOrder', () => {
+    const result = getNeighborsByDistance([1, 2], 1, 'vertex', 'even', 'LeftUp');
+    expect(result).toEqual([
+      [2, 2],
+      [1, 0],
+      [1, 4],
+      [0, 2],
+    ]);
+  });
+});
+
+describe('getIsometricNeighborsByDistance', () => {
+  test('等距布局返回基于 origin 的绝对坐标', () => {
+    const result = getIsometricNeighborsByDistance([3, 4], 1, 'vertex');
+    expect(result).toEqual([
+      [2, 3],
+      [2, 5],
+      [4, 3],
+      [4, 5],
+    ]);
+  });
+
+  test('等距布局支持内置邻居类型和 renderOrder', () => {
+    expect(getIsometricNeighborsByDistance([0, 0], 2, 'no_self')).toHaveLength(24);
+    expect(getIsometricNeighborsByDistance([0, 0], 2, 'border', 'LeftUp')).toHaveLength(16);
   });
 });
 

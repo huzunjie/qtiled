@@ -38,6 +38,8 @@
   + [x] getIsometricRhombusInfoByPos 根据任意点&原点&单瓦片尺寸，取得瓦片的等距二维坐标及渲染坐标
   + [x] getNeighbors - 获得错列布局当前点周边的邻居，可用于寻路等
   + [x] getIsometricNeighbors - 获得等距布局当前点周边的邻居，可用于寻路等
+  + [x] getNeighborsByDistance - 按距离和类型获得错列布局邻居区域
+  + [x] getIsometricNeighborsByDistance - 按距离和类型获得等距布局邻居区域
 + [x] Hexagon - 六边形
   + [x] getHexagonVertexes 获取六边形顶点坐标集
   + [x] getHexagonPositions 按目标区间方向获取多个六边形的错列布局位置坐标集

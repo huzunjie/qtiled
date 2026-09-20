@@ -7,6 +7,16 @@ export const QUAR = 0.25; // 四分之一
 export const RAUQ = -QUAR;
 export const TQUA = 1 - QUAR; // 正六边形两行重合部分高度
 
+/* 按距离筛选邻居的类型配置 */
+export const neighborTypes = {
+  all: (x, y) => [x, y],
+  no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
+  border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
+  vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
+  // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
+  diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
+};
+
 /* 得到一个多边形折线顶点坐标集合
  * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
  * @param  {Number}    width         渲染时的宽度值

@@ -5,14 +5,14 @@
   <title>正菱形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920113913">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260920113913">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920113913"></script>
+  <script src="./static/js/spritejs3.js?20260920113913"></script>
+  <script src="./static/js/qtiled.dev.js?20260920113913"></script>
 
   <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -161,7 +161,7 @@
       const anchor = [0.5, 0.5];
       const fontSize = '14px';
 
-      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighbors } = qtiled.shapes.rhombus;
+      const { getVertexes, getPosition, getPositions, getInfoByPos, getNeighbors, getNeighborsByDistance } = qtiled.shapes.rhombus;
 
       // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
@@ -212,30 +212,6 @@
       const neighborsLabels = [];
       const disEl = document.getElementById('ipt_dis_stagger');
       const typeEl = document.getElementById('sei_type_stagger');
-      const typeConfs = {
-        all: (x, y) => [x, y],
-        no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-        border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-        vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
-        // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-        diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
-      };
-
-      // 在瓦片的两条斜轴上遍历相对坐标，筛选规则完全由 iterator 决定。
-      const getNeighborsByDistance = (originXyNum, distance, iterator) => {
-        const [originX, originY] = getPosition(originXyNum, size, stagger);
-        return qtiled.shapes.polygon.twoDimForEach([-distance, distance], [-distance, distance], 'RightDown', (x, y) => {
-          const ret = iterator(x, y, distance);
-          if (ret) {
-            // 将回调返回的斜轴偏移转换为实际中心位置，再换算为错列下标。
-            const [xNum, yNum] = getInfoByPos([
-              originX + (ret[0] + ret[1]) * width / 2,
-              originY + (ret[1] - ret[0]) * height / 2,
-            ], [0, 0], size, stagger);
-            return [xNum, yNum];
-          }
-        });
-      };
 
       const updateNeis = () => {
         const distance = Number(disEl.value);
@@ -244,7 +220,7 @@
         neighborsLabels.forEach((label) => label.remove());
         neighborsLabels.length = 0;
         // 邻居位置更新
-        getNeighborsByDistance(focusXYNum, distance, typeConfs[typeEl.value]).forEach((xyNum, i) => {
+        getNeighborsByDistance(focusXYNum, distance, typeEl.value, stagger).forEach((xyNum, i) => {
           const _pos = getPosition(xyNum, size, stagger, pos);
           neighborsEls.push(
             new Polyline({
@@ -292,14 +268,13 @@
         focusXYNum[0] = xNum;
         focusXYNum[1] = yNum;
 
-        const [oldX, oldY] = focusRhombusTile.attr('pos');
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y });
         focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}` });
 
         // 邻居位置更新
         const distance = Number(disEl.value);
-        getNeighborsByDistance(focusXYNum, distance, typeConfs[typeEl.value]).forEach((xyNum, i) => {
+        getNeighborsByDistance(focusXYNum, distance, typeEl.value, stagger).forEach((xyNum, i) => {
           const _pos = getPosition(xyNum, size, stagger, pos);
           neighborsEls[i].attr('pos', _pos);
           neighborsLabels[i].attr('pos', _pos);
@@ -452,8 +427,7 @@
 
       const renderOrder = 'RightDown'; // RightDown LeftDown LeftUp RightUp
 
-      const { getVertexes, getIsometricPosition, getIsometricPositions, getIsometricInfoByPos, getIsometricNeighbors } = qtiled.shapes.rhombus;
-      const { twoDimForEach } = qtiled.shapes.polygon;
+      const { getVertexes, getIsometricPosition, getIsometricPositions, getIsometricInfoByPos, getIsometricNeighbors, getIsometricNeighborsByDistance } = qtiled.shapes.rhombus;
 
       // 一个菱形顶点坐标集
       const tileVertexes = getVertexes(size);
@@ -501,31 +475,13 @@
       const neighborsEls = [];
       const disEl = document.getElementById('ipt_dis_iso');
       const typeEl = document.getElementById('sei_type_iso');
-      const typeConfs = {
-        all: (x, y) => [x, y],
-        no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-        border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-        vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
-        // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-        diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
-      };
-      
-      // 按距离获取邻居坐标（使用 twoDimForEach 方法）
-      const getNeighborsByDistance = (originXyNum, distance, iterator) => {
-        return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
-          const ret = iterator(x, y);
-          if (ret) {
-            return [ret[0] + originXyNum[0], ret[1] + originXyNum[1]];
-          }
-        });
-      };
       
       const updateNeis = () => {
         const distance = Number(disEl.value);
         neighborsEls.forEach((el) => el.remove());
         neighborsEls.length = 0;
         // 邻居位置更新
-        getNeighborsByDistance(focusXYNum, distance, (x, y) => typeConfs[typeEl.value](x, y, distance)).forEach((xyNum, i) => {
+        getIsometricNeighborsByDistance(focusXYNum, distance, typeEl.value, renderOrder).forEach((xyNum, i) => {
           const _pos = getIsometricPosition(xyNum, size, pos);
           neighborsEls.push(
             new Polyline({
@@ -570,21 +526,15 @@
         focusXYNum[0] = xNum;
         focusXYNum[1] = yNum;
 
-        const [oldX, oldY] = focusRhombusTile.attr('pos');
         // 更新焦点区域标识位置
         focusRhombusTile.attr({ x, y });
         focusRhombusLabel.attr({ x, y, text: `${xNum},${yNum}` });
 
-        const xDiff = x - oldX;
-        const yDiff = y - oldY;
-        neighborsEls.forEach((el) => {
-          const [x, y] = el.attr('pos');
-          el.attr('pos', [x + xDiff, y + yDiff]);
-          const txtXyNum = el.attr('xyNum');
-          if (txtXyNum) {
-            const [xNumTxt, yNumTxt] = txtXyNum;
-            el.attr('text', [xNumTxt + xNum, yNumTxt + yNum].join(','));
-          }
+        const distance = Number(disEl.value);
+        getIsometricNeighborsByDistance(focusXYNum, distance, typeEl.value, renderOrder).forEach((xyNum, i) => {
+          const _pos = getIsometricPosition(xyNum, size, pos);
+          neighborsEls[i * 2].attr('pos', _pos);
+          neighborsEls[i * 2 + 1].attr({ pos: _pos, text: xyNum.join(','), xyNum });
         });
       });
       shapesEls.push(focusRhombusTile, focusRhombusLabel, ...neighborsEls);

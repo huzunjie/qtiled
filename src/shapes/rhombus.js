@@ -5,6 +5,7 @@ import {
   HALF,
   FLAH,
   twoDimForEach,
+  neighborTypes,
   isStaggerLine,
   getPosition as getPolygonPosition,
   getVertexes as getPolygonVertexes,
@@ -37,6 +38,8 @@ export const directionsOffset = [
 ];
 
 const { SQRT2 } = Math;
+
+export { neighborTypes };
 
 // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
 // 没错，错列与非错列的角的邻居坐标系差值一样
@@ -185,4 +188,48 @@ export function getIsometricNeighbors(originXyNum = [0, 0]) {
   const [originXNum, originYNum] = originXyNum;
   const neisArr = [ ...cornersIsometric, ...directionsIsometric ];
   return neisArr.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+}
+
+/* 按距离获得错列布局菱形周边区域内的元素们
+ * @param  {Array}          originXyNum  参考点元素下标，如：[0, 0]
+ * @param  {Number}         distance     下标间隔量，目标元素的第几圈邻居，0 ~ N
+ * @param  {String|Function} iterator    邻居类型或迭代函数，如：'border' 或 (x, y) => [x, y]
+ * @param  {String}          stagger      需要错位排列的行：['odd', 'even', 'none']；默认为 'odd'
+ * @param  {String}          renderOrder  渲染方向；默认为 'RightDown'
+ * @return {Array} [[xNum, yNum]]，返回基于 originXyNum 的绝对下标
+ */
+export function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', stagger = 'odd', renderOrder = 'RightDown') {
+  const [originXNum, originYNum] = originXyNum;
+  const neighborIterator = typeof iterator === 'string'
+    ? neighborTypes[iterator] || neighborTypes.all
+    : iterator;
+  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
+    const ret = neighborIterator(x, y, distance);
+    if (!Array.isArray(ret)) return ret;
+    const yNum = originYNum + ret[1] - ret[0];
+    const originOffset = isStaggerLine(originYNum, stagger) ? HALF : 0;
+    const targetOffset = isStaggerLine(yNum, stagger) ? HALF : 0;
+    const xNum = originXNum + (ret[0] + ret[1]) * HALF + originOffset - targetOffset;
+    return [Math.round(xNum), yNum];
+  });
+}
+
+/* 按距离获得等距布局菱形周边区域内的元素们
+ * @param  {Array}          originXyNum  参考点元素下标，如：[0, 0]
+ * @param  {Number}         distance     下标间隔量，目标元素的第几圈邻居，0 ~ N
+ * @param  {String|Function} iterator    邻居类型或迭代函数，如：'border' 或 (x, y) => [x, y]
+ * @param  {String}          renderOrder  渲染方向；默认为 'RightDown'
+ * @return {Array} [[xNum, yNum]]，返回基于 originXyNum 的绝对下标
+ */
+export function getIsometricNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', renderOrder = 'RightDown') {
+  const [originXNum, originYNum] = originXyNum;
+  const neighborIterator = typeof iterator === 'string'
+    ? neighborTypes[iterator] || neighborTypes.all
+    : iterator;
+  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
+    const ret = neighborIterator(x, y, distance);
+    return Array.isArray(ret)
+      ? [ret[0] + originXNum, ret[1] + originYNum]
+      : ret;
+  });
 }

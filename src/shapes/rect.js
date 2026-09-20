@@ -4,6 +4,7 @@ import {
   HALF,
   FLAH,
   twoDimForEach,
+  neighborTypes,
   getVertexes as getPolygonVertexes,
   getPositions as getPolygonPositions,
   getInfoByPos as getPolygonInfoByPos,
@@ -35,15 +36,7 @@ export const corners = [
   [-1, 1, SQRT2, '↙'],
 ];
 
-/* 按距离筛选邻居的类型配置 */
-export const neighborTypes = {
-  all: (x, y) => [x, y],
-  no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-  border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-  vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
-  // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-  diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
-};
+export { neighborTypes };
 
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
 * @param  {Array}   size    如： [width{Number}, height{Number}]
