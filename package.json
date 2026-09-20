@@ -19,6 +19,9 @@
     "debug": "rollup -c build/rollup.config.dev.js",
     "update-demo-version": "node build/update-demo-version.js"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/huzunjie/qtiled.git"
