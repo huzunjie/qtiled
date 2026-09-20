@@ -29,6 +29,7 @@
   + [x] getRectPositions 获取多个矩形位置坐标集
   + [x] getRectInfoByPos 根据当前任意坐标&原点坐标&单个瓦片尺寸等，取得目标瓦片的二维坐标及渲染坐标值
   + [x] getNeighbors - 获得当前点周边的邻居，可用于寻路等
+  + [x] getNeighborsByDistance - 按距离和类型获得邻居区域，返回基于原点的绝对下标
 + [x] Rhombus - 菱形
   + [x] getRhombusVertexes 获取菱形顶点坐标集
   + [x] getRhombusPositions 按目标区间方向获取多个菱形的错列布局位置坐标集

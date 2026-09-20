@@ -200,6 +200,38 @@ describe('getNeighborsByDistance', () => {
     expect(result[0]).toHaveProperty('y');
   });
 
+  test('返回基于 originXyNum 的绝对坐标', () => {
+    const result = getNeighborsByDistance([3, 4], 1, 'vertex');
+    expect(result).toEqual([
+      [2, 3],
+      [2, 5],
+      [4, 3],
+      [4, 5],
+    ]);
+  });
+
+  test('支持内置邻居类型筛选', () => {
+    expect(getNeighborsByDistance([0, 0], 2, 'all')).toHaveLength(25);
+    expect(getNeighborsByDistance([0, 0], 2, 'no_self')).toHaveLength(24);
+    expect(getNeighborsByDistance([0, 0], 2, 'border')).toHaveLength(16);
+    expect(getNeighborsByDistance([0, 0], 2, 'vertex')).toHaveLength(4);
+    expect(getNeighborsByDistance([0, 0], 2, 'diamond')).toHaveLength(13);
+  });
+
+  test('未知邻居类型回退为 all', () => {
+    expect(getNeighborsByDistance([0, 0], 1, 'unknown')).toHaveLength(9);
+  });
+
+  test('内置邻居类型支持 renderOrder', () => {
+    const result = getNeighborsByDistance([1, 2], 1, 'vertex', 'LeftUp');
+    expect(result).toEqual([
+      [2, 3],
+      [2, 1],
+      [0, 3],
+      [0, 1],
+    ]);
+  });
+
   test('传入 renderOrder 参数时正常工作', () => {
     const result = getNeighborsByDistance([0, 0], 1, undefined, 'RightDown');
     expect(result).toHaveLength(9);

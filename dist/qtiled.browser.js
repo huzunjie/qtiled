@@ -280,6 +280,16 @@
   /* 左上、右上、左下、右下，四个角邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 
   const corners = [[-1, -1, SQRT2$1, '↖'], [1, -1, SQRT2$1, '↗'], [1, 1, SQRT2$1, '↘'], [-1, 1, SQRT2$1, '↙']];
+  /* 按距离筛选邻居的类型配置 */
+
+  const neighborTypes = {
+    all: (x, y) => [x, y],
+    no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
+    border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
+    vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
+    // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
+    diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false
+  };
   /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
   * @param  {Array}   size    如： [width{Number}, height{Number}]
   * @return {Array}   [[x, y], ...]
@@ -331,13 +341,18 @@
   /* 按距离获得指定tile下标周边区域内的元素们
    * @param  {Array}     originXyNum     XY轴序号，如：[0, 0]
    * @param  {Number}    distance        下标间隔量，目标元素的第几圈邻居，0 ~ N
-   * @param  {Function}  iterator        迭代函数，如：(x, y) => [x, y]
+   * @param  {String|Function} iterator   邻居类型或迭代函数，如：'border' 或 (x, y) => [x, y]
    * @param  {String}    renderOrder     渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
-   * @return {Array}  [[xNum, yNum]]
+   * @return {Array}  [[xNum, yNum]]，返回值为基于 originXyNum 的绝对下标
    */
 
   function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
-    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, iterator);
+    const [originXNum, originYNum] = originXyNum;
+    const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
+    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
+      const ret = neighborIterator(x, y, distance);
+      return Array.isArray(ret) ? [ret[0] + originXNum, ret[1] + originYNum] : ret;
+    });
   }
 
   var rectFuns = /*#__PURE__*/Object.freeze({
@@ -345,6 +360,7 @@
     vertexes: vertexes$2,
     directions: directions,
     corners: corners,
+    neighborTypes: neighborTypes,
     getVertexes: getVertexes$2,
     getPosition: getPosition$2,
     getPositions: getPositions$2,

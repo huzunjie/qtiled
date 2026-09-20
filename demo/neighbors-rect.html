@@ -5,14 +5,14 @@
   <title>正矩形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260918210839">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260918210839">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920112948">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260920112948">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260918210839"></script>
-  <script src="./static/js/spritejs3.js?20260918210839"></script>
-  <script src="./static/js/qtiled.dev.js?20260918210839"></script>
+  <script src="./static/js/navs.js?20260920112948"></script>
+  <script src="./static/js/spritejs3.js?20260920112948"></script>
+  <script src="./static/js/qtiled.dev.js?20260920112948"></script>
 
   <h1>相邻tile</h1>
   <div class="ipts">
@@ -179,10 +179,10 @@
   </div>
   <div class="ipts">
     邻居类型：<select id="sei_type">
-      <option value="all">全部</option>
+      <option value="all" selected>全部</option>
       <option value="no_self">排除自己</option>
       <option value="border">命中区域几何图形边框</option>
-      <option value="vertex" selected>命中区域几何图形顶点</option>
+      <option value="vertex">命中区域几何图形顶点</option>
       <option value="diamond">命中区域边线中点范围内</option>
     </select>
   </div>
@@ -259,22 +259,13 @@
       const neighborsEls = [];
       const disEl = document.getElementById('ipt_dis');
       const typeEl = document.getElementById('sei_type');
-      const typeConfs = {
-        all: (x, y) => [x, y],
-        no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-        border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-        vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
-        // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-        diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
-      };
       const updateNeis = () => {
         const distance = Number(disEl.value);
         neighborsEls.forEach((el) => el.remove());
         neighborsEls.length = 0;
         // 邻居位置更新
-        getNeighborsByDistance(focusXYNum, distance, (x, y) => typeConfs[typeEl.value](x, y, distance)).forEach((xyNum, i) => {
-          const xyNumOut = [xyNum[0] + focusXYNum[0], xyNum[1] + focusXYNum[1]];
-          const _pos = getPosition(xyNumOut, size, pos);
+        getNeighborsByDistance(focusXYNum, distance, typeEl.value).forEach((xyNum, i) => {
+          const _pos = getPosition(xyNum, size, pos);
           neighborsEls.push(
             new Polyline({
               pos: _pos,
@@ -287,7 +278,7 @@
             new Label({
               anchor,
               pos: _pos,
-              text: xyNumOut.join(','),
+              text: xyNum.join(','),
               fontSize,
               xyNum,
               fillColor: 'rgba(0, 136, 0, 0.8)',
@@ -318,21 +309,15 @@
         focusXYNum[0] = xNum;
         focusXYNum[1] = yNum;
 
-        const [oldX, oldY] = focusRectTile.attr('pos');
         // 更新焦点区域标识位置
         focusRectTile.attr({ x, y });
         focusRectLabel.attr({ x, y, text: `${xNum},${yNum}` });
 
-        const xDiff = x - oldX;
-        const yDiff = y - oldY;
-        neighborsEls.forEach((el) => {
-          const [x, y] = el.attr('pos');
-          el.attr('pos', [x + xDiff, y + yDiff]);
-          const txtXyNum = el.attr('xyNum');
-          if (txtXyNum) {
-            const [xNumTxt, yNumTxt] = txtXyNum;
-            el.attr('text', [xNumTxt + xNum, yNumTxt + yNum].join(','));
-          }
+        const distance = Number(disEl.value);
+        getNeighborsByDistance(focusXYNum, distance, typeEl.value).forEach((xyNum, i) => {
+          const _pos = getPosition(xyNum, size, pos);
+          neighborsEls[i * 2].attr('pos', _pos);
+          neighborsEls[i * 2 + 1].attr({ pos: _pos, text: xyNum.join(','), xyNum });
         });
       });
       shapesEls.push(...neighborsEls, focusRectTile, focusRectLabel);
