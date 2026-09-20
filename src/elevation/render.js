@@ -11,13 +11,13 @@ import {
 import { twoDimForEach } from '../shapes/polygon';
 
 /* 获取带海拔偏移的错列布局瓦片渲染坐标
- * @param  {Array}  xyNum           目标元素 XY 索引值，如 [0, 0]
+ * @param  {Array}  gridCoord       目标瓦片网格坐标，如 [0, 0]
  * @param  {Array}  tileSize        单瓦片图宽高值，如 [80, 40]
  * @param  {ElevationMap} elevationMap 海拔地图实例
  * @param  {Number} elevationHeight  单位海拔对应的像素高度，默认 10
  * @param  {String} stagger          错列模式 ['odd', 'even', 'none']
  * @param  {Array}  originXY         原点像素坐标值
- * @return {Array} [x, y, xNum, yNum, elevation]
+ * @return {Array} [pixelX, pixelY, gridX, gridY, elevation]
  */
 export function getElevatedPosition(
   xyNum = [0, 0],
@@ -27,20 +27,20 @@ export function getElevatedPosition(
   stagger = 'odd',
   originXY = [0, 0],
 ) {
-  const [xNum, yNum] = xyNum;
-  const [baseX, baseY] = getRhombusPosition(xyNum, tileSize, stagger, originXY);
-  const elevation = elevationMap ? elevationMap.get(xNum, yNum) : 0;
+  const [gridX, gridY] = xyNum;
+  const [basePixelX, basePixelY] = getRhombusPosition(xyNum, tileSize, stagger, originXY);
+  const elevation = elevationMap ? elevationMap.get(gridX, gridY) : 0;
   const offsetY = -elevation * elevationHeight;
-  return [baseX, baseY + offsetY, xNum, yNum, elevation];
+  return [basePixelX, basePixelY + offsetY, gridX, gridY, elevation];
 }
 
 /* 获取带海拔偏移的等距布局瓦片渲染坐标
- * @param  {Array}  xyNum           目标元素 XY 索引值，如 [0, 0]
+ * @param  {Array}  gridCoord       目标瓦片网格坐标，如 [0, 0]
  * @param  {Array}  tileSize        单瓦片图宽高值，如 [80, 40]
  * @param  {ElevationMap} elevationMap 海拔地图实例
  * @param  {Number} elevationHeight  单位海拔对应的像素高度，默认 10
  * @param  {Array}  originXY         原点像素坐标值
- * @return {Array} [x, y, xNum, yNum, elevation]
+ * @return {Array} [pixelX, pixelY, gridX, gridY, elevation]
  */
 export function getElevatedIsometricPosition(
   xyNum = [0, 0],
@@ -49,11 +49,11 @@ export function getElevatedIsometricPosition(
   elevationHeight = 10,
   originXY = [0, 0],
 ) {
-  const [xNum, yNum] = xyNum;
-  const [baseX, baseY] = getRhombusIsometricPosition(xyNum, tileSize, originXY);
-  const elevation = elevationMap ? elevationMap.get(xNum, yNum) : 0;
+  const [gridX, gridY] = xyNum;
+  const [basePixelX, basePixelY] = getRhombusIsometricPosition(xyNum, tileSize, originXY);
+  const elevation = elevationMap ? elevationMap.get(gridX, gridY) : 0;
   const offsetY = -elevation * elevationHeight;
-  return [baseX, baseY + offsetY, xNum, yNum, elevation];
+  return [basePixelX, basePixelY + offsetY, gridX, gridY, elevation];
 }
 
 /* 批量获取带海拔偏移的错列布局瓦片渲染坐标
@@ -64,7 +64,7 @@ export function getElevatedIsometricPosition(
  * @param  {Number} elevationHeight  单位海拔对应的像素高度
  * @param  {String} stagger          错列模式
  * @param  {String} renderOrder      渲染方向
- * @return {Array} [[x, y, xNum, yNum, elevation], ...]
+ * @return {Array} [[pixelX, pixelY, gridX, gridY, elevation], ...]
  */
 export function getElevatedPositions(
   mainAxisRange = [0, 0],
@@ -75,8 +75,8 @@ export function getElevatedPositions(
   stagger = 'odd',
   renderOrder = 'RightDown',
 ) {
-  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (xNum, yNum) => {
-    return getElevatedPosition([xNum, yNum], tileSize, elevationMap, elevationHeight, stagger);
+  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
+    return getElevatedPosition([gridX, gridY], tileSize, elevationMap, elevationHeight, stagger);
   });
 }
 
@@ -87,7 +87,7 @@ export function getElevatedPositions(
  * @param  {ElevationMap} elevationMap 海拔地图实例
  * @param  {Number} elevationHeight  单位海拔对应的像素高度
  * @param  {String} renderOrder      渲染方向
- * @return {Array} [[x, y, xNum, yNum, elevation], ...]
+ * @return {Array} [[pixelX, pixelY, gridX, gridY, elevation], ...]
  */
 export function getElevatedIsometricPositions(
   mainAxisRange = [0, 0],
@@ -97,8 +97,8 @@ export function getElevatedIsometricPositions(
   elevationHeight = 10,
   renderOrder = 'RightDown',
 ) {
-  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (xNum, yNum) => {
-    return getElevatedIsometricPosition([xNum, yNum], tileSize, elevationMap, elevationHeight);
+  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
+    return getElevatedIsometricPosition([gridX, gridY], tileSize, elevationMap, elevationHeight);
   });
 }
 
@@ -106,12 +106,12 @@ export function getElevatedIsometricPositions(
  * 确保高海拔瓦片后渲染（遮挡低海拔），同海拔内按 renderDirection 排序
  * @param  {ElevationMap} elevationMap 海拔地图实例
  * @param  {String} renderDirection 渲染方向 ['RightDown','RightUp','LeftDown','LeftUp']
- * @return {Array} [[xNum, yNum, elevation], ...] 按渲染顺序排列
+ * @return {Array} [[gridX, gridY, elevation], ...] 按渲染顺序排列
  */
 export function getRenderOrder(elevationMap, renderDirection = 'RightDown') {
   const { width, height } = elevationMap;
-  const positions = twoDimForEach([0, width - 1], [0, height - 1], renderDirection, (xNum, yNum) => {
-    return [xNum, yNum, elevationMap.get(xNum, yNum)];
+  const positions = twoDimForEach([0, width - 1], [0, height - 1], renderDirection, (gridX, gridY) => {
+    return [gridX, gridY, elevationMap.get(gridX, gridY)];
   });
   // 同海拔内保持原渲染方向顺序，高海拔排后面
   // 使用稳定排序：先按 elevation 升序，同海拔保持原序

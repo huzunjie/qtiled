@@ -10,8 +10,8 @@
  */
 
 /* 将坐标转换为字符串 key */
-function xyNum2Str([xNum, yNum]) {
-  return `${xNum}_${yNum}`;
+function gridCoordToKey([gridX, gridY]) {
+  return `${gridX}_${gridY}`;
 }
 
 /* 海拔地图数据类 */
@@ -34,8 +34,8 @@ export default class ElevationMap {
    * @param  {Number} yNum
    * @return {Boolean}
    */
-  inBounds(xNum, yNum) {
-    return xNum >= 0 && xNum < this.width && yNum >= 0 && yNum < this.height;
+  inBounds(gridX, gridY) {
+    return gridX >= 0 && gridX < this.width && gridY >= 0 && gridY < this.height;
   }
 
   /* 获取指定瓦片的海拔值
@@ -43,8 +43,8 @@ export default class ElevationMap {
    * @param  {Number} yNum
    * @return {Number} 海拔值
    */
-  get(xNum, yNum) {
-    return this._data.get(xyNum2Str([xNum, yNum])) ?? this.defaultElevation;
+  get(gridX, gridY) {
+    return this._data.get(gridCoordToKey([gridX, gridY])) ?? this.defaultElevation;
   }
 
   /* 设置指定瓦片的海拔值
@@ -53,8 +53,8 @@ export default class ElevationMap {
    * @param  {Number} level 海拔值
    * @return {ElevationMap} this（支持链式调用）
    */
-  set(xNum, yNum, level) {
-    const key = xyNum2Str([xNum, yNum]);
+  set(gridX, gridY, level) {
+    const key = gridCoordToKey([gridX, gridY]);
     this._data.set(key, level);
     if (level > this._max) this._max = level;
     if (level < this._min) this._min = level;
@@ -66,7 +66,7 @@ export default class ElevationMap {
    * @return {ElevationMap} this
    */
   setBatch(entries = []) {
-    entries.forEach(([x, y, level]) => this.set(x, y, level));
+    entries.forEach(([gridX, gridY, level]) => this.set(gridX, gridY, level));
     return this;
   }
 
@@ -90,11 +90,11 @@ export default class ElevationMap {
    * @param  {Array}  neighbors 邻居坐标数组 [[xNum, yNum], ...]，如不传则返回空数组
    * @return {Array} [[xNum, yNum, diff], ...]
    */
-  getDiffs(xNum, yNum, neighbors = []) {
-    const currLevel = this.get(xNum, yNum);
-    return neighbors.map(([nx, ny]) => {
-      if (!this.inBounds(nx, ny)) return [nx, ny, null];
-      return [nx, ny, this.get(nx, ny) - currLevel];
+  getDiffs(gridX, gridY, neighbors = []) {
+    const currentElevation = this.get(gridX, gridY);
+    return neighbors.map(([neighborGridX, neighborGridY]) => {
+      if (!this.inBounds(neighborGridX, neighborGridY)) return [neighborGridX, neighborGridY, null];
+      return [neighborGridX, neighborGridY, this.get(neighborGridX, neighborGridY) - currentElevation];
     });
   }
 
@@ -105,11 +105,11 @@ export default class ElevationMap {
    * @param  {Number} areaHeight 区域高度
    * @return {Boolean}
    */
-  validateFlatArea(xNum, yNum, areaWidth = 1, areaHeight = 1) {
-    const baseLevel = this.get(xNum, yNum);
-    for (let y = yNum; y < yNum + areaHeight; y++) {
-      for (let x = xNum; x < xNum + areaWidth; x++) {
-        if (this.get(x, y) !== baseLevel) return false;
+  validateFlatArea(gridX, gridY, areaWidth = 1, areaHeight = 1) {
+    const baseElevation = this.get(gridX, gridY);
+    for (let currentGridY = gridY; currentGridY < gridY + areaHeight; currentGridY++) {
+      for (let currentGridX = gridX; currentGridX < gridX + areaWidth; currentGridX++) {
+        if (this.get(currentGridX, currentGridY) !== baseElevation) return false;
       }
     }
     return true;
@@ -121,12 +121,12 @@ export default class ElevationMap {
   getElevationGroups() {
     const groups = {};
     // 先收集默认海拔的瓦片（地图范围内未单独设置的）
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const level = this.get(x, y);
+    for (let gridY = 0; gridY < this.height; gridY++) {
+      for (let gridX = 0; gridX < this.width; gridX++) {
+        const level = this.get(gridX, gridY);
         const key = String(level);
         if (!groups[key]) groups[key] = [];
-        groups[key].push([x, y]);
+        groups[key].push([gridX, gridY]);
       }
     }
     return groups;
@@ -137,10 +137,10 @@ export default class ElevationMap {
    */
   toArray() {
     const result = [];
-    for (let y = 0; y < this.height; y++) {
+    for (let gridY = 0; gridY < this.height; gridY++) {
       const row = [];
-      for (let x = 0; x < this.width; x++) {
-        row.push(this.get(x, y));
+      for (let gridX = 0; gridX < this.width; gridX++) {
+        row.push(this.get(gridX, gridY));
       }
       result.push(row);
     }
@@ -157,9 +157,9 @@ export default class ElevationMap {
     this._data.clear();
     this._max = this.defaultElevation;
     this._min = this.defaultElevation;
-    for (let y = 0; y < data.length; y++) {
-      for (let x = 0; x < data[y].length; x++) {
-        this.set(x, y, data[y][x]);
+    for (let gridY = 0; gridY < data.length; gridY++) {
+      for (let gridX = 0; gridX < data[gridY].length; gridX++) {
+        this.set(gridX, gridY, data[gridY][gridX]);
       }
     }
     return this;

@@ -47,20 +47,20 @@
   * @return {Array}   [x, y]
   */
 
-  function getPoint(x0, y0, radiusX, radiusY, radian) {
+  function getPoint(centerX, centerY, radiusX, radiusY, radian) {
     radian %= PI_DBL;
     if (radian < 0) radian += PI_DBL;
     const k = Math.tan(radian);
 
     if (Math.abs(k) > 1e5) {
-      return [x0, y0 + (radian < PI ? radiusY : -radiusY)];
+      return [centerX, centerY + (radian < PI ? radiusY : -radiusY)];
     } // 第一或第四象限取正、其他象限取负
 
 
     const d = radian <= PI_HALF || radian > PI_OPF ? 1 : -1;
     const v = 1 / radiusX ** 2 + k ** 2 / radiusY ** 2;
-    const x = d * Math.sqrt(1 / v) + x0;
-    return [x, k * x + y0 - k * x0];
+    const x = d * Math.sqrt(1 / v) + centerX;
+    return [x, k * x + centerY - k * centerX];
   }
   /* 根据椭圆的原点、X轴半径、Y轴半径、角度，求得圆周上的点坐标
   * @param  {Number}  x0        圆心X点坐标值
@@ -71,8 +71,8 @@
   * @return {Array}   [x, y]
   */
 
-  function getPointByAngle(x0, y0, radiusX, radiusY, angle) {
-    return getPoint(x0, y0, radiusX, radiusY, angle2Radian(angle));
+  function getPointByAngle(centerX, centerY, radiusX, radiusY, angle) {
+    return getPoint(centerX, centerY, radiusX, radiusY, angle2Radian(angle));
   }
   /* 根据椭圆的X轴半径、Y轴半径、圆周等分数量、等分点序号、起始弧度，求得圆周上的点坐标
   * @param  {Number}  radiusX   X轴半径值
@@ -115,12 +115,12 @@
   /* 按距离筛选邻居的类型配置 */
 
   const neighborTypes = {
-    all: (x, y) => [x, y],
-    no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-    border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-    vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
+    all: (offsetX, offsetY) => [offsetX, offsetY],
+    no_self: (offsetX, offsetY) => offsetX === 0 && offsetY === 0 ? false : [offsetX, offsetY],
+    border: (offsetX, offsetY, distance) => Math.abs(offsetX) === distance || Math.abs(offsetY) === distance ? [offsetX, offsetY] : false,
+    vertex: (offsetX, offsetY, distance) => Math.abs(offsetX) === distance && Math.abs(offsetY) === distance ? [offsetX, offsetY] : false,
     // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-    diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false
+    diamond: (offsetX, offsetY, distance) => Math.abs(offsetX) + Math.abs(offsetY) <= distance ? [offsetX, offsetY] : false
   };
   /* 得到一个多边形折线顶点坐标集合
    * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
@@ -131,11 +131,11 @@
    */
 
   function getVertexes$3(baseVertexes, width = 1, height = 1, axis = 'y') {
-    let fun = ([x, y]) => [x * width, y * height]; // 如果是要将多边形图案横过来的，旋转90度（六边形会比较大的不同）
+    let fun = ([vertexX, vertexY]) => [vertexX * width, vertexY * height]; // 如果是要将多边形图案横过来的，旋转90度（六边形会比较大的不同）
 
 
     if (axis === 'x') {
-      fun = ([x, y]) => [y * width, x * height];
+      fun = ([vertexX, vertexY]) => [vertexY * width, vertexX * height];
     }
 
     return baseVertexes.map(fun);
@@ -197,12 +197,12 @@
    * @return {Array}   [x, y, xNum, yNum]
    */
 
-  function getPosition$3(lineRate = 1, xyNum = [0, 0], tileSize = [8, 4], stagger = 'none', originXY = [0, 0]) {
-    const [width, height] = tileSize;
-    const [xNum, yNum] = xyNum;
+  function getPosition$3(lineRate = 1, gridCoord = [0, 0], tileSize = [8, 4], stagger = 'none', originXY = [0, 0]) {
+    const [tileWidth, tileHeight] = tileSize;
+    const [gridX, gridY] = gridCoord;
     return [// X轴按Y轴奇偶性补充错列偏移量
-    originXY[0] + (xNum + (isStaggerLine(yNum, stagger) ? HALF : 0)) * width, // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 lineRate
-    originXY[1] + yNum * height * lineRate, xNum, yNum];
+    originXY[0] + (gridX + (isStaggerLine(gridY, stagger) ? HALF : 0)) * tileWidth, // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 lineRate
+    originXY[1] + gridY * tileHeight * lineRate, gridX, gridY];
   }
   /* 得到一组错列布局正多边形地图Tile的坐标偏移位置集合
    * @param  {Number}  lineRate       主轴偏移量比率
@@ -215,20 +215,20 @@
    */
 
   function getPositions$3(lineRate = 1, mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], stagger = 'odd', renderOrder = 'RightDown') {
-    const [width, _height] = tileSize; // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 lineRate
+    const [tileWidth, rawTileHeight] = tileSize; // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 lineRate
 
-    const height = _height * lineRate;
+    const tileHeight = rawTileHeight * lineRate;
     const needOffset = stagger !== 'none';
     const isOddNum = Number(stagger === 'odd'); // 多边形错列布局副轴上需要偏移来达成错列布局
 
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (mainAxisNum, subAxisNum) => {
-      let lineRate = mainAxisNum;
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
+      let offsetGridX = gridX;
 
-      if (needOffset && Math.abs(Math.round(subAxisNum) % 2) === isOddNum) {
-        lineRate += HALF; // 补充错列偏移量
+      if (needOffset && Math.abs(Math.round(gridY) % 2) === isOddNum) {
+        offsetGridX += HALF; // 补充错列偏移量
       }
 
-      return [lineRate * width, subAxisNum * height, mainAxisNum, subAxisNum];
+      return [offsetGridX * tileWidth, gridY * tileHeight, gridX, gridY];
     });
   }
   /* 通过大致的像素坐标值获取该位置tile元素的[xNum, yNum, x, y]
@@ -242,25 +242,25 @@
 
   function getInfoByPos$3(lineRate = 1, pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
     const [originX, originY] = originPos;
-    const [width, height] = tileSize;
-    const lineHeight = height * lineRate; // 行高
+    const [tileWidth, tileHeight] = tileSize;
+    const gridRowHeight = tileHeight * lineRate; // 行高
 
-    const dotX = pos[0] - originX;
-    const dotY = pos[1] - originY; // 多边形错列布局需要补充偏移量
+    const relativePixelX = pos[0] - originX;
+    const relativePixelY = pos[1] - originY; // 多边形错列布局需要补充偏移量
 
-    let xNumOffset = 0;
-    const yNum = Math.round(dotY / lineHeight);
+    let gridXOffset = 0;
+    const gridY = Math.round(relativePixelY / gridRowHeight);
 
-    if (stagger !== 'none' && Math.abs(yNum % 2) === Number(stagger === 'odd')) {
-      xNumOffset = HALF;
+    if (stagger !== 'none' && Math.abs(gridY % 2) === Number(stagger === 'odd')) {
+      gridXOffset = HALF;
     }
 
-    const xNum = Math.round(dotX / width - xNumOffset);
-    const centerX = (xNum + xNumOffset) * width;
-    const centerY = yNum * lineHeight;
-    const tileX = centerX + originX;
-    const tileY = centerY + originY;
-    return [xNum, yNum, tileX, tileY];
+    const gridX = Math.round(relativePixelX / tileWidth - gridXOffset);
+    const centerPixelX = (gridX + gridXOffset) * tileWidth;
+    const centerPixelY = gridY * gridRowHeight;
+    const tilePixelX = centerPixelX + originX;
+    const tilePixelY = centerPixelY + originY;
+    return [gridX, gridY, tilePixelX, tilePixelY];
   }
 
   var polygonFuns = /*#__PURE__*/Object.freeze({
@@ -306,8 +306,10 @@
    * @return {Array}   [x, y]
    */
 
-  function getPosition$2(xyNum = [0, 0], tileSize = [8, 4], originXY = [0, 0]) {
-    return [originXY[0] + xyNum[0] * tileSize[0], originXY[1] + xyNum[1] * tileSize[1]];
+  function getPosition$2(gridCoord = [0, 0], tileSize = [8, 4], originXY = [0, 0]) {
+    const [gridX, gridY] = gridCoord;
+    const [tileWidth, tileHeight] = tileSize;
+    return [originXY[0] + gridX * tileWidth, originXY[1] + gridY * tileHeight];
   }
   /* 得到一组矩形地图瓦片的坐标偏移位置集合
    * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
@@ -327,17 +329,17 @@
    * @return {Array}  [xNum, yNum, x, y]
    */
 
-  function getInfoByPos$2(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]) {
-    return getInfoByPos$3(1, pos, originPos, tileSize, 'none');
+  function getInfoByPos$2(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4]) {
+    return getInfoByPos$3(1, pixelPos, originPixel, tileSize, 'none');
   }
   /* 获得指定tile下标周边的邻居元素们
    * @param  {Array}     originXyNum    XY轴序号，如：[0, 0]
    * @return {Array}  [[xNum, yNum]]
    */
 
-  function getNeighbors$2(originXyNum = [0, 0], neisConf = [...directions, ...corners]) {
-    const [originXNum, originYNum] = originXyNum;
-    return neisConf.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+  function getNeighbors$2(originGrid = [0, 0], neighborConfig = [...directions, ...corners]) {
+    const [originGridX, originGridY] = originGrid;
+    return neighborConfig.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
   }
   /* 按距离获得指定tile下标周边区域内的元素们
    * @param  {Array}     originXyNum     XY轴序号，如：[0, 0]
@@ -347,12 +349,12 @@
    * @return {Array}  [[xNum, yNum]]，返回值为基于 originXyNum 的绝对下标
    */
 
-  function getNeighborsByDistance$1(originXyNum = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
-    const [originXNum, originYNum] = originXyNum;
+  function getNeighborsByDistance$1(originGrid = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
+    const [originGridX, originGridY] = originGrid;
     const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
-    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
-      const ret = neighborIterator(x, y, distance);
-      return Array.isArray(ret) ? [ret[0] + originXNum, ret[1] + originYNum] : ret;
+    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
+      const matchedOffset = neighborIterator(offsetX, offsetY, distance);
+      return Array.isArray(matchedOffset) ? [matchedOffset[0] + originGridX, matchedOffset[1] + originGridY] : matchedOffset;
     });
   }
 
@@ -397,8 +399,8 @@
    * @return {Array}   [x, y]
    */
 
-  function getPosition$1(xyNum = [0, 0], tileSize = [8, 4], stagger = 'odd', originXY = [0, 0]) {
-    return getPosition$3(TQUA, xyNum, tileSize, stagger, originXY);
+  function getPosition$1(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0]) {
+    return getPosition$3(TQUA, gridCoord, tileSize, stagger, originPixel);
   }
   /* 得到一组错列布局六边形地图瓦片的坐标偏移位置集合
    * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
@@ -420,8 +422,8 @@
    * @return {Array}  [xNum, yNum, x, y]
    */
 
-  function getInfoByPos$1(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
-    return getInfoByPos$3(TQUA, pos, originPos, tileSize, stagger);
+  function getInfoByPos$1(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4], stagger = 'odd') {
+    return getInfoByPos$3(TQUA, pixelPos, originPixel, tileSize, stagger);
   }
   /* 获得指定tile下标周边紧邻的邻居们
    * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
@@ -429,10 +431,10 @@
    * @return {Array}  [[xNum, yNum]]
    */
 
-  function getNeighbors$1(originXyNum = [0, 0], stagger = 'odd') {
-    const [originXNum, originYNum] = originXyNum;
-    const directions = isStaggerLine(originYNum, stagger) ? directionsOffset$1 : directionsNormal$1;
-    return directions.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+  function getNeighbors$1(originGrid = [0, 0], stagger = 'odd') {
+    const [originGridX, originGridY] = originGrid;
+    const directions = isStaggerLine(originGridY, stagger) ? directionsOffset$1 : directionsNormal$1;
+    return directions.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
   }
 
   var hexagonFuns = /*#__PURE__*/Object.freeze({
@@ -489,8 +491,8 @@
    * @return {Array}   [x, y]
    */
 
-  function getPosition(xyNum = [0, 0], tileSize = [8, 4], stagger = 'odd', originXY = [0, 0]) {
-    return getPosition$3(HALF, xyNum, tileSize, stagger, originXY);
+  function getPosition(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0]) {
+    return getPosition$3(HALF, gridCoord, tileSize, stagger, originPixel);
   }
   /* 得到一组错列布局菱形地图瓦片的坐标偏移位置集合
    * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
@@ -506,9 +508,9 @@
   }
   /* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值 */
 
-  function getIsometricPosition([xNum, yNum] = [], tileSize = [8, 4], originXY = [0, 0]) {
-    const [x, y] = getIsometricPosByHalfSize(xNum, yNum, ...getHalfSize(tileSize));
-    return [x + originXY[0], y + originXY[1]];
+  function getIsometricPosition([gridX, gridY] = [], tileSize = [8, 4], originPixel = [0, 0]) {
+    const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, ...getHalfSize(tileSize));
+    return [pixelX + originPixel[0], pixelY + originPixel[1]];
   }
   /* 按等距布局菱形单元横纵坐标值及单元格宽高的一半得到渲染坐标值 */
 
@@ -536,8 +538,8 @@
    * @return {Array}  [xNum, yNum, x, y]
    */
 
-  function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
-    return getInfoByPos$3(HALF, pos, originPos, tileSize, stagger);
+  function getInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4], stagger = 'odd') {
+    return getInfoByPos$3(HALF, pixelPos, originPixel, tileSize, stagger);
   }
   /* 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
    * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
@@ -546,15 +548,15 @@
    * @return {Object}  {xNum, yNum, x, y}
    */
 
-  function getIsometricInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]) {
+  function getIsometricInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4]) {
     const [halfWidth, halfHeight] = getHalfSize(tileSize);
-    const [originX, originY] = originPos;
-    const xSteps = (pos[0] - originX) / halfWidth * HALF;
-    const ySteps = (pos[1] - originY) / halfHeight * HALF;
-    const yNum = Math.round(ySteps + xSteps);
-    const xNum = Math.round(xSteps - ySteps);
-    const [x, y] = getIsometricPosByHalfSize(xNum, yNum, halfWidth, halfHeight);
-    return [xNum, yNum, x + originX, y + originY];
+    const [originPixelX, originPixelY] = originPixel;
+    const pixelStepsX = (pixelPos[0] - originPixelX) / halfWidth * HALF;
+    const pixelStepsY = (pixelPos[1] - originPixelY) / halfHeight * HALF;
+    const gridY = Math.round(pixelStepsY + pixelStepsX);
+    const gridX = Math.round(pixelStepsX - pixelStepsY);
+    const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, halfWidth, halfHeight);
+    return [gridX, gridY, pixelX + originPixelX, pixelY + originPixelY];
   }
   /* 获得错列布局中指定tile下标周边紧邻的邻居们
    * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
@@ -562,20 +564,20 @@
    * @return {Array}  [[xNum, yNum]]
    */
 
-  function getNeighbors(originXyNum = [0, 0], stagger = 'odd') {
-    const [originXNum, originYNum] = originXyNum;
-    const neisArr = [...cornersNormalOrOffset, ...(isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal)];
-    return neisArr.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+  function getNeighbors(originGrid = [0, 0], stagger = 'odd') {
+    const [originGridX, originGridY] = originGrid;
+    const neisArr = [...cornersNormalOrOffset, ...(isStaggerLine(originGridY, stagger) ? directionsOffset : directionsNormal)];
+    return neisArr.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
   }
   /* 获得等距布局中指定tile下标周边紧邻的邻居们
    * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
    * @return {Array}  [[xNum, yNum]]
    */
 
-  function getIsometricNeighbors(originXyNum = [0, 0]) {
-    const [originXNum, originYNum] = originXyNum;
+  function getIsometricNeighbors(originGrid = [0, 0]) {
+    const [originGridX, originGridY] = originGrid;
     const neisArr = [...cornersIsometric, ...directionsIsometric];
-    return neisArr.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+    return neisArr.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
   }
   /* 按距离获得错列布局菱形周边区域内的元素们
    * @param  {Array}          originXyNum  参考点元素下标，如：[0, 0]
@@ -587,16 +589,16 @@
    */
 
   function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', stagger = 'odd', renderOrder = 'RightDown') {
-    const [originXNum, originYNum] = originXyNum;
+    const [originGridX, originGridY] = originXyNum;
     const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
-    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
-      const ret = neighborIterator(x, y, distance);
-      if (!Array.isArray(ret)) return ret;
-      const yNum = originYNum + ret[1] - ret[0];
-      const originOffset = isStaggerLine(originYNum, stagger) ? HALF : 0;
-      const targetOffset = isStaggerLine(yNum, stagger) ? HALF : 0;
-      const xNum = originXNum + (ret[0] + ret[1]) * HALF + originOffset - targetOffset;
-      return [Math.round(xNum), yNum];
+    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
+      const matchedOffset = neighborIterator(offsetX, offsetY, distance);
+      if (!Array.isArray(matchedOffset)) return matchedOffset;
+      const targetGridY = originGridY + matchedOffset[1] - matchedOffset[0];
+      const originGridOffset = isStaggerLine(originGridY, stagger) ? HALF : 0;
+      const targetGridOffset = isStaggerLine(targetGridY, stagger) ? HALF : 0;
+      const targetGridX = originGridX + (matchedOffset[0] + matchedOffset[1]) * HALF + originGridOffset - targetGridOffset;
+      return [Math.round(targetGridX), targetGridY];
     });
   }
   /* 按距离获得等距布局菱形周边区域内的元素们
@@ -608,11 +610,11 @@
    */
 
   function getIsometricNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', renderOrder = 'RightDown') {
-    const [originXNum, originYNum] = originXyNum;
+    const [originGridX, originGridY] = originXyNum;
     const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
-    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
-      const ret = neighborIterator(x, y, distance);
-      return Array.isArray(ret) ? [ret[0] + originXNum, ret[1] + originYNum] : ret;
+    return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
+      const matchedOffset = neighborIterator(offsetX, offsetY, distance);
+      return Array.isArray(matchedOffset) ? [matchedOffset[0] + originGridX, matchedOffset[1] + originGridY] : matchedOffset;
     });
   }
 
@@ -655,54 +657,54 @@
   });
 
   /* A*寻径
-  * @param {Array}                 staXyNum              数据坐标值，如：[xNum, yNum]
-  * @param {Array}                 endXyNum              数据坐标值，如：[xNum, yNum]
+  * @param {Array}                 startGrid              起点网格坐标，如：[gridX, gridY]
+  * @param {Array}                 endGrid                终点网格坐标，如：[gridX, gridY]
   * @param {Function}              getNeighbors          需要外部传入获取邻居坐标的方法（等距、错列、正矩形方案不同）
-  *                                                      参数示例：(currXyNum = [xNum, yNum])
-  *                                                      需要返回邻居坐标值、权重的tile二维数组：[[xNum1, yNum1, cost1], [xNum2, yNum2, cost2], ...]
+  *                                                      参数示例：(currentGrid = [gridX, gridY])
+  *                                                      需要返回邻居坐标值、权重的 tile 二维数组：[[gridX1, gridY1, cost1], [gridX2, gridY2, cost2], ...]
   * @param {Number}                maximizable           最大可循环次数（默认为1e6，用于防止死循环）
   * @return {Array} 匹配的路径集合或空数组
   */
-  function aStar$1(staXyNum = [0, 0], endXyNum = [0, 0], getNeighbors = currPointXyNum => [], maximizable = 1e6) {
+  function aStar$1(startGrid = [0, 0], endGrid = [0, 0], getNeighbors = currentGrid => [], maximizable = 1e6) {
     const path = [];
-    const [staXNum, staYNum] = staXyNum;
-    const [endXNum, endYNum] = endXyNum;
-    const staPoint = [staXNum, staYNum, 0];
+    const [startGridX, startGridY] = startGrid;
+    const [endGridX, endGridY] = endGrid;
+    const startPoint = [startGridX, startGridY, 0];
     let n = 0; // 起止点相同直接返回当前点
 
-    if (staXNum === endXNum && staYNum === endYNum) {
-      path.push(staPoint);
+    if (startGridX === endGridX && startGridY === endGridY) {
+      path.push(startPoint);
     } else {
       const parents = {};
       const costs = {
-        [xyNum2Str$1(staXyNum)]: 0
+        [gridCoordToKey$1(startGrid)]: 0
       };
-      const openlist = [staPoint];
+      const openlist = [startPoint];
 
       while (openlist.length) {
         const currPoint = openlist.pop();
-        const currCost = costs[xyNum2Str$1(currPoint)]; // 从邻居中查找可以更低成本通过的节点
+        const currCost = costs[gridCoordToKey$1(currPoint)]; // 从邻居中查找可以更低成本通过的节点
 
-        getNeighbors(currPoint).some(([xNum, yNum, cost]) => {
-          const neiXYStr = xyNum2Str$1([xNum, yNum]);
-          const oldCost = costs[neiXYStr];
+        getNeighbors(currPoint).some(([gridX, gridY, cost]) => {
+          const neighborKey = gridCoordToKey$1([gridX, gridY]);
+          const oldCost = costs[neighborKey];
           const neiCost = Math.round((currCost + (cost || 1)) * 1e3) / 1e3; // 当前点通行成本还不如已经确定的成本低，那么舍弃路径方案
 
           if (oldCost !== undefined && neiCost >= oldCost) return;
-          costs[neiXYStr] = neiCost;
-          parents[neiXYStr] = currPoint; // 循环次数达到上限，抛出异常终止查找
+          costs[neighborKey] = neiCost;
+          parents[neighborKey] = currPoint; // 循环次数达到上限，抛出异常终止查找
 
           n++;
           if (n > maximizable) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maximizable);
-          const neiPoint = [xNum, yNum, neiCost]; // 到达终点生成路径
+          const neiPoint = [gridX, gridY, neiCost]; // 到达终点生成路径
 
-          if (xNum === endXNum && yNum === endYNum) {
+          if (gridX === endGridX && gridY === endGridY) {
             path.push(neiPoint); // 回查链表得到完整路径数组
 
-            let prevXyNum = endXyNum;
+            let previousGrid = endGrid;
 
-            while (prevXyNum = parents[xyNum2Str$1(prevXyNum)]) {
-              path.unshift(prevXyNum);
+            while (previousGrid = parents[gridCoordToKey$1(previousGrid)]) {
+              path.unshift(previousGrid);
             }
 
             openlist.length = 0;
@@ -718,8 +720,8 @@
     return path.length ? path : null;
   }
 
-  function xyNum2Str$1([xNum, yNum]) {
-    return `${xNum}_${yNum}`;
+  function gridCoordToKey$1([gridX, gridY]) {
+    return `${gridX}_${gridY}`;
   }
 
   const aStar = aStar$1;
@@ -741,8 +743,8 @@
    */
 
   /* 将坐标转换为字符串 key */
-  function xyNum2Str([xNum, yNum]) {
-    return `${xNum}_${yNum}`;
+  function gridCoordToKey([gridX, gridY]) {
+    return `${gridX}_${gridY}`;
   }
   /* 海拔地图数据类 */
 
@@ -767,8 +769,8 @@
      */
 
 
-    inBounds(xNum, yNum) {
-      return xNum >= 0 && xNum < this.width && yNum >= 0 && yNum < this.height;
+    inBounds(gridX, gridY) {
+      return gridX >= 0 && gridX < this.width && gridY >= 0 && gridY < this.height;
     }
     /* 获取指定瓦片的海拔值
      * @param  {Number} xNum
@@ -777,8 +779,8 @@
      */
 
 
-    get(xNum, yNum) {
-      return this._data.get(xyNum2Str([xNum, yNum])) ?? this.defaultElevation;
+    get(gridX, gridY) {
+      return this._data.get(gridCoordToKey([gridX, gridY])) ?? this.defaultElevation;
     }
     /* 设置指定瓦片的海拔值
      * @param  {Number} xNum
@@ -788,8 +790,8 @@
      */
 
 
-    set(xNum, yNum, level) {
-      const key = xyNum2Str([xNum, yNum]);
+    set(gridX, gridY, level) {
+      const key = gridCoordToKey([gridX, gridY]);
 
       this._data.set(key, level);
 
@@ -804,7 +806,7 @@
 
 
     setBatch(entries = []) {
-      entries.forEach(([x, y, level]) => this.set(x, y, level));
+      entries.forEach(([gridX, gridY, level]) => this.set(gridX, gridY, level));
       return this;
     }
     /* 获取地图最高海拔值
@@ -831,11 +833,11 @@
      */
 
 
-    getDiffs(xNum, yNum, neighbors = []) {
-      const currLevel = this.get(xNum, yNum);
-      return neighbors.map(([nx, ny]) => {
-        if (!this.inBounds(nx, ny)) return [nx, ny, null];
-        return [nx, ny, this.get(nx, ny) - currLevel];
+    getDiffs(gridX, gridY, neighbors = []) {
+      const currentElevation = this.get(gridX, gridY);
+      return neighbors.map(([neighborGridX, neighborGridY]) => {
+        if (!this.inBounds(neighborGridX, neighborGridY)) return [neighborGridX, neighborGridY, null];
+        return [neighborGridX, neighborGridY, this.get(neighborGridX, neighborGridY) - currentElevation];
       });
     }
     /* 验证指定区域是否为平整区域（所有瓦片海拔值相同）
@@ -847,12 +849,12 @@
      */
 
 
-    validateFlatArea(xNum, yNum, areaWidth = 1, areaHeight = 1) {
-      const baseLevel = this.get(xNum, yNum);
+    validateFlatArea(gridX, gridY, areaWidth = 1, areaHeight = 1) {
+      const baseElevation = this.get(gridX, gridY);
 
-      for (let y = yNum; y < yNum + areaHeight; y++) {
-        for (let x = xNum; x < xNum + areaWidth; x++) {
-          if (this.get(x, y) !== baseLevel) return false;
+      for (let currentGridY = gridY; currentGridY < gridY + areaHeight; currentGridY++) {
+        for (let currentGridX = gridX; currentGridX < gridX + areaWidth; currentGridX++) {
+          if (this.get(currentGridX, currentGridY) !== baseElevation) return false;
         }
       }
 
@@ -866,12 +868,12 @@
     getElevationGroups() {
       const groups = {}; // 先收集默认海拔的瓦片（地图范围内未单独设置的）
 
-      for (let y = 0; y < this.height; y++) {
-        for (let x = 0; x < this.width; x++) {
-          const level = this.get(x, y);
+      for (let gridY = 0; gridY < this.height; gridY++) {
+        for (let gridX = 0; gridX < this.width; gridX++) {
+          const level = this.get(gridX, gridY);
           const key = String(level);
           if (!groups[key]) groups[key] = [];
-          groups[key].push([x, y]);
+          groups[key].push([gridX, gridY]);
         }
       }
 
@@ -885,11 +887,11 @@
     toArray() {
       const result = [];
 
-      for (let y = 0; y < this.height; y++) {
+      for (let gridY = 0; gridY < this.height; gridY++) {
         const row = [];
 
-        for (let x = 0; x < this.width; x++) {
-          row.push(this.get(x, y));
+        for (let gridX = 0; gridX < this.width; gridX++) {
+          row.push(this.get(gridX, gridY));
         }
 
         result.push(row);
@@ -912,9 +914,9 @@
       this._max = this.defaultElevation;
       this._min = this.defaultElevation;
 
-      for (let y = 0; y < data.length; y++) {
-        for (let x = 0; x < data[y].length; x++) {
-          this.set(x, y, data[y][x]);
+      for (let gridY = 0; gridY < data.length; gridY++) {
+        for (let gridX = 0; gridX < data[gridY].length; gridX++) {
+          this.set(gridX, gridY, data[gridY][gridX]);
         }
       }
 
@@ -1006,26 +1008,26 @@
    * @return {Object} { type, direction, diff } 斜坡类型、方向、最大海拔差
    */
 
-  function getSlopeType(xNum, yNum, elevationMap, neighbors = []) {
-    const currLevel = elevationMap.get(xNum, yNum);
+  function getSlopeType(gridX, gridY, elevationMap, neighbors = []) {
+    const currentElevation = elevationMap.get(gridX, gridY);
     let hasUp = false;
     let hasDown = false;
     let maxAbsDiff = 0;
     let direction = null;
 
     for (let i = 0; i < neighbors.length; i++) {
-      const [nx, ny] = neighbors[i];
-      if (!elevationMap.inBounds(nx, ny)) continue;
-      const diff = elevationMap.get(nx, ny) - currLevel;
-      const absDiff = Math.abs(diff);
+      const [neighborGridX, neighborGridY] = neighbors[i];
+      if (!elevationMap.inBounds(neighborGridX, neighborGridY)) continue;
+      const elevationDiff = elevationMap.get(neighborGridX, neighborGridY) - currentElevation;
+      const absoluteElevationDiff = Math.abs(elevationDiff);
 
-      if (absDiff > maxAbsDiff) {
-        maxAbsDiff = absDiff;
-        direction = diff > 0 ? SLOPE_DIRECTIONS.N : SLOPE_DIRECTIONS.S;
+      if (absoluteElevationDiff > maxAbsDiff) {
+        maxAbsDiff = absoluteElevationDiff;
+        direction = elevationDiff > 0 ? SLOPE_DIRECTIONS.N : SLOPE_DIRECTIONS.S;
       }
 
-      if (diff > 0) hasUp = true;
-      if (diff < 0) hasDown = true;
+      if (elevationDiff > 0) hasUp = true;
+      if (elevationDiff < 0) hasDown = true;
     } // 悬崖：海拔差 > 1
 
 
@@ -1079,13 +1081,13 @@
   function detectSlopes(elevationMap, getNeighborsFn) {
     const slopes = new Map();
 
-    for (let y = 0; y < elevationMap.height; y++) {
-      for (let x = 0; x < elevationMap.width; x++) {
-        const neighbors = getNeighborsFn([x, y]);
-        const slopeInfo = getSlopeType(x, y, elevationMap, neighbors);
+    for (let gridY = 0; gridY < elevationMap.height; gridY++) {
+      for (let gridX = 0; gridX < elevationMap.width; gridX++) {
+        const neighbors = getNeighborsFn([gridX, gridY]);
+        const slopeInfo = getSlopeType(gridX, gridY, elevationMap, neighbors);
 
         if (slopeInfo.type !== SLOPE_TYPES.NONE) {
-          slopes.set(`${x}_${y}`, slopeInfo);
+          slopes.set(`${gridX}_${gridY}`, slopeInfo);
         }
       }
     }
@@ -1100,8 +1102,8 @@
    * @return {Boolean}
    */
 
-  function isWalkable(xNum, yNum, elevationMap, neighbors = []) {
-    const slopeInfo = getSlopeType(xNum, yNum, elevationMap, neighbors);
+  function isWalkable(gridX, gridY, elevationMap, neighbors = []) {
+    const slopeInfo = getSlopeType(gridX, gridY, elevationMap, neighbors);
     return slopeInfo.type !== SLOPE_TYPES.CLIFF;
   }
   /* 获取斜坡通行成本倍数
@@ -1113,8 +1115,8 @@
    * @return {Number} 通行成本（1 表示平地，> 1 表示斜坡）
    */
 
-  function getSlopeCost(xNum, yNum, elevationMap, neighbors = [], slopeCostMultiplier = 2) {
-    const slopeInfo = getSlopeType(xNum, yNum, elevationMap, neighbors);
+  function getSlopeCost(gridX, gridY, elevationMap, neighbors = [], slopeCostMultiplier = 2) {
+    const slopeInfo = getSlopeType(gridX, gridY, elevationMap, neighbors);
     if (slopeInfo.type === SLOPE_TYPES.CLIFF) return Infinity;
     if (slopeInfo.type === SLOPE_TYPES.NONE) return 1;
     return slopeCostMultiplier;
@@ -1129,17 +1131,17 @@
    * @return {Array} 顶点坐标集合 [[x, y, level], ...]
    */
 
-  function getSlopeVertexes(xNum, yNum, tileSize, elevationMap, neighbors = [], elevationHeight = 10) {
-    const currLevel = elevationMap.get(xNum, yNum);
+  function getSlopeVertexes(gridX, gridY, tileSize, elevationMap, neighbors = [], elevationHeight = 10) {
+    const currentElevation = elevationMap.get(gridX, gridY);
     const vertexes = []; // 当前瓦片的四个顶点
 
-    neighbors.forEach(([nx, ny]) => {
-      if (!elevationMap.inBounds(nx, ny)) return;
-      const neiLevel = elevationMap.get(nx, ny);
-      const diff = neiLevel - currLevel; // 只在海拔差为 1 时生成斜坡顶点
+    neighbors.forEach(([neighborGridX, neighborGridY]) => {
+      if (!elevationMap.inBounds(neighborGridX, neighborGridY)) return;
+      const neighborElevation = elevationMap.get(neighborGridX, neighborGridY);
+      const elevationDiff = neighborElevation - currentElevation; // 只在海拔差为 1 时生成斜坡顶点
 
-      if (Math.abs(diff) === 1) {
-        vertexes.push([nx, ny, neiLevel]);
+      if (Math.abs(elevationDiff) === 1) {
+        vertexes.push([neighborGridX, neighborGridY, neighborElevation]);
       }
     });
     return vertexes;
@@ -1151,37 +1153,37 @@
    * 海拔越高，瓦片在 Y 轴方向上移（屏幕上方），形成立体层次感。
    */
   /* 获取带海拔偏移的错列布局瓦片渲染坐标
-   * @param  {Array}  xyNum           目标元素 XY 索引值，如 [0, 0]
+   * @param  {Array}  gridCoord       目标瓦片网格坐标，如 [0, 0]
    * @param  {Array}  tileSize        单瓦片图宽高值，如 [80, 40]
    * @param  {ElevationMap} elevationMap 海拔地图实例
    * @param  {Number} elevationHeight  单位海拔对应的像素高度，默认 10
    * @param  {String} stagger          错列模式 ['odd', 'even', 'none']
    * @param  {Array}  originXY         原点像素坐标值
-   * @return {Array} [x, y, xNum, yNum, elevation]
+   * @return {Array} [pixelX, pixelY, gridX, gridY, elevation]
    */
 
   function getElevatedPosition(xyNum = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, stagger = 'odd', originXY = [0, 0]) {
-    const [xNum, yNum] = xyNum;
-    const [baseX, baseY] = getPosition(xyNum, tileSize, stagger, originXY);
-    const elevation = elevationMap ? elevationMap.get(xNum, yNum) : 0;
+    const [gridX, gridY] = xyNum;
+    const [basePixelX, basePixelY] = getPosition(xyNum, tileSize, stagger, originXY);
+    const elevation = elevationMap ? elevationMap.get(gridX, gridY) : 0;
     const offsetY = -elevation * elevationHeight;
-    return [baseX, baseY + offsetY, xNum, yNum, elevation];
+    return [basePixelX, basePixelY + offsetY, gridX, gridY, elevation];
   }
   /* 获取带海拔偏移的等距布局瓦片渲染坐标
-   * @param  {Array}  xyNum           目标元素 XY 索引值，如 [0, 0]
+   * @param  {Array}  gridCoord       目标瓦片网格坐标，如 [0, 0]
    * @param  {Array}  tileSize        单瓦片图宽高值，如 [80, 40]
    * @param  {ElevationMap} elevationMap 海拔地图实例
    * @param  {Number} elevationHeight  单位海拔对应的像素高度，默认 10
    * @param  {Array}  originXY         原点像素坐标值
-   * @return {Array} [x, y, xNum, yNum, elevation]
+   * @return {Array} [pixelX, pixelY, gridX, gridY, elevation]
    */
 
   function getElevatedIsometricPosition(xyNum = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, originXY = [0, 0]) {
-    const [xNum, yNum] = xyNum;
-    const [baseX, baseY] = getIsometricPosition(xyNum, tileSize, originXY);
-    const elevation = elevationMap ? elevationMap.get(xNum, yNum) : 0;
+    const [gridX, gridY] = xyNum;
+    const [basePixelX, basePixelY] = getIsometricPosition(xyNum, tileSize, originXY);
+    const elevation = elevationMap ? elevationMap.get(gridX, gridY) : 0;
     const offsetY = -elevation * elevationHeight;
-    return [baseX, baseY + offsetY, xNum, yNum, elevation];
+    return [basePixelX, basePixelY + offsetY, gridX, gridY, elevation];
   }
   /* 批量获取带海拔偏移的错列布局瓦片渲染坐标
    * @param  {Array}  mainAxisRange   主轴行序号区间，如 [0, 9]
@@ -1191,12 +1193,12 @@
    * @param  {Number} elevationHeight  单位海拔对应的像素高度
    * @param  {String} stagger          错列模式
    * @param  {String} renderOrder      渲染方向
-   * @return {Array} [[x, y, xNum, yNum, elevation], ...]
+   * @return {Array} [[pixelX, pixelY, gridX, gridY, elevation], ...]
    */
 
   function getElevatedPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, stagger = 'odd', renderOrder = 'RightDown') {
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (xNum, yNum) => {
-      return getElevatedPosition([xNum, yNum], tileSize, elevationMap, elevationHeight, stagger);
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
+      return getElevatedPosition([gridX, gridY], tileSize, elevationMap, elevationHeight, stagger);
     });
   }
   /* 批量获取带海拔偏移的等距布局瓦片渲染坐标
@@ -1206,19 +1208,19 @@
    * @param  {ElevationMap} elevationMap 海拔地图实例
    * @param  {Number} elevationHeight  单位海拔对应的像素高度
    * @param  {String} renderOrder      渲染方向
-   * @return {Array} [[x, y, xNum, yNum, elevation], ...]
+   * @return {Array} [[pixelX, pixelY, gridX, gridY, elevation], ...]
    */
 
   function getElevatedIsometricPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, renderOrder = 'RightDown') {
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (xNum, yNum) => {
-      return getElevatedIsometricPosition([xNum, yNum], tileSize, elevationMap, elevationHeight);
+    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
+      return getElevatedIsometricPosition([gridX, gridY], tileSize, elevationMap, elevationHeight);
     });
   }
   /* 按海拔和位置生成渲染顺序
    * 确保高海拔瓦片后渲染（遮挡低海拔），同海拔内按 renderDirection 排序
    * @param  {ElevationMap} elevationMap 海拔地图实例
    * @param  {String} renderDirection 渲染方向 ['RightDown','RightUp','LeftDown','LeftUp']
-   * @return {Array} [[xNum, yNum, elevation], ...] 按渲染顺序排列
+   * @return {Array} [[gridX, gridY, elevation], ...] 按渲染顺序排列
    */
 
   function getRenderOrder(elevationMap, renderDirection = 'RightDown') {
@@ -1226,8 +1228,8 @@
       width,
       height
     } = elevationMap;
-    const positions = twoDimForEach([0, width - 1], [0, height - 1], renderDirection, (xNum, yNum) => {
-      return [xNum, yNum, elevationMap.get(xNum, yNum)];
+    const positions = twoDimForEach([0, width - 1], [0, height - 1], renderDirection, (gridX, gridY) => {
+      return [gridX, gridY, elevationMap.get(gridX, gridY)];
     }); // 同海拔内保持原渲染方向顺序，高海拔排后面
     // 使用稳定排序：先按 elevation 升序，同海拔保持原序
 
@@ -1243,55 +1245,55 @@
    */
   /* 获取海拔感知的邻居列表
    * 过滤掉海拔差过大的邻居，并为斜坡邻居增加额外成本
-   * @param  {Array}  xyNum           当前瓦片坐标 [xNum, yNum]
+   * @param  {Array}  gridCoord       当前瓦片网格坐标 [gridX, gridY]
    * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Function} baseGetNeighbors 基础邻居获取方法，返回 [[xNum, yNum, cost], ...]
+   * @param  {Function} baseGetNeighbors 基础邻居获取方法，返回 [[gridX, gridY, cost], ...]
    * @param  {Object} options         配置项
    * @param  {Number} options.maxElevationDiff 最大可通行海拔差，默认 1
    * @param  {Number} options.slopeCostMultiplier 斜坡成本倍数，默认 2
    * @param  {Array}  options.unwalkableElevations 不可通行海拔值列表
-   * @return {Array} [[xNum, yNum, cost], ...]
+   * @return {Array} [[gridX, gridY, cost], ...]
    */
 
-  function getElevationAwareNeighbors(xyNum = [0, 0], elevationMap, baseGetNeighbors, options = {}) {
+  function getElevationAwareNeighbors(gridCoord = [0, 0], elevationMap, baseGetNeighbors, options = {}) {
     const {
       maxElevationDiff = 1,
       slopeCostMultiplier = 2,
       unwalkableElevations = []
     } = options;
-    const [xNum, yNum] = xyNum;
-    const currLevel = elevationMap.get(xNum, yNum); // 检查当前瓦片是否可通行
+    const [gridX, gridY] = gridCoord;
+    const currentElevation = elevationMap.get(gridX, gridY); // 检查当前瓦片是否可通行
 
-    if (unwalkableElevations.includes(currLevel)) {
+    if (unwalkableElevations.includes(currentElevation)) {
       return [];
     }
 
-    const baseNeighbors = baseGetNeighbors(xyNum);
+    const baseNeighbors = baseGetNeighbors(gridCoord);
     const result = [];
-    baseNeighbors.forEach(([nx, ny, baseCost]) => {
+    baseNeighbors.forEach(([neighborGridX, neighborGridY, baseCost]) => {
       // 检查邻居是否在地图范围内
-      if (!elevationMap.inBounds(nx, ny)) return;
-      const neiLevel = elevationMap.get(nx, ny);
-      const diff = Math.abs(neiLevel - currLevel); // 海拔差超过阈值，不可通行
+      if (!elevationMap.inBounds(neighborGridX, neighborGridY)) return;
+      const neighborElevation = elevationMap.get(neighborGridX, neighborGridY);
+      const elevationDiff = Math.abs(neighborElevation - currentElevation); // 海拔差超过阈值，不可通行
 
-      if (diff > maxElevationDiff) return; // 邻居海拔值在不可通行列表中
+      if (elevationDiff > maxElevationDiff) return; // 邻居海拔值在不可通行列表中
 
-      if (unwalkableElevations.includes(neiLevel)) return; // 计算通行成本
+      if (unwalkableElevations.includes(neighborElevation)) return; // 计算通行成本
 
       let cost = baseCost;
 
-      if (diff > 0) {
+      if (elevationDiff > 0) {
         // 斜坡成本 = 基础成本 × 斜坡倍数
         cost = baseCost * slopeCostMultiplier;
       }
 
-      result.push([nx, ny, cost]);
+      result.push([neighborGridX, neighborGridY, cost]);
     });
     return result;
   }
   /* 海拔感知 A* 寻路
-   * @param {Array}   staXyNum        起点坐标 [xNum, yNum]
-   * @param {Array}   endXyNum        终点坐标 [xNum, yNum]
+   * @param {Array}   startGrid       起点网格坐标 [gridX, gridY]
+   * @param {Array}   endGrid         终点网格坐标 [gridX, gridY]
    * @param {ElevationMap} elevationMap 海拔地图实例
    * @param {Function} baseGetNeighbors 基础邻居获取方法
    * @param {Object}  options         配置项
@@ -1299,18 +1301,18 @@
    * @param {Number}  options.slopeCostMultiplier 斜坡成本倍数
    * @param {Array}   options.unwalkableElevations 不可通行海拔值列表
    * @param {Number}  maximizable     最大循环次数
-   * @return {Array} 路径数组 [[xNum, yNum, cost], ...] 或 null
+   * @return {Array} 路径数组 [[gridX, gridY, cost], ...] 或 null
    */
 
-  function aStarElevation(staXyNum = [0, 0], endXyNum = [0, 0], elevationMap, baseGetNeighbors, options = {}, maximizable = 1e6) {
+  function aStarElevation(startGrid = [0, 0], endGrid = [0, 0], elevationMap, baseGetNeighbors, options = {}, maximizable = 1e6) {
     const {
       maxElevationDiff = 1,
       slopeCostMultiplier = 2,
       unwalkableElevations = []
     } = options; // 构造海拔感知的邻居获取器
 
-    const getNeighbors = xyNum => {
-      return getElevationAwareNeighbors(xyNum, elevationMap, baseGetNeighbors, {
+    const getNeighbors = gridCoord => {
+      return getElevationAwareNeighbors(gridCoord, elevationMap, baseGetNeighbors, {
         maxElevationDiff,
         slopeCostMultiplier,
         unwalkableElevations
@@ -1318,7 +1320,7 @@
     }; // 调用基础 A* 算法
 
 
-    return aStar$1(staXyNum, endXyNum, getNeighbors, maximizable);
+    return aStar$1(startGrid, endGrid, getNeighbors, maximizable);
   }
 
   /* 海拔管理模块入口 */

@@ -52,8 +52,10 @@ export function getVertexes([width, height] = [1, 1]) {
  * @param  {Array}   originXY       原点像素坐标值，如：[80, 40]
  * @return {Array}   [x, y]
  */
-export function getPosition(xyNum = [0, 0], tileSize = [8, 4], originXY = [0, 0]) {
-  return [originXY[0] + xyNum[0] * tileSize[0], originXY[1] + xyNum[1] * tileSize[1]];
+export function getPosition(gridCoord = [0, 0], tileSize = [8, 4], originXY = [0, 0]) {
+  const [gridX, gridY] = gridCoord;
+  const [tileWidth, tileHeight] = tileSize;
+    return [originXY[0] + gridX * tileWidth, originXY[1] + gridY * tileHeight];
 }
 
 /* 得到一组矩形地图瓦片的坐标偏移位置集合
@@ -73,17 +75,17 @@ export function getPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tile
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
  * @return {Array}  [xNum, yNum, x, y]
  */
-export function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]) {
-  return getPolygonInfoByPos(1, pos, originPos, tileSize, 'none');
+export function getInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4]) {
+  return getPolygonInfoByPos(1, pixelPos, originPixel, tileSize, 'none');
 }
 
 /* 获得指定tile下标周边的邻居元素们
  * @param  {Array}     originXyNum    XY轴序号，如：[0, 0]
  * @return {Array}  [[xNum, yNum]]
  */
-export function getNeighbors(originXyNum = [0, 0], neisConf = [...directions, ...corners]) {
-  const [originXNum, originYNum] = originXyNum;
-  return neisConf.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+export function getNeighbors(originGrid = [0, 0], neighborConfig = [...directions, ...corners]) {
+  const [originGridX, originGridY] = originGrid;
+  return neighborConfig.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
 }
 
 /* 按距离获得指定tile下标周边区域内的元素们
@@ -93,15 +95,15 @@ export function getNeighbors(originXyNum = [0, 0], neisConf = [...directions, ..
  * @param  {String}    renderOrder     渲染方向：['RightDown','RightUp', 'LeftDown', 'LeftUp']；默认为 'RightDown'
  * @return {Array}  [[xNum, yNum]]，返回值为基于 originXyNum 的绝对下标
  */
-export function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
-  const [originXNum, originYNum] = originXyNum;
+export function getNeighborsByDistance(originGrid = [0, 0], distance = 1, iterator = (x, y) => [x, y], renderOrder) {
+  const [originGridX, originGridY] = originGrid;
   const neighborIterator = typeof iterator === 'string'
     ? neighborTypes[iterator] || neighborTypes.all
     : iterator;
-  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
-    const ret = neighborIterator(x, y, distance);
-    return Array.isArray(ret)
-      ? [ret[0] + originXNum, ret[1] + originYNum]
-      : ret;
+  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
+    const matchedOffset = neighborIterator(offsetX, offsetY, distance);
+    return Array.isArray(matchedOffset)
+      ? [matchedOffset[0] + originGridX, matchedOffset[1] + originGridY]
+      : matchedOffset;
   });
 }

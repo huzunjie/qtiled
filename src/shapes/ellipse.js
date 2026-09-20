@@ -30,18 +30,18 @@ export function radian2Angle(radian = 0) {
 * @param  {Number}  radian    弧度值
 * @return {Array}   [x, y]
 */
-export function getPoint(x0, y0, radiusX, radiusY, radian) {
+export function getPoint(centerX, centerY, radiusX, radiusY, radian) {
   radian %= PI_DBL;
   if(radian < 0) radian += PI_DBL;
   const k = Math.tan(radian);
   if(Math.abs(k) > 1e5) {
-    return [x0, y0 + (radian < PI ? radiusY : -radiusY)];
+    return [centerX, centerY + (radian < PI ? radiusY : -radiusY)];
   }
   // 第一或第四象限取正、其他象限取负
   const d = radian <= PI_HALF || radian > PI_OPF ? 1 : -1;
   const v = 1 / radiusX ** 2 + k ** 2 / radiusY ** 2;
-  const x = d * Math.sqrt(1 / v) + x0;
-  return [x, k * x + y0 - k * x0];
+  const x = d * Math.sqrt(1 / v) + centerX;
+  return [x, k * x + centerY - k * centerX];
 };
 
 /* 根据椭圆的原点、X轴半径、Y轴半径、角度，求得圆周上的点坐标
@@ -52,8 +52,8 @@ export function getPoint(x0, y0, radiusX, radiusY, radian) {
 * @param  {Number}  angle     角度值
 * @return {Array}   [x, y]
 */
-export function getPointByAngle(x0, y0, radiusX, radiusY, angle) {
-  return getPoint(x0, y0, radiusX, radiusY, angle2Radian(angle));
+export function getPointByAngle(centerX, centerY, radiusX, radiusY, angle) {
+  return getPoint(centerX, centerY, radiusX, radiusY, angle2Radian(angle));
 }
 
 /* 根据椭圆的X轴半径、Y轴半径、圆周等分数量、等分点序号、起始弧度，求得圆周上的点坐标

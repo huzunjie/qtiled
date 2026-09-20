@@ -89,8 +89,8 @@ export function getVertexes([width = 1, height = 1] = [1, 1]) {
  * @param  {Array}   originXY       原点像素坐标值，如：[0, 0]
  * @return {Array}   [x, y]
  */
-export function getPosition(xyNum = [0, 0], tileSize = [8, 4], stagger = 'odd', originXY = [0, 0]) {
-  return getPolygonPosition(HALF, xyNum, tileSize, stagger, originXY);
+export function getPosition(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0]) {
+  return getPolygonPosition(HALF, gridCoord, tileSize, stagger, originPixel);
 }
 
 /* 得到一组错列布局菱形地图瓦片的坐标偏移位置集合
@@ -106,9 +106,9 @@ export function getPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tile
 }
 
 /* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值 */
-export function getIsometricPosition([xNum, yNum] = [], tileSize = [8, 4], originXY = [0, 0]) {
-  const [x, y] = getIsometricPosByHalfSize(xNum, yNum, ...getHalfSize(tileSize));
-  return [x + originXY[0], y + originXY[1]];
+export function getIsometricPosition([gridX, gridY] = [], tileSize = [8, 4], originPixel = [0, 0]) {
+  const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, ...getHalfSize(tileSize));
+  return [pixelX + originPixel[0], pixelY + originPixel[1]];
 }
 
 /* 按等距布局菱形单元横纵坐标值及单元格宽高的一半得到渲染坐标值 */
@@ -140,8 +140,8 @@ export function getIsometricPositions(mainAxisRange = [0, 0], subAxisRange = [0,
  * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @return {Array}  [xNum, yNum, x, y]
  */
-export function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
-  return getPolygonInfoByPos(HALF, pos, originPos, tileSize, stagger);
+export function getInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4], stagger = 'odd') {
+  return getPolygonInfoByPos(HALF, pixelPos, originPixel, tileSize, stagger);
 }
 
 /* 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
@@ -150,19 +150,19 @@ export function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
  * @return {Object}  {xNum, yNum, x, y}
  */
-export function getIsometricInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]) {
+export function getIsometricInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4]) {
   const [halfWidth, halfHeight] = getHalfSize(tileSize);
-  const [originX, originY] = originPos;
-  const xSteps = (pos[0] - originX) / halfWidth * HALF;
-  const ySteps = (pos[1] - originY) / halfHeight * HALF;
-  const yNum = Math.round(ySteps + xSteps);
-  const xNum = Math.round(xSteps - ySteps);
-  const [x, y] = getIsometricPosByHalfSize(xNum, yNum, halfWidth, halfHeight);
+  const [originPixelX, originPixelY] = originPixel;
+  const pixelStepsX = (pixelPos[0] - originPixelX) / halfWidth * HALF;
+  const pixelStepsY = (pixelPos[1] - originPixelY) / halfHeight * HALF;
+  const gridY = Math.round(pixelStepsY + pixelStepsX);
+  const gridX = Math.round(pixelStepsX - pixelStepsY);
+  const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, halfWidth, halfHeight);
   return [
-    xNum,
-    yNum,
-    x + originX,
-    y + originY,
+    gridX,
+    gridY,
+    pixelX + originPixelX,
+    pixelY + originPixelY,
   ];
 }
 
@@ -171,23 +171,23 @@ export function getIsometricInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize
  * @param  {String}    stagger         需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @return {Array}  [[xNum, yNum]]
  */
-export function getNeighbors(originXyNum = [0, 0], stagger = 'odd') {
-  const [originXNum, originYNum] = originXyNum;
+export function getNeighbors(originGrid = [0, 0], stagger = 'odd') {
+  const [originGridX, originGridY] = originGrid;
   const neisArr = [
     ...cornersNormalOrOffset,
-    ...(isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal),
+    ...(isStaggerLine(originGridY, stagger) ? directionsOffset : directionsNormal),
   ];
-  return neisArr.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+  return neisArr.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
 }
 
 /* 获得等距布局中指定tile下标周边紧邻的邻居们
  * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
  * @return {Array}  [[xNum, yNum]]
  */
-export function getIsometricNeighbors(originXyNum = [0, 0]) {
-  const [originXNum, originYNum] = originXyNum;
+export function getIsometricNeighbors(originGrid = [0, 0]) {
+  const [originGridX, originGridY] = originGrid;
   const neisArr = [ ...cornersIsometric, ...directionsIsometric ];
-  return neisArr.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+  return neisArr.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
 }
 
 /* 按距离获得错列布局菱形周边区域内的元素们
@@ -199,18 +199,18 @@ export function getIsometricNeighbors(originXyNum = [0, 0]) {
  * @return {Array} [[xNum, yNum]]，返回基于 originXyNum 的绝对下标
  */
 export function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', stagger = 'odd', renderOrder = 'RightDown') {
-  const [originXNum, originYNum] = originXyNum;
+  const [originGridX, originGridY] = originXyNum;
   const neighborIterator = typeof iterator === 'string'
     ? neighborTypes[iterator] || neighborTypes.all
     : iterator;
-  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
-    const ret = neighborIterator(x, y, distance);
-    if (!Array.isArray(ret)) return ret;
-    const yNum = originYNum + ret[1] - ret[0];
-    const originOffset = isStaggerLine(originYNum, stagger) ? HALF : 0;
-    const targetOffset = isStaggerLine(yNum, stagger) ? HALF : 0;
-    const xNum = originXNum + (ret[0] + ret[1]) * HALF + originOffset - targetOffset;
-    return [Math.round(xNum), yNum];
+  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
+    const matchedOffset = neighborIterator(offsetX, offsetY, distance);
+    if (!Array.isArray(matchedOffset)) return matchedOffset;
+    const targetGridY = originGridY + matchedOffset[1] - matchedOffset[0];
+    const originGridOffset = isStaggerLine(originGridY, stagger) ? HALF : 0;
+    const targetGridOffset = isStaggerLine(targetGridY, stagger) ? HALF : 0;
+    const targetGridX = originGridX + (matchedOffset[0] + matchedOffset[1]) * HALF + originGridOffset - targetGridOffset;
+    return [Math.round(targetGridX), targetGridY];
   });
 }
 
@@ -222,14 +222,14 @@ export function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, itera
  * @return {Array} [[xNum, yNum]]，返回基于 originXyNum 的绝对下标
  */
 export function getIsometricNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', renderOrder = 'RightDown') {
-  const [originXNum, originYNum] = originXyNum;
+  const [originGridX, originGridY] = originXyNum;
   const neighborIterator = typeof iterator === 'string'
     ? neighborTypes[iterator] || neighborTypes.all
     : iterator;
-  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (x, y) => {
-    const ret = neighborIterator(x, y, distance);
-    return Array.isArray(ret)
-      ? [ret[0] + originXNum, ret[1] + originYNum]
-      : ret;
+  return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
+    const matchedOffset = neighborIterator(offsetX, offsetY, distance);
+    return Array.isArray(matchedOffset)
+      ? [matchedOffset[0] + originGridX, matchedOffset[1] + originGridY]
+      : matchedOffset;
   });
 }

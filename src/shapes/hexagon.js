@@ -61,8 +61,8 @@ export function getVertexes([width = 1, height = 1] = [1, 1], axis = 'y') {
  * @param  {Array}   originXY       原点像素坐标值，如：[0, 0]
  * @return {Array}   [x, y]
  */
-export function getPosition(xyNum = [0, 0], tileSize = [8, 4], stagger = 'odd', originXY = [0, 0]) {
-  return getPolygonPosition(TQUA, xyNum, tileSize, stagger, originXY);
+export function getPosition(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0]) {
+  return getPolygonPosition(TQUA, gridCoord, tileSize, stagger, originPixel);
 }
 
 /* 得到一组错列布局六边形地图瓦片的坐标偏移位置集合
@@ -84,8 +84,8 @@ export function getPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tile
  * @param  {String}  stagger        需要错列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @return {Array}  [xNum, yNum, x, y]
  */
-export function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
-  return getPolygonInfoByPos(TQUA, pos, originPos, tileSize, stagger);
+export function getInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4], stagger = 'odd') {
+  return getPolygonInfoByPos(TQUA, pixelPos, originPixel, tileSize, stagger);
 }
 
 /* 获得指定tile下标周边紧邻的邻居们
@@ -93,8 +93,8 @@ export function getInfoByPos(pos = [0, 0], originPos = [0, 0], tileSize = [8, 4]
  * @param  {String}    stagger         需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @return {Array}  [[xNum, yNum]]
  */
-export function getNeighbors(originXyNum = [0, 0], stagger = 'odd') {
-  const [originXNum, originYNum] = originXyNum;
-  const directions = isStaggerLine(originYNum, stagger) ? directionsOffset : directionsNormal;
-  return directions.map(([xNum, yNum, cost, angStr]) => [xNum + originXNum, yNum + originYNum, cost, angStr]);
+export function getNeighbors(originGrid = [0, 0], stagger = 'odd') {
+  const [originGridX, originGridY] = originGrid;
+  const directions = isStaggerLine(originGridY, stagger) ? directionsOffset : directionsNormal;
+  return directions.map(([offsetX, offsetY, cost, angStr]) => [offsetX + originGridX, offsetY + originGridY, cost, angStr]);
 }

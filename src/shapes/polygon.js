@@ -9,12 +9,12 @@ export const TQUA = 1 - QUAR; // 正六边形两行重合部分高度
 
 /* 按距离筛选邻居的类型配置 */
 export const neighborTypes = {
-  all: (x, y) => [x, y],
-  no_self: (x, y) => x === 0 && y === 0 ? false : [x, y],
-  border: (x, y, distance) => Math.abs(x) === distance || Math.abs(y) === distance ? [x, y] : false,
-  vertex: (x, y, distance) => Math.abs(x) === distance && Math.abs(y) === distance ? [x, y] : false,
+  all: (offsetX, offsetY) => [offsetX, offsetY],
+  no_self: (offsetX, offsetY) => offsetX === 0 && offsetY === 0 ? false : [offsetX, offsetY],
+  border: (offsetX, offsetY, distance) => Math.abs(offsetX) === distance || Math.abs(offsetY) === distance ? [offsetX, offsetY] : false,
+  vertex: (offsetX, offsetY, distance) => Math.abs(offsetX) === distance && Math.abs(offsetY) === distance ? [offsetX, offsetY] : false,
   // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
-  diamond: (x, y, distance) => Math.abs(x) + Math.abs(y) <= distance ? [x, y] : false,
+  diamond: (offsetX, offsetY, distance) => Math.abs(offsetX) + Math.abs(offsetY) <= distance ? [offsetX, offsetY] : false,
 };
 
 /* 得到一个多边形折线顶点坐标集合
@@ -25,10 +25,10 @@ export const neighborTypes = {
  * @return {Array}     [x, y]
  */
 export function getVertexes(baseVertexes, width = 1, height = 1, axis = 'y') {
-  let fun = ([x, y]) => [x * width, y * height];
+  let fun = ([vertexX, vertexY]) => [vertexX * width, vertexY * height];
   // 如果是要将多边形图案横过来的，旋转90度（六边形会比较大的不同）
   if (axis === 'x') {
-    fun = ([x, y]) => [y * width, x * height];
+    fun = ([vertexX, vertexY]) => [vertexY * width, vertexX * height];
   }
   return baseVertexes.map(fun);
 };
@@ -88,16 +88,16 @@ export function isStaggerLine(lineNum, stagger) {
  * @param  {Array}   originXY       原点像素坐标值，如：[0, 0]
  * @return {Array}   [x, y, xNum, yNum]
  */
-export function getPosition(lineRate = 1, xyNum = [0, 0], tileSize = [8, 4], stagger = 'none', originXY = [0, 0]) {
-  const [width, height] = tileSize;
-  const [xNum, yNum] = xyNum;
-  return [
+export function getPosition(lineRate = 1, gridCoord = [0, 0], tileSize = [8, 4], stagger = 'none', originXY = [0, 0]) {
+  const [tileWidth, tileHeight] = tileSize;
+  const [gridX, gridY] = gridCoord;
+    return [
     // X轴按Y轴奇偶性补充错列偏移量
-    originXY[0] + (xNum + (isStaggerLine(yNum, stagger) ? HALF : 0)) * width,
+    originXY[0] + (gridX + (isStaggerLine(gridY, stagger) ? HALF : 0)) * tileWidth,
     // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 lineRate
-    originXY[1] + yNum * height * lineRate,
-    xNum,
-    yNum
+    originXY[1] + gridY * tileHeight * lineRate,
+    gridX,
+    gridY
   ];
 }
 
@@ -111,22 +111,22 @@ export function getPosition(lineRate = 1, xyNum = [0, 0], tileSize = [8, 4], sta
  * @return {Array}   [[x, y, xNum, yNum], ...]
  */
 export function getPositions(lineRate = 1, mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], stagger = 'odd', renderOrder = 'RightDown') {
-  const [width, _height] = tileSize;
+  const [tileWidth, rawTileHeight] = tileSize;
   // 多边形在主轴方向必须向上位移，才能保证挫列后网格对齐，所以这里要乘以 lineRate
-  const height = _height * lineRate;
+  const tileHeight = rawTileHeight * lineRate;
   const needOffset = stagger !== 'none';
   const isOddNum = Number(stagger === 'odd');
   // 多边形错列布局副轴上需要偏移来达成错列布局
-  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (mainAxisNum, subAxisNum) => {
-    let lineRate = mainAxisNum;
-    if (needOffset && Math.abs(Math.round(subAxisNum) % 2) === isOddNum) {
-      lineRate += HALF; // 补充错列偏移量
+  return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
+    let offsetGridX = gridX;
+    if (needOffset && Math.abs(Math.round(gridY) % 2) === isOddNum) {
+      offsetGridX += HALF; // 补充错列偏移量
     }
     return [
-      lineRate * width,
-      subAxisNum * height,
-      mainAxisNum,
-      subAxisNum
+      offsetGridX * tileWidth,
+      gridY * tileHeight,
+      gridX,
+      gridY
     ];
   });
 }
@@ -141,20 +141,20 @@ export function getPositions(lineRate = 1, mainAxisRange = [0, 0], subAxisRange 
  */
 export function getInfoByPos(lineRate = 1, pos = [0, 0], originPos = [0, 0], tileSize = [8, 4], stagger = 'odd') {
   const [originX, originY] = originPos;
-  const [width, height] = tileSize;
-  const lineHeight = height * lineRate; // 行高
-  const dotX = pos[0] - originX;
-  const dotY = pos[1] - originY;
-  // 多边形错列布局需要补充偏移量
-  let xNumOffset = 0;
-  const yNum = Math.round(dotY / lineHeight);
-  if (stagger !== 'none' && Math.abs(yNum % 2) === Number(stagger === 'odd')) {
-    xNumOffset = HALF;
+  const [tileWidth, tileHeight] = tileSize;
+  const gridRowHeight = tileHeight * lineRate; // 行高
+  const relativePixelX = pos[0] - originX;
+  const relativePixelY = pos[1] - originY;
+    // 多边形错列布局需要补充偏移量
+  let gridXOffset = 0;
+  const gridY = Math.round(relativePixelY / gridRowHeight);
+  if (stagger !== 'none' && Math.abs(gridY % 2) === Number(stagger === 'odd')) {
+    gridXOffset = HALF;
   }
-  const xNum = Math.round(dotX / width - xNumOffset);
-  const centerX = (xNum + xNumOffset) * width;
-  const centerY = yNum * lineHeight;
-  const tileX = centerX + originX;
-  const tileY = centerY + originY;
-  return [ xNum, yNum, tileX, tileY ];
+  const gridX = Math.round(relativePixelX / tileWidth - gridXOffset);
+  const centerPixelX = (gridX + gridXOffset) * tileWidth;
+  const centerPixelY = gridY * gridRowHeight;
+  const tilePixelX = centerPixelX + originX;
+  const tilePixelY = centerPixelY + originY;
+    return [gridX, gridY, tilePixelX, tilePixelY];
 }

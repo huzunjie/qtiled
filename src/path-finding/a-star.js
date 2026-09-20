@@ -1,54 +1,54 @@
 /* A*寻径
-* @param {Array}                 staXyNum              数据坐标值，如：[xNum, yNum]
-* @param {Array}                 endXyNum              数据坐标值，如：[xNum, yNum]
+* @param {Array}                 startGrid              起点网格坐标，如：[gridX, gridY]
+* @param {Array}                 endGrid                终点网格坐标，如：[gridX, gridY]
 * @param {Function}              getNeighbors          需要外部传入获取邻居坐标的方法（等距、错列、正矩形方案不同）
-*                                                      参数示例：(currXyNum = [xNum, yNum])
-*                                                      需要返回邻居坐标值、权重的tile二维数组：[[xNum1, yNum1, cost1], [xNum2, yNum2, cost2], ...]
+*                                                      参数示例：(currentGrid = [gridX, gridY])
+*                                                      需要返回邻居坐标值、权重的 tile 二维数组：[[gridX1, gridY1, cost1], [gridX2, gridY2, cost2], ...]
 * @param {Number}                maximizable           最大可循环次数（默认为1e6，用于防止死循环）
 * @return {Array} 匹配的路径集合或空数组
 */
 export default function aStar(
-  staXyNum = [0, 0],
-  endXyNum = [0, 0],
-  getNeighbors = (currPointXyNum) => [],
+  startGrid = [0, 0],
+  endGrid = [0, 0],
+  getNeighbors = (currentGrid) => [],
   maximizable = 1e6,
 ) {
   const path = [];
-  const [staXNum, staYNum] = staXyNum;
-  const [endXNum, endYNum] = endXyNum;
-  const staPoint = [staXNum, staYNum, 0];
+  const [startGridX, startGridY] = startGrid;
+  const [endGridX, endGridY] = endGrid;
+  const startPoint = [startGridX, startGridY, 0];
   let n = 0;
   // 起止点相同直接返回当前点
-  if(staXNum === endXNum && staYNum === endYNum) {
-    path.push(staPoint);
+  if(startGridX === endGridX && startGridY === endGridY) {
+    path.push(startPoint);
   } else {
     const parents = {};
-    const costs = { [xyNum2Str(staXyNum)]: 0 };
-    const openlist = [staPoint];
+    const costs = { [gridCoordToKey(startGrid)]: 0 };
+    const openlist = [startPoint];
     while(openlist.length) {
       const currPoint = openlist.pop();
-      const currCost = costs[xyNum2Str(currPoint)];
+      const currCost = costs[gridCoordToKey(currPoint)];
       // 从邻居中查找可以更低成本通过的节点
-      getNeighbors(currPoint).some(([xNum, yNum, cost]) => {
-        const neiXYStr = xyNum2Str([xNum, yNum]);
-        const oldCost = costs[neiXYStr];
+      getNeighbors(currPoint).some(([gridX, gridY, cost]) => {
+        const neighborKey = gridCoordToKey([gridX, gridY]);
+        const oldCost = costs[neighborKey];
         const neiCost = Math.round((currCost + (cost || 1)) * 1e3) / 1e3;
         // 当前点通行成本还不如已经确定的成本低，那么舍弃路径方案
         if (oldCost !== undefined && neiCost >= oldCost) return;
-        costs[neiXYStr] = neiCost;
-        parents[neiXYStr] = currPoint;
+        costs[neighborKey] = neiCost;
+        parents[neighborKey] = currPoint;
 
         // 循环次数达到上限，抛出异常终止查找
         n++;
         if (n > maximizable) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maximizable);
-        const neiPoint = [xNum, yNum, neiCost];
+        const neiPoint = [gridX, gridY, neiCost];
         // 到达终点生成路径
-        if(xNum === endXNum && yNum === endYNum) {
+        if(gridX === endGridX && gridY === endGridY) {
           path.push(neiPoint);
           // 回查链表得到完整路径数组
-          let prevXyNum = endXyNum;
-          while((prevXyNum = parents[xyNum2Str(prevXyNum)])) {
-            path.unshift(prevXyNum);
+          let previousGrid = endGrid;
+          while((previousGrid = parents[gridCoordToKey(previousGrid)])) {
+            path.unshift(previousGrid);
           }
           openlist.length = 0;
           return false;
@@ -62,6 +62,6 @@ export default function aStar(
   return path.length ? path : null;
 };
 
-function xyNum2Str([xNum, yNum]) {
-  return `${xNum}_${yNum}`;
+function gridCoordToKey([gridX, gridY]) {
+  return `${gridX}_${gridY}`;
 }
