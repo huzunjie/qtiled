@@ -85,12 +85,15 @@ describe('海拔 Demo 鼠标定位选中', () => {
 
   });
 
-  test('错列直接使用反查结果，不额外过滤菱形边角', () => {
+  test('错列反查排除菱形外空白，并命中低海拔露出的顶面', () => {
     const { outputs, move, center } = createDemo();
     const [x, y] = center(0, '0,0');
-    // 此点位于近似反查区域内、菱形顶面外，保留 getInfoByPos 的结果。
+    // 此点在外接矩形内、顶面外，实际对应范围外的格子。
     move(0, x - 27, y - 6);
-    expect(outputs[0].textContent).toBe('gridX: 0 / gridY: 0 / elevation: 0');
+    expect(outputs[0].textContent).toContain('未选中');
+    const [lowX, lowY] = center(0, '3,4');
+    move(0, lowX, lowY - 12);
+    expect(outputs[0].textContent).toBe('gridX: 3 / gridY: 4 / elevation: -1');
   });
 
   test('在同一格内移动不重复更新高亮', () => {

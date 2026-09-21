@@ -405,3 +405,31 @@ describe('菱形单格海拔坐标', () => {
     });
   });
 });
+
+describe('错列反查菱形边角修正', () => {
+  test('跨行边角返回实际覆盖该点的菱形', () => {
+    expect(getInfoByPos([25, 5], [0, 0], [60, 30], 'odd').map(value => value + 0)).toEqual([0, 1, 30, 15]);
+  });
+  test.each(['odd', 'even'])('%s 覆盖正负行列、原点偏移及全部顶角内部', stagger => {
+    const size = [60, 30];
+    const origin = [137, -43];
+    for (let y = -3; y <= 3; y++) {
+      for (let x = -3; x <= 3; x++) {
+        const [cx, cy] = getPosition([x, y], size, stagger, origin);
+        for (let dx = -29; dx <= 29; dx += 2) {
+          for (let dy = -14; dy <= 14; dy += 2) {
+            if (Math.abs(dx) / 30 + Math.abs(dy) / 15 >= 1) continue;
+            expect(getInfoByPos([cx + dx, cy + dy], origin, size, stagger).map(value => value + 0)).toEqual([x, y, cx, cy]);
+          }
+        }
+      }
+    }
+  });
+  test.each(['odd', 'even'])('%s 共边和顶点返回包含该点的稳定候选', stagger => {
+    [[30, 0], [0, 15], [-30, 0], [0, -15]].forEach(pixel => {
+      const result = getInfoByPos(pixel, [0, 0], [60, 30], stagger);
+      expect(Math.abs(pixel[0] - result[2]) / 30 + Math.abs(pixel[1] - result[3]) / 15).toBeLessThanOrEqual(1);
+      expect(getInfoByPos(pixel, [0, 0], [60, 30], stagger)).toEqual(result);
+    });
+  });
+});

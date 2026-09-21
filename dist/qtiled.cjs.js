@@ -539,7 +539,7 @@ function getIsometricPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], ti
   return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (xNum, yNum) => [...getIsometricPosByHalfSize(xNum, yNum, halfWidth, halfHeight), xNum, yNum]);
 }
 /* 仅反查平面位置，不处理海拔位移或重叠顶面的点击命中。
- * 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
+ * 根据像素坐标精确定位 odd/even 错列菱形；none 保持近似定位。
  * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
  * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
@@ -548,7 +548,20 @@ function getIsometricPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], ti
  */
 
 function getInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4], stagger = 'odd') {
-  return getInfoByPos$3(HALF, pixelPos, originPixel, tileSize, stagger);
+  const candidate = getInfoByPos$3(HALF, pixelPos, originPixel, tileSize, stagger); // none 不是交错铺满的菱形网格，保持原有近似定位行为。
+
+  if (stagger !== 'odd' && stagger !== 'even') return candidate;
+  const [, gridY, centerX, centerY] = candidate;
+  const [tileWidth, tileHeight] = tileSize;
+  const deltaY = pixelPos[1] - centerY; // 先检查候选菱形；共边时保留原候选，保证结果稳定。
+
+  if (Math.abs(pixelPos[0] - centerX) / (tileWidth * HALF) + Math.abs(deltaY) / (tileHeight * HALF) <= 1) return candidate; // 候选矩形的上下角区属于相邻错列行；重新计算该行的列号即可。
+
+  const targetGridY = gridY + (deltaY > 0 ? 1 : -1);
+  const offsetX = isStaggerLine(targetGridY, stagger) ? HALF : 0;
+  const targetGridX = Math.round((pixelPos[0] - originPixel[0]) / tileWidth - offsetX);
+  const [pixelX, pixelY] = getPosition([targetGridX, targetGridY], tileSize, stagger, originPixel);
+  return [targetGridX, targetGridY, pixelX, pixelY];
 }
 /* 仅反查平面位置，不处理海拔位移或重叠顶面的点击命中。
  * 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
