@@ -2,217 +2,93 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Elevation 海拔地图渲染</title>
-  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
-  <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260920141620">
-  <style type="text/css">
-    #container {
-      width: 900px;
-      height: 600px;
-    }
-    #container2 {
-      width: 900px;
-      height: 500px;
-    }
-    .legend {
-      display: flex;
-      gap: 20px;
-      margin: 10px 0;
-      font-size: 14px;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .legend-color {
-      width: 20px;
-      height: 20px;
-      border: 1px solid #333;
-    }
+  <title>菱形海拔坐标对照</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./static/css/index.css?20260921155206">
+  <style>
+    main { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+    .comparison { display: flex; flex-wrap: wrap; gap: 16px; }
+    figure { flex: 1 1 360px; margin: 0; border: 1px solid #ddd; background: #fafafa; }
+    figcaption { padding: 12px; font-weight: bold; }
+    .canvas-container { width: 400px; height: 240px; }
+    p { line-height: 1.7; }
   </style>
 </head>
 <body>
-
-  <script src="./static/js/navs.js?20260920141620"></script>
-  <script src="./static/js/spritejs3.js?20260920141620"></script>
-  <script src="./static/js/qtiled.dev.js?20260920141620"></script>
-
-  <h1>海拔地图渲染 - 错列布局</h1>
-  <div class="legend">
-    <div class="legend-item"><div class="legend-color" style="background: #e8f5e9;"></div><span>海拔 0（平地）</span></div>
-    <div class="legend-item"><div class="legend-color" style="background: #c8e6c9;"></div><span>海拔 1</span></div>
-    <div class="legend-item"><div class="legend-color" style="background: #81c784;"></div><span>海拔 2</span></div>
-    <div class="legend-item"><div class="legend-color" style="background: #4caf50;"></div><span>海拔 3</span></div>
-  </div>
-  <div id="container"></div>
-  <script type="text/javascript">
+  <script src="./static/js/navs.js?20260921155206"></script>
+  <script src="./static/js/spritejs3.js?20260921155206"></script>
+  <script src="./static/js/qtiled.dev.js?20260921155206"></script>
+  <main>
+    <h1>菱形海拔坐标对照</h1>
+    <p>相同网格、相同尺寸：左侧按平面绘制，右侧按标注海拔绘制。每单位海拔上移 16px，负值下移。颜色表示海拔：蓝色 −1、浅灰 0、绿色 1。</p>
+    <h2>错列布局（odd）</h2>
+    <div class="comparison" id="staggered"></div>
+    <h2>等距布局</h2>
+    <div class="comparison" id="isometric"></div>
+    <p>本页仅验证坐标位移。海拔图按高度从低到高绘制，同高度保持数据顺序；不提供点击选中或坡面。</p>
+  </main>
+  <script>
     (function() {
-      const container = document.getElementById('container');
-      const {Scene, Label, Polyline} = spritejs;
-      const scene = new Scene({
-          container,
-          width: 900,
-          height: 600,
-          mode: 'static',
-      });
-      const layer = scene.layer('def', { handleEvent: false });
-      const lineWidth = 2;
-      const shapesEls = [];
-
-      const originPixelX = 100;
-      const originPixelY = 100;
+      const { getPosition, getIsometricPosition, getVertexes } = qtiled.shapes.rhombus;
+      // 固定演示数据：[网格 X, 网格 Y, 海拔]，两种布局和两侧对照共用。
+      const cells = [
+        [0, 0, 0], [1, 0, 1], [2, 0, 0], [3, 0, 0], [4, 0, -1], [5, 0, 0],
+        [0, 1, 0], [1, 1, 0], [2, 1, 0], [3, 1, 1], [4, 1, 0], [5, 1, 1],
+        [0, 2, 0], [1, 2, 0], [2, 2, 1], [3, 2, 1], [4, 2, 0], [5, 2, 0],
+        [0, 3, 0], [1, 3, -1], [2, 3, 0], [3, 3, 0], [4, 3, 1], [5, 3, -1],
+        [0, 4, 0], [1, 4, 0], [2, 4, 0], [3, 4, -1], [4, 4, 0], [5, 4, 1],
+        [0, 5, 0], [1, 5, 0], [2, 5, 0], [3, 5, 0], [4, 5, 0], [5, 5, 0],
+      ];
+      // 沿用 rhombus.html 静态示例的单元格尺寸。
       const tileWidth = 60;
       const tileHeight = 30;
-      const size = [tileWidth, tileHeight];
-      const elevationHeight = 15; // 每级海拔的像素高度
-
-      const { getVertexes } = qtiled.shapes.rhombus;
-      const { ElevationMap, getElevatedPositions, getRenderOrder } = qtiled.elevation;
-
-      // 创建海拔地图
-      const mapWidth = 10;
-      const mapHeight = 8;
-      const elevationMap = new ElevationMap([mapWidth, mapHeight], 0);
-
-      // 设置一些海拔区域
-      // 中央高地
-      for (let x = 3; x <= 6; x++) {
-        for (let y = 2; y <= 5; y++) {
-          elevationMap.set(x, y, 2);
-        }
+      const tileSize = [tileWidth, tileHeight];
+      const { Scene, Label, Polyline } = spritejs;
+      const colors = { '-1': '#cce7f5', 0: '#edf0f2', 1: '#c6e7c8' };
+      const points = getVertexes(tileSize);
+      function renderComparison(id, getCellPosition) {
+        [false, true].forEach(elevated => {
+          const figure = document.createElement('figure');
+          const caption = document.createElement('figcaption');
+          caption.textContent = elevated ? '海拔位移' : '平面参考（忽略海拔）';
+          const container = document.createElement('div');
+          container.className = 'canvas-container';
+          figure.append(caption, container);
+          document.getElementById(id).appendChild(figure);
+          const scene = new Scene({ container, width: 400, height: 240, mode: 'static' });
+          const layer = scene.layer('def', { handleEvent: false });
+          const shapesEls = [];
+          // 本页的顶面叠放规则：高海拔后绘制，顶面与文字作为一组。
+          // 排序副本，避免改变平面参考图及另一种布局共用的数据。
+          const renderCells = elevated ? cells.slice().sort((a, b) => a[2] - b[2]) : cells;
+          renderCells.forEach(([gridX, gridY, elevation]) => {
+            const [pixelX, pixelY] = getCellPosition([gridX, gridY], elevated ? elevation : 0);
+            // 顶面与文字共用绘制坐标，不在页面内重新计算海拔偏移。
+            const pos = [pixelX, pixelY];
+            shapesEls.push(
+              new Polyline({
+                pos,
+                points,
+                fillColor: colors[elevation],
+                strokeColor: 'rgba(0, 0, 0, 0.5)',
+                lineWidth: 2,
+                close: true,
+              }),
+              new Label({
+                pos,
+                anchor: [0.5, 0.5],
+                text: `${gridX},${gridY} h:${elevation}`,
+                fontSize: '10px',
+                fillColor: '#263238',
+              }),
+            );
+          });
+          layer.append(...shapesEls);
+        });
       }
-      // 最高点
-      elevationMap.set(4, 3, 3);
-      elevationMap.set(5, 3, 3);
-      elevationMap.set(4, 4, 3);
-      elevationMap.set(5, 4, 3);
-
-      // 获取菱形顶点
-      const tileVertexes = getVertexes(size);
-
-      // 海拔颜色映射
-      const elevationColors = {
-        0: { fill: 'rgba(232, 245, 233, 0.8)', stroke: 'rgba(76, 175, 80, 0.5)' },
-        1: { fill: 'rgba(200, 230, 201, 0.8)', stroke: 'rgba(76, 175, 80, 0.6)' },
-        2: { fill: 'rgba(129, 199, 132, 0.8)', stroke: 'rgba(76, 175, 80, 0.7)' },
-        3: { fill: 'rgba(76, 175, 80, 0.8)', stroke: 'rgba(56, 142, 60, 0.9)' },
-      };
-
-      // 获取渲染顺序（按海拔升序）
-      const renderOrder = getRenderOrder(elevationMap, 'RightDown');
-
-      // 渲染所有瓦片
-      renderOrder.forEach(([gridX, gridY, elevation]) => {
-        const [x, y] = qtiled.shapes.rhombus.getPosition([gridX, gridY], size, 'odd', [originPixelX, originPixelY]);
-        const offsetY = -elevation * elevationHeight;
-        const colors = elevationColors[elevation] || elevationColors[0];
-
-        shapesEls.push(
-          new Polyline({
-            pos: [x, y + offsetY],
-            points: tileVertexes,
-            strokeColor: colors.stroke,
-            fillColor: colors.fill,
-            lineWidth,
-            close: true,
-          }),
-          new Label({
-            anchor: [0.5, 0.5],
-            pos: [x, y + offsetY],
-            text: elevation.toString(),
-            fontSize: '12px',
-            fillColor: '#333',
-          })
-        );
-      });
-
-      layer.append(...shapesEls);
+      renderComparison('staggered', (gridCoord, elevation) => getPosition(gridCoord, tileSize, 'odd', [40, 80], elevation));
+      renderComparison('isometric', (gridCoord, elevation) => getIsometricPosition(gridCoord, tileSize, [60, 120], elevation));
     }());
   </script>
-
-  <h1>海拔地图渲染 - 等距布局</h1>
-  <div id="container2"></div>
-  <script type="text/javascript">
-    (function() {
-      const container = document.getElementById('container2');
-      const {Scene, Label, Polyline} = spritejs;
-      const scene = new Scene({
-          container,
-          width: 900,
-          height: 500,
-          mode: 'static',
-      });
-      const layer = scene.layer('def', { handleEvent: false });
-      const lineWidth = 2;
-      const shapesEls = [];
-
-      const originPixelX = 400;
-      const originPixelY = 200;
-      const tileWidth = 60;
-      const tileHeight = 30;
-      const size = [tileWidth, tileHeight];
-      const elevationHeight = 12;
-
-      const { getVertexes, getIsometricPosition } = qtiled.shapes.rhombus;
-      const { ElevationMap, getRenderOrder } = qtiled.elevation;
-
-      // 创建海拔地图
-      const mapWidth = 8;
-      const mapHeight = 8;
-      const elevationMap = new ElevationMap([mapWidth, mapHeight], 0);
-
-      // 设置阶梯式海拔
-      for (let i = 0; i < 4; i++) {
-        for (let x = i; x < mapWidth - i; x++) {
-          for (let y = i; y < mapHeight - i; y++) {
-            elevationMap.set(x, y, i);
-          }
-        }
-      }
-
-      const tileVertexes = getVertexes(size);
-
-      const elevationColors = {
-        0: { fill: 'rgba(232, 245, 233, 0.8)', stroke: 'rgba(76, 175, 80, 0.5)' },
-        1: { fill: 'rgba(200, 230, 201, 0.8)', stroke: 'rgba(76, 175, 80, 0.6)' },
-        2: { fill: 'rgba(129, 199, 132, 0.8)', stroke: 'rgba(76, 175, 80, 0.7)' },
-        3: { fill: 'rgba(76, 175, 80, 0.8)', stroke: 'rgba(56, 142, 60, 0.9)' },
-      };
-
-      // 获取渲染顺序（按海拔升序，同海拔内按 RightDown 顺序）
-      const renderOrder = getRenderOrder(elevationMap, 'RightDown');
-
-      // 渲染所有瓦片
-      renderOrder.forEach(([gridX, gridY, elevation]) => {
-        const [basePixelX, basePixelY] = getIsometricPosition([gridX, gridY], size, [originPixelX, originPixelY]);
-        const offsetY = -elevation * elevationHeight;
-        const x = basePixelX;
-        const y = basePixelY + offsetY;
-        const colors = elevationColors[elevation] || elevationColors[0];
-        shapesEls.push(
-          new Polyline({
-            pos: [x, y],
-            points: tileVertexes,
-            strokeColor: colors.stroke,
-            fillColor: colors.fill,
-            lineWidth,
-            close: true,
-          }),
-          new Label({
-            anchor: [0.5, 0.5],
-            pos: [x, y],
-            text: elevation.toString(),
-            fontSize: '10px',
-            fillColor: '#333',
-          })
-        );
-      });
-
-      layer.append(...shapesEls);
-    }());
-  </script>
-
 </body>
 </html>

@@ -13,6 +13,13 @@ import {
   getInfoByPos as getPolygonInfoByPos,
 } from './polygon';
 
+// 单位海拔对应的绘制高度，待贴图阶段根据素材调整。
+const ELEVATION_HEIGHT = 16;
+
+function applyElevation([pixelX, pixelY, ...rest], elevation) {
+  return [pixelX, pixelY - elevation * ELEVATION_HEIGHT, ...rest];
+}
+
 // 宽高为1的正菱形顶点集合
 const vertexes = [
   [0, FLAH],
@@ -87,10 +94,11 @@ export function getVertexes([width = 1, height = 1] = [1, 1]) {
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
  * @param  {String}  stagger        需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
  * @param  {Array}   originXY       原点像素坐标值，如：[0, 0]
- * @return {Array}   [x, y]
+ * @param  {Number}  elevation      海拔，默认 0；每单位向上偏移 16px，不改变网格关系
+ * @return {Array}   [pixelX, pixelY, gridX, gridY]
  */
-export function getPosition(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0]) {
-  return getPolygonPosition(HALF, gridCoord, tileSize, stagger, originPixel);
+export function getPosition(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0], elevation = 0) {
+  return applyElevation(getPolygonPosition(HALF, gridCoord, tileSize, stagger, originPixel), elevation);
 }
 
 /* 得到一组错列布局菱形地图瓦片的坐标偏移位置集合
@@ -105,10 +113,12 @@ export function getPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tile
   return getPolygonPositions(HALF, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
 }
 
-/* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值 */
-export function getIsometricPosition([gridX, gridY] = [], tileSize = [8, 4], originPixel = [0, 0]) {
+/* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值
+ * elevation 默认 0；每单位向上偏移 16px，不改变网格关系。
+ */
+export function getIsometricPosition([gridX, gridY] = [], tileSize = [8, 4], originPixel = [0, 0], elevation = 0) {
   const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, ...getHalfSize(tileSize));
-  return [pixelX + originPixel[0], pixelY + originPixel[1]];
+  return applyElevation([pixelX + originPixel[0], pixelY + originPixel[1]], elevation);
 }
 
 /* 按等距布局菱形单元横纵坐标值及单元格宽高的一半得到渲染坐标值 */
@@ -133,7 +143,8 @@ export function getIsometricPositions(mainAxisRange = [0, 0], subAxisRange = [0,
   ]);
 }
 
-/* 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
+/* 仅反查平面位置，不处理海拔位移或重叠顶面的点击命中。
+ * 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
  * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
  * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
@@ -144,7 +155,8 @@ export function getInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize =
   return getPolygonInfoByPos(HALF, pixelPos, originPixel, tileSize, stagger);
 }
 
-/* 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
+/* 仅反查平面位置，不处理海拔位移或重叠顶面的点击命中。
+ * 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
  * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
  * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
  * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]

@@ -12,7 +12,6 @@
     ['pathfinding-rect.html', 'A*寻路 - 正矩形'],
     ['pathfinding-hexagon.html', 'A*寻路 - 六边形'],
     ['pathfinding-rhombus.html', 'A*寻路 - 正菱形'],
-    ['pathfinding-elevation.html', 'A*寻路 - 海拔感知'],
     ['vast.html', '大量菱形单元交互测试'],
   ];
 

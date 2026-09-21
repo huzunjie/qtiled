@@ -55,34 +55,24 @@
 ### Pathfinding - 寻路
 * [x] AStar
 
-### Elevation - 海拔管理
-+ [x] ElevationMap - 海拔地图数据类
-  + [x] get/set 海拔值存取
-  + [x] setBatch 批量设置海拔值
-  + [x] inBounds 边界判断
-  + [x] getDiffs 获取相邻瓦片海拔差
-  + [x] validateFlatArea 验证平整区域
-  + [x] getMaxElevation/getMinElevation 海拔范围
-  + [x] getElevationGroups 按海拔分组瓦片
-  + [x] toArray/fromArray 二维数组序列化
-  + [x] toJSON/fromJSON JSON 序列化
-+ [x] Slope - 斜坡系统
-  + [x] SLOPE_TYPES 斜坡类型枚举（NONE/UP/DOWN/EDGE/CLIFF）
-  + [x] SLOPE_DIRECTIONS 斜坡方向定义
-  + [x] getSlopeType 获取瓦片斜坡类型
-  + [x] detectSlopes 自动检测地图斜坡
-  + [x] isWalkable 判断瓦片可通行性
-  + [x] getSlopeCost 获取斜坡通行成本
-  + [x] getSlopeVertexes 计算斜坡顶点坐标
-+ [x] Elevation Render - 海拔渲染
-  + [x] getElevatedPosition 错列布局海拔渲染坐标
-  + [x] getElevatedIsometricPosition 等距布局海拔渲染坐标
-  + [x] getElevatedPositions 批量错列布局海拔渲染坐标
-  + [x] getElevatedIsometricPositions 批量等距布局海拔渲染坐标
-  + [x] getRenderOrder 按海拔生成渲染顺序
-+ [x] A* Elevation - 海拔感知寻路
-  + [x] aStarElevation 海拔约束 A* 寻路
-  + [x] getElevationAwareNeighbors 海拔感知邻居获取器
+### 菱形单格海拔坐标
+
++ [x] 错列、等距单格坐标支持海拔偏移
+
+```js
+shapes.rhombus.getPosition([1, 2], [80, 40], 'odd', [100, 100], 1);
+shapes.rhombus.getIsometricPosition([1, 2], [80, 40], [100, 100], -1);
+```
+
+最后一个参数为 `elevation`，默认 0；返回结构保持原样：错列方法为 `[pixelX, pixelY, gridX, gridY]`，等距方法为 `[pixelX, pixelY]`。
+每单位海拔固定向上偏移 16px，负值向下，可使用小数；该距离不随瓦片尺寸缩放。
+当前单位高度是内部常量，后续贴图阶段再依据素材调整。
+
+- 网格坐标、邻居及距离邻居查询不受影响，也不自动判断高差通行性。
+- `getInfoByPos` / `getIsometricInfoByPos` 仍反查平面位置，不能直接用于海拔后的点击选中；原有正反算一致性仅保证零海拔。
+- 批量坐标方法仍输出平面位置；顶面、文字和标记应共用单格方法返回的绘制坐标。
+- 高度数据仅在 [静态对照 Demo](demo/elevation.html) 的 HTML 内保存；本阶段不提供地图数据管理、坡面、遮挡排序或海拔寻路。
+- 原 `qtiled.elevation` 入口及其接口已移除，不保留兼容层。
 
 ### Tile Data - 瓦片数据格式约定
 * [ ] ToDo - 待开发
@@ -108,7 +98,7 @@
 ```html
 <script src="xxx.js"></script>
 <script>
-const { shapes, pathFinding, elevation, ... } = qtiled;
+const { shapes, pathFinding } = qtiled;
 ... 
 </script>
 ```

@@ -372,3 +372,36 @@ describe('默认参数覆盖 - rhombus 导出函数', () => {
     expect(result).toHaveLength(8);
   });
 });
+
+describe('菱形单格海拔坐标', () => {
+  const tileSize = [80, 40];
+  const origin = [137, 91];
+  const layouts = [
+    ['odd', (grid, elevation) => getPosition(grid, tileSize, 'odd', origin, elevation), pixel => getInfoByPos(pixel, origin, tileSize, 'odd'), grid => getNeighbors(grid, 'odd')],
+    ['even', (grid, elevation) => getPosition(grid, tileSize, 'even', origin, elevation), pixel => getInfoByPos(pixel, origin, tileSize, 'even'), grid => getNeighbors(grid, 'even')],
+    ['等距', (grid, elevation) => getIsometricPosition(grid, tileSize, origin, elevation), pixel => getIsometricInfoByPos(pixel, origin, tileSize), getIsometricNeighbors],
+  ];
+  layouts.forEach(([name, position, inverse, neighbors]) => {
+    test(`${name}：海拔只改变绘制高度，保留输入与网格邻居`, () => {
+      [[0, 0], [2, 3], [-2, -3]].forEach(coords => {
+        const grid = Object.freeze(coords);
+        const base = position(grid);
+        const originalNeighbors = neighbors(grid);
+        expect(position(grid, 0)).toEqual(base);
+        expect(inverse(base).slice(0, 2)).toEqual(grid);
+        [1, -1, 0.5].forEach(elevation => {
+          expect(position(grid, elevation)).toEqual([base[0], base[1] - 16 * elevation, ...base.slice(2)]);
+          expect(neighbors(grid)).toEqual(originalNeighbors);
+        });
+      });
+    });
+  });
+  test('海拔像素距离不随瓦片尺寸缩放', () => {
+    [[8, 4], [160, 80]].forEach(size => {
+      const base = getPosition([1, 2], size);
+      expect(getPosition([1, 2], size, 'odd', [0, 0], 1)).toEqual([base[0], base[1] - 16, ...base.slice(2)]);
+      const iso = getIsometricPosition([1, 2], size);
+      expect(getIsometricPosition([1, 2], size, [0, 0], -1)).toEqual([iso[0], iso[1] + 16]);
+    });
+  });
+});

@@ -452,6 +452,13 @@
 
   /* 正菱形地图元件方法 */
 
+  const ELEVATION_HEIGHT = 16;
+
+  function applyElevation([pixelX, pixelY, ...rest], elevation) {
+    return [pixelX, pixelY - elevation * ELEVATION_HEIGHT, ...rest];
+  } // 宽高为1的正菱形顶点集合
+
+
   const vertexes = [[0, FLAH], [HALF, 0], [0, HALF], [FLAH, 0]]; // 非错列元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
 
   const directionsNormal = [[-1, -1, 1, '↖'], [0, -1, 1, '↗'], [0, 1, 1, '↘'], [-1, 1, 1, '↙']]; // 错列元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
@@ -488,11 +495,12 @@
    * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
    * @param  {String}  stagger        需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
    * @param  {Array}   originXY       原点像素坐标值，如：[0, 0]
-   * @return {Array}   [x, y]
+   * @param  {Number}  elevation      海拔，默认 0；每单位向上偏移 16px，不改变网格关系
+   * @return {Array}   [pixelX, pixelY, gridX, gridY]
    */
 
-  function getPosition(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0]) {
-    return getPosition$3(HALF, gridCoord, tileSize, stagger, originPixel);
+  function getPosition(gridCoord = [0, 0], tileSize = [8, 4], stagger = 'odd', originPixel = [0, 0], elevation = 0) {
+    return applyElevation(getPosition$3(HALF, gridCoord, tileSize, stagger, originPixel), elevation);
   }
   /* 得到一组错列布局菱形地图瓦片的坐标偏移位置集合
    * @param  {Array}   mainAxisRange  主轴行序号区间，如：[0, 0]
@@ -506,11 +514,13 @@
   function getPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], renderOrder = 'RightDown', stagger = 'odd') {
     return getPositions$3(HALF, mainAxisRange, subAxisRange, tileSize, stagger, renderOrder);
   }
-  /* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值 */
+  /* 按等距布局菱形单元横纵坐标值及单元格宽高得到渲染坐标值
+   * elevation 默认 0；每单位向上偏移 16px，不改变网格关系。
+   */
 
-  function getIsometricPosition([gridX, gridY] = [], tileSize = [8, 4], originPixel = [0, 0]) {
+  function getIsometricPosition([gridX, gridY] = [], tileSize = [8, 4], originPixel = [0, 0], elevation = 0) {
     const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, ...getHalfSize(tileSize));
-    return [pixelX + originPixel[0], pixelY + originPixel[1]];
+    return applyElevation([pixelX + originPixel[0], pixelY + originPixel[1]], elevation);
   }
   /* 按等距布局菱形单元横纵坐标值及单元格宽高的一半得到渲染坐标值 */
 
@@ -530,7 +540,8 @@
     const [halfWidth, halfHeight] = getHalfSize(tileSize);
     return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (xNum, yNum) => [...getIsometricPosByHalfSize(xNum, yNum, halfWidth, halfHeight), xNum, yNum]);
   }
-  /* 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
+  /* 仅反查平面位置，不处理海拔位移或重叠顶面的点击命中。
+   * 通过大致的像素坐标值获取该位置错列布局tile元素的[Num, yNum, x, y]
    * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
    * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
    * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
@@ -541,7 +552,8 @@
   function getInfoByPos(pixelPos = [0, 0], originPixel = [0, 0], tileSize = [8, 4], stagger = 'odd') {
     return getInfoByPos$3(HALF, pixelPos, originPixel, tileSize, stagger);
   }
-  /* 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
+  /* 仅反查平面位置，不处理海拔位移或重叠顶面的点击命中。
+   * 通过大致的像素坐标值获取该位置等距布局tile元素的[Num, yNum]
    * @param  {Array}   pos            目标点像素坐标值(相对于画布原点的偏移量)，如：[x<Number>, y<Number>]
    * @param  {Array}   originPos      地图起点元素渲染时像素坐标值，如：[x<Number>, y<Number>]
    * @param  {Array}   tileSize       单瓦片图宽高值，如：[80, 40]
@@ -677,16 +689,16 @@
     } else {
       const parents = {};
       const costs = {
-        [gridCoordToKey$1(startGrid)]: 0
+        [gridCoordToKey(startGrid)]: 0
       };
       const openlist = [startPoint];
 
       while (openlist.length) {
         const currPoint = openlist.pop();
-        const currCost = costs[gridCoordToKey$1(currPoint)]; // 从邻居中查找可以更低成本通过的节点
+        const currCost = costs[gridCoordToKey(currPoint)]; // 从邻居中查找可以更低成本通过的节点
 
         getNeighbors(currPoint).some(([gridX, gridY, cost]) => {
-          const neighborKey = gridCoordToKey$1([gridX, gridY]);
+          const neighborKey = gridCoordToKey([gridX, gridY]);
           const oldCost = costs[neighborKey];
           const neiCost = Math.round((currCost + (cost || 1)) * 1e3) / 1e3; // 当前点通行成本还不如已经确定的成本低，那么舍弃路径方案
 
@@ -703,7 +715,7 @@
 
             let previousGrid = endGrid;
 
-            while (previousGrid = parents[gridCoordToKey$1(previousGrid)]) {
+            while (previousGrid = parents[gridCoordToKey(previousGrid)]) {
               path.unshift(previousGrid);
             }
 
@@ -720,7 +732,7 @@
     return path.length ? path : null;
   }
 
-  function gridCoordToKey$1([gridX, gridY]) {
+  function gridCoordToKey([gridX, gridY]) {
     return `${gridX}_${gridY}`;
   }
 
@@ -731,625 +743,10 @@
     aStar: aStar
   });
 
-  /* 海拔地图数据管理
-
-   * 用于管理菱形布局中每个瓦片的海拔值，支持稀疏存储和动态扩展。
-   * 海拔值为整数（0 表示平地，正值表示高地，负值表示低地）。
-   *
-   * 示例：
-   *   const map = new ElevationMap([10, 10], 0);
-   *   map.set(2, 3, 2);
-   *   map.get(2, 3); // 2
-   */
-
-  /* 将坐标转换为字符串 key */
-  function gridCoordToKey([gridX, gridY]) {
-    return `${gridX}_${gridY}`;
-  }
-  /* 海拔地图数据类 */
-
-
-  class ElevationMap {
-    /* 构造海拔地图
-     * @param {Array}  [width, height]  地图尺寸，如 [10, 10]
-     * @param {Number} defaultElevation 默认海拔值，默认为 0
-     */
-    constructor([width = 0, height = 0] = [0, 0], defaultElevation = 0) {
-      this.width = width;
-      this.height = height;
-      this.defaultElevation = defaultElevation;
-      this._data = new Map();
-      this._max = defaultElevation;
-      this._min = defaultElevation;
-    }
-    /* 判断坐标是否在地图范围内
-     * @param  {Number} xNum
-     * @param  {Number} yNum
-     * @return {Boolean}
-     */
-
-
-    inBounds(gridX, gridY) {
-      return gridX >= 0 && gridX < this.width && gridY >= 0 && gridY < this.height;
-    }
-    /* 获取指定瓦片的海拔值
-     * @param  {Number} xNum
-     * @param  {Number} yNum
-     * @return {Number} 海拔值
-     */
-
-
-    get(gridX, gridY) {
-      return this._data.get(gridCoordToKey([gridX, gridY])) ?? this.defaultElevation;
-    }
-    /* 设置指定瓦片的海拔值
-     * @param  {Number} xNum
-     * @param  {Number} yNum
-     * @param  {Number} level 海拔值
-     * @return {ElevationMap} this（支持链式调用）
-     */
-
-
-    set(gridX, gridY, level) {
-      const key = gridCoordToKey([gridX, gridY]);
-
-      this._data.set(key, level);
-
-      if (level > this._max) this._max = level;
-      if (level < this._min) this._min = level;
-      return this;
-    }
-    /* 批量设置海拔值
-     * @param  {Array} entries 坐标与海拔值数组，如 [[x, y, level], ...]
-     * @return {ElevationMap} this
-     */
-
-
-    setBatch(entries = []) {
-      entries.forEach(([gridX, gridY, level]) => this.set(gridX, gridY, level));
-      return this;
-    }
-    /* 获取地图最高海拔值
-     * @return {Number}
-     */
-
-
-    getMaxElevation() {
-      return this._max;
-    }
-    /* 获取地图最低海拔值
-     * @return {Number}
-     */
-
-
-    getMinElevation() {
-      return this._min;
-    }
-    /* 获取指定瓦片与相邻瓦片的海拔差集合
-     * @param  {Number} xNum
-     * @param  {Number} yNum
-     * @param  {Array}  neighbors 邻居坐标数组 [[xNum, yNum], ...]，如不传则返回空数组
-     * @return {Array} [[xNum, yNum, diff], ...]
-     */
-
-
-    getDiffs(gridX, gridY, neighbors = []) {
-      const currentElevation = this.get(gridX, gridY);
-      return neighbors.map(([neighborGridX, neighborGridY]) => {
-        if (!this.inBounds(neighborGridX, neighborGridY)) return [neighborGridX, neighborGridY, null];
-        return [neighborGridX, neighborGridY, this.get(neighborGridX, neighborGridY) - currentElevation];
-      });
-    }
-    /* 验证指定区域是否为平整区域（所有瓦片海拔值相同）
-     * @param  {Number} xNum   起始 X 坐标
-     * @param  {Number} yNum   起始 Y 坐标
-     * @param  {Number} areaWidth  区域宽度
-     * @param  {Number} areaHeight 区域高度
-     * @return {Boolean}
-     */
-
-
-    validateFlatArea(gridX, gridY, areaWidth = 1, areaHeight = 1) {
-      const baseElevation = this.get(gridX, gridY);
-
-      for (let currentGridY = gridY; currentGridY < gridY + areaHeight; currentGridY++) {
-        for (let currentGridX = gridX; currentGridX < gridX + areaWidth; currentGridX++) {
-          if (this.get(currentGridX, currentGridY) !== baseElevation) return false;
-        }
-      }
-
-      return true;
-    }
-    /* 按海拔值分组瓦片坐标
-     * @return {Object} { level: [[xNum, yNum], ...], ... }
-     */
-
-
-    getElevationGroups() {
-      const groups = {}; // 先收集默认海拔的瓦片（地图范围内未单独设置的）
-
-      for (let gridY = 0; gridY < this.height; gridY++) {
-        for (let gridX = 0; gridX < this.width; gridX++) {
-          const level = this.get(gridX, gridY);
-          const key = String(level);
-          if (!groups[key]) groups[key] = [];
-          groups[key].push([gridX, gridY]);
-        }
-      }
-
-      return groups;
-    }
-    /* 导出为二维数组（行优先）
-     * @return {Array} [[level, ...], ...]
-     */
-
-
-    toArray() {
-      const result = [];
-
-      for (let gridY = 0; gridY < this.height; gridY++) {
-        const row = [];
-
-        for (let gridX = 0; gridX < this.width; gridX++) {
-          row.push(this.get(gridX, gridY));
-        }
-
-        result.push(row);
-      }
-
-      return result;
-    }
-    /* 从二维数组导入海拔数据
-     * @param  {Array} data 二维海拔数组 [[level, ...], ...]
-     * @return {ElevationMap} this
-     */
-
-
-    fromArray(data = []) {
-      this.width = data[0] ? data[0].length : 0;
-      this.height = data.length;
-
-      this._data.clear();
-
-      this._max = this.defaultElevation;
-      this._min = this.defaultElevation;
-
-      for (let gridY = 0; gridY < data.length; gridY++) {
-        for (let gridX = 0; gridX < data[gridY].length; gridX++) {
-          this.set(gridX, gridY, data[gridY][gridX]);
-        }
-      }
-
-      return this;
-    }
-    /* 导出为 JSON 可序列化对象
-     * @return {Object} { width, height, defaultElevation, data: { key: level, ... } }
-     */
-
-
-    toJSON() {
-      const data = {};
-
-      this._data.forEach((level, key) => {
-        data[key] = level;
-      });
-
-      return {
-        width: this.width,
-        height: this.height,
-        defaultElevation: this.defaultElevation,
-        data
-      };
-    }
-    /* 从 JSON 对象恢复海拔地图
-     * @param  {Object} json 序列化对象
-     * @return {ElevationMap} this
-     */
-
-
-    fromJSON(json = {}) {
-      this.width = json.width || 0;
-      this.height = json.height || 0;
-      this.defaultElevation = json.defaultElevation ?? 0;
-
-      this._data.clear();
-
-      this._max = this.defaultElevation;
-      this._min = this.defaultElevation;
-      const entries = json.data || {};
-      Object.keys(entries).forEach(key => {
-        const level = entries[key];
-
-        this._data.set(key, level);
-
-        if (level > this._max) this._max = level;
-        if (level < this._min) this._min = level;
-      });
-      return this;
-    }
-
-  }
-
-  /* 斜坡系统 —— 海拔边界过渡区域检测与通行性判定
-
-   * 斜坡不是独立瓦片类型，而是由相邻瓦片海拔差自动判定的过渡区域。
-   * 当相邻瓦片海拔差为 1 时，当前瓦片处于斜坡过渡区。
-   * 当海拔差 > 1 时，视为悬崖，不可通行。
-   */
-  // 斜坡类型枚举
-  const SLOPE_TYPES = {
-    NONE: 0,
-    // 平地，无斜坡
-    UP: 1,
-    // 上坡（邻居海拔高于当前瓦片）
-    DOWN: -1,
-    // 下坡（邻居海拔低于当前瓦片）
-    EDGE: 2,
-    // 边缘（部分邻居高、部分邻居低）
-    CLIFF: 3 // 悬崖（海拔差 > 1，不可通行）
-
-  }; // 斜坡方向（与菱形邻居方向对应，8 个方向）
-
-  const SLOPE_DIRECTIONS = {
-    NW: '↖',
-    NE: '↗',
-    SE: '↘',
-    SW: '↙',
-    N: '↑',
-    E: '→',
-    S: '↓',
-    W: '←'
-  };
-  /* 获取指定瓦片的斜坡类型
-   * @param  {Number} xNum
-   * @param  {Number} yNum
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Array}  neighbors 邻居坐标数组 [[xNum, yNum], ...]
-   * @return {Object} { type, direction, diff } 斜坡类型、方向、最大海拔差
-   */
-
-  function getSlopeType(gridX, gridY, elevationMap, neighbors = []) {
-    const currentElevation = elevationMap.get(gridX, gridY);
-    let hasUp = false;
-    let hasDown = false;
-    let maxAbsDiff = 0;
-    let direction = null;
-
-    for (let i = 0; i < neighbors.length; i++) {
-      const [neighborGridX, neighborGridY] = neighbors[i];
-      if (!elevationMap.inBounds(neighborGridX, neighborGridY)) continue;
-      const elevationDiff = elevationMap.get(neighborGridX, neighborGridY) - currentElevation;
-      const absoluteElevationDiff = Math.abs(elevationDiff);
-
-      if (absoluteElevationDiff > maxAbsDiff) {
-        maxAbsDiff = absoluteElevationDiff;
-        direction = elevationDiff > 0 ? SLOPE_DIRECTIONS.N : SLOPE_DIRECTIONS.S;
-      }
-
-      if (elevationDiff > 0) hasUp = true;
-      if (elevationDiff < 0) hasDown = true;
-    } // 悬崖：海拔差 > 1
-
-
-    if (maxAbsDiff > 1) {
-      return {
-        type: SLOPE_TYPES.CLIFF,
-        direction,
-        diff: maxAbsDiff
-      };
-    } // 边缘：同时存在上坡和下坡
-
-
-    if (hasUp && hasDown) {
-      return {
-        type: SLOPE_TYPES.EDGE,
-        direction: null,
-        diff: maxAbsDiff
-      };
-    } // 上坡
-
-
-    if (hasUp) {
-      return {
-        type: SLOPE_TYPES.UP,
-        direction,
-        diff: maxAbsDiff
-      };
-    } // 下坡
-
-
-    if (hasDown) {
-      return {
-        type: SLOPE_TYPES.DOWN,
-        direction,
-        diff: maxAbsDiff
-      };
-    }
-
-    return {
-      type: SLOPE_TYPES.NONE,
-      direction: null,
-      diff: 0
-    };
-  }
-  /* 自动检测海拔地图中所有瓦片的斜坡信息
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Function} getNeighborsFn 获取邻居坐标的方法，参数 (xNum, yNum)，返回 [[xNum, yNum], ...]
-   * @return {Map} key 为 "xNum_yNum"，value 为 { type, direction, diff }
-   */
-
-  function detectSlopes(elevationMap, getNeighborsFn) {
-    const slopes = new Map();
-
-    for (let gridY = 0; gridY < elevationMap.height; gridY++) {
-      for (let gridX = 0; gridX < elevationMap.width; gridX++) {
-        const neighbors = getNeighborsFn([gridX, gridY]);
-        const slopeInfo = getSlopeType(gridX, gridY, elevationMap, neighbors);
-
-        if (slopeInfo.type !== SLOPE_TYPES.NONE) {
-          slopes.set(`${gridX}_${gridY}`, slopeInfo);
-        }
-      }
-    }
-
-    return slopes;
-  }
-  /* 判断瓦片是否可通行
-   * @param  {Number} xNum
-   * @param  {Number} yNum
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Array}  neighbors 邻居坐标数组
-   * @return {Boolean}
-   */
-
-  function isWalkable(gridX, gridY, elevationMap, neighbors = []) {
-    const slopeInfo = getSlopeType(gridX, gridY, elevationMap, neighbors);
-    return slopeInfo.type !== SLOPE_TYPES.CLIFF;
-  }
-  /* 获取斜坡通行成本倍数
-   * @param  {Number} xNum
-   * @param  {Number} yNum
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Array}  neighbors 邻居坐标数组
-   * @param  {Number} slopeCostMultiplier 斜坡成本倍数，默认 2
-   * @return {Number} 通行成本（1 表示平地，> 1 表示斜坡）
-   */
-
-  function getSlopeCost(gridX, gridY, elevationMap, neighbors = [], slopeCostMultiplier = 2) {
-    const slopeInfo = getSlopeType(gridX, gridY, elevationMap, neighbors);
-    if (slopeInfo.type === SLOPE_TYPES.CLIFF) return Infinity;
-    if (slopeInfo.type === SLOPE_TYPES.NONE) return 1;
-    return slopeCostMultiplier;
-  }
-  /* 计算斜坡瓦片的顶点坐标（用于渲染斜坡过渡面）
-   * @param  {Number} xNum
-   * @param  {Number} yNum
-   * @param  {Array}  tileSize 单瓦片宽高值，如 [80, 40]
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Array}  neighbors 邻居坐标数组 [[xNum, yNum], ...]
-   * @param  {Number} elevationHeight 单位海拔对应的像素高度
-   * @return {Array} 顶点坐标集合 [[x, y, level], ...]
-   */
-
-  function getSlopeVertexes(gridX, gridY, tileSize, elevationMap, neighbors = [], elevationHeight = 10) {
-    const currentElevation = elevationMap.get(gridX, gridY);
-    const vertexes = []; // 当前瓦片的四个顶点
-
-    neighbors.forEach(([neighborGridX, neighborGridY]) => {
-      if (!elevationMap.inBounds(neighborGridX, neighborGridY)) return;
-      const neighborElevation = elevationMap.get(neighborGridX, neighborGridY);
-      const elevationDiff = neighborElevation - currentElevation; // 只在海拔差为 1 时生成斜坡顶点
-
-      if (Math.abs(elevationDiff) === 1) {
-        vertexes.push([neighborGridX, neighborGridY, neighborElevation]);
-      }
-    });
-    return vertexes;
-  }
-
-  /* 海拔渲染坐标计算
-
-   * 在菱形布局基础坐标之上叠加海拔偏移，支持错列布局和等距布局两种模式。
-   * 海拔越高，瓦片在 Y 轴方向上移（屏幕上方），形成立体层次感。
-   */
-  /* 获取带海拔偏移的错列布局瓦片渲染坐标
-   * @param  {Array}  gridCoord       目标瓦片网格坐标，如 [0, 0]
-   * @param  {Array}  tileSize        单瓦片图宽高值，如 [80, 40]
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Number} elevationHeight  单位海拔对应的像素高度，默认 10
-   * @param  {String} stagger          错列模式 ['odd', 'even', 'none']
-   * @param  {Array}  originXY         原点像素坐标值
-   * @return {Array} [pixelX, pixelY, gridX, gridY, elevation]
-   */
-
-  function getElevatedPosition(xyNum = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, stagger = 'odd', originXY = [0, 0]) {
-    const [gridX, gridY] = xyNum;
-    const [basePixelX, basePixelY] = getPosition(xyNum, tileSize, stagger, originXY);
-    const elevation = elevationMap ? elevationMap.get(gridX, gridY) : 0;
-    const offsetY = -elevation * elevationHeight;
-    return [basePixelX, basePixelY + offsetY, gridX, gridY, elevation];
-  }
-  /* 获取带海拔偏移的等距布局瓦片渲染坐标
-   * @param  {Array}  gridCoord       目标瓦片网格坐标，如 [0, 0]
-   * @param  {Array}  tileSize        单瓦片图宽高值，如 [80, 40]
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Number} elevationHeight  单位海拔对应的像素高度，默认 10
-   * @param  {Array}  originXY         原点像素坐标值
-   * @return {Array} [pixelX, pixelY, gridX, gridY, elevation]
-   */
-
-  function getElevatedIsometricPosition(xyNum = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, originXY = [0, 0]) {
-    const [gridX, gridY] = xyNum;
-    const [basePixelX, basePixelY] = getIsometricPosition(xyNum, tileSize, originXY);
-    const elevation = elevationMap ? elevationMap.get(gridX, gridY) : 0;
-    const offsetY = -elevation * elevationHeight;
-    return [basePixelX, basePixelY + offsetY, gridX, gridY, elevation];
-  }
-  /* 批量获取带海拔偏移的错列布局瓦片渲染坐标
-   * @param  {Array}  mainAxisRange   主轴行序号区间，如 [0, 9]
-   * @param  {Array}  subAxisRange    副轴行序号区间，如 [0, 9]
-   * @param  {Array}  tileSize        单瓦片图宽高值
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Number} elevationHeight  单位海拔对应的像素高度
-   * @param  {String} stagger          错列模式
-   * @param  {String} renderOrder      渲染方向
-   * @return {Array} [[pixelX, pixelY, gridX, gridY, elevation], ...]
-   */
-
-  function getElevatedPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, stagger = 'odd', renderOrder = 'RightDown') {
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
-      return getElevatedPosition([gridX, gridY], tileSize, elevationMap, elevationHeight, stagger);
-    });
-  }
-  /* 批量获取带海拔偏移的等距布局瓦片渲染坐标
-   * @param  {Array}  mainAxisRange   主轴行序号区间
-   * @param  {Array}  subAxisRange    副轴行序号区间
-   * @param  {Array}  tileSize        单瓦片图宽高值
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Number} elevationHeight  单位海拔对应的像素高度
-   * @param  {String} renderOrder      渲染方向
-   * @return {Array} [[pixelX, pixelY, gridX, gridY, elevation], ...]
-   */
-
-  function getElevatedIsometricPositions(mainAxisRange = [0, 0], subAxisRange = [0, 0], tileSize = [8, 4], elevationMap, elevationHeight = 10, renderOrder = 'RightDown') {
-    return twoDimForEach(mainAxisRange, subAxisRange, renderOrder, (gridX, gridY) => {
-      return getElevatedIsometricPosition([gridX, gridY], tileSize, elevationMap, elevationHeight);
-    });
-  }
-  /* 按海拔和位置生成渲染顺序
-   * 确保高海拔瓦片后渲染（遮挡低海拔），同海拔内按 renderDirection 排序
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {String} renderDirection 渲染方向 ['RightDown','RightUp','LeftDown','LeftUp']
-   * @return {Array} [[gridX, gridY, elevation], ...] 按渲染顺序排列
-   */
-
-  function getRenderOrder(elevationMap, renderDirection = 'RightDown') {
-    const {
-      width,
-      height
-    } = elevationMap;
-    const positions = twoDimForEach([0, width - 1], [0, height - 1], renderDirection, (gridX, gridY) => {
-      return [gridX, gridY, elevationMap.get(gridX, gridY)];
-    }); // 同海拔内保持原渲染方向顺序，高海拔排后面
-    // 使用稳定排序：先按 elevation 升序，同海拔保持原序
-
-    return positions.sort((a, b) => a[2] - b[2]);
-  }
-
-  /* 海拔感知 A* 寻路
-
-   * 在基础 A* 算法之上增加海拔约束：
-   * - 相邻瓦片海拔差超过阈值时不可通行
-   * - 斜坡通行成本高于平地
-   * - 支持配置不可通行海拔值列表
-   */
-  /* 获取海拔感知的邻居列表
-   * 过滤掉海拔差过大的邻居，并为斜坡邻居增加额外成本
-   * @param  {Array}  gridCoord       当前瓦片网格坐标 [gridX, gridY]
-   * @param  {ElevationMap} elevationMap 海拔地图实例
-   * @param  {Function} baseGetNeighbors 基础邻居获取方法，返回 [[gridX, gridY, cost], ...]
-   * @param  {Object} options         配置项
-   * @param  {Number} options.maxElevationDiff 最大可通行海拔差，默认 1
-   * @param  {Number} options.slopeCostMultiplier 斜坡成本倍数，默认 2
-   * @param  {Array}  options.unwalkableElevations 不可通行海拔值列表
-   * @return {Array} [[gridX, gridY, cost], ...]
-   */
-
-  function getElevationAwareNeighbors(gridCoord = [0, 0], elevationMap, baseGetNeighbors, options = {}) {
-    const {
-      maxElevationDiff = 1,
-      slopeCostMultiplier = 2,
-      unwalkableElevations = []
-    } = options;
-    const [gridX, gridY] = gridCoord;
-    const currentElevation = elevationMap.get(gridX, gridY); // 检查当前瓦片是否可通行
-
-    if (unwalkableElevations.includes(currentElevation)) {
-      return [];
-    }
-
-    const baseNeighbors = baseGetNeighbors(gridCoord);
-    const result = [];
-    baseNeighbors.forEach(([neighborGridX, neighborGridY, baseCost]) => {
-      // 检查邻居是否在地图范围内
-      if (!elevationMap.inBounds(neighborGridX, neighborGridY)) return;
-      const neighborElevation = elevationMap.get(neighborGridX, neighborGridY);
-      const elevationDiff = Math.abs(neighborElevation - currentElevation); // 海拔差超过阈值，不可通行
-
-      if (elevationDiff > maxElevationDiff) return; // 邻居海拔值在不可通行列表中
-
-      if (unwalkableElevations.includes(neighborElevation)) return; // 计算通行成本
-
-      let cost = baseCost;
-
-      if (elevationDiff > 0) {
-        // 斜坡成本 = 基础成本 × 斜坡倍数
-        cost = baseCost * slopeCostMultiplier;
-      }
-
-      result.push([neighborGridX, neighborGridY, cost]);
-    });
-    return result;
-  }
-  /* 海拔感知 A* 寻路
-   * @param {Array}   startGrid       起点网格坐标 [gridX, gridY]
-   * @param {Array}   endGrid         终点网格坐标 [gridX, gridY]
-   * @param {ElevationMap} elevationMap 海拔地图实例
-   * @param {Function} baseGetNeighbors 基础邻居获取方法
-   * @param {Object}  options         配置项
-   * @param {Number}  options.maxElevationDiff 最大可通行海拔差
-   * @param {Number}  options.slopeCostMultiplier 斜坡成本倍数
-   * @param {Array}   options.unwalkableElevations 不可通行海拔值列表
-   * @param {Number}  maximizable     最大循环次数
-   * @return {Array} 路径数组 [[gridX, gridY, cost], ...] 或 null
-   */
-
-  function aStarElevation(startGrid = [0, 0], endGrid = [0, 0], elevationMap, baseGetNeighbors, options = {}, maximizable = 1e6) {
-    const {
-      maxElevationDiff = 1,
-      slopeCostMultiplier = 2,
-      unwalkableElevations = []
-    } = options; // 构造海拔感知的邻居获取器
-
-    const getNeighbors = gridCoord => {
-      return getElevationAwareNeighbors(gridCoord, elevationMap, baseGetNeighbors, {
-        maxElevationDiff,
-        slopeCostMultiplier,
-        unwalkableElevations
-      });
-    }; // 调用基础 A* 算法
-
-
-    return aStar$1(startGrid, endGrid, getNeighbors, maximizable);
-  }
-
-  /* 海拔管理模块入口 */
-
-  var elevationObj = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    ElevationMap: ElevationMap,
-    SLOPE_TYPES: SLOPE_TYPES,
-    SLOPE_DIRECTIONS: SLOPE_DIRECTIONS,
-    getSlopeType: getSlopeType,
-    detectSlopes: detectSlopes,
-    isWalkable: isWalkable,
-    getSlopeCost: getSlopeCost,
-    getSlopeVertexes: getSlopeVertexes,
-    getElevatedPosition: getElevatedPosition,
-    getElevatedIsometricPosition: getElevatedIsometricPosition,
-    getElevatedPositions: getElevatedPositions,
-    getElevatedIsometricPositions: getElevatedIsometricPositions,
-    getRenderOrder: getRenderOrder,
-    aStarElevation: aStarElevation,
-    getElevationAwareNeighbors: getElevationAwareNeighbors
-  });
-
   // 基础图形方法
   const shapes = shapesObj; // 寻路方法
-  const pathFinding = pathFindingObj; // 海拔管理方法
-  const elevation = elevationObj;
+  const pathFinding = pathFindingObj;
 
-  exports.elevation = elevation;
   exports.pathFinding = pathFinding;
   exports.shapes = shapes;
 
