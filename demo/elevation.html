@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>菱形海拔坐标对照</title>
+  <title>菱形海拔示例</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./static/css/index.css?20260921155206">
   <style>
@@ -10,7 +10,7 @@
     .comparison { display: flex; flex-wrap: wrap; gap: 16px; }
     figure { flex: 1 1 360px; margin: 0; border: 1px solid #ddd; background: #fafafa; }
     figcaption { padding: 12px; font-weight: bold; }
-    .canvas-container { width: 400px; height: 240px; }
+    .selection-info { display: block; padding: 8px 12px; min-height: 24px; font-size: 13px; }
     p { line-height: 1.7; }
   </style>
 </head>
@@ -19,76 +19,243 @@
   <script src="./static/js/spritejs3.js?20260921155206"></script>
   <script src="./static/js/qtiled.dev.js?20260921155206"></script>
   <main>
-    <h1>菱形海拔坐标对照</h1>
-    <p>相同网格、相同尺寸：左侧按平面绘制，右侧按标注海拔绘制。每单位海拔上移 16px，负值下移。颜色表示海拔：蓝色 −1、浅灰 0、绿色 1。</p>
+    <h1>菱形海拔示例</h1>
+    <p>每单位海拔上移 16px，负值下移。颜色表示海拔：蓝色 −1、浅灰 0、绿色 1。</p>
     <h2>错列布局（odd）</h2>
     <div class="comparison" id="staggered"></div>
-    <h2>等距布局</h2>
-    <div class="comparison" id="isometric"></div>
-    <p>本页仅验证坐标位移。海拔图按高度从低到高绘制，同高度保持数据顺序；不提供点击选中或坡面。</p>
-  </main>
   <script>
     (function() {
-      const { getPosition, getIsometricPosition, getVertexes } = qtiled.shapes.rhombus;
-      // 固定演示数据：[网格 X, 网格 Y, 海拔]，两种布局和两侧对照共用。
-      const cells = [
-        [0, 0, 0], [1, 0, 1], [2, 0, 0], [3, 0, 0], [4, 0, -1], [5, 0, 0],
-        [0, 1, 0], [1, 1, 0], [2, 1, 0], [3, 1, 1], [4, 1, 0], [5, 1, 1],
-        [0, 2, 0], [1, 2, 0], [2, 2, 1], [3, 2, 1], [4, 2, 0], [5, 2, 0],
-        [0, 3, 0], [1, 3, -1], [2, 3, 0], [3, 3, 0], [4, 3, 1], [5, 3, -1],
-        [0, 4, 0], [1, 4, 0], [2, 4, 0], [3, 4, -1], [4, 4, 0], [5, 4, 1],
-        [0, 5, 0], [1, 5, 0], [2, 5, 0], [3, 5, 0], [4, 5, 0], [5, 5, 0],
-      ];
+      const { getPosition, getPositions, getInfoByPos, getVertexes } = qtiled.shapes.rhombus;
+      const gridXRange = [0, 5];
+      const gridYRange = [0, 5];
+      // 范围内默认海拔为 0，只记录非零海拔覆盖值。
+      const elevations = {
+        '1,0': 1, '4,0': -1,
+        '3,1': 1, '5,1': 1,
+        '2,2': 1, '3,2': 1,
+        '1,3': -1, '4,3': 1, '5,3': -1,
+        '3,4': -1, '5,4': 1,
+      };
       // 沿用 rhombus.html 静态示例的单元格尺寸。
       const tileWidth = 60;
       const tileHeight = 30;
       const tileSize = [tileWidth, tileHeight];
+      const halfHeight = tileHeight / 2;
       const { Scene, Label, Polyline } = spritejs;
       const colors = { '-1': '#cce7f5', 0: '#edf0f2', 1: '#c6e7c8' };
       const points = getVertexes(tileSize);
-      function renderComparison(id, getCellPosition) {
-        [false, true].forEach(elevated => {
-          const figure = document.createElement('figure');
-          const caption = document.createElement('figcaption');
-          caption.textContent = elevated ? '海拔位移' : '平面参考（忽略海拔）';
-          const container = document.createElement('div');
-          container.className = 'canvas-container';
-          figure.append(caption, container);
-          document.getElementById(id).appendChild(figure);
-          const scene = new Scene({ container, width: 400, height: 240, mode: 'static' });
-          const layer = scene.layer('def', { handleEvent: false });
-          const shapesEls = [];
-          // 本页的顶面叠放规则：高海拔后绘制，顶面与文字作为一组。
-          // 排序副本，避免改变平面参考图及另一种布局共用的数据。
-          const renderCells = elevated ? cells.slice().sort((a, b) => a[2] - b[2]) : cells;
-          renderCells.forEach(([gridX, gridY, elevation]) => {
-            const [pixelX, pixelY] = getCellPosition([gridX, gridY], elevated ? elevation : 0);
-            // 顶面与文字共用绘制坐标，不在页面内重新计算海拔偏移。
-            const pos = [pixelX, pixelY];
-            shapesEls.push(
-              new Polyline({
-                pos,
-                points,
-                fillColor: colors[elevation],
-                strokeColor: 'rgba(0, 0, 0, 0.5)',
-                lineWidth: 2,
-                close: true,
-              }),
-              new Label({
-                pos,
-                anchor: [0.5, 0.5],
-                text: `${gridX},${gridY} h:${elevation}`,
-                fontSize: '10px',
-                fillColor: '#263238',
-              }),
-            );
-          });
-          layer.append(...shapesEls);
+      const stagger = 'odd';
+      const originPixel = [40, 80];
+      // 海拔集合与像素偏移只计算一次，画布高度和反查共同使用。
+      const elevationLayers = [...new Set([0, ...Object.values(elevations)])]
+        .sort((a, b) => b - a)
+        .map(elevation => ({ elevation, offsetY: getPosition([0, 0], tileSize, stagger, [0, 0], elevation)[1] }));
+      const lowerOffset = elevationLayers[elevationLayers.length - 1].offsetY;
+      const canvasWidth = originPixel[0] * 2 + (gridXRange[1] + 1) * tileWidth;
+      const canvasHeight = originPixel[1] + (gridYRange[1] + 2) * halfHeight + lowerOffset;
+      // 批量坐标方法生成范围内的格子，并保持其遍历顺序。
+      const cells = getPositions(gridXRange, gridYRange, tileSize, 'RightDown', stagger)
+        .map(([, , gridX, gridY]) => {
+          const elevation = elevations[`${gridX},${gridY}`] ?? 0;
+          const [x, y] = getPosition([gridX, gridY], tileSize, stagger, originPixel, elevation);
+          return { gridX, gridY, elevation, pos: [x, y] };
+        })
+        .sort((a, b) => a.elevation - b.elevation);
+
+      const figure = document.createElement('figure');
+      const caption = document.createElement('figcaption');
+      caption.textContent = '海拔位移';
+      const container = document.createElement('div');
+      container.className = 'canvas-container';
+      container.style.width = `${canvasWidth}px`;
+      container.style.height = `${canvasHeight}px`;
+      figure.append(caption, container);
+      document.getElementById('staggered').appendChild(figure);
+      const scene = new Scene({ container, width: canvasWidth, height: canvasHeight, mode: 'static' });
+      const layer = scene.layer('def', { handleEvent: false });
+      const shapesEls = [];
+      const cellsByCoord = new Map();
+      // cells 已按海拔排好顺序，绘制与查询索引使用同一份对象。
+      cells.forEach(cell => {
+        const { gridX, gridY, elevation, pos } = cell;
+        const tile = new Polyline({
+          pos,
+          points,
+          fillColor: colors[elevation],
+          strokeColor: 'rgba(0, 0, 0, 0.5)',
+          lineWidth: 2,
+          close: true,
         });
+        cell.tile = tile;
+        cellsByCoord.set(`${gridX},${gridY}`, cell);
+        shapesEls.push(
+          tile,
+          new Label({
+            pos,
+            anchor: [0.5, 0.5],
+            text: `${gridX},${gridY} h:${elevation}`,
+            fontSize: '10px',
+            fillColor: '#263238',
+          }),
+        );
+      });
+      layer.append(...shapesEls);
+
+      const selectionInfo = document.createElement('output');
+      selectionInfo.className = 'selection-info';
+      selectionInfo.setAttribute('aria-live', 'polite');
+      selectionInfo.textContent = '未选中：移动鼠标查看坐标与海拔';
+      figure.append(selectionInfo);
+      // 每层只检查反查得到的格子；索引只含范围内的格子。
+      function findCell(pixelX, pixelY) {
+        if (pixelX < 0 || pixelX > canvasWidth || pixelY < 0 || pixelY > canvasHeight) return null;
+        for (const { elevation, offsetY } of elevationLayers) {
+          const [gridX, gridY] = getInfoByPos([pixelX, pixelY - offsetY], originPixel, tileSize, stagger);
+          const cell = cellsByCoord.get(`${gridX},${gridY}`);
+          if (cell && cell.elevation === elevation) return cell;
+        }
+        return null;
       }
-      renderComparison('staggered', (gridCoord, elevation) => getPosition(gridCoord, tileSize, 'odd', [40, 80], elevation));
-      renderComparison('isometric', (gridCoord, elevation) => getIsometricPosition(gridCoord, tileSize, [60, 120], elevation));
+      // 固定尺寸示例沿用 rhombus.html 的页面坐标减偏移，滚动时无需重新测量。
+      const { left, top } = container.getBoundingClientRect();
+      const offsetLeft = left + window.scrollX;
+      const offsetTop = top + window.scrollY;
+      let selectedCell = null;
+      container.addEventListener('mousemove', ({ pageX, pageY }) => {
+        const hit = findCell(pageX - offsetLeft, pageY - offsetTop);
+        if (hit === selectedCell) return;
+        if (selectedCell) {
+          selectedCell.tile.attr({ strokeColor: 'rgba(0, 0, 0, 0.5)', lineWidth: 2 });
+        }
+        selectedCell = hit;
+        if (hit) {
+          // 修改原顶面轮廓，不追加置顶图形，保持既有遮挡关系。
+          hit.tile.attr({ strokeColor: '#d35400', lineWidth: 3 });
+          selectionInfo.textContent = `gridX: ${hit.gridX} / gridY: ${hit.gridY} / elevation: ${hit.elevation}`;
+        } else {
+          selectionInfo.textContent = '未选中：移动鼠标查看坐标与海拔';
+        }
+      });
     }());
   </script>
+    <h2>等距布局</h2>
+    <div class="comparison" id="isometric"></div>
+  <script>
+    (function() {
+      const { getIsometricPosition, getIsometricPositions, getIsometricInfoByPos, getVertexes } = qtiled.shapes.rhombus;
+      const gridXRange = [0, 5];
+      const gridYRange = [0, 5];
+      // 范围内默认海拔为 0，只记录非零海拔覆盖值。
+      const elevations = {
+        '1,0': 1, '4,0': -1,
+        '3,1': 1, '5,1': 1,
+        '2,2': 1, '3,2': 1,
+        '1,3': -1, '4,3': 1, '5,3': -1,
+        '3,4': -1, '5,4': 1,
+      };
+      // 沿用 rhombus.html 静态示例的单元格尺寸。
+      const tileWidth = 60;
+      const tileHeight = 30;
+      const tileSize = [tileWidth, tileHeight];
+      const halfWidth = tileWidth / 2;
+      const halfHeight = tileHeight / 2;
+      const { Scene, Label, Polyline } = spritejs;
+      const colors = { '-1': '#cce7f5', 0: '#edf0f2', 1: '#c6e7c8' };
+      const points = getVertexes(tileSize);
+      const originPixel = [60, 120];
+      // 海拔集合与像素偏移只计算一次，画布高度和反查共同使用。
+      const elevationLayers = [...new Set([0, ...Object.values(elevations)])]
+        .sort((a, b) => b - a)
+        .map(elevation => ({ elevation, offsetY: getIsometricPosition([0, 0], tileSize, [0, 0], elevation)[1] }));
+      const lowerOffset = elevationLayers[elevationLayers.length - 1].offsetY;
+      const canvasWidth = originPixel[0] * 2 + (gridXRange[1] + gridYRange[1]) * halfWidth;
+      const canvasHeight = originPixel[1] + (gridYRange[1] - gridXRange[0] + 2) * halfHeight + lowerOffset;
+      // 批量坐标方法生成范围内的格子，并保持其遍历顺序。
+      const cells = getIsometricPositions(gridXRange, gridYRange, tileSize, 'RightDown')
+        .map(([, , gridX, gridY]) => {
+          const elevation = elevations[`${gridX},${gridY}`] ?? 0;
+          const [x, y] = getIsometricPosition([gridX, gridY], tileSize, originPixel, elevation);
+          return { gridX, gridY, elevation, pos: [x, y] };
+        })
+        .sort((a, b) => a.elevation - b.elevation);
+
+      const figure = document.createElement('figure');
+      const caption = document.createElement('figcaption');
+      caption.textContent = '海拔位移';
+      const container = document.createElement('div');
+      container.className = 'canvas-container';
+      container.style.width = `${canvasWidth}px`;
+      container.style.height = `${canvasHeight}px`;
+      figure.append(caption, container);
+      document.getElementById('isometric').appendChild(figure);
+      const scene = new Scene({ container, width: canvasWidth, height: canvasHeight, mode: 'static' });
+      const layer = scene.layer('def', { handleEvent: false });
+      const shapesEls = [];
+      const cellsByCoord = new Map();
+      // cells 已按海拔排好顺序，绘制与查询索引使用同一份对象。
+      cells.forEach(cell => {
+        const { gridX, gridY, elevation, pos } = cell;
+        const tile = new Polyline({
+          pos,
+          points,
+          fillColor: colors[elevation],
+          strokeColor: 'rgba(0, 0, 0, 0.5)',
+          lineWidth: 2,
+          close: true,
+        });
+        cell.tile = tile;
+        cellsByCoord.set(`${gridX},${gridY}`, cell);
+        shapesEls.push(
+          tile,
+          new Label({
+            pos,
+            anchor: [0.5, 0.5],
+            text: `${gridX},${gridY} h:${elevation}`,
+            fontSize: '10px',
+            fillColor: '#263238',
+          }),
+        );
+      });
+      layer.append(...shapesEls);
+
+      const selectionInfo = document.createElement('output');
+      selectionInfo.className = 'selection-info';
+      selectionInfo.setAttribute('aria-live', 'polite');
+      selectionInfo.textContent = '未选中：移动鼠标查看坐标与海拔';
+      figure.append(selectionInfo);
+      // 每层只检查反查得到的格子；索引只含范围内的格子。
+      function findCell(pixelX, pixelY) {
+        if (pixelX < 0 || pixelX > canvasWidth || pixelY < 0 || pixelY > canvasHeight) return null;
+        for (const { elevation, offsetY } of elevationLayers) {
+          const [gridX, gridY] = getIsometricInfoByPos([pixelX, pixelY - offsetY], originPixel, tileSize);
+          const cell = cellsByCoord.get(`${gridX},${gridY}`);
+          if (cell && cell.elevation === elevation) return cell;
+        }
+        return null;
+      }
+      // 固定尺寸示例沿用 rhombus.html 的页面坐标减偏移，滚动时无需重新测量。
+      const { left, top } = container.getBoundingClientRect();
+      const offsetLeft = left + window.scrollX;
+      const offsetTop = top + window.scrollY;
+      let selectedCell = null;
+      container.addEventListener('mousemove', ({ pageX, pageY }) => {
+        const hit = findCell(pageX - offsetLeft, pageY - offsetTop);
+        if (hit === selectedCell) return;
+        if (selectedCell) {
+          selectedCell.tile.attr({ strokeColor: 'rgba(0, 0, 0, 0.5)', lineWidth: 2 });
+        }
+        selectedCell = hit;
+        if (hit) {
+          // 修改原顶面轮廓，不追加置顶图形，保持既有遮挡关系。
+          hit.tile.attr({ strokeColor: '#d35400', lineWidth: 3 });
+          selectionInfo.textContent = `gridX: ${hit.gridX} / gridY: ${hit.gridY} / elevation: ${hit.elevation}`;
+        } else {
+          selectionInfo.textContent = '未选中：移动鼠标查看坐标与海拔';
+        }
+      });
+    }());
+  </script>
+    <p>移动鼠标可查询海拔图中的单元格，移到图内空白处取消选中。海拔图按高度从低到高绘制，同高度保持数据顺序；本页不提供坡面。</p>
+  </main>
 </body>
 </html>
