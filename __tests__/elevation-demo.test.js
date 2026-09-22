@@ -40,7 +40,7 @@ function createDemo(shapeMethods = rhombus) {
       return { append: (...shapes) => { this.container.shapes = shapes; } };
     }
   }
-  const html = fs.readFileSync(path.join(__dirname, '../demo/elevation.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '../demo/elevation-rhombus.html'), 'utf8');
   const window = { scrollX: 0, scrollY: 0 };
   const context = vm.createContext({
     window,

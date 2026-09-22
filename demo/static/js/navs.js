@@ -8,7 +8,7 @@
     ['neighbors-rect.html', '查找相邻Tile - 正矩形'],
     ['neighbors-hexagon.html', '查找相邻Tile - 六边形'],
     ['neighbors-rhombus.html', '查找相邻Tile - 正菱形'],
-    ['elevation.html', '海拔地图 - Elevation'],
+    ['elevation-rhombus.html', '海拔示例 - 菱形'],
     ['pathfinding-rect.html', 'A*寻路 - 正矩形'],
     ['pathfinding-hexagon.html', 'A*寻路 - 六边形'],
     ['pathfinding-rhombus.html', 'A*寻路 - 正菱形'],
