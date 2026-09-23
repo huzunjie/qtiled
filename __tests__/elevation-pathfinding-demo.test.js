@@ -253,6 +253,115 @@ describe.each([0, 1])('菱形高差寻路布局 %i', index => {
     expect(focusLabel.attrs.opacity).toBe(0);
     expect(d.container.shapes.slice(0, -3).map(shape => shape.attrs)).toEqual(originalAttrs);
   });
+
+  test('升降模式连续点击每次只改一格，更新位置、颜色、标记和鼠标命中', () => {
+    const { demos } = createDemo();
+    const d = demos[index];
+    d.choose('sta', [0, 0]);
+    const label = d.label([0, 0]);
+    const shapes = d.container.shapes;
+    const tile = shapes[shapes.indexOf(label) - 1];
+    const marker = shapes[shapes.indexOf(label) + 1];
+    const originalPos = [...label.attrs.pos];
+    const originalFill = tile.attrs.fillColor;
+    const originalHeights = d.labels().map(item => item.text);
+    const overlays = shapes.slice(-3);
+    d.click('raise_elevation');
+    expect(d.labels().map(item => item.text)).toEqual(originalHeights);
+    expect(d.el('result').textContent).toContain('当前操作：抬高地势');
+    [1, 2, 3, 4, 3, 2, 1, 0].forEach((height, step) => {
+      if (step === 4) d.click('lower_elevation');
+      d.fire('click', ...d.center([0, 0]));
+      expect(d.height([0, 0])).toBe(height);
+      expect(label.attrs.pos).toEqual([originalPos[0], originalPos[1] - 16 * height]);
+      expect(tile.attrs.pos).toEqual(label.attrs.pos);
+      expect(marker.attrs.pos).toEqual(label.attrs.pos);
+      expect(marker.text).toBe('起点');
+      expect(tile.attrs.fillColor).toBeDefined();
+      if (height > 0) expect(tile.attrs.fillColor).not.toBe(originalFill);
+      d.container.bounds.top -= 30;
+      d.fire('mousemove', ...d.center([0, 0]));
+      expect(overlays[0].text).toContain(`gridX: 0 / gridY: 0 / elevation: ${height}`);
+      expect(overlays[1].attrs.pos).toEqual(label.attrs.pos);
+      expect(overlays[2].text).toBe(`0,0 h:${height}`);
+      const heights = d.labels().map(item => Number(item.text.split(' h:')[1]));
+      expect(heights).toEqual([...heights].sort((a, b) => a - b));
+      expect(shapes.slice(-3)).toEqual(overlays);
+      expect(demos[1 - index].height([0, 0])).toBe(0);
+    });
+    expect(tile.attrs.fillColor).toBe(originalFill);
+    expect(d.labels().map(item => item.text)).toEqual(originalHeights);
+    d.choose('roadblock', [0, 0]);
+    expect(d.height([0, 0])).toBe(0);
+    expect(marker.text).toContain('路障');
+  });
+
+  test('降低可超过预设最低值，空隙与网格外点击不修改地形', () => {
+    const { demos } = createDemo();
+    const d = demos[index];
+    const grid = index === 0 ? [0, 19] : [0, 10];
+    const initialHeight = d.height(grid);
+    d.click('lower_elevation');
+    for (let step = 1; step <= 4; step++) {
+      const [x, y] = d.center(grid);
+      d.fire('click', x, y + 10);
+      expect(d.height(grid)).toBe(initialHeight - step);
+      d.fire('mousemove', x, y + 26);
+      expect(d.container.shapes.slice(-1)[0].text).toBe(`${grid} h:${initialHeight - step}`);
+    }
+    const snapshot = d.labels().map(label => label.text);
+    d.fire('click', 5, 5);
+    const [x, y] = d.center([1, 0]);
+    d.fire('click', x, y + 16);
+    expect(d.container.shapes.slice(-3)[0].text).toContain('未命中');
+    expect(d.labels().map(label => label.text)).toEqual(snapshot);
+  });
+
+  test('编辑清除旧路径，寻路按新海拔筛选；恢复后重新连通', () => {
+    const { demos } = createDemo();
+    const d = demos[index];
+    d.el('dirs').querySelectorAll().find(button => button.innerText === '→').onclick();
+    d.choose('sta', [0, 0]); d.choose('end', [1, 0]);
+    d.diff(0);
+    expect(d.run()).toBeNull();
+    d.click('raise_elevation');
+    d.fire('click', ...d.center([0, 0]));
+    expect(d.run()).not.toBeNull();
+    expect(d.container.shapes.some(shape => /路\d/.test(shape.text || ''))).toBe(true);
+    d.fire('click', ...d.center([0, 0]));
+    expect(d.container.shapes.some(shape => /路\d/.test(shape.text || ''))).toBe(false);
+    expect(d.el('result').textContent).toContain('海拔已改为 2');
+    expect(d.run()).toBeNull();
+    d.click('lower_elevation');
+    d.fire('click', ...d.center([0, 0]));
+    expect(d.run()).not.toBeNull();
+  });
+
+  test('编辑外部格子保留地形，原位置空隙不误命中，恢复零海拔后可回收', () => {
+    const { demos } = createDemo();
+    const d = demos[index];
+    const count = d.container.shapes.length;
+    const grid = [-1, 4];
+    const flat = d.center(grid);
+    d.outside(true);
+    d.click('raise_elevation');
+    d.fire('click', ...flat);
+    expect(d.height(grid)).toBe(1);
+    expect(d.container.shapes.slice(-3)[0].text).toContain('未命中');
+    d.fire('click', ...flat);
+    expect(d.height(grid)).toBe(1);
+    d.container.events.mouseleave();
+    d.click('clear_path');
+    expect(d.height(grid)).toBe(1);
+    d.fire('mousemove', ...d.center(grid));
+    expect(d.container.shapes.slice(-1)[0].text).toBe(`${grid} h:1`);
+    d.click('lower_elevation');
+    d.fire('click', ...d.center(grid));
+    d.container.events.mouseleave();
+    d.click('clear_path');
+    expect(d.label(grid)).toBeUndefined();
+    expect(d.container.shapes).toHaveLength(count);
+  });
 });
 
 test('真实 A* 超过循环上限提示搜索未完成，不误报不可达', () => {

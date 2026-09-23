@@ -39,8 +39,8 @@
   <script src="./static/js/spritejs3.js?20260921183837"></script>
   <script src="./static/js/qtiled.dev.js?20260923"></script>
   <h1>菱形高差寻路</h1>
-  <p class="description">蓝色谷地最低为 −3，绿色高地最高为 3，每单位海拔上移 16px。每一步的相邻格高差不超过最大高差即可通行，上下行规则相同，移动成本沿用原邻居方法。</p>
-  <p class="description">已预设谷底起点和高地终点，点击“开始寻路”查看路径。设置起点、终点或路障后点击地图；修改条件会清除旧路径。开启网格外通行时，地图外海拔为 0。</p>
+  <p class="description">预设蓝色谷地最低为 −3，绿色高地最高为 3，每单位海拔上移 16px。每一步的相邻格高差不超过最大高差即可通行，上下行规则相同，移动成本沿用原邻居方法。</p>
+  <p class="description">已预设谷底起点和高地终点，点击“开始寻路”查看路径。设置起点、终点或路障后点击地图；选择“抬高地势”或“降低地势”后，每次点击命中的单元格使其海拔 +1 或 −1。修改条件会清除旧路径。开启网格外通行时，地图外未编辑的单元格海拔为 0。</p>
   <section>
     <h2>错列布局（odd）</h2>
     <div class="map-wrap">
@@ -78,6 +78,8 @@
         <a class="btn-big" id="staggered_set_end">设置终点</a>
         <a class="btn-big btn-clear" id="staggered_clear_roadblock">清理路障</a>
         <a class="btn-big" id="staggered_set_roadblock">设置路障</a>
+        <a class="btn-big" id="staggered_raise_elevation">抬高地势</a>
+        <a class="btn-big" id="staggered_lower_elevation">降低地势</a>
       </div>
     </div>
   </section>
@@ -118,6 +120,8 @@
         <a class="btn-big" id="isometric_set_end">设置终点</a>
         <a class="btn-big btn-clear" id="isometric_clear_roadblock">清理路障</a>
         <a class="btn-big" id="isometric_set_roadblock">设置路障</a>
+        <a class="btn-big" id="isometric_raise_elevation">抬高地势</a>
+        <a class="btn-big" id="isometric_lower_elevation">降低地势</a>
       </div>
     </div>
   </section>
@@ -129,7 +133,7 @@
       const points = rhombus.getVertexes(tileSize);
       const colors = {
         '-3': '#7fb8df', '-2': '#a7d1ec', '-1': '#cce7f5',
-        0: 'rgba(255, 255, 255, 0.5)',
+        0: 'rgba(255, 255, 255, 0.7)',
         1: '#c6e7c8', 2: '#a3d5a6', 3: '#7dbd82',
       };
       const layouts = [
@@ -222,20 +226,18 @@
         let maxElevationDiff = 1;
         const outsideInput = $id('ckb');
         const result = $id('result');
-        const actionNames = { sta: '起点', end: '终点', roadblock: '路障' };
+        const actionNames = { sta: '起点', end: '终点', roadblock: '路障', raise: '抬高地势', lower: '降低地势' };
         const mouseMoveLabel = new Label({
           pos: [20, 10], text: '移动鼠标查看坐标与海拔', fontSize: '13px', fillColor: '#999',
         });
-        const elevationLayers = [...new Set([0, ...Object.values(elevations)])]
-          .sort((a, b) => b - a)
-          .map(elevation => ({ elevation, offsetY: getPosition([0, 0], [0, 0], elevation)[1] }));
+        let elevationLayers;
 
         // 批量方法提供网格及原始顺序；单格方法计算海拔后的实际位置。
         const grids = getPositions(gridXRange, gridYRange).map(([, , x, y]) => [x, y]);
         grids.sort((a, b) => getElevation(a) - getElevation(b));
         grids.forEach(grid => addCell(grid));
         // 外部格子插在所有海拔 0 格子之后、第一块高地之前。
-        const firstHighTile = [...cellsByCoord.values()].find(cell => cell.elevation > 0).tile;
+        let firstHighTile;
         // 沿用海拔页的独立焦点，悬停不改变原瓦片和寻路标记。
         selectedCell = cellsByCoord.get('0,0');
         const focusRhombusTile = new Polyline({
@@ -246,6 +248,7 @@
           fontSize: '10px', fillColor: 'rgba(0, 136, 0, 0.8)',
         });
         layer.append(mouseMoveLabel, focusRhombusTile, focusRhombusLabel);
+        refreshTerrain();
         refreshCells();
         showResult('已预设谷底起点与高地终点，点击“开始寻路”。');
 
@@ -271,6 +274,31 @@
           return cellsByCoord.get(coordKey(grid)) || addCell(grid, firstHighTile);
         }
 
+        function refreshTerrain() {
+          const cells = [...cellsByCoord.values()].sort((a, b) => a.elevation - b.elevation);
+          // 海拔可连续编辑，绘制顺序和反查高度集合随之更新。
+          elevationLayers = [...new Set([0, ...cells.map(cell => cell.elevation)])]
+            .sort((a, b) => b - a)
+            .map(elevation => ({ elevation, offsetY: getPosition([0, 0], [0, 0], elevation)[1] }));
+          cells.forEach(({ tile, label, marker }) => {
+            [tile, label, marker].forEach(shape => layer.insertBefore(shape, mouseMoveLabel));
+          });
+          firstHighTile = cells.find(cell => cell.elevation > 0)?.tile || mouseMoveLabel;
+        }
+
+        function changeElevation(cell, difference) {
+          cell.elevation += difference;
+          if (cell.elevation === 0) delete elevations[cell.key];
+          else elevations[cell.key] = cell.elevation;
+          cell.pos = getPosition(cell.grid, originPixel, cell.elevation).slice(0, 2);
+          // 超出预设色阶时沿用最深色，海拔数值仍可继续增减。
+          const fillColor = colors[Math.max(-3, Math.min(3, cell.elevation))];
+          cell.tile.attr({ pos: cell.pos, fillColor });
+          cell.label.attr({ pos: cell.pos, text: `${cell.key} h:${cell.elevation}` });
+          cell.marker.attr({ pos: cell.pos });
+          refreshTerrain();
+        }
+
         function updateCell(cell) {
           const { key, grid, tile, label, marker } = cell;
           const isStart = key === startKey;
@@ -278,7 +306,8 @@
           const isBlock = roadblocks.has(key);
           const isPath = pathCosts.has(key);
           const isSelected = cell === selectedCell;
-          if (!isInside(grid) && !isStart && !isEnd && !isBlock && !isPath && !isSelected) {
+          // 已编辑的外部地形保留，未使用的海拔 0 外部格子仍按原规则回收。
+          if (!isInside(grid) && cell.elevation === 0 && !isStart && !isEnd && !isBlock && !isPath && !isSelected) {
             [tile, label, marker].forEach(shape => shape.remove());
             cellsByCoord.delete(key);
             return;
@@ -302,7 +331,8 @@
         }
 
         function showResult(message) {
-          result.textContent = `当前操作：${action ? `设置${actionNames[action]}` : '浏览'}\n${message}`;
+          const actionLabel = action === 'raise' || action === 'lower' ? actionNames[action] : `设置${actionNames[action]}`;
+          result.textContent = `当前操作：${action ? actionLabel : '浏览'}\n${message}`;
         }
 
         function reportError(message) {
@@ -350,7 +380,8 @@
             if (cell && cell.elevation === elevation && (isInside(cell.grid) || outsideInput.checked)) return cell;
             if (elevation === 0) flatInfo = { key: `${x},${y}`, grid: [x, y], pos: [flatX, flatY], elevation: null };
           }
-          return outsideInput.checked && !isInside(flatInfo.grid) ? ensureCell(flatInfo.grid) : flatInfo;
+          return outsideInput.checked && !isInside(flatInfo.grid) && !cellsByCoord.has(flatInfo.key)
+            ? ensureCell(flatInfo.grid) : flatInfo;
         }
 
         container.addEventListener('mousemove', event => selectCell(getFocusInfo(event)));
@@ -360,6 +391,13 @@
           const cell = getFocusInfo(event);
           selectCell(cell);
           if (!cell || cell.elevation === null) return;
+          if (action === 'raise' || action === 'lower') {
+            changeElevation(cell, action === 'raise' ? 1 : -1);
+            // 地形移动后重新查询鼠标位置，焦点仍表示当前实际命中的顶面。
+            selectCell(getFocusInfo(event));
+            clearPath(`单元格 ${cell.key} 海拔已改为 ${cell.elevation}，请重新寻路。`);
+            return;
+          }
           if (action === 'sta') startKey = cell.key;
           if (action === 'end') endKey = cell.key;
           if (action === 'roadblock') roadblocks.add(cell.key);
@@ -375,6 +413,12 @@
             if (name === 'end') endKey = null;
             if (name === 'roadblock') roadblocks.clear();
             clearPath(`已清理${actionNames[name]}。`);
+          };
+        });
+        ['raise', 'lower'].forEach(name => {
+          $id(`${name}_elevation`).onclick = () => {
+            action = name;
+            showResult(`点击命中的单元格${actionNames[name]}，可连续点击，每次海拔 ${name === 'raise' ? '+1' : '−1'}。`);
           };
         });
         const dirConfs = {};
