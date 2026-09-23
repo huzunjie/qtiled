@@ -113,14 +113,14 @@
       // 焦点矩形
       const focusXYNum = [0, 0];
       const focusPos = getPosition(focusXYNum, size, stagger, pos);
-      const focusRectTile = new Polyline({
+      const focusRhombusTile = new Polyline({
         pos: focusPos,
         points: tileVertexes,
         strokeColor: 'rgba(0, 136, 0, 0.9)',
         lineWidth,
         close: true,
       });
-      const focusRectLabel = new Label({
+      const focusRhombusLabel = new Label({
         anchor,
         pos: focusPos,
         text:  '0,0',
@@ -128,7 +128,7 @@
         fillColor: 'rgba(0, 136, 0, 0.8)',
       });
 
-      shapesEls.push(focusRectTile, focusRectLabel);
+      shapesEls.push(focusRhombusTile, focusRhombusLabel);
 
       /* 图形处理试验代码 end */
 
@@ -146,8 +146,8 @@
         // 越界与未越界颜色区分
         const color = `rgba(${gridX < gridXRange[0] || gridX > gridXRange[1] || gridY < gridYRange[0] || gridY > gridYRange[1] ? '255, 0' : '0, 136'}, 0, 0.3)`
         // 更新焦点区域标识位置
-        focusRectTile.attr({ x, y, strokeColor: color });
-        focusRectLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
+        focusRhombusTile.attr({ x, y, strokeColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
 
       layer.append(...shapesEls);
@@ -406,14 +406,14 @@
       // 焦点矩形
       const focusXYNum = [0, 0];
       const focusPos = getIsometricPosition(focusXYNum, size, pos);
-      const focusRectTile = new Polyline({
+      const focusRhombusTile = new Polyline({
         pos: focusPos,
         points: tileVertexes,
         strokeColor: 'rgba(0, 136, 0, 0.9)',
         lineWidth,
         close: true,
       });
-      const focusRectLabel = new Label({
+      const focusRhombusLabel = new Label({
         anchor,
         pos: focusPos,
         text:  '0,0',
@@ -421,7 +421,7 @@
         fillColor: 'rgba(0, 136, 0, 0.8)',
       });
 
-      shapesEls.push(focusRectTile, focusRectLabel);
+      shapesEls.push(focusRhombusTile, focusRhombusLabel);
 
       /* 图形处理试验代码 end */
 
@@ -439,8 +439,8 @@
         // 越界与未越界颜色区分
         const color = `rgba(${gridX < gridXRange[0] || gridX > gridXRange[1] || gridY < gridYRange[0] || gridY > gridYRange[1] ? '255, 0' : '0, 136'}, 0, 0.3)`
         // 更新焦点区域标识位置
-        focusRectTile.attr({ x, y, strokeColor: color });
-        focusRectLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
+        focusRhombusTile.attr({ x, y, strokeColor: color });
+        focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}`, fillColor: color });
       });
 
       layer.append(...shapesEls);

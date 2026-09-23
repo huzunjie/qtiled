@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>菱形高差寻路</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./static/css/index.css?20260921183837">
+  <link rel="stylesheet" href="./static/css/pathfinding.css?20260921183837">
+  <style>
+    .description { opacity: 1; line-height: 1.7; }
+    .frm { flex-wrap: wrap; gap: 8px 0; }
+    .frm-btns { padding-right: 0; }
+    section { margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <script src="./static/js/navs.js?20260921183837"></script>
+  <script src="./static/js/spritejs3.js?20260921183837"></script>
+  <script src="./static/js/qtiled.dev.js?20260923"></script>
+  <h1>菱形高差寻路</h1>
+  <p class="description">蓝色谷地最低为 −3，绿色高地最高为 3，每单位海拔上移 16px。每一步的相邻格高差不超过最大高差即可通行，上下行规则相同，移动成本沿用原邻居方法。</p>
+  <p class="description">已预设谷底起点和高地终点，点击“开始寻路”查看路径。设置起点、终点或路障后点击地图；修改条件会清除旧路径。开启网格外通行时，地图外海拔为 0。</p>
+  <section>
+    <h2>错列布局（odd）</h2>
+    <div id="staggered"></div>
+    <div class="frm-wrap">
+      <div class="frm">
+        <h4>可用方向：</h4>
+        <span id="staggered_dirs" class="dirs">
+          <a data-dir class="active">↖</a>
+          <a data-dir>↑</a>
+          <a data-dir class="active">↗</a>
+          <a data-dir>←</a>
+          <a disable>○</a>
+          <a data-dir>→</a>
+          <a data-dir class="active">↙</a>
+          <a data-dir>↓</a>
+          <a data-dir class="active">↘</a>
+        </span>
+        <label><input type="checkbox" id="staggered_ckb">网格外允许通行(无限查找，慎用！)</label>
+        <label>最大高差：<input type="range" id="staggered_max_diff" min="0" max="3" step="1" value="1"> <output id="staggered_max_diff_value">1</output></label>
+        <span class="btns-submit">
+          <a class="btn-big btn-clear" id="staggered_clear_path">清理路径</a>
+          <a class="btn-big" id="staggered_start_path_finding"><b>开始寻路</b></a>
+        </span>
+      </div>
+      <div class="frm frm-btns">
+        <a class="btn-big btn-clear" id="staggered_clear_sta">清理起点</a>
+        <a class="btn-big" id="staggered_set_sta">设置起点</a>
+        <a class="btn-big btn-clear" id="staggered_clear_end">清理终点</a>
+        <a class="btn-big" id="staggered_set_end">设置终点</a>
+        <a class="btn-big btn-clear" id="staggered_clear_roadblock">清理路障</a>
+        <a class="btn-big" id="staggered_set_roadblock">设置路障</a>
+      </div>
+    </div>
+    <div class="ipts"><output id="staggered_result" aria-live="polite"></output></div>
+  </section>
+  <section>
+    <h2>等距布局</h2>
+    <div id="isometric"></div>
+    <div class="frm-wrap">
+      <div class="frm">
+        <h4>可用方向：</h4>
+        <span id="isometric_dirs" class="dirs">
+          <a data-dir class="active">↖</a>
+          <a data-dir>↑</a>
+          <a data-dir class="active">↗</a>
+          <a data-dir>←</a>
+          <a disable>○</a>
+          <a data-dir>→</a>
+          <a data-dir class="active">↙</a>
+          <a data-dir>↓</a>
+          <a data-dir class="active">↘</a>
+        </span>
+        <label><input type="checkbox" id="isometric_ckb">网格外允许通行(无限查找，慎用！)</label>
+        <label>最大高差：<input type="range" id="isometric_max_diff" min="0" max="3" step="1" value="1"> <output id="isometric_max_diff_value">1</output></label>
+        <span class="btns-submit">
+          <a class="btn-big btn-clear" id="isometric_clear_path">清理路径</a>
+          <a class="btn-big" id="isometric_start_path_finding"><b>开始寻路</b></a>
+        </span>
+      </div>
+      <div class="frm frm-btns">
+        <a class="btn-big btn-clear" id="isometric_clear_sta">清理起点</a>
+        <a class="btn-big" id="isometric_set_sta">设置起点</a>
+        <a class="btn-big btn-clear" id="isometric_clear_end">清理终点</a>
+        <a class="btn-big" id="isometric_set_end">设置终点</a>
+        <a class="btn-big btn-clear" id="isometric_clear_roadblock">清理路障</a>
+        <a class="btn-big" id="isometric_set_roadblock">设置路障</a>
+      </div>
+    </div>
+    <div class="ipts"><output id="isometric_result" aria-live="polite"></output></div>
+  </section>
+  <script>
+    (function() {
+      const rhombus = qtiled.shapes.rhombus;
+      const { Scene, Label, Polyline } = spritejs;
+      const tileSize = [60, 30];
+      const points = rhombus.getVertexes(tileSize);
+      const colors = {
+        '-3': '#7fb8df', '-2': '#a7d1ec', '-1': '#cce7f5',
+        0: 'rgba(255, 255, 255, 0.5)',
+        1: '#c6e7c8', 2: '#a3d5a6', 3: '#7dbd82',
+      };
+      const layouts = [
+        {
+          id: 'staggered',
+          gridXRange: [0, 10], gridYRange: [0, 19],
+          originPixel: [60, 90], canvasHeight: 440, startGrid: [2, 11],
+          getPositions: (xs, ys) => rhombus.getPositions(xs, ys, tileSize, 'RightDown', 'odd'),
+          getPosition: (grid, origin, elevation) => rhombus.getPosition(grid, tileSize, 'odd', origin, elevation),
+          getInfoByPos: (pixel, origin) => rhombus.getInfoByPos(pixel, origin, tileSize, 'odd'),
+          getNeighbors: grid => rhombus.getNeighbors(grid, 'odd'),
+          // 与海拔示例保持相同的地图；未记录的格子海拔为 0。
+          elevations: {
+            '1,0': 1, '4,0': -1,
+            '3,1': 1, '5,1': 1,
+            '2,2': 1, '3,2': 1,
+            '1,3': -1, '4,3': 1, '5,3': -1,
+            '3,4': -1, '5,4': 1,
+            // 下方谷地由外向内逐级降低；错列行距较小，纵向留出更多空间。
+            '0,7': -1, '1,7': -1, '2,7': -1, '3,7': -1, '4,7': -1,
+            '0,8': -1, '1,8': -2, '2,8': -2, '3,8': -2, '4,8': -1,
+            '0,9': -1, '1,9': -2, '2,9': -2, '3,9': -2, '4,9': -1,
+            '0,10': -1, '1,10': -2, '2,10': -3, '3,10': -2, '4,10': -1,
+            '0,11': -1, '1,11': -2, '2,11': -3, '3,11': -2, '4,11': -1,
+            '0,12': -1, '1,12': -2, '2,12': -3, '3,12': -2, '4,12': -1,
+            '0,13': -1, '1,13': -2, '2,13': -2, '3,13': -2, '4,13': -1,
+            '0,14': -1, '1,14': -2, '2,14': -2, '3,14': -2, '4,14': -1,
+            '0,15': -1, '1,15': -1, '2,15': -1, '3,15': -1, '4,15': -1,
+            // 右侧高地从左到右逐级升高，外围默认海拔为 0。
+            '6,5': 1, '7,5': 2, '8,5': 3,
+            '6,6': 1, '7,6': 2, '8,6': 3,
+            '6,7': 1, '7,7': 2, '8,7': 3,
+            '6,8': 1, '7,8': 2, '8,8': 3,
+            '6,9': 1, '7,9': 2, '8,9': 3,
+          },
+        },
+        {
+          id: 'isometric',
+          gridXRange: [0, 8], gridYRange: [0, 10],
+          originPixel: [100, 180], canvasHeight: 400, startGrid: [2, 8],
+          getPositions: (xs, ys) => rhombus.getIsometricPositions(xs, ys, tileSize, 'RightDown'),
+          getPosition: (grid, origin, elevation) => rhombus.getIsometricPosition(grid, tileSize, origin, elevation),
+          getInfoByPos: (pixel, origin) => rhombus.getIsometricInfoByPos(pixel, origin, tileSize),
+          getNeighbors: grid => rhombus.getIsometricNeighbors(grid),
+          // 与海拔示例保持相同的地图；未记录的格子海拔为 0。
+          elevations: {
+            '1,0': 1, '4,0': -1,
+            '3,1': 1, '5,1': 1,
+            '2,2': 1, '3,2': 1,
+            '1,3': -1, '4,3': 1, '5,3': -1,
+            '3,4': -1, '5,4': 1,
+            // 下方谷地由外向内逐级降低，外围默认海拔为 0。
+            '0,6': -1, '1,6': -1, '2,6': -1, '3,6': -1, '4,6': -1,
+            '0,7': -1, '1,7': -2, '2,7': -2, '3,7': -2, '4,7': -1,
+            '0,8': -1, '1,8': -2, '2,8': -3, '3,8': -2, '4,8': -1,
+            '0,9': -1, '1,9': -2, '2,9': -2, '3,9': -2, '4,9': -1,
+            '0,10': -1, '1,10': -1, '2,10': -1, '3,10': -1, '4,10': -1,
+            // 右侧高地从左到右逐级升高，外围默认海拔为 0。
+            '6,5': 1, '7,5': 2, '8,5': 3,
+            '6,6': 1, '7,6': 2, '8,6': 3,
+            '6,7': 1, '7,7': 2, '8,7': 3,
+            '6,8': 1, '7,8': 2, '8,8': 3,
+            '6,9': 1, '7,9': 2, '8,9': 3,
+          },
+        },
+      ];
+
+      layouts.forEach(createDemo);
+
+      function createDemo({ id, gridXRange, gridYRange, originPixel, canvasHeight,
+        startGrid, elevations, getPositions, getPosition, getInfoByPos, getNeighbors }) {
+        const $id = name => document.getElementById(`${id}_${name}`);
+        const container = document.getElementById(id);
+        const canvasWidth = 800;
+        container.style.width = `${canvasWidth}px`;
+        container.style.height = `${canvasHeight}px`;
+        const scene = new Scene({ container, width: canvasWidth, height: canvasHeight, mode: 'static' });
+        const layer = scene.layer('def', { handleEvent: false });
+        const coordKey = ([x, y]) => `${x},${y}`;
+        const isInside = ([x, y]) => x >= gridXRange[0] && x <= gridXRange[1]
+          && y >= gridYRange[0] && y <= gridYRange[1];
+        const getElevation = grid => elevations[coordKey(grid)] ?? 0;
+        const cellsByCoord = new Map();
+        const roadblocks = new Set();
+        const pathCosts = new Map();
+        let startKey = coordKey(startGrid);
+        let endKey = '8,7';
+        let selectedCell = null;
+        let action = null;
+        let maxElevationDiff = 1;
+        const outsideInput = $id('ckb');
+        const result = $id('result');
+        const mouseMoveLabel = new Label({
+          pos: [20, 10], text: '移动鼠标查看坐标与海拔', fontSize: '13px', fillColor: '#999',
+        });
+        const elevationLayers = [...new Set([0, ...Object.values(elevations)])]
+          .sort((a, b) => b - a)
+          .map(elevation => ({ elevation, offsetY: getPosition([0, 0], [0, 0], elevation)[1] }));
+
+        // 批量方法提供网格及原始顺序；单格方法计算海拔后的实际位置。
+        const grids = getPositions(gridXRange, gridYRange).map(([, , x, y]) => [x, y]);
+        grids.sort((a, b) => getElevation(a) - getElevation(b));
+        grids.forEach(grid => addCell(grid));
+        // 外部格子插在所有海拔 0 格子之后、第一块高地之前。
+        const firstHighTile = [...cellsByCoord.values()].find(cell => cell.elevation > 0).tile;
+        // 沿用海拔页的独立焦点，悬停不改变原瓦片和寻路标记。
+        selectedCell = cellsByCoord.get('0,0');
+        const focusRhombusTile = new Polyline({
+          pos: selectedCell.pos, points, strokeColor: 'rgba(0, 136, 0, 0.8)', lineWidth: 2, close: true,
+        });
+        const focusRhombusLabel = new Label({
+          pos: selectedCell.pos, anchor: [0.5, 0.5], text: '0,0 h:0',
+          fontSize: '10px', fillColor: 'rgba(0, 136, 0, 0.8)',
+        });
+        layer.append(mouseMoveLabel, focusRhombusTile, focusRhombusLabel);
+        refreshCells();
+
+        function addCell(grid, before = null) {
+          const key = coordKey(grid);
+          const elevation = getElevation(grid);
+          const pos = getPosition(grid, originPixel, elevation).slice(0, 2);
+          const tile = new Polyline({
+            pos, points, fillColor: colors[elevation], strokeColor: 'rgba(0, 0, 0, 0.5)',
+            lineWidth: 2, close: true,
+          });
+          const label = new Label({
+            pos, anchor: [0.5, 0.5], text: `${key} h:${elevation}`, fontSize: '10px', fillColor: '#263238',
+          });
+          const marker = new Label({ pos, anchor: [0.5, -0.35], text: '', fontSize: '10px' });
+          const cell = { key, grid, elevation, pos, tile, label, marker };
+          cellsByCoord.set(key, cell);
+          [tile, label, marker].forEach(shape => layer.insertBefore(shape, before));
+          return cell;
+        }
+
+        function ensureCell(grid) {
+          return cellsByCoord.get(coordKey(grid)) || addCell(grid, firstHighTile);
+        }
+
+        function updateCell(cell) {
+          const { key, grid, tile, label, marker } = cell;
+          const isStart = key === startKey;
+          const isEnd = key === endKey;
+          const isBlock = roadblocks.has(key);
+          const isPath = pathCosts.has(key);
+          const isSelected = cell === selectedCell;
+          if (!isInside(grid) && !isStart && !isEnd && !isBlock && !isPath && !isSelected) {
+            [tile, label, marker].forEach(shape => shape.remove());
+            cellsByCoord.delete(key);
+            return;
+          }
+          let color = 'rgba(0, 0, 0, 0.5)';
+          if (isPath) color = '#a28a0f';
+          if (isEnd) color = 'rgba(125, 0, 255, 0.8)';
+          if (isStart) color = 'rgba(0, 125, 255, 0.8)';
+          if (isBlock) color = 'rgba(0, 0, 0, 0.8)';
+          marker.attr({
+            text: [isStart && '起点', isEnd && '终点', isBlock && '路障',
+              isPath && `路${pathCosts.get(key)}`].filter(Boolean).join(' / '),
+            fillColor: color,
+          });
+          // 寻路标记仍修改原图形，保持地形的遮挡关系。
+          tile.attr({ strokeColor: color });
+        }
+
+        function refreshCells() {
+          cellsByCoord.forEach(updateCell);
+        }
+
+        function clearPath() {
+          pathCosts.clear();
+          result.textContent = '';
+          refreshCells();
+        }
+
+        function selectCell(focus) {
+          const previous = selectedCell;
+          selectedCell = focus && focus.elevation !== null ? focus : null;
+          // 仅回收不再使用的外部格子，地图内瓦片不因悬停而更新。
+          if (previous && previous !== selectedCell && !isInside(previous.grid)) updateCell(previous);
+          if (!focus) {
+            focusRhombusTile.attr({ opacity: 0 });
+            focusRhombusLabel.attr({ opacity: 0 });
+            mouseMoveLabel.text = '未命中顶面';
+            return;
+          }
+          const hit = focus.elevation !== null;
+          const color = hit ? 'rgba(0, 136, 0, 0.8)' : 'rgba(255, 0, 0, 0.8)';
+          focusRhombusTile.attr({ pos: focus.pos, strokeColor: color, opacity: 1 });
+          focusRhombusLabel.attr({
+            pos: focus.pos, text: `${focus.key}${hit ? ` h:${focus.elevation}` : ''}`,
+            fillColor: color, opacity: 1,
+          });
+          mouseMoveLabel.text = `gridX: ${focus.grid[0]} / gridY: ${focus.grid[1]} / ${hit
+            ? `elevation: ${focus.elevation}` : '未命中（海拔 0 平面参考）'}`;
+        }
+
+        function getFocusInfo({ clientX, clientY }) {
+          const { left, top } = container.getBoundingClientRect();
+          const pixelX = clientX - left;
+          const pixelY = clientY - top;
+          let flatInfo;
+          // 每层仅反查一个候选，已有顶面优先于尚未绘制的外部平面。
+          for (const { elevation, offsetY } of elevationLayers) {
+            const [x, y, flatX, flatY] = getInfoByPos([pixelX, pixelY - offsetY], originPixel);
+            const cell = cellsByCoord.get(`${x},${y}`);
+            if (cell && cell.elevation === elevation && (isInside(cell.grid) || outsideInput.checked)) return cell;
+            if (elevation === 0) flatInfo = { key: `${x},${y}`, grid: [x, y], pos: [flatX, flatY], elevation: null };
+          }
+          return outsideInput.checked && !isInside(flatInfo.grid) ? ensureCell(flatInfo.grid) : flatInfo;
+        }
+
+        container.addEventListener('mousemove', event => selectCell(getFocusInfo(event)));
+        container.addEventListener('mouseleave', () => selectCell(null));
+        container.addEventListener('click', event => {
+          if (!action) return;
+          const cell = getFocusInfo(event);
+          selectCell(cell);
+          if (!cell || cell.elevation === null) return;
+          if (action === 'sta') startKey = cell.key;
+          if (action === 'end') endKey = cell.key;
+          if (action === 'roadblock') roadblocks.add(cell.key);
+          clearPath();
+        });
+        ['sta', 'end', 'roadblock'].forEach(name => {
+          $id(`set_${name}`).onclick = () => {
+            action = name;
+            clearPath();
+          };
+          $id(`clear_${name}`).onclick = () => {
+            if (name === 'sta') startKey = null;
+            if (name === 'end') endKey = null;
+            if (name === 'roadblock') roadblocks.clear();
+            clearPath();
+          };
+        });
+        const dirConfs = {};
+        Array.from($id('dirs').querySelectorAll('[data-dir]')).forEach(el => {
+          dirConfs[el.innerText] = el.className === 'active';
+          el.onclick = () => {
+            dirConfs[el.innerText] = !dirConfs[el.innerText];
+            el.className = dirConfs[el.innerText] ? 'active' : '';
+            clearPath();
+          };
+        });
+        $id('max_diff').oninput = event => {
+          maxElevationDiff = Number(event.target.value);
+          $id('max_diff_value').textContent = maxElevationDiff;
+          clearPath();
+        };
+        outsideInput.onchange = () => {
+          selectCell(null);
+          clearPath();
+        };
+        const tileVerify = grid => (outsideInput.checked || isInside(grid)) && !roadblocks.has(coordKey(grid));
+        $id('start_path_finding').onclick = () => {
+          clearPath();
+          if (startKey === null || endKey === null) return alert('请先设置起点和终点。');
+          const start = cellsByCoord.get(startKey).grid;
+          const end = cellsByCoord.get(endKey).grid;
+          if (!tileVerify(start)) return alert('错误的起点，不可通行');
+          if (!tileVerify(end)) return alert('错误的终点，不可通行');
+          let path;
+          try {
+            path = qtiled.pathFinding.aStar(start, end, current => getNeighbors(current)
+              .filter(([x, y, cost, direction]) => dirConfs[direction] && tileVerify([x, y])
+                && Math.abs(getElevation([x, y]) - getElevation(current)) <= maxElevationDiff));
+          } catch (error) {
+            if (!error.message.startsWith('[pathFinding.aStar] The number of loops exceeds the maximum value:')) throw error;
+            return alert('搜索未完成：已达到循环次数上限，请关闭网格外通行或调整寻路条件。');
+          }
+          if (!path) return alert('没有通行路径。');
+          path.forEach(([x, y, cost]) => {
+            const cell = ensureCell([x, y]);
+            pathCosts.set(cell.key, cost);
+          });
+          refreshCells();
+          result.textContent = `路径：${path.length - 1} 步，成本 ${path[path.length - 1][2]}`;
+        };
+        $id('clear_path').onclick = clearPath;
+      }
+    }());
+  </script>
+</body>
+</html>

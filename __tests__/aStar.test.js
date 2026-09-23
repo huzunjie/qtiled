@@ -19,6 +19,14 @@ function pathToKeys(path) {
 }
 
 describe('aStar - 基础功能', () => {
+  test('无边界地图命中终点后立即结束，不再加入其他邻居', () => {
+    const neighbors = jest.fn(([x, y]) => [
+      [x, y - 1, 1], [x + 1, y, 1], [x, y + 1, 1], [x - 1, y, 1],
+    ]);
+    expect(aStar([0, 0], [0, 1], neighbors, 20)).toEqual([[0, 0, 0], [0, 1, 1]]);
+    expect(neighbors).toHaveBeenCalledTimes(1);
+  });
+
   test('起止点相同时直接返回该点', () => {
     const path = aStar([0, 0], [0, 0], makeRectNeighborsFn());
     expect(path).not.toBeNull();
