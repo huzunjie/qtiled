@@ -11,6 +11,27 @@
     .frm { flex-wrap: wrap; gap: 8px 0; }
     .frm-btns { padding-right: 0; }
     section { margin-top: 24px; }
+    .map-wrap { position: relative; width: 800px; }
+    .map-result {
+      position: absolute;
+      z-index: 1;
+      left: 12px;
+      bottom: 10px;
+      max-width: calc(100% - 24px);
+      padding: 4px 8px;
+      box-sizing: border-box;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.88);
+      color: #495566;
+      font-size: 12px;
+      line-height: 18px;
+      white-space: pre-line;
+      pointer-events: none;
+    }
+    .elevation-setting { gap: 4px 12px; padding-top: 2px; padding-bottom: 2px; font-size: 12px; line-height: 18px; }
+    .elevation-setting label { display: inline-flex; align-items: center; gap: 6px; margin-left: 0; white-space: nowrap; }
+    .elevation-setting input { width: 120px; margin: 0; }
+    .elevation-setting .hint { color: #666; }
   </style>
 </head>
 <body>
@@ -22,7 +43,10 @@
   <p class="description">已预设谷底起点和高地终点，点击“开始寻路”查看路径。设置起点、终点或路障后点击地图；修改条件会清除旧路径。开启网格外通行时，地图外海拔为 0。</p>
   <section>
     <h2>错列布局（odd）</h2>
-    <div id="staggered"></div>
+    <div class="map-wrap">
+      <div id="staggered"></div>
+      <output id="staggered_result" class="map-result" aria-live="polite"></output>
+    </div>
     <div class="frm-wrap">
       <div class="frm">
         <h4>可用方向：</h4>
@@ -38,11 +62,14 @@
           <a data-dir class="active">↘</a>
         </span>
         <label><input type="checkbox" id="staggered_ckb">网格外允许通行(无限查找，慎用！)</label>
-        <label>最大高差：<input type="range" id="staggered_max_diff" min="0" max="3" step="1" value="1"> <output id="staggered_max_diff_value">1</output></label>
         <span class="btns-submit">
           <a class="btn-big btn-clear" id="staggered_clear_path">清理路径</a>
           <a class="btn-big" id="staggered_start_path_finding"><b>开始寻路</b></a>
         </span>
+      </div>
+      <div class="frm elevation-setting">
+        <label>最大高差：<input type="range" id="staggered_max_diff" min="0" max="3" step="1" value="1" aria-describedby="staggered_max_diff_hint"> <output id="staggered_max_diff_value">1</output></label>
+        <span id="staggered_max_diff_hint" class="hint">每步相邻格的海拔差上限；0 仅同海拔，调大可跨更大高差，上下行相同。</span>
       </div>
       <div class="frm frm-btns">
         <a class="btn-big btn-clear" id="staggered_clear_sta">清理起点</a>
@@ -53,11 +80,13 @@
         <a class="btn-big" id="staggered_set_roadblock">设置路障</a>
       </div>
     </div>
-    <div class="ipts"><output id="staggered_result" aria-live="polite"></output></div>
   </section>
   <section>
     <h2>等距布局</h2>
-    <div id="isometric"></div>
+    <div class="map-wrap">
+      <div id="isometric"></div>
+      <output id="isometric_result" class="map-result" aria-live="polite"></output>
+    </div>
     <div class="frm-wrap">
       <div class="frm">
         <h4>可用方向：</h4>
@@ -73,11 +102,14 @@
           <a data-dir class="active">↘</a>
         </span>
         <label><input type="checkbox" id="isometric_ckb">网格外允许通行(无限查找，慎用！)</label>
-        <label>最大高差：<input type="range" id="isometric_max_diff" min="0" max="3" step="1" value="1"> <output id="isometric_max_diff_value">1</output></label>
         <span class="btns-submit">
           <a class="btn-big btn-clear" id="isometric_clear_path">清理路径</a>
           <a class="btn-big" id="isometric_start_path_finding"><b>开始寻路</b></a>
         </span>
+      </div>
+      <div class="frm elevation-setting">
+        <label>最大高差：<input type="range" id="isometric_max_diff" min="0" max="3" step="1" value="1" aria-describedby="isometric_max_diff_hint"> <output id="isometric_max_diff_value">1</output></label>
+        <span id="isometric_max_diff_hint" class="hint">每步相邻格的海拔差上限；0 仅同海拔，调大可跨更大高差，上下行相同。</span>
       </div>
       <div class="frm frm-btns">
         <a class="btn-big btn-clear" id="isometric_clear_sta">清理起点</a>
@@ -88,7 +120,6 @@
         <a class="btn-big" id="isometric_set_roadblock">设置路障</a>
       </div>
     </div>
-    <div class="ipts"><output id="isometric_result" aria-live="polite"></output></div>
   </section>
   <script>
     (function() {
@@ -191,6 +222,7 @@
         let maxElevationDiff = 1;
         const outsideInput = $id('ckb');
         const result = $id('result');
+        const actionNames = { sta: '起点', end: '终点', roadblock: '路障' };
         const mouseMoveLabel = new Label({
           pos: [20, 10], text: '移动鼠标查看坐标与海拔', fontSize: '13px', fillColor: '#999',
         });
@@ -215,6 +247,7 @@
         });
         layer.append(mouseMoveLabel, focusRhombusTile, focusRhombusLabel);
         refreshCells();
+        showResult('已预设谷底起点与高地终点，点击“开始寻路”。');
 
         function addCell(grid, before = null) {
           const key = coordKey(grid);
@@ -268,9 +301,18 @@
           cellsByCoord.forEach(updateCell);
         }
 
-        function clearPath() {
+        function showResult(message) {
+          result.textContent = `当前操作：${action ? `设置${actionNames[action]}` : '浏览'}\n${message}`;
+        }
+
+        function reportError(message) {
+          showResult(message);
+          alert(message);
+        }
+
+        function clearPath(message = '条件已更新，请重新寻路。') {
           pathCosts.clear();
-          result.textContent = '';
+          showResult(message);
           refreshCells();
         }
 
@@ -321,18 +363,18 @@
           if (action === 'sta') startKey = cell.key;
           if (action === 'end') endKey = cell.key;
           if (action === 'roadblock') roadblocks.add(cell.key);
-          clearPath();
+          clearPath(`${actionNames[action]}已更新，请重新寻路。`);
         });
         ['sta', 'end', 'roadblock'].forEach(name => {
           $id(`set_${name}`).onclick = () => {
             action = name;
-            clearPath();
+            clearPath(`点击瓦片设置${actionNames[name]}，可连续设置。`);
           };
           $id(`clear_${name}`).onclick = () => {
             if (name === 'sta') startKey = null;
             if (name === 'end') endKey = null;
             if (name === 'roadblock') roadblocks.clear();
-            clearPath();
+            clearPath(`已清理${actionNames[name]}。`);
           };
         });
         const dirConfs = {};
@@ -347,7 +389,7 @@
         $id('max_diff').oninput = event => {
           maxElevationDiff = Number(event.target.value);
           $id('max_diff_value').textContent = maxElevationDiff;
-          clearPath();
+          clearPath(`最大高差已改为 ${maxElevationDiff}，请重新寻路。`);
         };
         outsideInput.onchange = () => {
           selectCell(null);
@@ -356,11 +398,11 @@
         const tileVerify = grid => (outsideInput.checked || isInside(grid)) && !roadblocks.has(coordKey(grid));
         $id('start_path_finding').onclick = () => {
           clearPath();
-          if (startKey === null || endKey === null) return alert('请先设置起点和终点。');
+          if (startKey === null || endKey === null) return reportError('请先设置起点和终点。');
           const start = cellsByCoord.get(startKey).grid;
           const end = cellsByCoord.get(endKey).grid;
-          if (!tileVerify(start)) return alert('错误的起点，不可通行');
-          if (!tileVerify(end)) return alert('错误的终点，不可通行');
+          if (!tileVerify(start)) return reportError('错误的起点，不可通行');
+          if (!tileVerify(end)) return reportError('错误的终点，不可通行');
           let path;
           try {
             path = qtiled.pathFinding.aStar(start, end, current => getNeighbors(current)
@@ -368,17 +410,17 @@
                 && Math.abs(getElevation([x, y]) - getElevation(current)) <= maxElevationDiff));
           } catch (error) {
             if (!error.message.startsWith('[pathFinding.aStar] The number of loops exceeds the maximum value:')) throw error;
-            return alert('搜索未完成：已达到循环次数上限，请关闭网格外通行或调整寻路条件。');
+            return reportError('搜索未完成：已达到循环次数上限，请关闭网格外通行或调整寻路条件。');
           }
-          if (!path) return alert('没有通行路径。');
+          if (!path) return reportError('没有通行路径。');
           path.forEach(([x, y, cost]) => {
             const cell = ensureCell([x, y]);
             pathCosts.set(cell.key, cost);
           });
           refreshCells();
-          result.textContent = `路径：${path.length - 1} 步，成本 ${path[path.length - 1][2]}`;
+          showResult(`已找到路径：${path.length - 1} 步，总成本 ${path[path.length - 1][2]}`);
         };
-        $id('clear_path').onclick = clearPath;
+        $id('clear_path').onclick = () => clearPath('路径已清理。');
       }
     }());
   </script>

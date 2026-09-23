@@ -115,9 +115,11 @@ describe.each([0, 1])('菱形高差寻路布局 %i', index => {
     });
     expect(d.container.shapes).toEqual(shapes);
     expect(shapes.filter(s => s.attrs.points).map(s => s.attrs.fillColor)).toEqual(fills);
-    expect(demos[1 - index].el('result').textContent).toBe('');
+    expect(demos[1 - index].el('result').textContent).toContain('当前操作：浏览');
+    expect(demos[1 - index].el('result').textContent).not.toContain('已找到路径');
     d.diff(0);
-    expect(d.el('result').textContent).toBe('');
+    expect(d.el('result').textContent).toContain('最大高差已改为 0，请重新寻路');
+    expect(d.el('result').textContent).not.toContain('已找到路径');
     expect(d.run()).toBeNull();
     expect(alert).toHaveBeenLastCalledWith('没有通行路径。');
     [1, 2, 3].forEach(value => { d.diff(value); expect(d.run()).not.toBeNull(); });
@@ -142,7 +144,7 @@ describe.each([0, 1])('菱形高差寻路布局 %i', index => {
     const button = d.el('dirs').querySelectorAll()[0];
     button.onclick();
     expect(neighbors([3, 3]).some(n => n[3] === button.innerText)).toBe(false);
-    expect(d.el('result').textContent).toBe('');
+    expect(d.el('result').textContent).toContain('条件已更新，请重新寻路');
   });
 
   test('端点缺失、重合、路障和全部方向关闭，并清除旧路径', () => {
@@ -154,7 +156,7 @@ describe.each([0, 1])('菱形高差寻路布局 %i', index => {
     expect(d.run()).toEqual([[0, 0, 0]]);
     expect(d.el('result').textContent).toContain('成本 0');
     d.choose('roadblock', [0, 0]);
-    expect(d.el('result').textContent).toBe(''); d.run();
+    expect(d.el('result').textContent).toContain('路障已更新，请重新寻路'); d.run();
     expect(alert).toHaveBeenLastCalledWith('错误的起点，不可通行');
     d.click('clear_roadblock');
     expect(d.run()).toEqual([[0, 0, 0]]);
@@ -165,6 +167,26 @@ describe.each([0, 1])('菱形高差寻路布局 %i', index => {
     expect(d.run()).toBeNull();
     d.click('clear_end'); d.run();
     expect(alert).toHaveBeenLastCalledWith('请先设置起点和终点。');
+  });
+
+  test('result 同时保留当前操作和最新结果，各布局互不影响', () => {
+    const { demos } = createDemo();
+    const d = demos[index];
+    expect(d.el('result').textContent).toContain('当前操作：浏览\n已预设谷底起点与高地终点');
+    ['sta', 'end', 'roadblock'].forEach((name, i) => {
+      d.click(`set_${name}`);
+      const label = ['起点', '终点', '路障'][i];
+      expect(d.el('result').textContent).toContain(`当前操作：设置${label}\n点击瓦片设置${label}`);
+      expect(demos[1 - index].el('result').textContent).toContain('当前操作：浏览');
+    });
+    d.choose('sta', [0, 0]); d.choose('end', [0, 0]); d.run();
+    expect(d.el('result').textContent).toBe('当前操作：设置终点\n已找到路径：0 步，总成本 0');
+    d.click('clear_path');
+    expect(d.el('result').textContent).toBe('当前操作：设置终点\n路径已清理。');
+    d.diff(2);
+    expect(d.el('result').textContent).toBe('当前操作：设置终点\n最大高差已改为 2，请重新寻路。');
+    d.click('clear_end'); d.run();
+    expect(d.el('result').textContent).toBe('当前操作：设置终点\n请先设置起点和终点。');
   });
 
   test('外部海拔为零，搜索不依赖绘制；关闭开关保留端点，清理后回收外部图形', () => {
@@ -238,6 +260,6 @@ test('真实 A* 超过循环上限提示搜索未完成，不误报不可达', (
   demos.forEach(d => {
     d.run();
     expect(alert).toHaveBeenLastCalledWith(expect.stringContaining('搜索未完成：已达到循环次数上限'));
-    expect(d.el('result').textContent).toBe('');
+    expect(d.el('result').textContent).toContain('当前操作：浏览\n搜索未完成：已达到循环次数上限');
   });
 });

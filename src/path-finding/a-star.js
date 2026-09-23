@@ -51,7 +51,7 @@ export default function aStar(
             path.unshift(previousGrid);
           }
           openlist.length = 0;
-          return true;
+          return false;
         } else {
           // 没到达终点，将当前点放入开放点列表，继续查找
           openlist.unshift(neiPoint);
