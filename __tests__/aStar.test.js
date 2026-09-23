@@ -1,6 +1,7 @@
 import aStar from '../src/path-finding/a-star';
 import { getNeighbors as getRectNeighbors } from '../src/shapes/rect';
 import { getNeighbors as getHexNeighbors } from '../src/shapes/hexagon';
+import { getNeighbors as getRhombusNeighbors, getIsometricNeighbors } from '../src/shapes/rhombus';
 
 /* 构建一个简单的矩形地图邻居函数（没有障碍物），限制在有限范围内 */
 function makeRectNeighborsFn(blockedSet = new Set(), range = 20) {
@@ -190,5 +191,143 @@ describe('默认参数覆盖 - aStar 函数', () => {
     expect(result).not.toBeNull();
     expect(result[result.length - 1][0]).toBe(1);
     expect(result[result.length - 1][1]).toBe(0);
+    expect(result[result.length - 1][2]).toBe(1);
+  });
+});
+
+describe('aStar - 最低累计成本', () => {
+  test('直达昂贵时选择便宜绕路，终点只回溯一次且不扩展', () => {
+    const graph = {
+      0: [[2, 0, 10], [1, 0, 1]],
+      1: [[2, 0, 1]],
+    };
+    const neighbors = jest.fn(([x]) => graph[x] || []);
+    expect(aStar([0, 0], [2, 0], neighbors)).toEqual([
+      [0, 0, 0], [1, 0, 1], [2, 0, 2],
+    ]);
+    expect(neighbors.mock.calls.map(([point]) => point)).toEqual([[0, 0, 0], [1, 0, 1]]);
+  });
+
+  test('节点降成本后更新父链和累计成本，旧队列记录不再扩展', () => {
+    const graph = {
+      0: [[1, 0, 8], [2, 0, 1]],
+      1: [[3, 0, 10]],
+      2: [[1, 0, 1]],
+    };
+    const neighbors = jest.fn(([x]) => graph[x] || []);
+    expect(aStar([0, 0], [3, 0], neighbors, 4)).toEqual([
+      [0, 0, 0], [2, 0, 1], [1, 0, 2], [3, 0, 12],
+    ]);
+    // 成本 8 的旧记录先于成本 12 的终点出队，但不能调用邻居回调。
+    expect(neighbors.mock.calls.map(([point]) => point)).toEqual([
+      [0, 0, 0], [2, 0, 1], [1, 0, 2],
+    ]);
+  });
+
+  test('移除节点不打乱等成本队列，等成本路线保留先发现的父节点', () => {
+    const graph = {
+      0: [[1, 0, 1], [2, 0, 1], [3, 0, 1]],
+      2: [[4, 0, 1]],
+      3: [[4, 0, 1]],
+    };
+    const neighbors = jest.fn(([x]) => graph[x] || []);
+    const expected = [[0, 0, 0], [2, 0, 1], [4, 0, 2]];
+    expect(aStar([0, 0], [4, 0], neighbors)).toEqual(expected);
+    expect(neighbors.mock.calls.map(([[x]]) => x)).toEqual([0, 1, 2, 3]);
+    expect(aStar([0, 0], [4, 0], neighbors)).toEqual(expected);
+  });
+
+  test('有限循环图中不可达时耗尽队列并返回 null', () => {
+    const neighbors = jest.fn(([x]) => [[1 - x, 0, 1]]);
+    expect(aStar([0, 0], [2, 0], neighbors)).toBeNull();
+    expect(neighbors).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('aStar - 成本兼容', () => {
+  test.each([undefined, null, false, NaN])('成本 %s 保留 cost || 1 的回退规则', cost => {
+    expect(aStar([0, 0], [1, 0], () => [[1, 0, cost]])).toEqual([[0, 0, 0], [1, 0, 1]]);
+  });
+
+  test('按每步舍入后的累计成本比较路线，不改为原始权重求和', () => {
+    const graph = {
+      0: [[3, 0, 1], [1, 0, 0.3334]],
+      1: [[2, 0, 0.3334]],
+      2: [[3, 0, 0.3334]],
+    };
+    expect(aStar([0, 0], [3, 0], ([x]) => graph[x] || [])).toEqual([
+      [0, 0, 0], [1, 0, 0.333], [2, 0, 0.666], [3, 0, 0.999],
+    ]);
+  });
+
+  test('微小正成本舍入为零增量时，有限循环不会重复更新父链', () => {
+    const graph = {
+      0: [[2, 0, 1], [1, 0, 0.0004]],
+      1: [[0, 0, 0.0004], [2, 0, 0.0004]],
+    };
+    expect(aStar([0, 0], [2, 0], ([x]) => graph[x] || [], 3)).toEqual([
+      [0, 0, 0], [1, 0, 0], [2, 0, 0],
+    ]);
+  });
+});
+
+describe('aStar - 无边界布局', () => {
+  test.each([
+    ['矩形', getRectNeighbors, [1, 2], 2.828],
+    ['六边形 odd', grid => getHexNeighbors(grid, 'odd'), [-1, 4], 4],
+    ['六边形 even', grid => getHexNeighbors(grid, 'even'), [-1, 4], 4],
+    ['菱形 odd', grid => getRhombusNeighbors(grid, 'odd'), [-1, 4], 2.828],
+    ['菱形 even', grid => getRhombusNeighbors(grid, 'even'), [-1, 4], 2.828],
+    ['菱形等距', getIsometricNeighbors, [1, 2], 2.828],
+  ])('%s 保留邻居权重并在有限上限内找到最低成本路径', (name, neighbors, end, totalCost) => {
+    const path = aStar([-1, 0], end, neighbors, 500);
+    expect(path[0]).toEqual([-1, 0, 0]);
+    expect(path[path.length - 1]).toEqual([...end, totalCost]);
+    path.slice(1).forEach(([x, y, cost], i) => {
+      const edge = neighbors(path[i]).find(([nx, ny]) => nx === x && ny === y);
+      expect(edge).toBeDefined();
+      expect(cost).toBe(Math.round((path[i][2] + edge[2]) * 1e3) / 1e3);
+    });
+  });
+
+  test('等距地图外 (-1,0) 到 (-1,4) 保留原 Demo 失败入口', () => {
+    // elevation-pathfinding-demo.test.js 的等距布局曾搜索到上限；不缩小地图边界。
+    const neighbors = grid => getIsometricNeighbors(grid).filter(([, , cost]) => cost === 1);
+    expect(aStar([-1, 0], [-1, 4], neighbors, 200)).toEqual([
+      [-1, 0, 0], [-1, 1, 1], [-1, 2, 2], [-1, 3, 3], [-1, 4, 4],
+    ]);
+  });
+});
+
+describe('aStar - 搜索上限语义', () => {
+  const errorMessage = limit => '[pathFinding.aStar] The number of loops exceeds the maximum value:' + limit;
+
+  test('成功成本更新计数包含终点，不包含被剪枝的边，允许恰好达到上限', () => {
+    const graph = {
+      0: [[1, 0, 1], [1, 0, 2]],
+      1: [[0, 0, 1], [2, 0, 1]],
+    };
+    const neighbors = ([x]) => graph[x] || [];
+    expect(aStar([0, 0], [2, 0], neighbors, 2)).toEqual([[0, 0, 0], [1, 0, 1], [2, 0, 2]]);
+    expect(() => aStar([0, 0], [2, 0], neighbors, 1)).toThrow(errorMessage(1));
+    expect(() => aStar([0, 0], [1, 0], neighbors, 0)).toThrow(errorMessage(0));
+  });
+
+  test('起终点重合不调用邻居回调，也不消耗上限', () => {
+    const neighbors = jest.fn(() => []);
+    expect(aStar([0, 0], [0, 0], neighbors, 0)).toEqual([[0, 0, 0]]);
+    expect(neighbors).not.toHaveBeenCalled();
+    expect(aStar([0, 0], [1, 0], neighbors, 0)).toBeNull();
+  });
+
+  test('已发现终点但未确认最优时超限，仍抛异常而不返回候选路径', () => {
+    const neighbors = () => [[2, 0, 10], [1, 0, 1]];
+    expect(() => aStar([0, 0], [2, 0], neighbors, 1)).toThrow(errorMessage(1));
+  });
+
+  test.each([1, 0.0004])('无边界不可达且成本为 %s 时通过上限结束，不误报 null', cost => {
+    const neighbors = jest.fn(([x]) => [[x + 1, 0, cost]]);
+    expect(() => aStar([0, 0], [-1, 0], neighbors, 4)).toThrow(errorMessage(4));
+    expect(neighbors).toHaveBeenCalledTimes(5);
   });
 });
