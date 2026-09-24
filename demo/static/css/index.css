@@ -57,11 +57,10 @@ p {
 .navs {
   position: fixed;
   top: 0;
-  bottom: 0;
   right: 0;
   z-index: 2;
   max-width: 280px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9);
   border-left: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   z-index: 2;
@@ -74,7 +73,7 @@ p {
   opacity: 0.6;
 }
 .navs h3 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   padding: 10px 12px;
   color: #333;
@@ -99,9 +98,9 @@ p {
   float: right;
   cursor: pointer;
   background-color: #f3f3f3;
-  width: 20px;
+  width: 18px;
   font-size: 14px;
-  height: 20px;
+  height: 18px;
   text-align: center;
   border-radius: 50%;
   text-shadow: 0 0 2px #fff;
@@ -110,9 +109,9 @@ p {
 .navs h3 a.qgl svg {
   fill: #666;
   vertical-align: sub;
-  margin-right: 4px;
-  width: 20px;
-  height: 20px;
+  margin-right: 3px;
+  width: 18px;
+  height: 18px;
 }
 .navs h3 a.qgl:hover,
 .navs h3 a.qgl:hover svg {
@@ -129,13 +128,16 @@ p {
 }
 .navs div a {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   text-decoration: none;
   color: #606770;
-  padding: 6px 12px;
-  margin: 4px;
+  padding: 4px 8px;
+  margin: 2px;
   border-radius: 4px;
   border-bottom: solid 1px #f9f9f9;
+}
+.navs div a:last-child {
+  border-bottom: none;
 }
 .navs div a.active,
 .navs div a:hover {
