@@ -12,6 +12,7 @@ import {
   getIsometricPosByHalfSize,
   getIsometricPositions,
   getInfoByPos,
+  getInfoByPosWithElevation,
   getIsometricInfoByPos,
   getNeighbors,
   getIsometricNeighbors,
@@ -402,6 +403,83 @@ describe('菱形单格海拔坐标', () => {
       expect(getPosition([1, 2], size, 'odd', [0, 0], 1)).toEqual([base[0], base[1] - 16, ...base.slice(2)]);
       const iso = getIsometricPosition([1, 2], size);
       expect(getIsometricPosition([1, 2], size, [0, 0], -1)).toEqual([iso[0], iso[1] + 16]);
+    });
+  });
+});
+
+describe('海拔顶面反查', () => {
+  const tileSize = [60, 30];
+  const origin = [137, -43];
+  const layouts = [
+    ['odd', (grid, elevation) => getPosition(grid, tileSize, 'odd', origin, elevation), pixel => getInfoByPos(pixel, origin, tileSize, 'odd')],
+    ['even', (grid, elevation) => getPosition(grid, tileSize, 'even', origin, elevation), pixel => getInfoByPos(pixel, origin, tileSize, 'even')],
+    ['等距', (grid, elevation) => getIsometricPosition(grid, tileSize, origin, elevation), pixel => getIsometricInfoByPos(pixel, origin, tileSize)],
+  ];
+
+  test('默认不命中，海拔 0 可作为实际顶面', () => {
+    expect(getInfoByPosWithElevation()).toEqual([0, 0, 0, 0, null]);
+    expect(getInfoByPosWithElevation(undefined, undefined, () => 0)).toEqual([0, 0, 0, 0, 0]);
+  });
+
+  layouts.forEach(([name, position, inverse]) => {
+    test(`${name}：正负坐标及正负、小数海拔与单格投影一致，不修改输入`, () => {
+      [[2, 3], [-2, -3]].forEach(coords => {
+        const grid = Object.freeze(coords);
+        [0, 1, -1, 0.5].forEach(elevation => {
+          const pixel = Object.freeze(position(grid, elevation).slice(0, 2));
+          const layers = Object.freeze([...new Set([0, elevation])].sort((a, b) => b - a));
+          const readElevation = ([x, y]) => x === grid[0] && y === grid[1] ? elevation : undefined;
+          expect(getInfoByPosWithElevation(pixel, layers, readElevation, inverse))
+            .toEqual([...grid, ...pixel, elevation]);
+        });
+      });
+    });
+
+    test(`${name}：重叠顶面优先命中高层，不可选高层不遮挡低层查询`, () => {
+      const low = position([0, 0], 0);
+      const high = position([0, 1], 1);
+      const pixel = [(low[0] + high[0]) / 2, (low[1] + high[1]) / 2];
+      const heights = { '0,0': 0, '0,1': 1 };
+      const readElevation = grid => heights[grid.join(',')];
+      // 原有平面反查可能返回 -0，几何坐标比较时视为 0。
+      expect(getInfoByPosWithElevation(pixel, [1, 0], readElevation, inverse).map(value => value + 0))
+        .toEqual([0, 1, ...high.slice(0, 2), 1]);
+      delete heights['0,1'];
+      expect(getInfoByPosWithElevation(pixel, [1, 0], readElevation, inverse).map(value => value + 0))
+        .toEqual([0, 0, ...low.slice(0, 2), 0]);
+    });
+
+    test(`${name}：海拔位移留下的空隙不误认为海拔 0 顶面`, () => {
+      const pixel = position([2, 3], 0).slice(0, 2);
+      const readElevation = ([x, y]) => x === 2 && y === 3 ? 1 : undefined;
+      expect(getInfoByPosWithElevation(pixel, [1, 0], readElevation, inverse))
+        .toEqual([2, 3, ...pixel, null]);
+    });
+
+    test(`${name}：零海拔共边归属沿用平面反查`, () => {
+      const pixel = [origin[0] + 30, origin[1]];
+      expect(getInfoByPosWithElevation(pixel, [0], () => 0, inverse))
+        .toEqual([...inverse(pixel), 0]);
+    });
+  });
+
+  test('每层只反查一个候选，未命中时复用零海拔结果', () => {
+    const inverse = jest.fn(getInfoByPos);
+    const readElevation = jest.fn(() => undefined);
+    const pixel = [17, 29];
+    expect(getInfoByPosWithElevation(pixel, [3, 2, 1, 0, -1, -2, -3], readElevation, inverse))
+      .toEqual([...getInfoByPos(pixel), null]);
+    expect(inverse).toHaveBeenCalledTimes(7);
+    expect(readElevation).toHaveBeenCalledTimes(7);
+  });
+
+  test('空海拔集合或不含零海拔且未命中时补查平面参考', () => {
+    [[], [1, -1]].forEach(layers => {
+      const inverse = jest.fn(getIsometricInfoByPos);
+      const pixel = [17, 29];
+      expect(getInfoByPosWithElevation(pixel, layers, () => undefined, inverse))
+        .toEqual([...getIsometricInfoByPos(pixel), null]);
+      expect(inverse).toHaveBeenCalledTimes(layers.length + 1);
     });
   });
 });

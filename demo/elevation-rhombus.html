@@ -16,7 +16,7 @@
 <body>
   <script src="./static/js/navs.js?20260921183837"></script>
   <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260921183837"></script>
+  <script src="./static/js/qtiled.dev.js?20260924-elevation-hit-test"></script>
   <main>
     <h1>菱形海拔示例</h1>
     <p>每单位海拔上移 16px，负值下移。下方谷地海拔为 0～−3，右侧高地海拔为 0～3；蓝色越深谷地越低，绿色越深高地越高，半透明白色表示海拔 0。</p>
@@ -29,7 +29,7 @@
     </div>
   <script>
     (function() {
-      const { getPosition, getPositions, getInfoByPos, getVertexes } = qtiled.shapes.rhombus;
+      const { getPosition, getPositions, getInfoByPos, getInfoByPosWithElevation, getVertexes } = qtiled.shapes.rhombus;
       const gridXRange = [0, 10];
       const gridYRange = [0, 19];
       // 范围内默认海拔为 0，只记录非零海拔覆盖值。
@@ -69,10 +69,9 @@
       const points = getVertexes(tileSize);
       const stagger = 'odd';
       const originPixel = [60, 90];
-      // 海拔集合与像素偏移只计算一次，用于从高到低反查。
+      // 海拔集合只计算一次，用于从高到低反查。
       const elevationLayers = [...new Set([0, ...Object.values(elevations)])]
-        .sort((a, b) => b - a)
-        .map(elevation => ({ elevation, offsetY: getPosition([0, 0], tileSize, stagger, [0, 0], elevation)[1] }));
+        .sort((a, b) => b - a);
       const canvasWidth = 800;
       const canvasHeight = 440;
       // 批量坐标方法生成范围内的格子，并保持其遍历顺序。
@@ -140,15 +139,13 @@
 
       // 每层只检查反查得到的格子；索引只含范围内的格子。
       function getFocusInfo(pixelX, pixelY) {
-        let flatInfo;
-        for (const { elevation, offsetY } of elevationLayers) {
-          const [gridX, gridY, x, y] = getInfoByPos([pixelX, pixelY - offsetY], originPixel, tileSize, stagger);
-          const cell = cellsByCoord.get(`${gridX},${gridY}`);
-          if (cell && cell.elevation === elevation) return cell;
-          // 未命中时复用海拔 0 的参考位置，null 表示并非实际顶面。
-          if (elevation === 0) flatInfo = { gridX, gridY, pos: [x, y], elevation: null };
-        }
-        return flatInfo;
+        const [gridX, gridY, x, y, elevation] = getInfoByPosWithElevation(
+          [pixelX, pixelY], elevationLayers,
+          ([gridX, gridY]) => cellsByCoord.get(`${gridX},${gridY}`)?.elevation,
+          pixel => getInfoByPos(pixel, originPixel, tileSize, stagger),
+        );
+        // 未命中时复用海拔 0 的参考位置，null 表示并非实际顶面。
+        return elevation === null ? { gridX, gridY, pos: [x, y], elevation } : cellsByCoord.get(`${gridX},${gridY}`);
       }
       container.addEventListener('mousemove', ({ clientX, clientY }) => {
         const { left, top } = container.getBoundingClientRect();
@@ -175,7 +172,7 @@
     </div>
   <script>
     (function() {
-      const { getIsometricPosition, getIsometricPositions, getIsometricInfoByPos, getVertexes } = qtiled.shapes.rhombus;
+      const { getIsometricPosition, getIsometricPositions, getIsometricInfoByPos, getInfoByPosWithElevation, getVertexes } = qtiled.shapes.rhombus;
       const gridXRange = [0, 8];
       const gridYRange = [0, 10];
       // 范围内默认海拔为 0，只记录非零海拔覆盖值。
@@ -210,10 +207,9 @@
       };
       const points = getVertexes(tileSize);
       const originPixel = [100, 180];
-      // 海拔集合与像素偏移只计算一次，用于从高到低反查。
+      // 海拔集合只计算一次，用于从高到低反查。
       const elevationLayers = [...new Set([0, ...Object.values(elevations)])]
-        .sort((a, b) => b - a)
-        .map(elevation => ({ elevation, offsetY: getIsometricPosition([0, 0], tileSize, [0, 0], elevation)[1] }));
+        .sort((a, b) => b - a);
       const canvasWidth = 800;
       const canvasHeight = 400;
       // 批量坐标方法生成范围内的格子，并保持其遍历顺序。
@@ -281,15 +277,13 @@
 
       // 每层只检查反查得到的格子；索引只含范围内的格子。
       function getFocusInfo(pixelX, pixelY) {
-        let flatInfo;
-        for (const { elevation, offsetY } of elevationLayers) {
-          const [gridX, gridY, x, y] = getIsometricInfoByPos([pixelX, pixelY - offsetY], originPixel, tileSize);
-          const cell = cellsByCoord.get(`${gridX},${gridY}`);
-          if (cell && cell.elevation === elevation) return cell;
-          // 未命中时复用海拔 0 的参考位置，null 表示并非实际顶面。
-          if (elevation === 0) flatInfo = { gridX, gridY, pos: [x, y], elevation: null };
-        }
-        return flatInfo;
+        const [gridX, gridY, x, y, elevation] = getInfoByPosWithElevation(
+          [pixelX, pixelY], elevationLayers,
+          ([gridX, gridY]) => cellsByCoord.get(`${gridX},${gridY}`)?.elevation,
+          pixel => getIsometricInfoByPos(pixel, originPixel, tileSize),
+        );
+        // 未命中时复用海拔 0 的参考位置，null 表示并非实际顶面。
+        return elevation === null ? { gridX, gridY, pos: [x, y], elevation } : cellsByCoord.get(`${gridX},${gridY}`);
       }
       container.addEventListener('mousemove', ({ clientX, clientY }) => {
         const { left, top } = container.getBoundingClientRect();

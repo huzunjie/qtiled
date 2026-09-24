@@ -583,6 +583,32 @@
     const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, halfWidth, halfHeight);
     return [gridX, gridY, pixelX + originPixelX, pixelY + originPixelY];
   }
+  /* 按海拔从高到低反查菱形顶面，复用对应布局的平面反查。
+   * @param {Array} pixelPos 查询的像素坐标
+   * @param {Array} elevationLayers 已去重、按降序排列的实际海拔值，可包含负数和小数
+   * @param {Function} getElevation 按 [gridX, gridY] 查询海拔；不存在或不可选的格子返回 undefined
+   * @param {Function} getFlatInfoByPos 已绑定原点、尺寸与布局的平面反查方法
+   * @return {Array} [gridX, gridY, pixelX, pixelY, elevation]；未命中时返回海拔 0 平面参考，elevation 为 null
+   * 每层只反查一个候选，共边归属沿用平面反查；不遍历邻居或管理地图数据。
+   * 建议海拔层包含 0，以复用其反查结果；否则未命中时额外反查一次平面参考。
+   */
+
+  function getInfoByPosWithElevation(pixelPos = [0, 0], elevationLayers = [0], getElevation = () => undefined, getFlatInfoByPos = getInfoByPos) {
+    let flatInfo;
+
+    for (const elevation of elevationLayers) {
+      const offsetY = -elevation * ELEVATION_HEIGHT;
+      const [gridX, gridY, pixelX, pixelY] = getFlatInfoByPos([pixelPos[0], pixelPos[1] - offsetY]);
+
+      if (getElevation([gridX, gridY]) === elevation) {
+        return [gridX, gridY, pixelX, pixelY + offsetY, elevation];
+      }
+
+      if (elevation === 0) flatInfo = [gridX, gridY, pixelX, pixelY, null];
+    }
+
+    return flatInfo || [...getFlatInfoByPos(pixelPos), null];
+  }
   /* 获得错列布局中指定tile下标周边紧邻的邻居们
    * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
    * @param  {String}    stagger         需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
@@ -660,6 +686,7 @@
     getIsometricPositions: getIsometricPositions,
     getInfoByPos: getInfoByPos,
     getIsometricInfoByPos: getIsometricInfoByPos,
+    getInfoByPosWithElevation: getInfoByPosWithElevation,
     getNeighbors: getNeighbors,
     getIsometricNeighbors: getIsometricNeighbors,
     getNeighborsByDistance: getNeighborsByDistance,

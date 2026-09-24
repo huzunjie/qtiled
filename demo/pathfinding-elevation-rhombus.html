@@ -37,7 +37,7 @@
 <body>
   <script src="./static/js/navs.js?20260921183837"></script>
   <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260923"></script>
+  <script src="./static/js/qtiled.dev.js?20260924-elevation-hit-test"></script>
   <h1>菱形高差寻路</h1>
   <p class="description">预设蓝色谷地最低为 −3，绿色高地最高为 3，每单位海拔上移 16px。每一步的相邻格高差不超过最大高差即可通行，上下行规则相同，移动成本沿用原邻居方法。</p>
   <p class="description">已预设谷底起点和高地终点，点击“开始寻路”查看路径。设置起点、终点或路障后点击地图；选择“抬高地势”或“降低地势”后，每次点击命中的单元格使其海拔 +1 或 −1。修改条件会清除旧路径。开启网格外通行时，地图外未编辑的单元格海拔为 0。</p>
@@ -278,8 +278,7 @@
           const cells = [...cellsByCoord.values()].sort((a, b) => a.elevation - b.elevation);
           // 海拔可连续编辑，绘制顺序和反查高度集合随之更新。
           elevationLayers = [...new Set([0, ...cells.map(cell => cell.elevation)])]
-            .sort((a, b) => b - a)
-            .map(elevation => ({ elevation, offsetY: getPosition([0, 0], [0, 0], elevation)[1] }));
+            .sort((a, b) => b - a);
           cells.forEach(({ tile, label, marker }) => {
             [tile, label, marker].forEach(shape => layer.insertBefore(shape, mouseMoveLabel));
           });
@@ -372,14 +371,17 @@
           const { left, top } = container.getBoundingClientRect();
           const pixelX = clientX - left;
           const pixelY = clientY - top;
-          let flatInfo;
           // 每层仅反查一个候选，已有顶面优先于尚未绘制的外部平面。
-          for (const { elevation, offsetY } of elevationLayers) {
-            const [x, y, flatX, flatY] = getInfoByPos([pixelX, pixelY - offsetY], originPixel);
-            const cell = cellsByCoord.get(`${x},${y}`);
-            if (cell && cell.elevation === elevation && (isInside(cell.grid) || outsideInput.checked)) return cell;
-            if (elevation === 0) flatInfo = { key: `${x},${y}`, grid: [x, y], pos: [flatX, flatY], elevation: null };
-          }
+          const [x, y, flatX, flatY, elevation] = rhombus.getInfoByPosWithElevation(
+            [pixelX, pixelY], elevationLayers,
+            grid => {
+              const cell = cellsByCoord.get(coordKey(grid));
+              return cell && (isInside(grid) || outsideInput.checked) ? cell.elevation : undefined;
+            },
+            pixel => getInfoByPos(pixel, originPixel),
+          );
+          if (elevation !== null) return cellsByCoord.get(`${x},${y}`);
+          const flatInfo = { key: `${x},${y}`, grid: [x, y], pos: [flatX, flatY], elevation: null };
           return outsideInput.checked && !isInside(flatInfo.grid) && !cellsByCoord.has(flatInfo.key)
             ? ensureCell(flatInfo.grid) : flatInfo;
         }

@@ -80,9 +80,27 @@ shapes.rhombus.getIsometricPosition([1, 2], [80, 40], [100, 100], -1);
 - 网格坐标、邻居及距离邻居查询不受影响，也不自动判断高差通行性。
 - `getInfoByPos` / `getIsometricInfoByPos` 仍反查平面位置，不能直接用于海拔后的点击选中；原有正反算一致性仅保证零海拔。
 - 批量坐标方法仍输出平面位置；顶面、文字和标记应共用单格方法返回的绘制坐标。
-- 高度数据仅在 [海拔 Demo](demo/elevation-rhombus.html) 和 [高差寻路 Demo](demo/pathfinding-elevation-rhombus.html) 的 HTML 内保存；基础库不提供地图数据管理、坡面、遮挡排序或海拔寻路。
-- Demo 按海拔升序绘制顶面，鼠标移动时从高到低还原海拔偏移，每层仅通过对应布局的位置反查方法查询一个格子，再按坐标索引核对范围与实际海拔并显示结果；odd/even 错列反查通过菱形边角修正进行精确定位，固定次数计算、不遍历邻居；共边采用反查方法的稳定归属，不保证按绘制顺序选择共边另一侧；移到图内空白处取消选中。此规则仅用于页面验证，不是基础库接口。
-- 原 `qtiled.elevation` 入口及其接口已移除，不保留兼容层。
+- 高度数据仅在 [海拔 Demo](demo/elevation-rhombus.html) 和 [高差寻路 Demo](demo/pathfinding-elevation-rhombus.html) 的 HTML 内保存；基础库提供顶面命中计算，不提供地图数据管理、坡面、遮挡排序或海拔寻路。
+- Demo 按海拔升序绘制顶面，使用下述接口从高到低反查；页面负责坐标索引、可选范围、焦点显示和外部格子管理。
+
+### 菱形海拔顶面命中
+
+```js
+const { getInfoByPos, getInfoByPosWithElevation } = shapes.rhombus;
+const info = getInfoByPosWithElevation(
+  [pixelX, pixelY],
+  elevationLayers, // 已去重、按降序排列的海拔值，建议包含 0
+  ([gridX, gridY]) => cellsByCoord.get(`${gridX},${gridY}`)?.elevation,
+  pixel => getInfoByPos(pixel, originPixel, tileSize, 'odd'),
+);
+```
+
+返回 `[gridX, gridY, pixelX, pixelY, elevation]`。命中时为实际顶面坐标；未命中时为海拔 0 的平面参考坐标，最后一项为 `null`，不能当作实际格子使用。
+
+- 海拔查询回调对不存在或不可选的格子返回 `undefined`；海拔 `0` 是有效命中。地图编辑后由调用方更新海拔层和查询数据，不限制高度范围，支持负数与小数。
+- 错列 odd/even 与等距布局共用此方法；等距布局传入绑定参数的 `getIsometricInfoByPos`。每层只查询一个候选，不遍历邻居；层数为 L 时查询复杂度为 O(L)。包含 0 时复用其平面参考，否则未命中时额外反查一次。
+- 共边归属沿用所传平面反查方法，不保证按绘制顺序选择共边另一侧；错列 `none` 仍沿用原有近似定位，不提供精确顶面命中保证。
+- 默认像素位置为 `[0, 0]`、海拔层为 `[0]`、海拔查询返回 `undefined`，平面反查为默认参数的 `getInfoByPos`；不修改输入或管理地图状态。
 
 ### Tile Data - 瓦片数据格式约定
 * [ ] ToDo - 待开发
