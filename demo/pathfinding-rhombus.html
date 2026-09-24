@@ -299,9 +299,8 @@
         if (!pathXyNums) return alert('没有通行路径。');
         clearPath();
         pathXyNums.forEach(([gridX, gridY, cost]) => {
-          const poss = getPositions([gridX, gridX], [gridY, gridY], size, 'RightDown', stagger);
-          const [x, y] = poss[0];
-          addRoad(gridX, gridY, x + originPixelX, y + originPixelY, cost);
+          const [x, y] = getPosition([gridX, gridY], size, stagger, pos);
+          addRoad(gridX, gridY, x, y, cost);
         });
       };
       $id('clear_path').onclick = clearPath;
@@ -592,9 +591,8 @@
         if (!pathXyNums) return alert('没有通行路径。');
         clearPath();
         pathXyNums.forEach(([gridX, gridY, cost]) => {
-          const poss = getIsometricPositions([gridX, gridX], [gridY, gridY], size, 'RightDown');
-          const [x, y] = poss[0];
-          addRoad(gridX, gridY, x + originPixelX, y + originPixelY, cost);
+          const [x, y] = getIsometricPosition([gridX, gridY], size, pos);
+          addRoad(gridX, gridY, x, y, cost);
         });
       };
       $id('clear_path1').onclick = clearPath;
