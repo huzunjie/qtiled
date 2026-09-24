@@ -5,7 +5,7 @@
   <title>Hexagon 六边形方法使用示例</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260921183837">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260924105137">
   <style type="text/css">
     #container {
       width: 800px;
@@ -20,9 +20,10 @@
 <body>
   <h1>Hexagon 六边形</h1>
   <div id="container"></div>
-  <script src="./static/js/navs.js?20260921183837"></script>
-  <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260924-layout-bounds"></script>
+  <script src="./static/js/navs.js?20260924105137"></script>
+  <script src="./static/js/spritejs3.js?20260924105137"></script>
+  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
+  <script src="./static/js/pointer.js?20260924105137"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -325,10 +326,8 @@
       shapesEls.push(focusHexagonTile, focusHexagonLabel);
 
 
-      const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
-        const pixelX = e.pageX - offsetLeft;
-        const pixelY = e.pageY - offsetTop;
+        const [pixelX, pixelY] = getPointerPosition(e, container);
 
         // 得到焦点元素索引及渲染坐标
         const [gridX, gridY, x, y] = getInfoByPos([pixelX, pixelY], pos, size, stagger)

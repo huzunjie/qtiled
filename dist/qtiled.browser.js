@@ -140,6 +140,48 @@
 
     return baseVertexes.map(fun);
   }
+  /* 计算一组共用顶点的多边形在平移后的轴对齐包围盒，不包含描边或文字。
+   * @param {Array} positions 位置集合，每项为 [pixelX, pixelY, ...]，忽略附带的网格下标
+   * @param {Array} vertexes 相对每个位置的共用顶点，默认 [[0, 0]]，仅计算位置范围
+   * @return {Object|null} { minX, minY, maxX, maxY, width, height }；任一集合为空时返回 null
+   * 输入为有限数值坐标，不修改输入；分别遍历位置和顶点，复杂度为 O(N + V)。
+   */
+
+  function getBounds(positions = [], vertexes = [[0, 0]]) {
+    if (!positions.length || !vertexes.length) return null;
+    const [positionBounds, vertexBounds] = [positions, vertexes].map(points => {
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+
+      for (const [x, y] of points) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+      }
+
+      return {
+        minX,
+        minY,
+        maxX,
+        maxY
+      };
+    });
+    const minX = positionBounds.minX + vertexBounds.minX;
+    const minY = positionBounds.minY + vertexBounds.minY;
+    const maxX = positionBounds.maxX + vertexBounds.maxX;
+    const maxY = positionBounds.maxY + vertexBounds.maxY;
+    return {
+      minX,
+      minY,
+      maxX,
+      maxY,
+      width: maxX - minX,
+      height: maxY - minY
+    };
+  }
 
   function _for(min, max, cbk) {
     for (let i = min; i <= max; i++) cbk(i);
@@ -272,6 +314,7 @@
     TQUA: TQUA$1,
     neighborTypes: neighborTypes,
     getVertexes: getVertexes$3,
+    getBounds: getBounds,
     twoDimForEach: twoDimForEach,
     isStaggerLine: isStaggerLine,
     getPosition: getPosition$3,
@@ -583,6 +626,32 @@
     const [pixelX, pixelY] = getIsometricPosByHalfSize(gridX, gridY, halfWidth, halfHeight);
     return [gridX, gridY, pixelX + originPixelX, pixelY + originPixelY];
   }
+  /* 按海拔从高到低反查菱形顶面，复用对应布局的平面反查。
+   * @param {Array} pixelPos 查询的像素坐标
+   * @param {Array} elevationLayers 已去重、按降序排列的实际海拔值，可包含负数和小数
+   * @param {Function} getElevation 按 [gridX, gridY] 查询海拔；不存在或不可选的格子返回 undefined
+   * @param {Function} getFlatInfoByPos 已绑定原点、尺寸与布局的平面反查方法
+   * @return {Array} [gridX, gridY, pixelX, pixelY, elevation]；未命中时返回海拔 0 平面参考，elevation 为 null
+   * 每层只反查一个候选，共边归属沿用平面反查；不遍历邻居或管理地图数据。
+   * 建议海拔层包含 0，以复用其反查结果；否则未命中时额外反查一次平面参考。
+   */
+
+  function getInfoByPosWithElevation(pixelPos = [0, 0], elevationLayers = [0], getElevation = () => undefined, getFlatInfoByPos = getInfoByPos) {
+    let flatInfo;
+
+    for (const elevation of elevationLayers) {
+      const offsetY = -elevation * ELEVATION_HEIGHT;
+      const [gridX, gridY, pixelX, pixelY] = getFlatInfoByPos([pixelPos[0], pixelPos[1] - offsetY]);
+
+      if (getElevation([gridX, gridY]) === elevation) {
+        return [gridX, gridY, pixelX, pixelY + offsetY, elevation];
+      }
+
+      if (elevation === 0) flatInfo = [gridX, gridY, pixelX, pixelY, null];
+    }
+
+    return flatInfo || [...getFlatInfoByPos(pixelPos), null];
+  }
   /* 获得错列布局中指定tile下标周边紧邻的邻居们
    * @param  {Array}     originXyNum     参考点元素下标，如：[0, 0]
    * @param  {String}    stagger         需要错位排列的行：['odd', 'even', 'none']；默认为 'odd' 奇数行错开（通常第一行是0行）
@@ -660,6 +729,7 @@
     getIsometricPositions: getIsometricPositions,
     getInfoByPos: getInfoByPos,
     getIsometricInfoByPos: getIsometricInfoByPos,
+    getInfoByPosWithElevation: getInfoByPosWithElevation,
     getNeighbors: getNeighbors,
     getIsometricNeighbors: getIsometricNeighbors,
     getNeighborsByDistance: getNeighborsByDistance,
@@ -681,14 +751,16 @@
     polygon: polygon
   });
 
-  /* A*寻径
+  /* A*寻径（启发值为 0，按 Dijkstra 策略搜索）
   * @param {Array}                 startGrid              起点网格坐标，如：[gridX, gridY]
   * @param {Array}                 endGrid                终点网格坐标，如：[gridX, gridY]
   * @param {Function}              getNeighbors          需要外部传入获取邻居坐标的方法（等距、错列、正矩形方案不同）
   *                                                      参数示例：(currentGrid = [gridX, gridY])
   *                                                      需要返回邻居坐标值、权重的 tile 二维数组：[[gridX1, gridY1, cost1], [gridX2, gridY2, cost2], ...]
-  * @param {Number}                maximizable           最大可循环次数（默认为1e6，用于防止死循环）
-  * @return {Array} 匹配的路径集合或空数组
+  *                                                      搜索期间邻接关系和权重固定，cost || 1 后为有限正数，累计运算不溢出
+  *                                                      每步累计成本保留三位小数，最优路径按此成本比较
+  * @param {Number}                maximizable           最大成本更新次数（默认为1e6，用于防止死循环）
+  * @return {Array|null} 匹配的路径集合或 null
   */
   function aStar$1(startGrid = [0, 0], endGrid = [0, 0], getNeighbors = currentGrid => [], maximizable = 1e6) {
     const path = [];
@@ -707,37 +779,45 @@
       const openlist = [startPoint];
 
       while (openlist.length) {
-        const currPoint = openlist.pop();
-        const currCost = costs[gridCoordToKey(currPoint)]; // 从邻居中查找可以更低成本通过的节点
+        // 优先取累计成本最低的点，等成本时保持入队顺序
+        let minIndex = 0;
 
-        getNeighbors(currPoint).some(([gridX, gridY, cost]) => {
+        for (let i = 1; i < openlist.length; i++) {
+          if (openlist[i][2] < openlist[minIndex][2]) minIndex = i;
+        }
+
+        const [currPoint] = openlist.splice(minIndex, 1);
+        const [currGridX, currGridY, currCost] = currPoint; // 同一节点可能以更低成本重新入队，跳过旧记录
+
+        if (currCost !== costs[gridCoordToKey(currPoint)]) continue; // 终点以最低成本出队后生成路径
+
+        if (currGridX === endGridX && currGridY === endGridY) {
+          // 回查链表得到完整路径数组，父节点均为已确认最低成本的点
+          let previousGrid = currPoint;
+
+          while (previousGrid) {
+            path.push(previousGrid);
+            previousGrid = parents[gridCoordToKey(previousGrid)];
+          }
+
+          return path.reverse();
+        } // 从邻居中查找可以更低成本通过的节点
+
+
+        getNeighbors(currPoint).forEach(([gridX, gridY, cost]) => {
           const neighborKey = gridCoordToKey([gridX, gridY]);
           const oldCost = costs[neighborKey];
           const neiCost = Math.round((currCost + (cost || 1)) * 1e3) / 1e3; // 当前点通行成本还不如已经确定的成本低，那么舍弃路径方案
 
           if (oldCost !== undefined && neiCost >= oldCost) return;
           costs[neighborKey] = neiCost;
-          parents[neighborKey] = currPoint; // 循环次数达到上限，抛出异常终止查找
+          parents[neighborKey] = currPoint; // 成本更新次数超过上限，抛出异常终止查找
 
           n++;
           if (n > maximizable) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maximizable);
-          const neiPoint = [gridX, gridY, neiCost]; // 到达终点生成路径
+          const neiPoint = [gridX, gridY, neiCost]; // 将成本更新后的节点放入开放点列表，等待确认最低成本
 
-          if (gridX === endGridX && gridY === endGridY) {
-            path.push(neiPoint); // 回查链表得到完整路径数组
-
-            let previousGrid = endGrid;
-
-            while (previousGrid = parents[gridCoordToKey(previousGrid)]) {
-              path.unshift(previousGrid);
-            }
-
-            openlist.length = 0;
-            return false;
-          } else {
-            // 没到达终点，将当前点放入开放点列表，继续查找
-            openlist.unshift(neiPoint);
-          }
+          openlist.push(neiPoint);
         });
       }
     }

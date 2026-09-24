@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>菱形海拔示例</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="./static/css/index.css?20260921183837">
+  <link rel="stylesheet" href="./static/css/index.css?20260924105137">
   <style>
     main { max-width: 960px; margin: 24px auto; padding: 0 16px; }
     .comparison { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -14,9 +14,10 @@
   </style>
 </head>
 <body>
-  <script src="./static/js/navs.js?20260921183837"></script>
-  <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260924-elevation-hit-test"></script>
+  <script src="./static/js/navs.js?20260924105137"></script>
+  <script src="./static/js/spritejs3.js?20260924105137"></script>
+  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
+  <script src="./static/js/pointer.js?20260924105137"></script>
   <main>
     <h1>菱形海拔示例</h1>
     <p>每单位海拔上移 16px，负值下移。下方谷地海拔为 0～−3，右侧高地海拔为 0～3；蓝色越深谷地越低，绿色越深高地越高，半透明白色表示海拔 0。</p>
@@ -147,10 +148,8 @@
         // 未命中时复用海拔 0 的参考位置，null 表示并非实际顶面。
         return elevation === null ? { gridX, gridY, pos: [x, y], elevation } : cellsByCoord.get(`${gridX},${gridY}`);
       }
-      container.addEventListener('mousemove', ({ clientX, clientY }) => {
-        const { left, top } = container.getBoundingClientRect();
-        const offsetX = clientX - left;
-        const offsetY = clientY - top;
+      container.addEventListener('mousemove', (event) => {
+        const [offsetX, offsetY] = getPointerPosition(event, container);
         const focus = getFocusInfo(offsetX, offsetY);
         const { gridX, gridY, elevation, pos: [x, y] } = focus;
         const hit = elevation !== null;
@@ -285,10 +284,8 @@
         // 未命中时复用海拔 0 的参考位置，null 表示并非实际顶面。
         return elevation === null ? { gridX, gridY, pos: [x, y], elevation } : cellsByCoord.get(`${gridX},${gridY}`);
       }
-      container.addEventListener('mousemove', ({ clientX, clientY }) => {
-        const { left, top } = container.getBoundingClientRect();
-        const offsetX = clientX - left;
-        const offsetY = clientY - top;
+      container.addEventListener('mousemove', (event) => {
+        const [offsetX, offsetY] = getPointerPosition(event, container);
         const focus = getFocusInfo(offsetX, offsetY);
         const { gridX, gridY, elevation, pos: [x, y] } = focus;
         const hit = elevation !== null;

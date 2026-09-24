@@ -45,6 +45,7 @@ function createDemo(shapeMethods = rhombus) {
     spritejs: { Scene, Polyline: Shape, Label: Shape },
     qtiled: { shapes: { rhombus: shapeMethods } },
   });
+  vm.runInContext(fs.readFileSync(path.join(__dirname, '../demo/static/js/pointer.js'), 'utf8'), context);
   for (const [, script] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) {
     vm.runInContext(script, context);
   }

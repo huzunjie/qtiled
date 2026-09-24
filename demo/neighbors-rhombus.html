@@ -5,14 +5,15 @@
   <title>正菱形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260921183837">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260921183837">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260924105137">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260924105137">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260921183837"></script>
-  <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260921183837"></script>
+  <script src="./static/js/navs.js?20260924105137"></script>
+  <script src="./static/js/spritejs3.js?20260924105137"></script>
+  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
+  <script src="./static/js/pointer.js?20260924105137"></script>
 
   <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -254,11 +255,10 @@
       typeEl.onchange = updateNeis;
       updateNeis();
       
-      const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
         // 得到索引序号&渲染位置
         const [gridX, gridY, x, y] = getInfoByPos(
-          [e.pageX - offsetLeft, e.pageY - offsetTop],
+          getPointerPosition(e, container),
           pos,
           size,
           stagger
@@ -513,11 +513,10 @@
       typeEl.onchange = updateNeis;
       updateNeis();
       
-      const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
         // 得到索引序号&渲染位置
         const [gridX, gridY, x, y] = getIsometricInfoByPos(
-          [e.pageX - offsetLeft, e.pageY - offsetTop],
+          getPointerPosition(e, container),
           pos,
           size
         );

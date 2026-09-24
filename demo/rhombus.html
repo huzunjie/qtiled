@@ -5,7 +5,7 @@
   <title>Rhombus 正菱形方法使用示例</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260921183837">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260924105137">
   <style type="text/css">
     #container {
       width: 800px;
@@ -29,9 +29,10 @@
   </style>
 </head>
 <body>
-  <script src="./static/js/navs.js?20260921183837"></script>
-  <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260924-layout-bounds"></script>
+  <script src="./static/js/navs.js?20260924105137"></script>
+  <script src="./static/js/spritejs3.js?20260924105137"></script>
+  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
+  <script src="./static/js/pointer.js?20260924105137"></script>
   <h1>Rhombus 正菱形</h1>
   <div id="container"></div>
   <script type="text/javascript">
@@ -333,10 +334,8 @@
       });
       shapesEls.push(focusRhombusTile, focusRhombusLabel);
 
-      const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
-        const offsetX = e.pageX - offsetLeft;
-        const offsetY = e.pageY - offsetTop;
+        const [offsetX, offsetY] = getPointerPosition(e, container);
 
         // 得到焦点元素索引及渲染坐标
         const [gridX, gridY, x, y] = getInfoByPos([offsetX, offsetY], pos, size, stagger)
@@ -438,8 +437,7 @@
       layer.append(...shapesEls, focusRhombusTile, focusRhombusLabel);
   
       container.addEventListener('mousemove', (e) => {
-        const offsetX = e.pageX - container.offsetLeft;
-        const offsetY = e.pageY - container.offsetTop;
+        const [offsetX, offsetY] = getPointerPosition(e, container);
         const [gridX, gridY, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);
         const currPos = [x, y];
         // 更新文案
@@ -550,10 +548,8 @@
       shapesEls.push(focusRhombusTile, focusRhombusLabel);
 
 
-      const { offsetTop, offsetLeft } = container;
       container.addEventListener('mousemove', (e) => {
-        const offsetX = e.pageX - offsetLeft;
-        const offsetY = e.pageY - offsetTop;
+        const [offsetX, offsetY] = getPointerPosition(e, container);
 
         // 得到焦点元素索引及渲染坐标
         const [gridX, gridY, x, y] = getIsometricInfoByPos([offsetX, offsetY], pos, size);

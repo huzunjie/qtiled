@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <title>菱形高差寻路</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="./static/css/index.css?20260921183837">
-  <link rel="stylesheet" href="./static/css/pathfinding.css?20260921183837">
+  <link rel="stylesheet" href="./static/css/index.css?20260924105137">
+  <link rel="stylesheet" href="./static/css/pathfinding.css?20260924105137">
   <style>
     .description { opacity: 1; line-height: 1.7; }
     .frm { flex-wrap: wrap; gap: 8px 0; }
@@ -35,9 +35,10 @@
   </style>
 </head>
 <body>
-  <script src="./static/js/navs.js?20260921183837"></script>
-  <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260924-elevation-hit-test"></script>
+  <script src="./static/js/navs.js?20260924105137"></script>
+  <script src="./static/js/spritejs3.js?20260924105137"></script>
+  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
+  <script src="./static/js/pointer.js?20260924105137"></script>
   <h1>菱形高差寻路</h1>
   <p class="description">预设蓝色谷地最低为 −3，绿色高地最高为 3，每单位海拔上移 16px。每一步的相邻格高差不超过最大高差即可通行，上下行规则相同，移动成本沿用原邻居方法。</p>
   <p class="description">已预设谷底起点和高地终点，点击“开始寻路”查看路径。设置起点、终点或路障后点击地图；选择“抬高地势”或“降低地势”后，每次点击命中的单元格使其海拔 +1 或 −1。修改条件会清除旧路径。开启网格外通行时，地图外未编辑的单元格海拔为 0。</p>
@@ -367,10 +368,8 @@
             ? `elevation: ${focus.elevation}` : '未命中（海拔 0 平面参考）'}`;
         }
 
-        function getFocusInfo({ clientX, clientY }) {
-          const { left, top } = container.getBoundingClientRect();
-          const pixelX = clientX - left;
-          const pixelY = clientY - top;
+        function getFocusInfo(event) {
+          const [pixelX, pixelY] = getPointerPosition(event, container);
           // 每层仅反查一个候选，已有顶面优先于尚未绘制的外部平面。
           const [x, y, flatX, flatY, elevation] = rhombus.getInfoByPosWithElevation(
             [pixelX, pixelY], elevationLayers,

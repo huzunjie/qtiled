@@ -158,6 +158,8 @@ import qtiled from 'qtiled';
 
 可以参考 `demo/index.js` 中的示例，也可以直接阅读 src 目录下源码及相应注释。
 
+交互 demo 使用独立的 `demo/static/js/pointer.js`，在页面交互脚本之前加载，通过 `getPointerPosition(event, container)` 取得 `[pixelX, pixelY]`，再传入基础库反查方法。移动与点击共用该方法，每次使用 `clientX/clientY` 和容器当前的 `getBoundingClientRect()`，适用于当前无边框、无内边距且未缩放的画布容器；此方法不属于 QTiled 基础库 API。
+
 ### 坐标变量命名速查
 
 库与 demo 统一使用带语义前缀的坐标变量名，避免把网格下标、像素位置和相对偏移混在一起：
