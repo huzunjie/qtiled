@@ -20,6 +20,7 @@
 
 ### Basic Shapes - 基础图形
 + [x] Polygon - 多边形
+  + [x] getBounds 根据实际位置集合和共用顶点计算布局包围盒
   + [x] getPolygonVertexes 获取多边形顶点坐标集
   + [x] getPolygonPositions 按目标区间方向获取多个多边形位置坐标集
   + [x] twoDimForEach 按目标区间方向进行二维遍历
@@ -101,6 +102,17 @@ const info = getInfoByPosWithElevation(
 - 错列 odd/even 与等距布局共用此方法；等距布局传入绑定参数的 `getIsometricInfoByPos`。每层只查询一个候选，不遍历邻居；层数为 L 时查询复杂度为 O(L)。包含 0 时复用其平面参考，否则未命中时额外反查一次。
 - 共边归属沿用所传平面反查方法，不保证按绘制顺序选择共边另一侧；错列 `none` 仍沿用原有近似定位，不提供精确顶面命中保证。
 - 默认像素位置为 `[0, 0]`、海拔层为 `[0]`、海拔查询返回 `undefined`，平面反查为默认参数的 `getInfoByPos`；不修改输入或管理地图状态。
+
+### 布局包围盒
+
+`shapes.polygon.getBounds(positions, vertexes)` 返回 `{ minX, minY, maxX, maxY, width, height }`，表示一组共用顶点的多边形平移后的最小轴对齐矩形范围，不包含描边、文字或额外留白。
+
+```js
+const positions = shapes.rhombus.getPositions([0, 4], [0, 6], [60, 30]);
+const bounds = shapes.polygon.getBounds(positions, shapes.rhombus.getVertexes([60, 30]));
+```
+
+位置数组只读取前两项像素坐标，可直接传入批量坐标结果；隐藏格子应先过滤，横纵布局转换应先完成。顶点使用相对位置的像素坐标，结果与位置集处于同一坐标系。默认位置集合为空，默认顶点为 `[[0, 0]]`（仅计算位置范围）；任一集合为空时返回 `null`。输入为有限数值坐标，不修改输入，计算复杂度为 O(N + V)。
 
 ### Tile Data - 瓦片数据格式约定
 * [ ] ToDo - 待开发

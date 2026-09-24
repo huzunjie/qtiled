@@ -22,7 +22,7 @@
   <div id="container"></div>
   <script src="./static/js/navs.js?20260921183837"></script>
   <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260921183837"></script>
+  <script src="./static/js/qtiled.dev.js?20260924-layout-bounds"></script>
   <script type="text/javascript">
     (function() {
       const container = document.getElementById('container');
@@ -45,6 +45,7 @@
       const size = [tileWidth, tileHeight];
 
       const { getVertexes, getPositions } = qtiled.shapes.hexagon;
+      const { getBounds } = qtiled.shapes.polygon;
 
       // 一个六边形顶点坐标集
       const hexagonVertexes = getVertexes(size); // axis = 'y'
@@ -184,15 +185,10 @@
       // 纵向带边框的网格
       originPixelX = 700;
       originPixelY = 640;
-      let minX = Infinity;
-      let minY = Infinity;
-      let maxX = -Infinity;
-      let maxY = -Infinity;
-      hexTiles = getPositions([-4.5, -0.5], [-6, 0], [tileHeight, tileWidth], 'leftUp', 'even').map(([y, x]) => {
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x);
-        maxY = Math.max(maxY, y);
+      const positions = getPositions([-4.5, -0.5], [-6, 0], [tileHeight, tileWidth], 'leftUp', 'even')
+        .map(([y, x]) => [x, y]);
+      const { minX, minY, maxX, maxY } = getBounds(positions, hexagonVertexes2);
+      hexTiles = positions.map(([x, y]) => {
         return new Polyline({
           pos: [x + originPixelX, y + originPixelY],
           points: hexagonVertexes2,
@@ -201,10 +197,6 @@
           close: true,
         });
       });
-      minY -= tileHeight / 2;
-      minX -= tileWidth / 2;
-      maxY += tileHeight / 2;
-      maxX += tileWidth / 2;
       shapesEls.push(
         // 坐标系原点
         new Polyline({

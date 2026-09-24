@@ -31,7 +31,7 @@
 <body>
   <script src="./static/js/navs.js?20260921183837"></script>
   <script src="./static/js/spritejs3.js?20260921183837"></script>
-  <script src="./static/js/qtiled.dev.js?20260921183837"></script>
+  <script src="./static/js/qtiled.dev.js?20260924-layout-bounds"></script>
   <h1>Rhombus 正菱形</h1>
   <div id="container"></div>
   <script type="text/javascript">
@@ -56,6 +56,7 @@
       const size = [tileWidth, tileHeight];
 
       const { getVertexes, getPositions, getIsometricPositions } = qtiled.shapes.rhombus;
+      const { getBounds } = qtiled.shapes.polygon;
 
       // 一个菱形顶点坐标集
       const rhombusVertexes = getVertexes(size); // axis = 'y'
@@ -141,34 +142,18 @@
       // 中心点为原点的错列带边框的倒序菱形网格图
       originPixelX = 185;
       originPixelY = 420;
-      let minX = Infinity;
-      let minY = Infinity;
-      let maxX = -Infinity;
-      let maxY = -Infinity;
       const maxGridX = 2;
-      hexTiles = [];
-      getPositions([-2, maxGridX], [-4, 4], size, 'leftUp', 'odd').forEach(([x, y, gridX, gridY]) => {
-        if (gridX === maxGridX && Math.abs(gridY % 2) === 1) {
-          return; // 错列行最右侧元素隐去
-        }
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x);
-        maxY = Math.max(maxY, y);
-        hexTiles.push(
-          new Polyline({
-            pos: [x + originPixelX, y + originPixelY],
-            points: rhombusVertexes,
-            strokeColor: 'rgba(0, 0, 0, 0.5)',
-            lineWidth,
-            close: true,
-          })
-        );
-      });
-      minY -= tileHeight / 2;
-      minX -= tileWidth / 2;
-      maxY += tileHeight / 2;
-      maxX += tileWidth / 2;
+      const staggeredPositions = getPositions([-2, maxGridX], [-4, 4], size, 'leftUp', 'odd')
+        // 错列行最右侧元素隐去
+        .filter(([, , gridX, gridY]) => !(gridX === maxGridX && Math.abs(gridY % 2) === 1));
+      let { minX, minY, maxX, maxY } = getBounds(staggeredPositions, rhombusVertexes);
+      hexTiles = staggeredPositions.map(([x, y]) => new Polyline({
+        pos: [x + originPixelX, y + originPixelY],
+        points: rhombusVertexes,
+        strokeColor: 'rgba(0, 0, 0, 0.5)',
+        lineWidth,
+        close: true,
+      }));
       shapesEls.push(
         // 坐标系原点
         new Polyline({
@@ -201,15 +186,9 @@
       // 等距带边框的网格
       originPixelX = 540;
       originPixelY = 420;
-      minX = Infinity;
-      minY = Infinity;
-      maxX = -Infinity;
-      maxY = -Infinity;
-      hexTiles = getIsometricPositions([-2, 2], [-2, 2], size, 'RightDown').map(([x, y]) => {
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x);
-        maxY = Math.max(maxY, y);
+      const isometricPositions = getIsometricPositions([-2, 2], [-2, 2], size, 'RightDown');
+      ({ minX, minY, maxX, maxY } = getBounds(isometricPositions, rhombusVertexes));
+      hexTiles = isometricPositions.map(([x, y]) => {
         return new Polyline({
           pos: [x + originPixelX, y + originPixelY],
           points: rhombusVertexes,
@@ -218,10 +197,6 @@
           close: true,
         });
       });
-      minY -= tileHeight / 2;
-      minX -= tileWidth / 2;
-      maxY += tileHeight / 2;
-      maxX += tileWidth / 2;
       shapesEls.push(
         // 坐标系原点
         new Polyline({

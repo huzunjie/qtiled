@@ -5,6 +5,7 @@ import {
   RAUQ,
   TQUA,
   getVertexes,
+  getBounds,
   twoDimForEach,
   isStaggerLine,
   getPosition,
@@ -62,6 +63,39 @@ describe('getVertexes', () => {
   test('返回数组长度与输入一致', () => {
     const result = getVertexes(baseVertexes, 80, 40);
     expect(result).toHaveLength(baseVertexes.length);
+  });
+});
+
+describe('getBounds', () => {
+  test('默认或任一集合为空时没有包围盒', () => {
+    expect(getBounds()).toBeNull();
+    expect(getBounds([], [[0, 0]])).toBeNull();
+    expect(getBounds([[0, 0]], [])).toBeNull();
+  });
+
+  test('省略顶点时计算位置范围，忽略网格下标，不修改输入', () => {
+    const positions = Object.freeze([
+      Object.freeze([-2.5, 4, 999, -999]),
+      Object.freeze([3, -1.5, -999, 999]),
+    ]);
+    expect(getBounds(positions)).toEqual({ minX: -2.5, minY: -1.5, maxX: 3, maxY: 4, width: 5.5, height: 5.5 });
+    expect(getBounds([[2, 3]])).toEqual({ minX: 2, minY: 3, maxX: 2, maxY: 3, width: 0, height: 0 });
+  });
+
+  test('单格范围包含完整顶点尺寸', () => {
+    const vertexes = [[0, -15], [30, 0], [0, 15], [-30, 0]];
+    expect(getBounds([[10, 20]], vertexes))
+      .toEqual({ minX: -20, minY: 5, maxX: 40, maxY: 35, width: 60, height: 30 });
+  });
+
+  test('不对称顶点和负坐标按实际范围计算，不修改顶点', () => {
+    const vertexes = Object.freeze([Object.freeze([-2, 1]), Object.freeze([5, -3]), Object.freeze([1, 7])]);
+    const positions = [[-10, 4], [20, -6], [3, 8]];
+    expect(getBounds(positions, vertexes))
+      .toEqual({ minX: -12, minY: -9, maxX: 25, maxY: 15, width: 37, height: 24 });
+    // 位置平移并倒序后，宽高不变，边界随原点平移。
+    expect(getBounds(positions.map(([x, y]) => [x + 100, y - 50]).reverse(), vertexes))
+      .toEqual({ minX: 88, minY: -59, maxX: 125, maxY: -35, width: 37, height: 24 });
   });
 });
 

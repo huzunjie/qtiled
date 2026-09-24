@@ -33,6 +33,34 @@ export function getVertexes(baseVertexes, width = 1, height = 1, axis = 'y') {
   return baseVertexes.map(fun);
 };
 
+/* 计算一组共用顶点的多边形在平移后的轴对齐包围盒，不包含描边或文字。
+ * @param {Array} positions 位置集合，每项为 [pixelX, pixelY, ...]，忽略附带的网格下标
+ * @param {Array} vertexes 相对每个位置的共用顶点，默认 [[0, 0]]，仅计算位置范围
+ * @return {Object|null} { minX, minY, maxX, maxY, width, height }；任一集合为空时返回 null
+ * 输入为有限数值坐标，不修改输入；分别遍历位置和顶点，复杂度为 O(N + V)。
+ */
+export function getBounds(positions = [], vertexes = [[0, 0]]) {
+  if (!positions.length || !vertexes.length) return null;
+  const [positionBounds, vertexBounds] = [positions, vertexes].map(points => {
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    for (const [x, y] of points) {
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
+    }
+    return { minX, minY, maxX, maxY };
+  });
+  const minX = positionBounds.minX + vertexBounds.minX;
+  const minY = positionBounds.minY + vertexBounds.minY;
+  const maxX = positionBounds.maxX + vertexBounds.maxX;
+  const maxY = positionBounds.maxY + vertexBounds.maxY;
+  return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY };
+}
+
 function _for(min, max, cbk) {
   for (let i = min; i <= max; i++) cbk(i);
 }
