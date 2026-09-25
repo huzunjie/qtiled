@@ -5,15 +5,17 @@
   <title>正菱形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260924105137">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260924105137">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260925152548">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260925152548">
+  <link rel="stylesheet" href="./static/css/tile-selection.css?20260925152548">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260924105137"></script>
-  <script src="./static/js/spritejs3.js?20260924105137"></script>
-  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
-  <script src="./static/js/pointer.js?20260924105137"></script>
+  <script src="./static/js/navs.js?20260925152548"></script>
+  <script src="./static/js/spritejs3.js?20260925152548"></script>
+  <script src="./static/js/qtiled.dev.js?20260925152548"></script>
+  <script src="./static/js/pointer.js?20260925152548"></script>
+  <script src="./static/js/tile-selection.js?20260925152548"></script>
 
   <h1>在错列布局中查找相邻Tile</h1>
   <div id="container" style="height: 350px;"></div>
@@ -123,19 +125,6 @@
 
   <hr style="border-color: #fff;" />
   <h1 style="margin-top: 50px;">查找相邻tile - 错列布局</h1>
-  <div class="ipts">
-    邻居距离：<input type="range" step="1" max="6" id="ipt_dis_stagger" value="1" />
-    <span id="val_stagger">1</span>
-  </div>
-  <div class="ipts">
-    邻居类型：<select id="sei_type_stagger">
-      <option value="all">全部</option>
-      <option value="no_self">排除自己</option>
-      <option value="border">命中区域几何图形边框</option>
-      <option value="vertex">命中区域几何图形顶点</option>
-      <option value="diamond">矩形范围内</option>
-    </select>
-  </div>
   <div id="container2" class="container" style="height: 500px;"></div>
   <script type="text/javascript">
     (function() {
@@ -211,17 +200,20 @@
       // 邻居元素
       const neighborsEls = [];
       const neighborsLabels = [];
-      const disEl = document.getElementById('ipt_dis_stagger');
-      const typeEl = document.getElementById('sei_type_stagger');
+      const selection = createTileSelection({
+        container,
+        getByOffsets: (grid, offsets) => qtiled.shapes.rhombus.getNeighborsByOffsets(grid, offsets, stagger),
+        getByDistance: (grid, distance, type) => getNeighborsByDistance(grid, distance, type, stagger),
+        onChange: () => updateNeis(),
+      });
 
       const updateNeis = () => {
-        const distance = Number(disEl.value);
         neighborsEls.forEach((el) => el.remove());
         neighborsEls.length = 0;
         neighborsLabels.forEach((label) => label.remove());
         neighborsLabels.length = 0;
         // 邻居位置更新
-        getNeighborsByDistance(focusXYNum, distance, typeEl.value, stagger).forEach((xyNum, i) => {
+        selection.getNeighbors(focusXYNum).forEach((xyNum, i) => {
           const _pos = getPosition(xyNum, size, stagger, pos);
           neighborsEls.push(
             new Polyline({
@@ -247,12 +239,6 @@
         layer.append(...neighborsLabels);
       };
 
-      const valEl = document.getElementById('val_stagger');
-      disEl.onchange = (e) => {
-        valEl.innerText = e.target.value;
-        updateNeis();
-      };
-      typeEl.onchange = updateNeis;
       updateNeis();
       
       container.addEventListener('mousemove', (e) => {
@@ -264,6 +250,9 @@
           stagger
         );
 
+        // 同一格内移动无需重复计算选区或更新绘制属性。
+        if (focusXYNum[0] === gridX && focusXYNum[1] === gridY) return;
+
         // 焦点下标索引
         focusXYNum[0] = gridX;
         focusXYNum[1] = gridY;
@@ -273,8 +262,7 @@
         focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}` });
 
         // 邻居位置更新
-        const distance = Number(disEl.value);
-        getNeighborsByDistance(focusXYNum, distance, typeEl.value, stagger).forEach((xyNum, i) => {
+        selection.getNeighbors(focusXYNum).forEach((xyNum, i) => {
           const _pos = getPosition(xyNum, size, stagger, pos);
           neighborsEls[i].attr('pos', _pos);
           neighborsLabels[i].attr('pos', _pos);
@@ -386,19 +374,6 @@
 
   <hr style="border-color: #fff;" />
   <h1 style="margin-top: 50px;">查找相邻tile - 等距布局</h1>
-  <div class="ipts">
-    邻居距离：<input type="range" step="1" max="6" id="ipt_dis_iso" value="1" />
-    <span id="val_iso">1</span>
-  </div>
-  <div class="ipts">
-    邻居类型：<select id="sei_type_iso">
-      <option value="all">全部</option>
-      <option value="no_self">排除自己</option>
-      <option value="border">命中区域几何图形边框</option>
-      <option value="vertex">命中区域几何图形顶点</option>
-      <option value="diamond">矩形范围内</option>
-    </select>
-  </div>
   <div id="container3" class="container" style="height: 500px;"></div>
   <script type="text/javascript">
     (function() {
@@ -473,15 +448,18 @@
       });
       // 邻居元素
       const neighborsEls = [];
-      const disEl = document.getElementById('ipt_dis_iso');
-      const typeEl = document.getElementById('sei_type_iso');
+      const selection = createTileSelection({
+        container,
+        getByOffsets: qtiled.shapes.rhombus.getIsometricNeighborsByOffsets,
+        getByDistance: (grid, distance, type) => getIsometricNeighborsByDistance(grid, distance, type, renderOrder),
+        onChange: () => updateNeis(),
+      });
       
       const updateNeis = () => {
-        const distance = Number(disEl.value);
         neighborsEls.forEach((el) => el.remove());
         neighborsEls.length = 0;
         // 邻居位置更新
-        getIsometricNeighborsByDistance(focusXYNum, distance, typeEl.value, renderOrder).forEach((xyNum, i) => {
+        selection.getNeighbors(focusXYNum).forEach((xyNum, i) => {
           const _pos = getIsometricPosition(xyNum, size, pos);
           neighborsEls.push(
             new Polyline({
@@ -505,12 +483,6 @@
         layer.append(...neighborsEls);
       };
 
-      const valEl = document.getElementById('val_iso');
-      disEl.onchange = (e) => {
-        valEl.innerText = e.target.value;
-        updateNeis();
-      };
-      typeEl.onchange = updateNeis;
       updateNeis();
       
       container.addEventListener('mousemove', (e) => {
@@ -521,6 +493,9 @@
           size
         );
 
+        // 同一格内移动无需重复计算选区或更新绘制属性。
+        if (focusXYNum[0] === gridX && focusXYNum[1] === gridY) return;
+
         // 焦点下标索引
         focusXYNum[0] = gridX;
         focusXYNum[1] = gridY;
@@ -529,8 +504,7 @@
         focusRhombusTile.attr({ x, y });
         focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}` });
 
-        const distance = Number(disEl.value);
-        getIsometricNeighborsByDistance(focusXYNum, distance, typeEl.value, renderOrder).forEach((xyNum, i) => {
+        selection.getNeighbors(focusXYNum).forEach((xyNum, i) => {
           const _pos = getIsometricPosition(xyNum, size, pos);
           neighborsEls[i * 2].attr('pos', _pos);
           neighborsEls[i * 2 + 1].attr({ pos: _pos, text: xyNum.join(','), xyNum });

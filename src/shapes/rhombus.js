@@ -48,6 +48,36 @@ const { SQRT2 } = Math;
 
 export { neighborTypes };
 
+// 与距离邻居回调使用同一逻辑坐标系，不能直接把逻辑偏移加到错列下标上。
+function getNeighborByOffset([originGridX, originGridY], [offsetX, offsetY], stagger) {
+  const targetGridY = originGridY + offsetY - offsetX;
+  const originGridOffset = isStaggerLine(originGridY, stagger) ? HALF : 0;
+  const targetGridOffset = isStaggerLine(targetGridY, stagger) ? HALF : 0;
+  const targetGridX = originGridX + (offsetX + offsetY) * HALF + originGridOffset - targetGridOffset;
+  return [Math.round(targetGridX), targetGridY];
+}
+
+/** 将逻辑偏移映射为错列菱形网格坐标。
+ * @param {Array<number>} originGrid 焦点的绝对错列下标 [gridX, gridY]，默认 [0, 0]。
+ * @param {Array<Array<number>>} offsets 距离邻居回调坐标系中的整数逻辑偏移，默认 []；不是错列下标差或像素偏移。
+ * @param {string} stagger 错列行规则，默认 'odd'；'even' 表示偶数行错开，'none' 沿用现有距离邻居的非错列换算。
+ * @returns {Array<Array<number>>} 绝对错列下标，保留顺序、不修改输入；空偏移返回 []。
+ * 输入坐标为有限整数；不去重、不筛选边界或海拔。
+ */
+export function getNeighborsByOffsets(originGrid = [0, 0], offsets = [], stagger = 'odd') {
+  return offsets.map(offset => getNeighborByOffset(originGrid, offset, stagger));
+}
+
+/** 将逻辑偏移平移为等距菱形网格坐标。
+ * @param {Array<number>} originGrid 焦点的绝对等距下标 [gridX, gridY]，默认 [0, 0]。
+ * @param {Array<Array<number>>} offsets 相对焦点的整数逻辑偏移 [[offsetX, offsetY], ...]，默认 []。
+ * @returns {Array<Array<number>>} 绝对等距下标，保留顺序、不修改输入；空偏移返回 []。
+ * 输入坐标为有限整数；不去重、不筛选边界或海拔，不接收像素坐标。
+ */
+export function getIsometricNeighborsByOffsets([gridX, gridY] = [0, 0], offsets = []) {
+  return offsets.map(([offsetX, offsetY]) => [gridX + offsetX, gridY + offsetY]);
+}
+
 // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
 // 没错，错列与非错列的角的邻居坐标系差值一样
 export const cornersNormalOrOffset = [
@@ -247,18 +277,13 @@ export function getIsometricNeighbors(originGrid = [0, 0]) {
  * @return {Array} [[xNum, yNum]]，返回基于 originXyNum 的绝对下标
  */
 export function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', stagger = 'odd', renderOrder = 'RightDown') {
-  const [originGridX, originGridY] = originXyNum;
   const neighborIterator = typeof iterator === 'string'
     ? neighborTypes[iterator] || neighborTypes.all
     : iterator;
   return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
     const matchedOffset = neighborIterator(offsetX, offsetY, distance);
     if (!Array.isArray(matchedOffset)) return matchedOffset;
-    const targetGridY = originGridY + matchedOffset[1] - matchedOffset[0];
-    const originGridOffset = isStaggerLine(originGridY, stagger) ? HALF : 0;
-    const targetGridOffset = isStaggerLine(targetGridY, stagger) ? HALF : 0;
-    const targetGridX = originGridX + (matchedOffset[0] + matchedOffset[1]) * HALF + originGridOffset - targetGridOffset;
-    return [Math.round(targetGridX), targetGridY];
+    return getNeighborByOffset(originXyNum, matchedOffset, stagger);
   });
 }
 

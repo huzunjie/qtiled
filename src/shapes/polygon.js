@@ -17,6 +17,39 @@ export const neighborTypes = {
   diamond: (offsetX, offsetY, distance) => Math.abs(offsetX) + Math.abs(offsetY) <= distance ? [offsetX, offsetY] : false,
 };
 
+/** 旋转选区并将包围盒中心格锚定到逻辑原点，供各布局的 getNeighborsByOffsets 使用。
+ * @param {Array<Array<number>>} offsets 原始选区的逻辑坐标对，有限整数，默认 []；允许未居中，不接受像素坐标或错列行列差。
+ * @param {number} quarterTurns 相对原始选区的旋转次数，有限整数，默认 0；每次顺时针 90°，负数逆时针，按 4 取模。
+ * @returns {Array<Array<number>>} 相对焦点的整数偏移，保留顺序，不修改输入；空集合返回 []。
+ * 顺时针按逻辑 X 向右、Y 向下定义，一次旋转为 [-y, x]；随后将中心格锚定到原点。
+ * 奇数尺寸居中；偶数尺寸按方向选择中心格：
+ * 0° 中心取整为 [floor, floor]，90° 为 [floor, ceil]，180° 为 [ceil, ceil]，270° 为 [ceil, floor]。
+ * 对居中的 3×2 选区，焦点依次在上排、左列、下排、右列的中间；焦点不一定属于不规则选区。
+ * 即使旋转次数为 0 也会重新居中；4 次恢复的是 0 次的锚定结果，不保留输入的整体平移。
+ * 每次传入同一份原始选区和累计方向，不要把上次返回值作为下一次输入。
+ * 本方法不接收世界坐标、不筛选边界或海拔；调用方将返回值映射到固定的 originGrid。
+ */
+export function rotateSelectionOffsets(offsets = [], quarterTurns = 0) {
+  if (!offsets.length) return [];
+  const turns = ((quarterTurns % 4) + 4) % 4;
+  const { minX, minY, maxX, maxY } = getBounds(offsets);
+  const centerX = (minX + maxX) * HALF;
+  const centerY = (minY + maxY) * HALF;
+  // 90°/270° 交换坐标轴，方向决定各轴符号；包围盒中心使用同一变换。
+  const swapAxes = turns % 2;
+  const signX = turns === 1 || turns === 2 ? -1 : 1;
+  const signY = turns >= 2 ? -1 : 1;
+  const roundX = turns < 2 ? Math.floor : Math.ceil;
+  const roundY = turns === 0 || turns === 3 ? Math.floor : Math.ceil;
+  const anchorX = roundX(signX * (swapAxes ? centerY : centerX));
+  const anchorY = roundY(signY * (swapAxes ? centerX : centerY));
+  // 原点旋转与中心旋转只差整体平移，锚定时抵消；直接输出最终偏移，避免中间数组。
+  return offsets.map(offset => [
+    signX * offset[swapAxes ? 1 : 0] - anchorX || 0,
+    signY * offset[swapAxes ? 0 : 1] - anchorY || 0,
+  ]);
+}
+
 /* 得到一个多边形折线顶点坐标集合
  * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
  * @param  {Number}    width         渲染时的宽度值

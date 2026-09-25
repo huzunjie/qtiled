@@ -120,6 +120,41 @@ const neighborTypes = {
   // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
   diamond: (offsetX, offsetY, distance) => Math.abs(offsetX) + Math.abs(offsetY) <= distance ? [offsetX, offsetY] : false
 };
+/** 旋转选区并将包围盒中心格锚定到逻辑原点，供各布局的 getNeighborsByOffsets 使用。
+ * @param {Array<Array<number>>} offsets 原始选区的逻辑坐标对，有限整数，默认 []；允许未居中，不接受像素坐标或错列行列差。
+ * @param {number} quarterTurns 相对原始选区的旋转次数，有限整数，默认 0；每次顺时针 90°，负数逆时针，按 4 取模。
+ * @returns {Array<Array<number>>} 相对焦点的整数偏移，保留顺序，不修改输入；空集合返回 []。
+ * 顺时针按逻辑 X 向右、Y 向下定义，一次旋转为 [-y, x]；随后将中心格锚定到原点。
+ * 奇数尺寸居中；偶数尺寸按方向选择中心格：
+ * 0° 中心取整为 [floor, floor]，90° 为 [floor, ceil]，180° 为 [ceil, ceil]，270° 为 [ceil, floor]。
+ * 对居中的 3×2 选区，焦点依次在上排、左列、下排、右列的中间；焦点不一定属于不规则选区。
+ * 即使旋转次数为 0 也会重新居中；4 次恢复的是 0 次的锚定结果，不保留输入的整体平移。
+ * 每次传入同一份原始选区和累计方向，不要把上次返回值作为下一次输入。
+ * 本方法不接收世界坐标、不筛选边界或海拔；调用方将返回值映射到固定的 originGrid。
+ */
+
+function rotateSelectionOffsets(offsets = [], quarterTurns = 0) {
+  if (!offsets.length) return [];
+  const turns = (quarterTurns % 4 + 4) % 4;
+  const {
+    minX,
+    minY,
+    maxX,
+    maxY
+  } = getBounds(offsets);
+  const centerX = (minX + maxX) * HALF;
+  const centerY = (minY + maxY) * HALF; // 90°/270° 交换坐标轴，方向决定各轴符号；包围盒中心使用同一变换。
+
+  const swapAxes = turns % 2;
+  const signX = turns === 1 || turns === 2 ? -1 : 1;
+  const signY = turns >= 2 ? -1 : 1;
+  const roundX = turns < 2 ? Math.floor : Math.ceil;
+  const roundY = turns === 0 || turns === 3 ? Math.floor : Math.ceil;
+  const anchorX = roundX(signX * (swapAxes ? centerY : centerX));
+  const anchorY = roundY(signY * (swapAxes ? centerX : centerY)); // 原点旋转与中心旋转只差整体平移，锚定时抵消；直接输出最终偏移，避免中间数组。
+
+  return offsets.map(offset => [signX * offset[swapAxes ? 1 : 0] - anchorX || 0, signY * offset[swapAxes ? 0 : 1] - anchorY || 0]);
+}
 /* 得到一个多边形折线顶点坐标集合
  * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
  * @param  {Number}    width         渲染时的宽度值
@@ -311,6 +346,7 @@ var polygonFuns = /*#__PURE__*/Object.freeze({
   RAUQ: RAUQ,
   TQUA: TQUA$1,
   neighborTypes: neighborTypes,
+  rotateSelectionOffsets: rotateSelectionOffsets,
   getVertexes: getVertexes$3,
   getBounds: getBounds,
   twoDimForEach: twoDimForEach,
@@ -332,6 +368,16 @@ const {
 /* 左上、右上、左下、右下，四个角邻居 [xNum, yNum, cost, angStr] 差值及距离成本 */
 
 const corners = [[-1, -1, SQRT2$1, '↖'], [1, -1, SQRT2$1, '↗'], [1, 1, SQRT2$1, '↘'], [-1, 1, SQRT2$1, '↙']];
+/** 将逻辑偏移平移为正矩形网格坐标。
+ * @param {Array<number>} originGrid 焦点的绝对网格坐标 [gridX, gridY]，默认 [0, 0]。
+ * @param {Array<Array<number>>} offsets 相对焦点的整数偏移 [[offsetX, offsetY], ...]，默认 []。
+ * @returns {Array<Array<number>>} 绝对网格坐标，保留顺序、不修改输入；空偏移返回 []。
+ * 输入坐标为有限整数；不去重、不筛选边界或海拔，不接收像素坐标。
+ */
+
+function getNeighborsByOffsets$1([gridX, gridY] = [0, 0], offsets = []) {
+  return offsets.map(([offsetX, offsetY]) => [gridX + offsetX, gridY + offsetY]);
+}
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
 * @param  {Array}   size    如： [width{Number}, height{Number}]
 * @return {Array}   [[x, y], ...]
@@ -405,6 +451,7 @@ var rectFuns = /*#__PURE__*/Object.freeze({
   directions: directions,
   corners: corners,
   neighborTypes: neighborTypes,
+  getNeighborsByOffsets: getNeighborsByOffsets$1,
   getVertexes: getVertexes$2,
   getPosition: getPosition$2,
   getPositions: getPositions$2,
@@ -508,6 +555,36 @@ const directionsOffset = [[0, -1, 1, '↖'], [1, -1, 1, '↗'], [1, 1, 1, '↘']
 const {
   SQRT2
 } = Math;
+
+function getNeighborByOffset([originGridX, originGridY], [offsetX, offsetY], stagger) {
+  const targetGridY = originGridY + offsetY - offsetX;
+  const originGridOffset = isStaggerLine(originGridY, stagger) ? HALF : 0;
+  const targetGridOffset = isStaggerLine(targetGridY, stagger) ? HALF : 0;
+  const targetGridX = originGridX + (offsetX + offsetY) * HALF + originGridOffset - targetGridOffset;
+  return [Math.round(targetGridX), targetGridY];
+}
+/** 将逻辑偏移映射为错列菱形网格坐标。
+ * @param {Array<number>} originGrid 焦点的绝对错列下标 [gridX, gridY]，默认 [0, 0]。
+ * @param {Array<Array<number>>} offsets 距离邻居回调坐标系中的整数逻辑偏移，默认 []；不是错列下标差或像素偏移。
+ * @param {string} stagger 错列行规则，默认 'odd'；'even' 表示偶数行错开，'none' 沿用现有距离邻居的非错列换算。
+ * @returns {Array<Array<number>>} 绝对错列下标，保留顺序、不修改输入；空偏移返回 []。
+ * 输入坐标为有限整数；不去重、不筛选边界或海拔。
+ */
+
+
+function getNeighborsByOffsets(originGrid = [0, 0], offsets = [], stagger = 'odd') {
+  return offsets.map(offset => getNeighborByOffset(originGrid, offset, stagger));
+}
+/** 将逻辑偏移平移为等距菱形网格坐标。
+ * @param {Array<number>} originGrid 焦点的绝对等距下标 [gridX, gridY]，默认 [0, 0]。
+ * @param {Array<Array<number>>} offsets 相对焦点的整数逻辑偏移 [[offsetX, offsetY], ...]，默认 []。
+ * @returns {Array<Array<number>>} 绝对等距下标，保留顺序、不修改输入；空偏移返回 []。
+ * 输入坐标为有限整数；不去重、不筛选边界或海拔，不接收像素坐标。
+ */
+
+function getIsometricNeighborsByOffsets([gridX, gridY] = [0, 0], offsets = []) {
+  return offsets.map(([offsetX, offsetY]) => [gridX + offsetX, gridY + offsetY]);
+} // 错列或非错列元素的左上、右上、左下、右下，四个角邻居 [xNum, yNum] 差值及距离成本
 // 没错，错列与非错列的角的邻居坐标系差值一样
 
 const cornersNormalOrOffset = [[0, -2, SQRT2, '↑'], [1, 0, SQRT2, '→'], [0, 2, SQRT2, '↓'], [-1, 0, SQRT2, '←']]; // 等距元素的上、右、下、左，四个边邻居 [xNum, yNum, cost, angStr] 差值及距离成本
@@ -681,16 +758,11 @@ function getIsometricNeighbors(originGrid = [0, 0]) {
  */
 
 function getNeighborsByDistance(originXyNum = [0, 0], distance = 1, iterator = 'all', stagger = 'odd', renderOrder = 'RightDown') {
-  const [originGridX, originGridY] = originXyNum;
   const neighborIterator = typeof iterator === 'string' ? neighborTypes[iterator] || neighborTypes.all : iterator;
   return twoDimForEach([-distance, distance], [-distance, distance], renderOrder, (offsetX, offsetY) => {
     const matchedOffset = neighborIterator(offsetX, offsetY, distance);
     if (!Array.isArray(matchedOffset)) return matchedOffset;
-    const targetGridY = originGridY + matchedOffset[1] - matchedOffset[0];
-    const originGridOffset = isStaggerLine(originGridY, stagger) ? HALF : 0;
-    const targetGridOffset = isStaggerLine(targetGridY, stagger) ? HALF : 0;
-    const targetGridX = originGridX + (matchedOffset[0] + matchedOffset[1]) * HALF + originGridOffset - targetGridOffset;
-    return [Math.round(targetGridX), targetGridY];
+    return getNeighborByOffset(originXyNum, matchedOffset, stagger);
   });
 }
 /* 按距离获得等距布局菱形周边区域内的元素们
@@ -715,6 +787,8 @@ var rhombusFuns = /*#__PURE__*/Object.freeze({
   directionsNormal: directionsNormal,
   directionsOffset: directionsOffset,
   neighborTypes: neighborTypes,
+  getNeighborsByOffsets: getNeighborsByOffsets,
+  getIsometricNeighborsByOffsets: getIsometricNeighborsByOffsets,
   cornersNormalOrOffset: cornersNormalOrOffset,
   directionsIsometric: directionsIsometric,
   cornersIsometric: cornersIsometric,

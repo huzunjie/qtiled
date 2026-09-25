@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>菱形海拔示例</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="./static/css/index.css?20260924105137">
+  <link rel="stylesheet" href="./static/css/index.css?20260925152548">
   <style>
     main { max-width: 960px; margin: 24px auto; padding: 0 16px; }
     .comparison { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -12,15 +12,19 @@
     figcaption { padding: 12px; font-weight: bold; }
     p { line-height: 1.7; }
   </style>
+  <link rel="stylesheet" href="./static/css/tile-selection.css?20260925152548">
 </head>
 <body>
-  <script src="./static/js/navs.js?20260924105137"></script>
-  <script src="./static/js/spritejs3.js?20260924105137"></script>
-  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
-  <script src="./static/js/pointer.js?20260924105137"></script>
+  <script src="./static/js/navs.js?20260925152548"></script>
+  <script src="./static/js/spritejs3.js?20260925152548"></script>
+  <script src="./static/js/qtiled.dev.js?20260925152548"></script>
+  <script src="./static/js/pointer.js?20260925152548"></script>
+  <script src="./static/js/tile-selection.js?20260925152548"></script>
+  <script src="./static/js/elevation-selection.js?20260925152548"></script>
   <main>
     <h1>菱形海拔示例</h1>
     <p>每单位海拔上移 16px，负值下移。下方谷地海拔为 0～−3，右侧高地海拔为 0～3；蓝色越深谷地越低，绿色越深高地越高，半透明白色表示海拔 0。</p>
+    <p>邻居选区按逻辑网格展开，不限制海拔；仅显示当前视角露出的顶面。自定义选区支持 R 旋转，预览不会修改地形。</p>
     <h2>错列布局（odd）</h2>
     <div class="comparison">
       <figure>
@@ -137,6 +141,14 @@
         fillColor: '#999',
       });
       layer.append(...shapesEls, mouseMoveLabel, focusRhombusTile, focusRhombusLabel);
+      const selection = createElevationSelection({
+        container, cells, points, layer,
+        focusShapes: [focusRhombusTile, focusRhombusLabel],
+        getByOffsets: (grid, offsets) => qtiled.shapes.rhombus.getNeighborsByOffsets(grid, offsets, stagger),
+        getByDistance: (grid, distance, type) => qtiled.shapes.rhombus.getNeighborsByDistance(grid, distance, type, stagger),
+      });
+      selection.update(selectedCell);
+
 
       // 每层只检查反查得到的格子；索引只含范围内的格子。
       function getFocusInfo(pixelX, pixelY) {
@@ -157,6 +169,7 @@
         mouseMoveLabel.text = `gridX: ${gridX} / gridY: ${gridY} / ${hit ? `elevation: ${elevation}` : '未命中（海拔 0 平面参考）'} / x: ${x}, y: ${y} / offsetX: ${offsetX}, offsetY: ${offsetY}`;
         if (focus === selectedCell) return;
         selectedCell = focus;
+        selection.update(focus);
         focusRhombusTile.attr({ x, y, strokeColor: color });
         focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}${hit ? ` h:${elevation}` : ''}`, fillColor: color });
       });
@@ -273,6 +286,14 @@
         fillColor: '#999',
       });
       layer.append(...shapesEls, mouseMoveLabel, focusRhombusTile, focusRhombusLabel);
+      const selection = createElevationSelection({
+        container, cells, points, layer,
+        focusShapes: [focusRhombusTile, focusRhombusLabel],
+        getByOffsets: qtiled.shapes.rhombus.getIsometricNeighborsByOffsets,
+        getByDistance: qtiled.shapes.rhombus.getIsometricNeighborsByDistance,
+      });
+      selection.update(selectedCell);
+
 
       // 每层只检查反查得到的格子；索引只含范围内的格子。
       function getFocusInfo(pixelX, pixelY) {
@@ -293,6 +314,7 @@
         mouseMoveLabel.text = `gridX: ${gridX} / gridY: ${gridY} / ${hit ? `elevation: ${elevation}` : '未命中（海拔 0 平面参考）'} / x: ${x}, y: ${y} / offsetX: ${offsetX}, offsetY: ${offsetY}`;
         if (focus === selectedCell) return;
         selectedCell = focus;
+        selection.update(focus);
         focusRhombusTile.attr({ x, y, strokeColor: color });
         focusRhombusLabel.attr({ x, y, text: `${gridX},${gridY}${hit ? ` h:${elevation}` : ''}`, fillColor: color });
       });

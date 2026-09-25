@@ -5,15 +5,17 @@
   <title>正矩形 查找相邻Tile</title>
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260924105137">
-  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260924105137">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css?20260925152548">
+  <link rel="stylesheet" type="text/css" href="./static/css/pathfinding.css?20260925152548">
+  <link rel="stylesheet" href="./static/css/tile-selection.css?20260925152548">
 </head>
 <body>
 
-  <script src="./static/js/navs.js?20260924105137"></script>
-  <script src="./static/js/spritejs3.js?20260924105137"></script>
-  <script src="./static/js/qtiled.dev.js?20260924105137"></script>
-  <script src="./static/js/pointer.js?20260924105137"></script>
+  <script src="./static/js/navs.js?20260925152548"></script>
+  <script src="./static/js/spritejs3.js?20260925152548"></script>
+  <script src="./static/js/qtiled.dev.js?20260925152548"></script>
+  <script src="./static/js/pointer.js?20260925152548"></script>
+  <script src="./static/js/tile-selection.js?20260925152548"></script>
 
   <h1>相邻tile</h1>
   <div class="ipts">
@@ -174,19 +176,6 @@
 
 
   <h1>查找相邻tile</h1>
-  <div class="ipts">
-    邻居距离：<input type="range" step="1" max="6" id="ipt_dis" value="1" />
-    <span id="val">1</span>
-  </div>
-  <div class="ipts">
-    邻居类型：<select id="sei_type">
-      <option value="all" selected>全部</option>
-      <option value="no_self">排除自己</option>
-      <option value="border">命中区域几何图形边框</option>
-      <option value="vertex">命中区域几何图形顶点</option>
-      <option value="diamond">命中区域边线中点范围内</option>
-    </select>
-  </div>
   <div id="container3" class="container"></div>
   <script type="text/javascript">
     (function() {
@@ -258,14 +247,17 @@
       });
       // 邻居元素
       const neighborsEls = [];
-      const disEl = document.getElementById('ipt_dis');
-      const typeEl = document.getElementById('sei_type');
+      const selection = createTileSelection({
+        container,
+        getByOffsets: qtiled.shapes.rect.getNeighborsByOffsets,
+        getByDistance: getNeighborsByDistance,
+        onChange: () => updateNeis(),
+      });
       const updateNeis = () => {
-        const distance = Number(disEl.value);
         neighborsEls.forEach((el) => el.remove());
         neighborsEls.length = 0;
         // 邻居位置更新
-        getNeighborsByDistance(focusXYNum, distance, typeEl.value).forEach((xyNum, i) => {
+        selection.getNeighbors(focusXYNum).forEach((xyNum, i) => {
           const _pos = getPosition(xyNum, size, pos);
           neighborsEls.push(
             new Polyline({
@@ -289,12 +281,6 @@
         layer.append(...neighborsEls);
       };
 
-      const valEl = document.getElementById('val');
-      disEl.onchange = (e) => {
-        valEl.innerText = e.target.value;
-        updateNeis();
-      };
-      typeEl.onchange = updateNeis;
       updateNeis();
       
       container.addEventListener('mousemove', (e) => {
@@ -305,6 +291,9 @@
           size
         );
 
+        // 同一格内移动无需重复计算选区或更新绘制属性。
+        if (focusXYNum[0] === gridX && focusXYNum[1] === gridY) return;
+
         // 焦点下标索引
         focusXYNum[0] = gridX;
         focusXYNum[1] = gridY;
@@ -313,8 +302,7 @@
         focusRectTile.attr({ x, y });
         focusRectLabel.attr({ x, y, text: `${gridX},${gridY}` });
 
-        const distance = Number(disEl.value);
-        getNeighborsByDistance(focusXYNum, distance, typeEl.value).forEach((xyNum, i) => {
+        selection.getNeighbors(focusXYNum).forEach((xyNum, i) => {
           const _pos = getPosition(xyNum, size, pos);
           neighborsEls[i * 2].attr('pos', _pos);
           neighborsEls[i * 2 + 1].attr({ pos: _pos, text: xyNum.join(','), xyNum });

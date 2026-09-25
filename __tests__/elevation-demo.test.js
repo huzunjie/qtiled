@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
+import { JSDOM } from 'jsdom';
+import * as polygon from '../src/shapes/polygon';
 import * as rhombus from '../src/shapes/rhombus';
 
 // 执行页面真实脚本，只替代 DOM 和绘制后端；不启动浏览器。
@@ -8,6 +10,7 @@ function createDemo(shapeMethods = rhombus) {
   const containers = [];
   class Shape {
     constructor(attrs) { this.attrs = attrs; }
+    remove() {}
     get text() { return this.attrs.text; }
     set text(text) { this.attrs.text = text; }
     attr(attrs) {
@@ -27,27 +30,31 @@ function createDemo(shapeMethods = rhombus) {
       containers.push(container);
     }
     layer() {
-      return { append: (...shapes) => { this.container.shapes = shapes; } };
+      return { append: (...shapes) => { if (!this.container.shapes) this.container.shapes = shapes; } };
     }
   }
   const html = fs.readFileSync(path.join(__dirname, '../demo/elevation-rhombus.html'), 'utf8');
   const elements = {};
   for (const [, id] of html.matchAll(/<div id="([^"]+)"><\/div>/g)) {
     elements[id] = {
+      before() {},
       style: {},
       events: {},
       addEventListener(name, handler) { this.events[name] = handler; },
       getBoundingClientRect() { return this.bounds; },
     };
   }
+  const { window } = new JSDOM();
   const context = vm.createContext({
-    document: { getElementById: id => elements[id] },
+    window,
+    document: { getElementById: id => elements[id], createElement: window.document.createElement.bind(window.document), addEventListener: window.document.addEventListener.bind(window.document) },
     spritejs: { Scene, Polyline: Shape, Label: Shape },
-    qtiled: { shapes: { rhombus: shapeMethods } },
+    qtiled: { shapes: { polygon, rhombus: shapeMethods } },
   });
-  vm.runInContext(fs.readFileSync(path.join(__dirname, '../demo/static/js/pointer.js'), 'utf8'), context);
-  for (const [, script] of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) {
-    vm.runInContext(script, context);
+  for (const [, attrs, script] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+    const helper = attrs.match(/static\/js\/(pointer|tile-selection|elevation-selection)\.js/);
+    if (helper) vm.runInContext(fs.readFileSync(path.join(__dirname, `../demo/static/js/${helper[1]}.js`), 'utf8'), context);
+    else if (!attrs.includes('src=')) vm.runInContext(script, context);
   }
   const move = (index, x, y) => {
     const container = containers[index];

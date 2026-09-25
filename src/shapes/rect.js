@@ -38,6 +38,16 @@ export const corners = [
 
 export { neighborTypes };
 
+/** 将逻辑偏移平移为正矩形网格坐标。
+ * @param {Array<number>} originGrid 焦点的绝对网格坐标 [gridX, gridY]，默认 [0, 0]。
+ * @param {Array<Array<number>>} offsets 相对焦点的整数偏移 [[offsetX, offsetY], ...]，默认 []。
+ * @returns {Array<Array<number>>} 绝对网格坐标，保留顺序、不修改输入；空偏移返回 []。
+ * 输入坐标为有限整数；不去重、不筛选边界或海拔，不接收像素坐标。
+ */
+export function getNeighborsByOffsets([gridX, gridY] = [0, 0], offsets = []) {
+  return offsets.map(([offsetX, offsetY]) => [gridX + offsetX, gridY + offsetY]);
+}
+
 /* 根据计划渲染后的正矩形宽高值，得到顶点坐标集合
 * @param  {Array}   size    如： [width{Number}, height{Number}]
 * @return {Array}   [[x, y], ...]

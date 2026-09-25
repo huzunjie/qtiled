@@ -114,6 +114,45 @@ const bounds = shapes.polygon.getBounds(positions, shapes.rhombus.getVertexes([6
 
 位置数组只读取前两项像素坐标，可直接传入批量坐标结果；隐藏格子应先过滤，横纵布局转换应先完成。顶点使用相对位置的像素坐标，结果与位置集处于同一坐标系。默认位置集合为空，默认顶点为 `[[0, 0]]`（仅计算位置范围）；任一集合为空时返回 `null`。输入为有限数值坐标，不修改输入，计算复杂度为 O(N + V)。
 
+### 自定义邻居选区与旋转
+
+自定义选区用整数逻辑偏移集合表示。基础库负责旋转与焦点锚定，再按布局映射为绝对网格坐标：
+
+```js
+const offsets = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1]];
+const rotated = shapes.polygon.rotateSelectionOffsets(offsets, 1);
+shapes.rect.getNeighborsByOffsets([3, 4], rotated);
+shapes.rhombus.getIsometricNeighborsByOffsets([3, 4], rotated);
+shapes.rhombus.getNeighborsByOffsets([3, 4], rotated, 'odd');
+```
+
+`polygon.rotateSelectionOffsets(offsets = [], quarterTurns = 0)` 将选区旋转并把包围盒中心格锚定到逻辑原点。`offsets` 是原始选区的整数逻辑坐标，允许未居中；`quarterTurns` 是相对原始选区的累计整数方向，每单位为顺时针 90°，负数为逆时针，按 4 取模；不能传入角度值或上次旋转结果。返回相对焦点的偏移，不接收或修改焦点的世界坐标。顺时针按逻辑 X 向右、Y 向下定义；偶数尺寸的中心格按方向选侧，中心坐标的取整规则如下：
+
+| 方向 | 中心 X 取整 | 中心 Y 取整 | 居中 3×2 选区内的焦点位置 |
+| --- | --- | --- | --- |
+| 0° | floor | floor | 上排中间 |
+| 90° | floor | ceil | 左列中间 |
+| 180° | ceil | ceil | 下排中间 |
+| 270° | ceil | floor | 右列中间 |
+
+实现只遍历一次求原始包围盒，再遍历一次直接输出旋转并锚定后的偏移，时间复杂度 O(N)，不生成中间旋转数组。Demo 缓存自定义选区偏移，仅在形状、尺寸或方向变化时重算；同一网格内移动鼠标不重复更新平面选区。
+
+奇数尺寸的包围盒中心位于整数格，取整不改变位置。不规则选区可能不包含中心格，方法不会额外补入焦点。0 次也会重新居中，因此 4 次恢复的是 0 次的锚定结果，不保留原始选区的整体平移。
+
+例如焦点固定为 `[2, -1]`，原始 3×2 偏移如下，270° 时得到列 `1～2`、行 `-2～0` 的格子，焦点在右列中间：
+
+```js
+const offsets = [[-1, 0], [-1, 1], [0, 0], [0, 1], [1, 0], [1, 1]];
+const selectedOffsets = shapes.polygon.rotateSelectionOffsets(offsets, 3);
+const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
+```
+
+三个 `getNeighborsByOffsets` 方法的默认原点为 `[0, 0]`，默认偏移为空集合；菱形等距版本名为 `getIsometricNeighborsByOffsets`。`originGrid` 是目标布局中的绝对网格坐标，`offsets` 是相对焦点的逻辑偏移。错列版本的 `stagger` 默认 `'odd'`，沿用现有距离邻居的逻辑偏移换算，因此不能直接把偏移加到错列行列下标上。上述方法均保留输入顺序、不修改输入，空偏移返回空集合；不去重、不过滤地图边界，也不处理海拔与可见性。输入约定为有限整数坐标，旋转次数为有限整数，不接收像素坐标。
+
+[正矩形邻居 Demo](demo/neighbors-rect.html) 与 [菱形邻居 Demo](demo/neighbors-rhombus.html) 在区域查询中保留距离模式，新增单格、可调长方形和 L 形选区。R 或按钮每次旋转 90°；R 只作用于鼠标所在画布，输入控件、组合键和长按重复不触发。预设和控件属于 Demo，不属于基础库 API。
+
+[海拔 Demo](demo/elevation-rhombus.html) 同时提供距离区域和自定义选区。从实际命中的格子展开逻辑选区，各格按自身海拔显示；只选择地图内且顶面露出正面积的格子。完全遮挡或仅共边、共点的格子不入选，未命中时清除选区并保留红色平面参考焦点。可见性按实际绘制顺序扣除后绘制顶面，不考虑演示填充透明度；选区着色和轮廓均裁到露出部分。当前地形静态，可见片段只预计算一次；后续若改地形或视角，需要重新计算。本示例不修改地形，不包含地图视角旋转。
+
 ### Tile Data - 瓦片数据格式约定
 * [ ] ToDo - 待开发
 
@@ -179,5 +218,3 @@ import qtiled from 'qtiled';
 ## 备注
 
 目前还只是静态方法库，希望能带来些许便利，有相应问题请随时反馈。
-
-

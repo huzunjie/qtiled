@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
+import { JSDOM } from 'jsdom';
 import { shapes, pathFinding } from '../src';
 
 const pointerScript = fs.readFileSync(path.join(__dirname, '../demo/static/js/pointer.js'), 'utf8');
@@ -22,6 +23,7 @@ function createDemo(file) {
   const elements = {};
   for (const [, tag, id, attrs] of html.matchAll(/<([\w-]+)[^>]*?\bid="([^"]+)"([^>]*)>/g)) {
     elements[id] = {
+      before() {},
       value: attrs.match(/value="([^"]*)"/)?.[1] || (tag === 'select' ? 'all' : '1'),
       style: {}, events: {}, offsetLeft: 5, offsetTop: 7,
       bounds: { left: 100, top: 200 },
@@ -51,14 +53,17 @@ function createDemo(file) {
       };
     }
   }
+  const { window } = new JSDOM();
   const context = vm.createContext({
-    document: { getElementById: id => elements[id] },
+    window,
+    document: { getElementById: id => elements[id], createElement: window.document.createElement.bind(window.document), addEventListener: window.document.addEventListener.bind(window.document) },
     spritejs: { Scene, Label: Shape, Polyline: Shape },
     qtiled: { shapes: shapeMethods, pathFinding },
   });
   // 按 HTML 中的真实顺序加载公共脚本和内联脚本，防止漏引或加载过晚。
   for (const [, attrs, script] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
     if (attrs.includes('./static/js/pointer.js')) vm.runInContext(pointerScript, context);
+    else if (attrs.includes('./static/js/tile-selection.js')) vm.runInContext(fs.readFileSync(path.join(__dirname, '../demo/static/js/tile-selection.js'), 'utf8'), context);
     else if (!attrs.includes('src=')) vm.runInContext(script, context);
   }
   return { elements, lookups };
