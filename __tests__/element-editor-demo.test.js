@@ -25,6 +25,8 @@ async function loadPage(name, overrides = {}) {
     }
   }
   let download;
+  window.HTMLDialogElement.prototype.showModal = function() { this.open = true; };
+  window.HTMLDialogElement.prototype.close = function() { this.open = false; this.dispatchEvent(new window.Event('close')); };
   window.HTMLAnchorElement.prototype.click = jest.fn();
   const preview = { attrs: {}, attr(attrs) { this.attrs = attrs; } };
   const render = jest.fn((layer, draw) => draw ? preview : null);
@@ -56,7 +58,7 @@ async function loadPage(name, overrides = {}) {
     setTimeout: callback => callback(),
   });
   for (const [, attrs, script] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
-    const helper = attrs.match(/static\/js\/(pointer|element-files|element-editor)\.js/);
+    const helper = attrs.match(/static\/js\/(pointer|element-files|element-snap|element-editor)\.js/);
     if (helper) await vm.runInContext(read(`static/js/${helper[1]}.js`), context);
     else if (!attrs.includes('src=')) await vm.runInContext(script, context);
   }
@@ -101,7 +103,15 @@ test('新建矩形、点选原点、逐向选图、导出后独立页面回读�
   const expected = {};
   for (const angle of [0, 90, 180, 270]) { editor.angle(angle); expected[angle] = editor.draw(); }
   editor.get('export').click();
+  expect(editor.download()).toBeUndefined();
+  expect(editor.get('export-dialog').open).toBe(true);
+  const shownJson = editor.get('export-json').value;
+  editor.get('close-export').click();
+  expect(editor.download()).toBeUndefined();
+  editor.get('export').click();
+  editor.get('download-json').click();
   const json = editor.download();
+  expect(json).toBe(shownJson);
   expect(JSON.parse(json).footprint).toHaveLength(6);
   // 新建既清除样本，也清除上一份自选素材；同名图片可以重新载入。
   editor.get('new').click();
@@ -163,6 +173,7 @@ test('不同规格素材、非方形占地四向适配，缩放拖拽只改当�
   const dimensions = [[78, 40], [78, 149], [598, 391], [636, 687]];
   const editor = await loadPage('element-editor.html');
   editor.get('new').click();
+  editor.get('edge-snap').checked = false;
   editor.change('footprint-width', '8');
   editor.change('footprint-height', '5');
   const originalFootprint = editor.get('footprint').value;
@@ -211,13 +222,55 @@ test('不同规格素材、非方形占地四向适配，缩放拖拽只改当�
   expect(editor.draw().anchor).toEqual(dragged);
   expect(editor.get('grid-status').textContent).toContain('拖拽已取消');
   editor.get('export').click();
+  editor.get('download-json').click();
   const json = editor.download();
   editor.change('image-opacity', '35');
   expect(editor.preview.attrs.opacity).toBe(0.35);
   editor.get('export').click();
+  editor.get('download-json').click();
   expect(editor.download()).toBe(json);
   editor.angle(270);
   expect(editor.draw().anchor).toEqual(otherAnchor);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('导入后行列同步，非法输入不导出旧数据，文件失败可恢复，100% 不截断四向网格', async () => {
+  const editor = await loadPage('element-editor.html');
+  const definition = JSON.parse(fs.readFileSync(path.join(__dirname, '../demo/static/element-samples/dog/element.json'), 'utf8'));
+  definition.footprint = shapes.polygon.twoDimForEach([0, 7], [0, 4], 'RightDown', (x, y) => [x, y]);
+  await editor.files('definition-file', [{ text: async () => JSON.stringify(definition) }]);
+  expect(editor.get('footprint-width').value).toBe('8');
+  expect(editor.get('footprint-height').value).toBe('5');
+  editor.change('footprint-width', '9');
+  expect(JSON.parse(editor.get('footprint').value)).toHaveLength(45);
+  editor.change('footprint-width', '');
+  expect(editor.get('export').disabled).toBe(true);
+  editor.change('footprint-width', '21');
+  editor.change('footprint-height', '2');
+  await editor.files('definition-file', [{ text: async () => '{broken' }]);
+  expect(editor.get('export').disabled).toBe(true);
+  editor.get('dismiss-file-issues').click();
+  expect(editor.get('export').disabled).toBe(false);
+  editor.get('actual-size').click();
+  for (const angle of [0, 90, 180, 270]) {
+    editor.angle(angle);
+    const width = parseFloat(editor.get('editor-canvas').style.width);
+    const height = parseFloat(editor.get('editor-canvas').style.height);
+    expect(width).toBeGreaterThan(680);
+    expect(editor.preview.attrs.scale).toEqual([1, 1]);
+    const positions = editor.layers[0].children.flatMap(node => node.attrs.points.map(point => point.map((v, j) => v + node.attrs.pos[j])));
+    expect(positions.every(([x, y]) => x >= 23 && y >= 23 && x <= width - 23 && y <= height - 23)).toBe(true);
+    const canvas = editor.get('editor-canvas');
+    canvas.getBoundingClientRect = () => ({ left: -400, top: -150 });
+    const pos = editor.layers[2].children.find(node => node.attrs.text === '20,1').attrs.pos;
+    editor.change('grid-action', 'inspect', 'change');
+    canvas.dispatchEvent(new editor.window.MouseEvent('click', { clientX: pos[0] - 400, clientY: pos[1] - 150 }));
+    expect(editor.get('grid-status').textContent).toContain('[20,1]');
+  }
+  editor.change('footprint', '[[0,0],[1,0],[0,1]]');
+  expect(editor.get('footprint-shape').textContent).toContain('自定义');
+  expect(editor.get('footprint-width').value).toBe('2');
   expect(editor.errors).toEqual([]);
   editor.window.close();
 });

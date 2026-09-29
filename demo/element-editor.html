@@ -42,26 +42,36 @@
     .element-editor .directions button { flex: 1; min-width: 0; padding: 6px 4px; font-size: 12px; }
     .element-editor .field-heading { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #edf0f3; padding-top: 8px; }
     .element-editor .field-heading h3 { margin: 0; }
+    .element-editor .footprint-heading { justify-content: flex-start; gap: 8px; }
+    .element-editor .footprint-heading h3 { flex-shrink: 0; }
     .element-editor .field-heading button { padding: 3px 6px; font-size: 11px; }
     .element-editor .crop-heading { justify-content: flex-start; gap: 6px; }
     .element-editor .source-row { display: flex; gap: 5px; align-items: center; }
     .element-editor .source-row select { flex: 1; width: 0; min-width: 0; }
-    .element-editor .advanced { border-top: 1px solid #edf0f3; padding-top: 8px; }
     .element-editor summary { cursor: pointer; font-size: 12px; color: #687383; }
-    .element-editor .advanced[open] summary { margin-bottom: 10px; }
     .element-editor textarea { width: 100%; resize: vertical; font-family: ui-monospace, monospace; }
-    .element-editor .preview-workspace { align-items: flex-start; }
-    .element-editor .preview-workspace > .viewport { overflow: hidden; }
+    .element-editor .preview-workspace { align-items: stretch; }
+    .element-editor .preview-workspace > .viewport { position: relative; display: flex; flex-direction: column; overflow: hidden; }
     .element-editor .canvas-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px; border-bottom: 1px solid #edf0f3; font-size: 12px; }
-    .element-editor .canvas-controls label { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+    .element-editor .canvas-controls label { display: flex; align-items: center; gap: 4px; }
+    .element-editor .view-controls { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .element-editor .canvas-controls .grid-control { display: flex; flex-wrap: wrap; flex: 1; justify-content: center; gap: 6px 12px; padding-inline: 12px; white-space: nowrap; }
+    .element-editor .canvas-controls .opacity-control { margin-left: auto; white-space: nowrap; }
+    .element-editor .canvas-scroll { flex: 1 1 0; height: 0; min-height: 500px; overflow: auto; }
+    .element-editor .field-help { color: #687383; font-size: 11px; line-height: 1.4; }
     .element-editor .canvas-controls input[type="range"] { width: 80px; padding: 0; }
     .element-editor .canvas-controls output { min-width: 32px; text-align: right; }
     #editor-canvas { position: relative; width: 680px; height: 500px; border: 0; padding: 0; cursor: crosshair; touch-action: none; }
     #editor-canvas.dragging { cursor: grabbing; }
     .element-editor #issues { white-space: pre-wrap; color: #9b3021; background: #fff0ec; padding: 12px; border-radius: 6px; }
     .element-editor #status { color: #087f5b; margin: 8px 0 4px; }
-    .element-editor #grid-status { margin: 4px 0 10px; }
+    .element-editor #grid-status { position: absolute; left: 10px; bottom: 10px; z-index: 1; max-width: calc(100% - 40px); margin: 0; padding: 4px 6px; border-radius: 4px; background: rgba(255,255,255,.85); pointer-events: none; }
     .element-editor .note { font-size: 12px; }
+    .element-editor dialog { box-sizing: border-box; width: min(720px, 90vw); max-height: 90vh; padding: 16px; border: 1px solid #d7dce2; border-radius: 8px; color: inherit; }
+    .element-editor dialog::backdrop { background: rgba(0,0,0,.35); }
+    .element-editor dialog h2 { margin: 0; font-size: 18px; }
+    .element-editor dialog textarea { height: 50vh; font-size: 12px; }
+    .element-editor .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
   </style>
 </head>
 <body>
@@ -72,6 +82,7 @@
   <script src="./static/js/qtiled-preview.dev.js"></script>
   <script src="./static/js/pointer.js"></script>
   <script src="./static/js/element-files.js"></script>
+  <script src="./static/js/element-snap.js"></script>
   <main class="element-editor">
     <h1>静态元素编辑器 <small>· P0-D</small></h1>
     <p class="intro">编辑四向图片、裁切、锚点与逻辑占地。通过完整校验后导出 JSON，再由独立预览读取。</p>
@@ -89,36 +100,38 @@
           <a href="./element-preview.html" target="_blank" rel="noopener">独立预览 ↗</a>
         </div>
       </div>
-      <div class="toolbar">
-        <div class="tool-group">
-          <span class="group-name">占地</span>
-          <label>列 <input id="footprint-width" aria-label="占地列" type="number" min="1" step="1" value="2"></label>
-          <label>行 <input id="footprint-height" aria-label="占地行" type="number" min="1" step="1" value="2"></label>
-        </div>
-        <div class="tool-group">
-          <label>网格操作 <select id="grid-action"><option value="inspect">查看坐标</option><option value="footprint">增删占地</option><option value="origin">点选原点</option></select></label>
-        </div>
-      </div>
     </fieldset>
     <p id="status" role="status">正在载入样本…</p>
-    <p id="grid-status" class="note">先设置占地列、行，再点“新建定义”；选择“点选原点”后点击橙色占地中的一个格子。</p>
-    <div id="validation" hidden><p>配置问题</p><pre id="issues" role="alert" hidden></pre></div>
+    <div id="validation" hidden><p>配置问题 <button id="dismiss-file-issues" type="button" hidden>清除文件操作提示</button></p><pre id="issues" role="alert" hidden></pre></div>
     <div class="preview-workspace">
       <div class="viewport">
-        <div class="canvas-controls">
-          <button id="fit-canvas" type="button" title="完整显示图片与占地，不改变锚点">适应画布</button>
-          <button id="actual-size" type="button" title="按原始像素大小显示">100%</button>
-          <output id="view-scale" aria-label="逻辑单元格尺寸与视图缩放比例">80×40 · 100%</output>
-          <label>不透明度 <input id="image-opacity" type="range" min="0" max="100" value="100"><output id="opacity-value">100%</output></label>
-        </div>
-        <div id="editor-canvas" aria-label="元素编辑网格" title="拖拽图片调整当前方向锚点；单击执行所选网格操作"></div>
+        <fieldset id="canvas-controls" class="canvas-controls">
+          <div class="view-controls">
+            <button id="fit-canvas" type="button" title="完整显示图片与占地，不改变锚点">适应画布</button>
+            <button id="actual-size" type="button" title="按原始像素大小显示">100%</button>
+            <output id="view-scale" aria-label="逻辑单元格尺寸与视图缩放比例">80×40 · 100%</output>
+          </div>
+          <div class="grid-control">
+            <label>网格操作 <select id="grid-action"><option value="inspect">查看坐标</option><option value="footprint">增删占地</option><option value="origin">点选原点</option></select></label>
+            <label title="识别图片下缘，靠近网格边线时吸附；按住 Alt 临时关闭"><input id="edge-snap" type="checkbox" checked>底边吸附</label>
+          </div>
+          <label class="opacity-control">不透明度 <input id="image-opacity" type="range" min="0" max="100" value="100"><output id="opacity-value">100%</output></label>
+        </fieldset>
+        <div class="canvas-scroll" tabindex="0" role="region" aria-label="画布滚动区"><div id="editor-canvas" aria-label="元素编辑网格" title="拖拽图片调整当前方向锚点；单击执行所选网格操作"></div></div>
+        <p id="grid-status" class="note" role="status">先设置占地列、行，再点“新建定义”；选择“点选原点”后点击橙色占地中的一个格子。</p>
       </div>
       <aside>
-        <h2>元素参数 · <span id="current-angle">0°</span></h2>
+        <h2>元素参数</h2>
         <fieldset id="edit-fields" disabled>
           <div class="fields">
             <label class="line">元素 ID <input id="element-id" type="text"></label>
             <label class="line" title="类别记录用途，不改变图片外观。">类别 <select id="kind"><option value="sprite">精灵 sprite</option><option value="tile">地块 tile</option></select></label>
+            <div class="field-heading footprint-heading"><h3>占地</h3><output id="footprint-shape" class="field-help"></output></div>
+            <div class="pair">
+              <label>列 <input id="footprint-width" aria-label="占地列" type="number" min="1" step="1" value="2"></label>
+              <label>行 <input id="footprint-height" aria-label="占地行" type="number" min="1" step="1" value="2"></label>
+            </div>
+            <label>占用格子 JSON <textarea id="footprint" rows="1" wrap="off" spellcheck="false"></textarea></label>
             <div class="field-heading"><h3>方向与图片</h3><output id="source-size">—</output></div>
             <div class="directions" role="group" aria-label="视图方向">
               <button type="button" data-angle="0" aria-pressed="true">0°</button>
@@ -142,21 +155,21 @@
               <label>锚点 X <input id="anchor-x" type="number" step="any"></label>
               <label>锚点 Y <input id="anchor-y" type="number" step="any"></label>
             </div>
-            <details class="advanced">
-              <summary>高级：占地 JSON、预览尺寸</summary>
-              <div class="fields">
-                <label>占用格子 JSON <textarea id="footprint" rows="3" spellcheck="false"></textarea></label>
-                <h3>预览瓦片尺寸</h3>
-                <div class="pair">
-                  <label>瓦片宽 <input id="tile-width" type="number" value="80" min="1" step="any"></label>
-                  <label>瓦片高 <input id="tile-height" type="number" value="40" min="1" step="any"></label>
-                </div>
-              </div>
-            </details>
+            <div class="field-heading"><h3>预览瓦片尺寸</h3></div>
+            <div class="pair">
+              <label>瓦片宽 <input id="tile-width" type="number" value="80" min="1" step="any"></label>
+              <label>瓦片高 <input id="tile-height" type="number" value="40" min="1" step="any"></label>
+            </div>
           </div>
         </fieldset>
       </aside>
     </div>
+    <dialog id="export-dialog" aria-labelledby="export-title">
+      <h2 id="export-title">导出 JSON 预览</h2>
+      <p>以下为即将下载的配置，图片文件需另行保留。关闭预览可继续编辑。</p>
+      <textarea id="export-json" aria-label="待下载的 JSON" readonly spellcheck="false"></textarea>
+      <div class="dialog-actions"><button id="close-export" type="button" autofocus>返回编辑</button><button id="download-json" type="button">下载 JSON</button></div>
+    </dialog>
     <details class="note">
       <summary>操作说明与素材约定</summary>
       <p>拖拽图片会调整当前方向的像素锚点，其他方向保持不变。适应画布只调整显示比例和位置，100% 按原始像素显示；视图比例和不透明度不写入导出的 JSON。</p>
