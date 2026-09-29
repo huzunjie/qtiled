@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>四向视图与占地 · QTiled P0-B</title>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <style>
+    .view-demo { max-width: 1130px; margin: 24px auto; }
+    .view-demo h1 { font-size: 24px; }
+    .view-demo p { font-size: 14px; opacity: 1; line-height: 1.7; }
+    .view-demo .intro { color: #687383; margin: 10px 0 22px; }
+    .view-demo .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .view-demo button { cursor: pointer; min-width: 55px; padding: 9px 12px; }
+    .view-demo button[aria-pressed="true"] { background: #098d3b; }
+    .view-demo button:focus-visible, .view-demo select:focus-visible { outline: 2px solid #098d3b; outline-offset: 3px; }
+    .view-demo label { font-size: 13px; }
+    .view-demo select { padding: 7px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
+    .view-demo .workspace { display: flex; align-items: stretch; gap: 20px; }
+    .view-demo .viewport { flex: 0 1 760px; overflow: auto; border: 1px solid #d7dce2; border-radius: 8px; background: white; }
+    #view-canvas { position: relative; width: 760px; height: 520px; padding: 0; border: 0; cursor: crosshair; }
+    .view-demo aside { flex: 1; min-width: 230px; padding: 18px; box-sizing: border-box; background: white; border-radius: 8px; }
+    .view-demo h2 { font-size: 15px; margin: 0 0 12px; }
+    .view-demo dl { margin: 0; font-size: 13px; }
+    .view-demo dt { color: #687383; margin-top: 16px; }
+    .view-demo dd { margin: 5px 0 0; font-family: ui-monospace, monospace; line-height: 1.6; overflow-wrap: anywhere; }
+    .view-demo #world-cells { font-size: 12px; }
+    .view-demo .legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 15px; font-size: 13px; }
+    .view-demo .legend span::before { content: ''; display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; background: var(--color); }
+    .view-demo .note { color: #687383; font-size: 12px; }
+    @media (max-width: 1000px) {
+      .view-demo .workspace { flex-direction: column; }
+      .view-demo .viewport { flex-basis: auto; }
+    }
+  </style>
+</head>
+<body>
+  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/qtiled-view.dev.js"></script>
+  <script src="./static/js/pointer.js"></script>
+  <main class="view-demo">
+    <h1>四向视图与占地 <small>· P0-B</small></h1>
+    <p class="intro">切换方向，观察同一组世界格如何投影。点击任意格子，再切换视角：选中格和元素占地的世界坐标保持不变。</p>
+    <div class="controls">
+      <div id="angles" role="group" aria-label="视图方向">
+        <button type="button" data-angle="0" aria-pressed="true">0°</button>
+        <button type="button" data-angle="90" aria-pressed="false">90°</button>
+        <button type="button" data-angle="180" aria-pressed="false">180°</button>
+        <button type="button" data-angle="270" aria-pressed="false">270°</button>
+      </div>
+      <label>逻辑占地
+        <select id="footprint">
+          <option value="rectangle">3 × 2 · 原点在角落</option>
+          <option value="elbow">L 形 · 含负偏移</option>
+        </select>
+      </label>
+      <label>瓦片尺寸
+        <select id="tile-size">
+          <option value="60,30">60 × 30</option>
+          <option value="80,40">80 × 40</option>
+          <option value="72,48">72 × 48</option>
+        </select>
+      </label>
+    </div>
+    <div class="workspace">
+      <div class="viewport">
+        <div id="view-canvas" aria-label="可点击的四向等距网格"></div>
+      </div>
+      <aside>
+        <h2>世界坐标保持不变</h2>
+        <dl>
+          <dt>当前视图</dt><dd id="view-angle">0°</dd>
+          <dt>鼠标反查世界格</dt><dd id="hover-grid">移入网格查看</dd>
+          <dt>已选世界格</dt><dd id="selected-grid"></dd>
+          <dt>选中格的投影像素</dt><dd id="selected-pixel"></dd>
+          <dt>投影 → 反查世界格</dt><dd id="round-trip"></dd>
+          <dt>元素逻辑原点</dt><dd id="element-origin"></dd>
+          <dt>元素占地世界格</dt><dd id="world-cells"></dd>
+        </dl>
+      </aside>
+    </div>
+    <div class="legend">
+      <span style="--color: #ce871c">元素占地</span>
+      <span style="--color: #087f5b">选中世界格</span>
+      <span style="--color: #296cc1">元素逻辑原点</span>
+      <span style="--color: #c84444">固定世界原点 [0,0]</span>
+    </div>
+    <p class="note">格内文字始终是世界坐标。灰色网格范围为 X −4～4、Y −3～3；范围外仍可反查无限平面。这里仅演示平地几何，素材显示将在 P0-C 接入。尺寸为演示参数，方向尚未对应原作罗盘。</p>
+  </main>
+  <script>
+    (() => {
+      const nav = document.querySelector('.navs');
+      if (nav) nav.classList.add('closed');
+      const { Scene, Polyline, Label } = spritejs;
+      const { getVertexes, getIsometricNeighborsByOffsets } = qtiled.shapes.rhombus;
+      const { twoDimForEach } = qtiled.shapes.polygon;
+      const { projectGrid, pickGrid } = qtiledView;
+      const container = document.getElementById('view-canvas');
+      const scene = new Scene({ container, width: 760, height: 520, mode: 'static' });
+      const layer = scene.layer('grid', { handleEvent: false });
+      const focusLayer = scene.layer('focus', { handleEvent: false });
+      const view = { angle: 0, tileSize: [60, 30], originPixel: [380, 260] };
+      const samples = {
+        rectangle: { origin: [-2, -1], footprint: [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1]] },
+        elbow: { origin: [1, -1], footprint: [[-1, -1], [-1, 0], [-1, 1], [0, 1]] },
+      };
+      let sample = samples.rectangle;
+      let selectedGrid = [2, 1];
+      let hoverGrid = null;
+      const format = point => `[${point.join(', ')}]`;
+      const setText = (id, text) => { document.getElementById(id).textContent = text; };
+
+      function tile(grid, attrs) {
+        return new Polyline({
+          pos: projectGrid(grid, view), points: getVertexes(view.tileSize), close: true,
+          lineWidth: 1, ...attrs,
+        });
+      }
+
+      function renderFocus() {
+        focusLayer.removeAllChildren();
+        focusLayer.append(tile(selectedGrid, { strokeColor: '#087f5b', lineWidth: 3 }));
+        if (hoverGrid) focusLayer.append(tile(hoverGrid, { strokeColor: '#3b8bea', lineWidth: 2 }));
+        const pixel = projectGrid(selectedGrid, view);
+        setText('selected-grid', format(selectedGrid));
+        setText('selected-pixel', format(pixel));
+        setText('round-trip', format(pickGrid(pixel, view)));
+        setText('hover-grid', hoverGrid ? format(hoverGrid) : '移入网格查看');
+      }
+
+      function render() {
+        layer.removeAllChildren();
+        const worldCells = getIsometricNeighborsByOffsets(sample.origin, sample.footprint);
+        const occupied = new Set(worldCells.map(grid => grid.join(',')));
+        twoDimForEach([-4, 4], [-3, 3], 'RightDown', (gridX, gridY) => {
+          const grid = [gridX, gridY];
+          const isOccupied = occupied.has(grid.join(','));
+          layer.append(tile(grid, {
+            strokeColor: isOccupied ? '#ce871c' : '#cbd5dd',
+            fillColor: isOccupied ? '#fbe2ae' : '#f5f8fa',
+          }));
+          layer.append(new Label({
+            pos: projectGrid(grid, view), anchor: [0.5, 0.5],
+            text: `${gridX},${gridY}`, fontSize: 11, fillColor: '#536174',
+          }));
+        });
+        // 标记使用相同投影；蓝色原点在占地角落或占地之外，不随包围盒重新居中。
+        for (const [grid, color] of [[[0, 0], '#c84444'], [sample.origin, '#296cc1']]) {
+          const [pixelX, pixelY] = projectGrid(grid, view);
+          layer.append(new Polyline({
+            points: [[pixelX - 5, pixelY - 5], [pixelX + 5, pixelY + 5]], strokeColor: color, lineWidth: 3,
+          }));
+          layer.append(new Polyline({
+            points: [[pixelX - 5, pixelY + 5], [pixelX + 5, pixelY - 5]], strokeColor: color, lineWidth: 3,
+          }));
+        }
+        setText('view-angle', `${view.angle}°`);
+        setText('element-origin', format(sample.origin));
+        setText('world-cells', worldCells.map(format).join(' '));
+        renderFocus();
+      }
+
+      document.querySelectorAll('[data-angle]').forEach(button => {
+        button.addEventListener('click', () => {
+          view.angle = Number(button.dataset.angle);
+          document.querySelectorAll('[data-angle]').forEach(item => {
+            item.setAttribute('aria-pressed', String(Number(item.dataset.angle) === view.angle));
+          });
+          hoverGrid = null;
+          render();
+        });
+      });
+      document.getElementById('footprint').addEventListener('change', event => {
+        sample = samples[event.target.value];
+        render();
+      });
+      document.getElementById('tile-size').addEventListener('change', event => {
+        view.tileSize = event.target.value.split(',').map(Number);
+        hoverGrid = null;
+        render();
+      });
+      container.addEventListener('mousemove', event => {
+        hoverGrid = pickGrid(getPointerPosition(event, container), view);
+        renderFocus();
+      });
+      container.addEventListener('mouseleave', () => {
+        hoverGrid = null;
+        renderFocus();
+      });
+      container.addEventListener('click', event => {
+        selectedGrid = pickGrid(getPointerPosition(event, container), view);
+        renderFocus();
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>

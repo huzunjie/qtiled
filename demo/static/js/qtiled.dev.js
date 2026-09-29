@@ -122,6 +122,20 @@
     // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
     diamond: (offsetX, offsetY, distance) => Math.abs(offsetX) + Math.abs(offsetY) <= distance ? [offsetX, offsetY] : false
   };
+  /** 绕固定原点旋转逻辑坐标，不重新居中或锚定选区。
+   * @param {Array<number>} grid 有限数值坐标 [gridX, gridY]，默认 [0, 0]；不是错列行列下标。
+   * @param {number} quarterTurns 累计整数次数，默认 0；一次为 [-y, x]，负数反向，按 4 取模。
+   * @returns {Array<number>} 旋转后的坐标，返回新数组、不修改输入；四次恢复原坐标。
+   * 顺时针以逻辑 X 向右、Y 向下定义；允许小数坐标供连续位置计算。
+   */
+
+  function rotateGridPoint([gridX, gridY] = [0, 0], quarterTurns = 0) {
+    const turns = (quarterTurns % 4 + 4) % 4;
+    const swapAxes = turns % 2;
+    const signX = turns === 1 || turns === 2 ? -1 : 1;
+    const signY = turns >= 2 ? -1 : 1;
+    return [signX * (swapAxes ? gridY : gridX) || 0, signY * (swapAxes ? gridX : gridY) || 0];
+  }
   /** 旋转选区并将包围盒中心格锚定到逻辑原点，供各布局的 getNeighborsByOffsets 使用。
    * @param {Array<Array<number>>} offsets 原始选区的逻辑坐标对，有限整数，默认 []；允许未居中，不接受像素坐标或错列行列差。
    * @param {number} quarterTurns 相对原始选区的旋转次数，有限整数，默认 0；每次顺时针 90°，负数逆时针，按 4 取模。
@@ -348,6 +362,7 @@
     RAUQ: RAUQ,
     TQUA: TQUA$1,
     neighborTypes: neighborTypes,
+    rotateGridPoint: rotateGridPoint,
     rotateSelectionOffsets: rotateSelectionOffsets,
     getVertexes: getVertexes$3,
     getBounds: getBounds,

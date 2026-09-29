@@ -19,4 +19,12 @@ if (process.env.npm_lifecycle_script.indexOf(' -w') !== -1) {
     livereload()
   );
 }
-export default config;
+// 可选视图模块单独构建，核心包不引入该入口；dev 同时监听两份源码。
+const viewConfig = getConf('umd');
+viewConfig.input = 'src/isometric-view/index.js';
+Object.assign(viewConfig.output, {
+  file: 'demo/static/js/qtiled-view.dev.js',
+  name: 'qtiledView',
+  sourcemap: true,
+});
+export default [config, viewConfig];

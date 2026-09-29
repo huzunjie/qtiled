@@ -153,8 +153,15 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 
 [海拔 Demo](demo/elevation-rhombus.html) 同时提供距离区域和自定义选区。从实际命中的格子展开逻辑选区，各格按自身海拔显示；只选择地图内且顶面露出正面积的格子。完全遮挡或仅共边、共点的格子不入选，未命中时清除选区并保留红色平面参考焦点。可见性按实际绘制顺序扣除后绘制顶面，不考虑演示填充透明度；选区着色和轮廓均裁到露出部分。当前地形静态，可见片段只预计算一次；后续若改地形或视角，需要重新计算。本示例不修改地形，不包含地图视角旋转。
 
+### 四向等距视图
+
+* [ ] [P0-B 四向视图](docs/isometric-view.md)（已实现，待验收）：核心 `shapes.polygon.rotateGridPoint()` 绕固定原点旋转；可选 `src/isometric-view` 入口组合现有等距投影与反查，提供 `projectGrid()`、`pickGrid()`，不改变世界坐标和逻辑占地。
+
+[四向视图与占地 Demo](demo/isometric-view.html) 支持 0/90/180/270° 切换、点击世界格、3×2/L 形占地和瓦片尺寸调整。`npm run dev` 同时构建核心与独立视图 Demo 包；只覆盖平地几何，素材预览在 P0-C 接入。
+
 ### Tile Data - 瓦片数据格式约定
-* [ ] ToDo - 待开发
+* [x] [静态元素定义 P0-A](docs/element-definition.md)：独立源码入口提供四向素材、裁切、锚点与逻辑占地的校验和 JSON 导入，不加入核心导出。
+* [ ] 地图与实体实例数据、场景导入导出
 
 ### Tile Renderer - 瓦片渲染器
 * [ ] ToDo - 待开发
