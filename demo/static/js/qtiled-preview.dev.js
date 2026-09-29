@@ -454,7 +454,46 @@
       issues
     };
   }
+  /** 应用一次工具编辑，返回新定义；允许暂时非法的草稿，由统一校验器报告问题。
+   * @param {Object} definition 当前定义或草稿，调用方将其视为不可变数据。
+   * @param {Object} edit { field: 'footprint'|'source'|'rect'|'anchor', value, angle? }。
+   * angle 仅在修改视图字段时使用，必须是数字 0/90/180/270。
+   * 仅复制修改路径及传入数组；未修改分支与原定义共享，不自动联动裁切和锚点。
+   */
 
+  function applyElementEdit(definition, {
+    field,
+    value,
+    angle
+  } = {}) {
+    const copyValue = Array.isArray(value) ? value.map(item => Array.isArray(item) ? [...item] : item) : value;
+    if (field === 'footprint') return { ...definition,
+      footprint: copyValue
+    };
+    if (!['source', 'rect', 'anchor'].includes(field)) throw new TypeError('不支持的元素编辑字段。');
+    if (![0, 90, 180, 270].includes(angle)) throw new RangeError('编辑方向必须为 0、90、180、270。');
+    return { ...definition,
+      views: { ...definition.views,
+        [angle]: { ...definition.views[angle],
+          [field]: copyValue
+        }
+      }
+    };
+  }
+  /** 正式导出前复用完整契约校验；不嵌入图片，不补方向或修改定义。
+   * @returns {Object} { json: 格式化 JSON 文本或 null, issues: 问题列表 }。
+   */
+
+  function exportElementDefinition(definition, sourceInfo = {}) {
+    const issues = validateElementDefinition(definition, sourceInfo);
+    return {
+      json: issues.length ? null : `${JSON.stringify(definition, null, 2)}\n`,
+      issues
+    };
+  }
+
+  exports.applyElementEdit = applyElementEdit;
+  exports.exportElementDefinition = exportElementDefinition;
   exports.importElementDefinition = importElementDefinition;
   exports.loadElementSources = loadElementSources;
   exports.renderElementPreview = renderElementPreview;

@@ -42,7 +42,7 @@ const { sources, sourceInfo, issues } = await loadElementSources({
 
 函数只替换它在该 layer 中拥有的 Group，不清除调用方其他节点。`drawInfo = null` 清除预览；素材缺失时先清除旧预览再抛出明确错误，防止残留图片冒充当前结果。内部不异步加载，因此切向只使用已经加载的图片，不发生跨方向加载结果覆盖。
 
-纯计算可从 `src/element-preview/draw` 单独引入。完整可选入口 `src/element-preview` 导出三个函数及 P0-A 的导入/校验函数；SpriteJS 由调用方提供为外部依赖，不进入核心 `src/index.js`。Demo 构建输出独立的 `qtiled-preview.dev.js`，浏览器命名空间为 `qtiledPreview`，须在 SpriteJS 后加载。
+纯计算可从 `src/element-preview/draw` 单独引入。完整可选入口 `src/element-preview` 导出三个函数及元素的导入、校验、编辑和导出函数；SpriteJS 由调用方提供为外部依赖，不进入核心 `src/index.js`。Demo 构建输出独立的 `qtiled-preview.dev.js`，浏览器命名空间为 `qtiledPreview`，须在 SpriteJS 后加载。
 
 ## 样本和边界
 
@@ -51,3 +51,7 @@ const { sources, sourceInfo, issues } = await loadElementSources({
 `npm run debug` 生成运行文件；`npm run dev` 同时监听核心、视图和静态预览三个 Demo 入口。可选模块的正式发布包与 npm 子路径尚未实现，属于后续打包工作。
 
 本页与四向视图 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px；空间不足时在画布区域内滚动，保持绘制尺寸。
+
+P0-D 增加独立回读：选择素材根目录或图片文件，再选择编辑器导出的 JSON；导入重新调用 P0-A 校验，并使用本页加载的图片绘制。单独选图以文件名作为引用，目录图片保留目录内相对路径。两页不共享编辑状态。瓦片宽高属于视图参数，需手动与编辑预览保持一致；“重新加载”恢复内置图片与样本。完整流程见[元素编辑工具](element-editor.md)。
+
+独立预览会合并四个方向的素材边界和占地网格范围，按可见画布自动缩小并居中；切换方向保持统一范围。该变换只影响显示，不改变侧栏中的原始裁切、锚点和绘制坐标。网格至少 9×9，随占地扩展并留出两格。

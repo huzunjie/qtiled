@@ -17,6 +17,8 @@
     .element-demo button:focus-visible, .element-demo select:focus-visible { outline: 2px solid #098d3b; outline-offset: 3px; }
     .element-demo select { padding: 7px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
     .element-demo label { font-size: 13px; }
+    .element-demo input[type="file"] { max-width: 240px; font-size: 12px; }
+    .element-demo input[type="number"] { width: 62px; padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; }
     #element-canvas { position: relative; width: 680px; height: 440px; border: 0; padding: 0; }
     .element-demo #issues { white-space: pre-wrap; padding: 14px; background: #fff0ec; color: #9b3021; border-radius: 6px; }
     .element-demo #status { color: #087f5b; }
@@ -29,6 +31,7 @@
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
   <script src="./static/js/qtiled-preview.dev.js"></script>
+  <script src="./static/js/element-files.js"></script>
   <main class="element-demo">
     <h1>四向静态素材 <small>· P0-C</small></h1>
     <p class="intro">同一份元素定义驱动画面。切换视图查看四张狗雕塑素材；橙色线表示逻辑占地，红色十字是图片锚点对应的元素原点。</p>
@@ -46,6 +49,13 @@
       <label><input id="bounds" type="checkbox"> 裁切边框</label>
       <button id="reload" type="button">重新加载</button>
     </div>
+    <div class="controls">
+      <label>素材目录 <input id="source-files" type="file" webkitdirectory multiple></label>
+      <label>图片文件 <input id="image-files" type="file" accept="image/*" multiple></label>
+      <label>导入 JSON <input id="definition-file" type="file" accept=".json,application/json"></label>
+      <label>瓦片宽 <input id="tile-width" type="number" value="80" min="1" step="any"></label>
+      <label>瓦片高 <input id="tile-height" type="number" value="40" min="1" step="any"></label>
+    </div>
     <p id="status" role="status">正在加载四张图片与元素定义…</p>
     <pre id="issues" role="alert" hidden></pre>
     <div class="workspace preview-workspace">
@@ -62,8 +72,9 @@
         </dl>
       </aside>
     </div>
-    <p class="note">演示标定：逻辑瓦片 80×40，占地 2×2，原点 [0,0]。锚点按可见底座初步对齐；方向槽采用显式样本配置，原作罗盘映射、占地及步长尚未核实。裁切示例会切去图像边缘并同步移动锚点，剩余像素的世界位置不变；原图不被修改。</p>
+    <p class="note">暂定单元格尺寸 80×40，可手动调整。内置样本占地 2×2，原点 [0,0]；锚点按可见底座初步对齐。方向槽采用显式样本配置，原作罗盘映射、占地及步长尚未核实。裁切示例会切去图像边缘并同步移动锚点，剩余像素的世界位置不变；原图不被修改。</p>
     <p class="note">四张图片与 JSON 一起放在样本目录中；素材来源与标定依据见 <a href="./static/element-samples/dog/README.md">样本说明</a>。</p>
+    <p class="note">独立回读：选择素材根目录或逐张选入图片文件，再导入编辑器导出的 JSON。单选图片以文件名作为引用，目录图片使用目录内相对路径。瓦片尺寸需与编辑预览一致；本页不读取编辑器状态。“重新加载”恢复内置样本。</p>
   </main>
   <script>
     (async () => {
@@ -73,7 +84,7 @@
       const container = document.getElementById('element-canvas');
       const scene = new spritejs.Scene({ container, width: 680, height: 440, mode: 'static' });
       const layer = scene.layer('preview', { handleEvent: false });
-      const view = { angle: 0, tileSize: [80, 40], originPixel: [320, 260] };
+      const view = { angle: 0, tileSize: [document.getElementById('tile-width').valueAsNumber, document.getElementById('tile-height').valueAsNumber], originPixel: [320, 260] };
       const assetDir = './static/element-samples/dog/';
       const sourceFiles = Object.fromEntries([1, 2, 3, 4].map(number => {
         const path = `images/sculpture_dog0${number}.png`;
@@ -100,10 +111,29 @@
       function render() {
         if (!definition) return;
         const draw = resolveElementDraw(definition, [0, 0], view);
-        const gridPositions = checked('grid') ? qtiled.shapes.polygon.twoDimForEach([-3, 3], [-3, 3], 'RightDown', (x, y) => qtiledView.projectGrid([x, y], view)) : [];
-        renderElementPreview(layer, draw, sources, {
+        const footprintBounds = qtiled.shapes.polygon.getBounds(definition.footprint);
+        const ranges = [[Math.min(-4, footprintBounds.minX - 2), Math.max(4, footprintBounds.maxX + 2)],
+          [Math.min(-4, footprintBounds.minY - 2), Math.max(4, footprintBounds.maxY + 2)]];
+        const gridPositions = checked('grid') ? qtiled.shapes.polygon.twoDimForEach(...ranges, 'RightDown', (x, y) => qtiledView.projectGrid([x, y], view)) : [];
+        // 独立回读同样需要容纳四向的大图与占地；变换仅用于显示，不改定义或绘制描述。
+        const positions = [];
+        const vertexes = qtiled.shapes.rhombus.getVertexes(view.tileSize);
+        [0, 90, 180, 270].forEach(angle => {
+          const rotated = resolveElementDraw(definition, [0, 0], { ...view, angle });
+          positions.push(rotated.position, rotated.position.map((value, i) => value + rotated.rect[i + 2]));
+          ranges[0].forEach(x => ranges[1].forEach(y => {
+            const center = qtiledView.projectGrid([x, y], { ...view, angle });
+            vertexes.forEach(vertex => positions.push(vertex.map((value, i) => value + center[i])));
+          }));
+        });
+        const bounds = qtiled.shapes.polygon.getBounds(positions);
+        const width = Math.min(680, container.parentElement.clientWidth || 680);
+        const scale = Math.min(1, Math.max(1, width - 48) / bounds.width, 392 / bounds.height);
+        const preview = renderElementPreview(layer, draw, sources, {
           gridPositions, footprint: checked('footprint'), anchor: checked('anchor'), bounds: checked('bounds'),
         });
+        if (preview) preview.attr({ transformOrigin: [0, 0], scale: [scale, scale],
+          pos: [width / 2 - (bounds.minX + bounds.maxX) / 2 * scale, 220 - (bounds.minY + bounds.maxY) / 2 * scale] });
         const size = sourceInfo[draw.source];
         text('source', `${draw.angle}° · ${draw.source}`);
         text('source-size', `${size.width} × ${size.height}`);
@@ -118,33 +148,44 @@
         if (result.issues.length) return showIssues(result.issues);
         definition = result.definition;
         document.getElementById('issues').hidden = true;
-        text('status', '4 张图片已加载 · 配置校验通过');
+        text('status', `${Object.keys(sources).length} 张图片已加载 · 配置校验通过`);
         render();
       }
 
-      async function load() {
+      async function load(task) {
         if (loading) return;
         loading = true;
         definition = null;
-        jsonBySample.clear();
         renderElementPreview(layer, null);
-        text('status', '正在加载四张图片与元素定义…');
+        ['source-files', 'image-files', 'definition-file', 'sample', 'reload'].forEach(id => { document.getElementById(id).disabled = true; });
+        text('status', '正在加载图片与元素定义…');
         document.getElementById('issues').hidden = true;
         try {
-          const result = await loadElementSources(sourceFiles);
-          sources = result.sources;
-          sourceInfo = result.sourceInfo;
-          if (result.issues.length) return showIssues(result.issues);
-          for (const name of ['element.json', 'cropped.json']) {
-            const response = await fetch(`${assetDir}${name}`, { cache: 'no-store' });
-            if (!response.ok) throw new Error(`${name} 加载失败（${response.status}）。`);
-            jsonBySample.set(name, await response.text());
+          if (task) {
+            const issues = await task();
+            if (issues.length) return showIssues(issues);
+          } else {
+            jsonBySample.clear();
+            const sample = document.getElementById('sample');
+            if (sample.value === 'imported') sample.value = 'element.json';
+            sample.querySelector('option[value="imported"]')?.remove();
+            ['source-files', 'image-files', 'definition-file'].forEach(id => { document.getElementById(id).value = ''; });
+            const result = await loadElementSources(sourceFiles);
+            sources = result.sources;
+            sourceInfo = result.sourceInfo;
+            if (result.issues.length) return showIssues(result.issues);
+            for (const name of ['element.json', 'cropped.json']) {
+              const response = await fetch(`${assetDir}${name}`, { cache: 'no-store' });
+              if (!response.ok) throw new Error(`${name} 加载失败（${response.status}）。`);
+              jsonBySample.set(name, await response.text());
+            }
           }
           selectSample();
         } catch (error) {
           showIssues([{ path: '样本', message: error.message }]);
         } finally {
           loading = false;
+          ['source-files', 'image-files', 'definition-file', 'sample', 'reload'].forEach(id => { document.getElementById(id).disabled = false; });
         }
       }
 
@@ -155,7 +196,46 @@
       }));
       document.querySelectorAll('input[type="checkbox"]').forEach(input => input.addEventListener('change', render));
       document.getElementById('sample').addEventListener('change', () => { if (!loading) selectSample(); });
-      document.getElementById('reload').addEventListener('click', load);
+      document.getElementById('reload').addEventListener('click', () => load());
+      document.getElementById('source-files').addEventListener('change', event => {
+        const files = getElementSourceFiles(event.target.files);
+        load(async () => {
+          const result = await loadElementSources(files);
+          sources = result.sources;
+          sourceInfo = result.sourceInfo;
+          return result.issues;
+        });
+      });
+      document.getElementById('image-files').addEventListener('change', event => {
+        const files = getElementSourceFiles(event.target.files);
+        load(async () => {
+          const result = await loadElementSources(files);
+          sources = { ...sources, ...result.sources };
+          sourceInfo = { ...sourceInfo, ...result.sourceInfo };
+          return result.issues;
+        });
+      });
+      document.getElementById('definition-file').addEventListener('change', event => {
+        const file = event.target.files[0];
+        if (!file) return;
+        load(async () => {
+          jsonBySample.set('imported', await file.text());
+          const sample = document.getElementById('sample');
+          sample.querySelector('option[value="imported"]')?.remove();
+          sample.add(new Option(file.name, 'imported'));
+          sample.value = 'imported';
+          return [];
+        });
+      });
+      ['tile-width', 'tile-height'].forEach(id => document.getElementById(id).addEventListener('change', () => {
+        const width = document.getElementById('tile-width');
+        const height = document.getElementById('tile-height');
+        const size = [width.valueAsNumber, height.valueAsNumber];
+        if (size.every(value => Number.isFinite(value) && value > 0)) view.tileSize = size;
+        else [width.value, height.value] = view.tileSize;
+        render();
+      }));
+      if (typeof ResizeObserver !== 'undefined') new ResizeObserver(render).observe(container.parentElement);
       await load();
     })();
   </script>

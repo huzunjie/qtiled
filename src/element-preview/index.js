@@ -2,4 +2,4 @@
 export { loadElementSources } from './sources';
 export { resolveElementDraw } from './draw';
 export { renderElementPreview } from './spritejs';
-export { importElementDefinition, validateElementDefinition } from '../elements';
+export { importElementDefinition, validateElementDefinition, applyElementEdit, exportElementDefinition } from '../elements';
