@@ -27,4 +27,13 @@ Object.assign(viewConfig.output, {
   name: 'qtiledView',
   sourcemap: true,
 });
-export default [config, viewConfig];
+const previewConfig = getConf('umd');
+previewConfig.input = 'src/element-preview/index.js';
+previewConfig.external = ['spritejs'];
+Object.assign(previewConfig.output, {
+  file: 'demo/static/js/qtiled-preview.dev.js',
+  name: 'qtiledPreview',
+  globals: { spritejs: 'spritejs' },
+  sourcemap: true,
+});
+export default [config, viewConfig, previewConfig];

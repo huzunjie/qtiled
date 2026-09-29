@@ -155,7 +155,7 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 
 ### 四向等距视图
 
-* [ ] [P0-B 四向视图](docs/isometric-view.md)（已实现，待验收）：核心 `shapes.polygon.rotateGridPoint()` 绕固定原点旋转；可选 `src/isometric-view` 入口组合现有等距投影与反查，提供 `projectGrid()`、`pickGrid()`，不改变世界坐标和逻辑占地。
+* [x] [P0-B 四向视图](docs/isometric-view.md)：核心 `shapes.polygon.rotateGridPoint()` 绕固定原点旋转；可选 `src/isometric-view` 入口组合现有等距投影与反查，提供 `projectGrid()`、`pickGrid()`，不改变世界坐标和逻辑占地。
 
 [四向视图与占地 Demo](demo/isometric-view.html) 支持 0/90/180/270° 切换、点击世界格、3×2/L 形占地和瓦片尺寸调整。`npm run dev` 同时构建核心与独立视图 Demo 包；只覆盖平地几何，素材预览在 P0-C 接入。
 
@@ -164,7 +164,8 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 * [ ] 地图与实体实例数据、场景导入导出
 
 ### Tile Renderer - 瓦片渲染器
-* [ ] ToDo - 待开发
+* [x] [P0-C 静态元素预览](docs/element-preview.md)：可选模块加载精选图片、解释四向裁切/锚点并通过 SpriteJS 显示，附网格和占地覆盖。[素材 Demo](demo/element-preview.html) 的四张图片与 JSON 一同放在样本目录中。
+* [ ] 地图场景渲染、画序与遮挡、动画播放
 
 ### Tile Editor - 瓦片编辑器
 * [ ] ToDo - 待开发

@@ -2,7 +2,7 @@
 
 本契约使后续元素编辑器与独立预览消费同一份数据。当前只提供定义校验和 JSON 导入，不加载图片、不绘制、不编辑，也不解释游戏规则。
 
-可选源码入口为 `src/elements/index.js`，没有从核心 `src/index.js` 导出，没有 DOM 或 SpriteJS 依赖。本片尚未增加独立打包产物或承诺 npm 子路径用法。
+可选源码入口为 `src/elements/index.js`，没有从核心 `src/index.js` 导出，没有 DOM 或 SpriteJS 依赖。可选模块的正式打包产物与 npm 子路径尚未实现，属于后续打包工作。
 
 ## 数据格式
 

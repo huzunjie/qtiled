@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "id": "sculpture-dog-crop-preview",
+  "kind": "sprite",
+  "footprint": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "views": {
+    "0": {
+      "source": "images/sculpture_dog01.png",
+      "rect": [
+        20,
+        10,
+        118,
+        90
+      ],
+      "anchor": [
+        19,
+        59
+      ]
+    },
+    "90": {
+      "source": "images/sculpture_dog02.png",
+      "rect": [
+        20,
+        10,
+        118,
+        90
+      ],
+      "anchor": [
+        59,
+        39
+      ]
+    },
+    "180": {
+      "source": "images/sculpture_dog03.png",
+      "rect": [
+        20,
+        10,
+        118,
+        106
+      ],
+      "anchor": [
+        99,
+        75
+      ]
+    },
+    "270": {
+      "source": "images/sculpture_dog04.png",
+      "rect": [
+        20,
+        10,
+        118,
+        105
+      ],
+      "anchor": [
+        59,
+        94
+      ]
+    }
+  }
+}

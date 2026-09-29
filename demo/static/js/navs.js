@@ -6,6 +6,7 @@
     ['hexagon.html', '六边形 - Hexagon'],
     ['rhombus.html', '正菱形 - Rhombus'],
     ['isometric-view.html', '四向视图与占地 - P0-B'],
+    ['element-preview.html', '四向静态素材 - P0-C'],
     ['neighbors-rect.html', '查找相邻Tile - 正矩形'],
     ['neighbors-hexagon.html', '查找相邻Tile - 六边形'],
     ['neighbors-rhombus.html', '查找相邻Tile - 正菱形'],

@@ -1,0 +1,45 @@
+.preview-workspace {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.preview-workspace > .viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  border: 1px solid #d7dce2;
+  border-radius: 8px;
+  background: white;
+}
+
+.preview-workspace > aside {
+  flex: 0 0 220px;
+  min-width: 0;
+  padding: 12px;
+  box-sizing: border-box;
+  background: white;
+  border-radius: 8px;
+}
+
+.preview-workspace h2 {
+  font-size: 14px;
+  margin: 0 0 12px;
+}
+
+.preview-workspace dl {
+  margin: 0;
+  font-size: 12px;
+}
+
+.preview-workspace dt {
+  color: #687383;
+  margin-top: 12px;
+}
+
+.preview-workspace dd {
+  margin: 4px 0 0;
+  font-family: ui-monospace, monospace;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>四向视图与占地 · QTiled P0-B</title>
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/preview-workspace.css">
   <style>
     .view-demo { max-width: 1130px; margin: 24px auto; }
     .view-demo h1 { font-size: 24px; }
@@ -16,22 +17,10 @@
     .view-demo button:focus-visible, .view-demo select:focus-visible { outline: 2px solid #098d3b; outline-offset: 3px; }
     .view-demo label { font-size: 13px; }
     .view-demo select { padding: 7px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
-    .view-demo .workspace { display: flex; align-items: stretch; gap: 20px; }
-    .view-demo .viewport { flex: 0 1 760px; overflow: auto; border: 1px solid #d7dce2; border-radius: 8px; background: white; }
     #view-canvas { position: relative; width: 760px; height: 520px; padding: 0; border: 0; cursor: crosshair; }
-    .view-demo aside { flex: 1; min-width: 230px; padding: 18px; box-sizing: border-box; background: white; border-radius: 8px; }
-    .view-demo h2 { font-size: 15px; margin: 0 0 12px; }
-    .view-demo dl { margin: 0; font-size: 13px; }
-    .view-demo dt { color: #687383; margin-top: 16px; }
-    .view-demo dd { margin: 5px 0 0; font-family: ui-monospace, monospace; line-height: 1.6; overflow-wrap: anywhere; }
-    .view-demo #world-cells { font-size: 12px; }
     .view-demo .legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 15px; font-size: 13px; }
     .view-demo .legend span::before { content: ''; display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; background: var(--color); }
     .view-demo .note { color: #687383; font-size: 12px; }
-    @media (max-width: 1000px) {
-      .view-demo .workspace { flex-direction: column; }
-      .view-demo .viewport { flex-basis: auto; }
-    }
   </style>
 </head>
 <body>
@@ -64,7 +53,7 @@
         </select>
       </label>
     </div>
-    <div class="workspace">
+    <div class="workspace preview-workspace">
       <div class="viewport">
         <div id="view-canvas" aria-label="可点击的四向等距网格"></div>
       </div>

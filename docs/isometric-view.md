@@ -2,7 +2,7 @@
 
 世界坐标、元素逻辑占地与视图方向分开保存。切向只改变显示坐标，不旋转或重新居中保存的占地。
 
-当前存档状态：源码、Demo 和开发构建已完成；P0-B 新增测试、回归测试及真实浏览器验收尚未完成，不标记为已验收。
+P0-B 源码、Demo、开发构建、自动化测试及真实浏览器检查已完成，后续 P0-C 已复用这些坐标能力。
 
 ## 核心：固定原点旋转
 
@@ -59,6 +59,8 @@ const positions = worldCells.map(grid => projectGrid(grid, view));
 
 [四向视图与占地](../demo/isometric-view.html) 使用现有 SpriteJS，显示带负坐标的世界网格、3×2 或 L 形占地、世界原点和元素逻辑原点。点击选择后切向，右侧世界格保持不变，投影像素随方向变化。可选择不同瓦片尺寸，包括非 2:1 比例。
 
-`npm run dev` 同时监听核心和可选视图模块，打开 `http://localhost:8033/demo/isometric-view.html`。也可先运行 `npm run debug` 生成两个 Demo 包，再使用本地静态服务打开页面。可选 Demo 包为 `demo/static/js/qtiled-view.dev.js`，浏览器命名空间为 `qtiledView`；暂未增加 npm 子路径或可选模块的正式发布产物。
+`npm run dev` 监听核心及可选 Demo 模块，打开 `http://localhost:8033/demo/isometric-view.html`。也可先运行 `npm run debug` 生成 Demo 包，再使用本地静态服务打开页面。可选视图 Demo 包为 `demo/static/js/qtiled-view.dev.js`，浏览器命名空间为 `qtiledView`。可选模块的 npm 子路径和正式发布产物尚未实现，属于后续打包工作。
+
+本页与静态素材 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px；空间不足时在画布区域内滚动，保持绘制尺寸和鼠标坐标比例。
 
 P0-B 不加载原作图片、不编辑元素定义；P0-C 将沿用这些坐标函数接入素材、裁切和像素锚点。

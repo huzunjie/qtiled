@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>四向静态素材 · QTiled P0-C</title>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/preview-workspace.css">
+  <style>
+    .element-demo { max-width: 1100px; margin: 24px auto; }
+    .element-demo h1 { font-size: 24px; }
+    .element-demo p { font-size: 14px; opacity: 1; line-height: 1.7; }
+    .element-demo .intro, .element-demo .note { color: #687383; }
+    .element-demo .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 18px 0; }
+    .element-demo button { cursor: pointer; padding: 9px 14px; }
+    .element-demo button[aria-pressed="true"] { background: #098d3b; }
+    .element-demo button:focus-visible, .element-demo select:focus-visible { outline: 2px solid #098d3b; outline-offset: 3px; }
+    .element-demo select { padding: 7px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
+    .element-demo label { font-size: 13px; }
+    #element-canvas { position: relative; width: 680px; height: 440px; border: 0; padding: 0; }
+    .element-demo #issues { white-space: pre-wrap; padding: 14px; background: #fff0ec; color: #9b3021; border-radius: 6px; }
+    .element-demo #status { color: #087f5b; }
+    .element-demo .note { font-size: 12px; }
+  </style>
+</head>
+<body>
+  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/qtiled-view.dev.js"></script>
+  <script src="./static/js/qtiled-preview.dev.js"></script>
+  <main class="element-demo">
+    <h1>四向静态素材 <small>· P0-C</small></h1>
+    <p class="intro">同一份元素定义驱动画面。切换视图查看四张狗雕塑素材；橙色线表示逻辑占地，红色十字是图片锚点对应的元素原点。</p>
+    <div class="controls">
+      <div role="group" aria-label="视图方向">
+        <button type="button" data-angle="0" aria-pressed="true">0°</button>
+        <button type="button" data-angle="90" aria-pressed="false">90°</button>
+        <button type="button" data-angle="180" aria-pressed="false">180°</button>
+        <button type="button" data-angle="270" aria-pressed="false">270°</button>
+      </div>
+      <label>样本 <select id="sample"><option value="element.json">完整素材</option><option value="cropped.json">裁切示例</option></select></label>
+      <label><input id="grid" type="checkbox" checked> 网格</label>
+      <label><input id="footprint" type="checkbox" checked> 占地</label>
+      <label><input id="anchor" type="checkbox" checked> 锚点</label>
+      <label><input id="bounds" type="checkbox"> 裁切边框</label>
+      <button id="reload" type="button">重新加载</button>
+    </div>
+    <p id="status" role="status">正在加载四张图片与元素定义…</p>
+    <pre id="issues" role="alert" hidden></pre>
+    <div class="workspace preview-workspace">
+      <div class="viewport"><div id="element-canvas" aria-label="四向静态元素预览"></div></div>
+      <aside>
+        <h2>当前素材与位置</h2>
+        <dl>
+          <dt>视图 / 图片</dt><dd id="source">—</dd>
+          <dt>实际图片尺寸</dt><dd id="source-size">—</dd>
+          <dt>裁切 [x, y, 宽, 高]</dt><dd id="rect">—</dd>
+          <dt>锚点（相对裁切左上角）</dt><dd id="anchor-value">—</dd>
+          <dt>绘制左上角 / 原点像素</dt><dd id="position">—</dd>
+          <dt>占地世界格</dt><dd id="world-cells">—</dd>
+        </dl>
+      </aside>
+    </div>
+    <p class="note">演示标定：逻辑瓦片 80×40，占地 2×2，原点 [0,0]。锚点按可见底座初步对齐；方向槽采用显式样本配置，原作罗盘映射、占地及步长尚未核实。裁切示例会切去图像边缘并同步移动锚点，剩余像素的世界位置不变；原图不被修改。</p>
+    <p class="note">四张图片与 JSON 一起放在样本目录中；素材来源与标定依据见 <a href="./static/element-samples/dog/README.md">样本说明</a>。</p>
+  </main>
+  <script>
+    (async () => {
+      const nav = document.querySelector('.navs');
+      if (nav) nav.classList.add('closed');
+      const { loadElementSources, importElementDefinition, resolveElementDraw, renderElementPreview } = qtiledPreview;
+      const container = document.getElementById('element-canvas');
+      const scene = new spritejs.Scene({ container, width: 680, height: 440, mode: 'static' });
+      const layer = scene.layer('preview', { handleEvent: false });
+      const view = { angle: 0, tileSize: [80, 40], originPixel: [320, 260] };
+      const assetDir = './static/element-samples/dog/';
+      const sourceFiles = Object.fromEntries([1, 2, 3, 4].map(number => {
+        const path = `images/sculpture_dog0${number}.png`;
+        return [path, `${assetDir}${path}`];
+      }));
+      const jsonBySample = new Map();
+      let sources = {};
+      let sourceInfo = {};
+      let definition = null;
+      let loading = false;
+      const text = (id, value) => { document.getElementById(id).textContent = value; };
+      const checked = id => document.getElementById(id).checked;
+
+      function showIssues(issues) {
+        definition = null;
+        renderElementPreview(layer, null);
+        const element = document.getElementById('issues');
+        element.hidden = false;
+        element.textContent = issues.map(issue => `${issue.path}: ${issue.message}`).join('\n');
+        text('status', '无法显示元素，请修正以上问题后重新加载。');
+        ['source', 'source-size', 'rect', 'anchor-value', 'position', 'world-cells'].forEach(id => text(id, '—'));
+      }
+
+      function render() {
+        if (!definition) return;
+        const draw = resolveElementDraw(definition, [0, 0], view);
+        const gridPositions = checked('grid') ? qtiled.shapes.polygon.twoDimForEach([-3, 3], [-3, 3], 'RightDown', (x, y) => qtiledView.projectGrid([x, y], view)) : [];
+        renderElementPreview(layer, draw, sources, {
+          gridPositions, footprint: checked('footprint'), anchor: checked('anchor'), bounds: checked('bounds'),
+        });
+        const size = sourceInfo[draw.source];
+        text('source', `${draw.angle}° · ${draw.source}`);
+        text('source-size', `${size.width} × ${size.height}`);
+        text('rect', JSON.stringify(draw.rect));
+        text('anchor-value', JSON.stringify(draw.anchor));
+        text('position', `${JSON.stringify(draw.position)} / ${JSON.stringify(draw.origin)}`);
+        text('world-cells', draw.footprint.map(cell => JSON.stringify(cell.grid)).join(' '));
+      }
+
+      function selectSample() {
+        const result = importElementDefinition(jsonBySample.get(document.getElementById('sample').value), sourceInfo);
+        if (result.issues.length) return showIssues(result.issues);
+        definition = result.definition;
+        document.getElementById('issues').hidden = true;
+        text('status', '4 张图片已加载 · 配置校验通过');
+        render();
+      }
+
+      async function load() {
+        if (loading) return;
+        loading = true;
+        definition = null;
+        jsonBySample.clear();
+        renderElementPreview(layer, null);
+        text('status', '正在加载四张图片与元素定义…');
+        document.getElementById('issues').hidden = true;
+        try {
+          const result = await loadElementSources(sourceFiles);
+          sources = result.sources;
+          sourceInfo = result.sourceInfo;
+          if (result.issues.length) return showIssues(result.issues);
+          for (const name of ['element.json', 'cropped.json']) {
+            const response = await fetch(`${assetDir}${name}`, { cache: 'no-store' });
+            if (!response.ok) throw new Error(`${name} 加载失败（${response.status}）。`);
+            jsonBySample.set(name, await response.text());
+          }
+          selectSample();
+        } catch (error) {
+          showIssues([{ path: '样本', message: error.message }]);
+        } finally {
+          loading = false;
+        }
+      }
+
+      document.querySelectorAll('[data-angle]').forEach(button => button.addEventListener('click', () => {
+        view.angle = Number(button.dataset.angle);
+        document.querySelectorAll('[data-angle]').forEach(item => item.setAttribute('aria-pressed', String(Number(item.dataset.angle) === view.angle)));
+        render();
+      }));
+      document.querySelectorAll('input[type="checkbox"]').forEach(input => input.addEventListener('change', render));
+      document.getElementById('sample').addEventListener('change', () => { if (!loading) selectSample(); });
+      document.getElementById('reload').addEventListener('click', load);
+      await load();
+    })();
+  </script>
+</body>
+</html>
