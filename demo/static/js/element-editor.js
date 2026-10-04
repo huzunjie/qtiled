@@ -3,7 +3,7 @@
   const nav = document.querySelector('.navs');
   if (nav) nav.classList.add('closed');
   const { loadElementSources, importElementDefinition, validateElementDefinition,
-    applyElementEdit, exportElementDefinition, resolveElementDraw, renderElementPreview } = qtiledPreview;
+    applyElementEdit, exportElementDefinition, resolveElementDraw, resolveElementPlacement, renderElementPreview } = qtiledPreview;
   const get = id => document.getElementById(id);
   const angles = [0, 90, 180, 270];
   const rectIds = ['rect-x', 'rect-y', 'rect-width', 'rect-height'];
@@ -15,6 +15,11 @@
   const layer = scene.layer('element', { handleEvent: false });
   const overlayLayer = scene.layer('coordinates', { handleEvent: false });
   const view = { angle: 0, tileSize: [get('tile-width').valueAsNumber, get('tile-height').valueAsNumber], originPixel: [320, 260] };
+  let objectAngle = 0;
+  let elementGrid = [0, 0];
+  let placementGrid = null;
+  let pointerOnCanvas = false;
+  const imageAngle = () => (view.angle + objectAngle) % 360;
   let definition;
   let sources = {};
   let sourceInfo = {};
@@ -30,7 +35,7 @@
   let exportJson = null;
   const lowerEdgeCache = new WeakMap();
 
-  if (typeof applyElementEdit !== 'function' || typeof exportElementDefinition !== 'function') {
+  if (typeof applyElementEdit !== 'function' || typeof exportElementDefinition !== 'function' || typeof resolveElementPlacement !== 'function') {
     get('status').textContent = '运行文件尚未更新：请在 QTiled 根目录运行 npm run debug，再刷新此页。';
     get('file-controls').disabled = true;
     get('canvas-controls').disabled = true;
@@ -43,6 +48,16 @@
 
   function getWorldPosition(event) {
     return getPointerPosition(event, container).map((value, i) => (value - camera.offset[i]) / camera.scale);
+  }
+
+  function resetPlacement() {
+    elementGrid = [0, 0];
+    objectAngle = 0;
+    document.querySelectorAll('[data-object-angle]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.objectAngle) === 0)));
+  }
+
+  function toDefinitionOffset(worldGrid) {
+    return qtiled.shapes.polygon.rotateGridPoint(worldGrid.map((value, i) => value - elementGrid[i]), -objectAngle / 90);
   }
 
   // 四向共用最大包围范围，只改变编辑视图，不猜测素材底座或改写锚点。
@@ -80,7 +95,19 @@
     overlayLayer.removeAllChildren();
     const vertexes = qtiled.shapes.rhombus.getVertexes(view.tileSize);
     const footprint = Array.isArray(definition?.footprint) && definition.footprint.every(cell =>
-      Array.isArray(cell) && cell.length === 2 && cell.every(Number.isInteger)) ? definition.footprint : [];
+      Array.isArray(cell) && cell.length === 2 && cell.every(Number.isInteger))
+      ? definition.footprint.map(cell => qtiled.shapes.polygon.rotateGridPoint(cell, objectAngle / 90).map((value, i) => value + elementGrid[i])) : [];
+    placementGrid = null;
+    if (footprint.length) {
+      try {
+        const placement = resolveElementPlacement(definition, [0, 0], objectAngle, view.angle);
+        placementGrid = elementGrid.map((value, i) => value - placement.grid[i]);
+      } catch (error) {
+        // 不完整或不规则占地仍可编辑；没有原作依据时不另猜上角选格规则。
+      }
+    }
+    document.querySelectorAll('[data-object-angle]').forEach(button => { button.disabled = busy || !placementGrid; });
+    get('placement-status').textContent = placementGrid ? `蓝框：放置基准格 [${placementGrid}]` : '当前占地不支持矩形转向；仍可编辑和切换镜头。';
     const footprintBounds = qtiled.shapes.polygon.getBounds(footprint);
     // 至少 9×9，超过基础范围的占地向外多留两格；非矩形与负偏移同样适用。
     const gridRanges = [
@@ -94,12 +121,13 @@
     get('issues').textContent = issues.map(issue => `${issue.path}: ${issue.message}`).join('\n');
     get('export').disabled = busy || issues.length > 0;
     const validAngles = angles.filter(angle => !issues.some(issue => issue.path === `views.${angle}` || issue.path.startsWith(`views.${angle}.`)));
-    const summary = `${definition?.kind === 'tile' ? '地块' : '精灵'} · 占地 ${footprint.length} 格 · 当前 ${view.angle}° · 四向 ${validAngles.length}/4`;
+    const summary = `${definition?.kind === 'tile' ? '地块' : '精灵'} · 占地 ${footprint.length} 格 · 镜头 ${view.angle}° / 对象 ${objectAngle}° · 四向 ${validAngles.length}/4`;
     get('status').textContent = busy ? '正在载入…' : `${summary} · ${issues.length ? '草稿待完成，暂不可导出' : '配置校验通过，可以导出 JSON'}`;
     // 草稿允许只预览已配置的当前方向；正式导出仍校验完整四向。
     const invalidCommon = issues.some(issue => issue.path === '$' || issue.path === 'views' || issue.path.startsWith('footprint'));
-    currentDraw = invalidCommon || !validAngles.includes(view.angle) ? null : resolveElementDraw(definition, [0, 0], view);
-    if (fit) fitCamera(gridRanges, vertexes, invalidCommon ? [] : validAngles.map(angle => resolveElementDraw(definition, [0, 0], { ...view, angle })));
+    currentDraw = invalidCommon || !validAngles.includes(imageAngle()) ? null : resolveElementDraw(definition, elementGrid, view, objectAngle);
+    if (fit) fitCamera(gridRanges, vertexes, invalidCommon ? [] : validAngles.map(angle =>
+      resolveElementDraw(definition, elementGrid, { ...view, angle: (angle - objectAngle + 360) % 360 }, objectAngle)));
     get('view-scale').textContent = `${view.tileSize.join('×')} · ${Math.round(camera.scale * 100)}%`;
     get('view-scale').title = `逻辑单元格 ${view.tileSize.join('×')} 像素；当前显示约 ${view.tileSize.map(value => Math.round(value * camera.scale * 10) / 10).join('×')} 像素`;
     const points = vertexes.map(vertex => vertex.map(value => value * camera.scale));
@@ -112,16 +140,21 @@
       }));
     });
     const preview = renderElementPreview(layer, currentDraw, sources,
-      { bounds: true, footprint: false, anchor: false });
+      { bounds: true, footprint: false, anchor: false, placement: false });
     if (preview) preview.attr({ pos: camera.offset, scale: [camera.scale, camera.scale], transformOrigin: [0, 0], opacity: Number(get('image-opacity').value) / 100 });
     footprint.forEach(grid => overlayLayer.append(new spritejs.Polyline({
       pos: toScreen(qtiledView.projectGrid(grid, view)), points, close: true,
       strokeColor: '#ce871c', fillColor: 'rgba(255,190,55,0.12)', lineWidth: 2,
     })));
     for (const cross of [[[-6, 0], [6, 0]], [[0, -6], [0, 6]]]) {
-      overlayLayer.append(new spritejs.Polyline({ pos: toScreen(view.originPixel), points: cross, strokeColor: '#cf3535', lineWidth: 2 }));
+      overlayLayer.append(new spritejs.Polyline({ pos: toScreen(qtiledView.projectGrid(elementGrid, view)), points: cross, strokeColor: '#cf3535', lineWidth: 2 }));
     }
-    const size = sourceInfo[definition?.views[view.angle]?.source];
+    if (placementGrid) {
+      overlayLayer.append(new spritejs.Polyline({ pos: toScreen(qtiledView.projectGrid(placementGrid, view)),
+        points: [[0, -7], [7, 0], [0, 7], [-7, 0]], close: true, strokeColor: '#1976b5', lineWidth: 2 }));
+    }
+    const size = sourceInfo[definition?.views[imageAngle()]?.source];
+    get('image-angle').textContent = `编辑素材：${imageAngle()}°`;
     get('source-size').textContent = size ? `原图 ${size.width} × ${size.height}` : '未选图';
     get('source-size').title = size ? '' : '当前方向尚未绑定已加载图片';
   }
@@ -129,7 +162,7 @@
   function fillFields() {
     get('element-id').value = definition.id;
     get('kind').value = definition.kind;
-    const current = definition.views[view.angle];
+    const current = definition.views[imageAngle()];
     get('source').replaceChildren(new Option('请选择图片', ''), ...Object.keys(sources).map(path => new Option(path, path)));
     if (current.source && !Object.prototype.hasOwnProperty.call(sources, current.source)) {
       get('source').add(new Option(`未加载：${current.source}`, current.source));
@@ -162,7 +195,7 @@
   }
 
   function edit(field, value) {
-    definition = applyElementEdit(definition, { field, value, angle: view.angle });
+    definition = applyElementEdit(definition, { field, value, angle: imageAngle() });
     if (field === 'footprint') { dimensionIssue = null; syncFootprintFields(); }
     render({ fit: true });
   }
@@ -202,6 +235,7 @@
       footprint: qtiled.shapes.polygon.twoDimForEach([0, width - 1], [0, height - 1], 'RightDown', (x, y) => [x, y]),
       views: Object.fromEntries(angles.map(angle => [angle, { source: '', rect: [0, 0, 1, 1], anchor: [0, 0] }])),
     };
+    resetPlacement();
     sources = {};
     sourceInfo = {};
     ['source-files', 'direction-file', 'definition-file'].forEach(id => { get(id).value = ''; });
@@ -232,6 +266,7 @@
       if (result.issues.length) fileIssues = result.issues;
       else {
         definition = result.definition;
+        resetPlacement();
         inputIssue = null;
         dimensionIssue = null;
         get('definition-file').value = '';
@@ -245,18 +280,19 @@
   get('element-id').addEventListener('input', event => { definition = { ...definition, id: event.target.value }; render(); });
   get('kind').addEventListener('change', event => { definition = { ...definition, kind: event.target.value }; render(); });
   get('source').addEventListener('change', event => {
-    const firstBinding = !definition.views[view.angle].source;
+    const angle = imageAngle();
+    const firstBinding = !definition.views[angle].source;
     fileIssues = [];
-    definition = applyElementEdit(definition, { field: 'source', angle: view.angle, value: event.target.value });
+    definition = applyElementEdit(definition, { field: 'source', angle, value: event.target.value });
     const size = sourceInfo[event.target.value];
-    if (firstBinding && size) definition = applyElementEdit(definition, { field: 'rect', angle: view.angle, value: [0, 0, size.width, size.height] });
+    if (firstBinding && size) definition = applyElementEdit(definition, { field: 'rect', angle, value: [0, 0, size.width, size.height] });
     fillFields();
     render({ fit: true });
   });
   get('direction-file').addEventListener('change', event => {
     const file = event.target.files[0];
     if (!file) return;
-    const angle = view.angle;
+    const angle = imageAngle();
     loadFiles(async () => {
       // 相对文件名不可同时指向不同图片；复用已载入图片时使用下拉框。
       if (Object.prototype.hasOwnProperty.call(sources, file.name)) {
@@ -275,7 +311,7 @@
     ids.forEach(id => get(id).addEventListener('input', () => edit(field, ids.map(name => get(name).valueAsNumber))));
   }
   get('full-image').addEventListener('click', () => {
-    const size = sourceInfo[definition.views[view.angle].source];
+    const size = sourceInfo[definition.views[imageAngle()].source];
     if (!size) return;
     edit('rect', [0, 0, size.width, size.height]);
     fillFields();
@@ -297,9 +333,9 @@
     const point = getWorldPosition(event);
     if (!point.every((value, i) => value >= currentDraw.position[i] && value <= currentDraw.position[i] + currentDraw.rect[i + 2])) return;
     drag = {
-      pointerId: event.pointerId, angle: view.angle,
+      pointerId: event.pointerId, angle: imageAngle(),
       start: getPointerPosition(event, container), scale: camera.scale,
-      anchor: [...definition.views[view.angle].anchor], moved: false,
+      anchor: [...definition.views[imageAngle()].anchor], moved: false,
       edges: [], edgeMessage: '',
     };
     if (get('edge-snap').checked) {
@@ -334,16 +370,17 @@
     container.classList.add('dragging');
     event.preventDefault();
     let anchor = drag.anchor.map((value, i) => value - delta[i] / drag.scale);
+    const origin = currentDraw.origin;
     const snapped = get('edge-snap').checked && !event.altKey
-      ? snapElementLowerEdges(drag.edges, view.originPixel.map((value, i) => value - anchor[i]), view.originPixel, view.tileSize, drag.scale)
+      ? snapElementLowerEdges(drag.edges, origin.map((value, i) => value - anchor[i]), view.originPixel, view.tileSize, drag.scale)
       : { offset: [0, 0], edges: [] };
     anchor = anchor.map((value, i) => Math.round((value - snapped.offset[i]) * 1000) / 1000);
     definition = applyElementEdit(definition, { field: 'anchor', angle: drag.angle, value: anchor });
     anchorIds.forEach((id, i) => { get(id).value = anchor[i]; });
     render();
     snapped.edges.forEach(edge => overlayLayer.append(new spritejs.Polyline({
-      points: [edge.from, edge.to].map(x => toScreen([view.originPixel[0] - anchor[0] + x,
-        view.originPixel[1] - anchor[1] + edge.slope * x + edge.intercept])),
+      points: [edge.from, edge.to].map(x => toScreen([origin[0] - anchor[0] + x,
+        origin[1] - anchor[1] + edge.slope * x + edge.intercept])),
       strokeColor: '#098d3b', lineWidth: 3,
     })));
     const snapStatus = snapped.edges.length ? '底边已吸附（Alt 自由拖动）' : event.altKey ? '自由拖动（Alt）' : drag.edgeMessage;
@@ -372,10 +409,11 @@
     if (busy) return;
     if (inputIssue || !Array.isArray(definition.footprint) || !definition.footprint.every(cell =>
       Array.isArray(cell) && cell.length === 2 && cell.every(Number.isInteger))) return;
-    const grid = qtiledView.pickGrid(getWorldPosition(event), view);
+    const worldGrid = qtiledView.pickGrid(getWorldPosition(event), view);
+    const grid = toDefinitionOffset(worldGrid);
     const found = definition.footprint.some(cell => cell[0] === grid[0] && cell[1] === grid[1]);
     const action = get('grid-action').value;
-    if (action === 'inspect') { get('grid-status').textContent = `所选格子 [${grid}]${found ? ' · 已占用' : ' · 未占用'}`; return; }
+    if (action === 'inspect') { get('grid-status').textContent = `所选格子 [${worldGrid}] · 基准偏移 [${grid}]${found ? ' · 已占用' : ' · 未占用'}`; return; }
     if (action === 'origin') {
       if (!found) { get('grid-status').textContent = '请选择橙色占地内的格子作为原点。'; return; }
       definition = applyElementEdit(definition, { field: 'footprint', value: definition.footprint.map(cell => [cell[0] - grid[0], cell[1] - grid[1]]) });
@@ -385,6 +423,9 @@
         const anchor = definition.views[angle].anchor.map((value, i) => value + delta[i]);
         definition = applyElementEdit(definition, { field: 'anchor', angle, value: anchor });
       });
+      // 定义原点重命名后同步世界定位，图片与占地保持原位；放置基准格不改变。
+      const offset = qtiled.shapes.polygon.rotateGridPoint(grid, objectAngle / 90);
+      elementGrid = elementGrid.map((value, i) => value + offset[i]);
       get('grid-status').textContent = `原格子 [${grid}] 已设为 [0,0]；四向锚点与占地偏移已同步换算。`;
       fillFields();
       render({ fit: true });
@@ -398,7 +439,8 @@
   container.addEventListener('mousemove', event => {
     if (busy) return;
     const grid = qtiledView.pickGrid(getWorldPosition(event), view);
-    container.title = `格子 [${grid}] · 拖拽图片调整锚点`;
+    const offset = toDefinitionOffset(grid);
+    container.title = `格子 [${grid}] · 基准偏移 [${offset}] · 拖拽调整素材 ${imageAngle()}° 锚点`;
   });
   ['footprint-width', 'footprint-height'].forEach(id => get(id).addEventListener('input', () => {
     if (!definition || busy) return;
@@ -420,12 +462,31 @@
     get('grid-status').textContent = `已重建 ${width} × ${height} 占地；可点选格子调整原点。`;
   }));
   document.querySelectorAll('[data-angle]').forEach(button => button.addEventListener('click', () => {
-    if (busy) return;
+    if (busy || drag) return;
     view.angle = Number(button.dataset.angle);
     document.querySelectorAll('[data-angle]').forEach(item => item.setAttribute('aria-pressed', String(Number(item.dataset.angle) === view.angle)));
     fillFields();
     render({ fit: true });
   }));
+  function setObjectAngle(angle) {
+    if (busy || drag || !definition || !placementGrid) return;
+    const placement = resolveElementPlacement(definition, placementGrid, angle, view.angle);
+    elementGrid = placement.grid;
+    objectAngle = placement.objectAngle;
+    document.querySelectorAll('[data-object-angle]').forEach(item => item.setAttribute('aria-pressed', String(Number(item.dataset.objectAngle) === objectAngle)));
+    fillFields();
+    render({ fit: true });
+  }
+  document.querySelectorAll('[data-object-angle]').forEach(button => button.addEventListener('click', () => setObjectAngle(Number(button.dataset.objectAngle))));
+  container.addEventListener('pointerenter', () => { pointerOnCanvas = true; });
+  container.addEventListener('pointerleave', () => { pointerOnCanvas = false; });
+  document.addEventListener('keydown', event => {
+    const active = document.activeElement;
+    if (!pointerOnCanvas || event.key.toLowerCase() !== 'r' || event.repeat || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey
+      || active?.matches('input, textarea, select, [contenteditable="true"]') || get('export-dialog').open || busy || drag) return;
+    event.preventDefault();
+    setObjectAngle((objectAngle + 90) % 360);
+  });
   ['tile-width', 'tile-height'].forEach(id => get(id).addEventListener('change', () => {
     const size = [get('tile-width').valueAsNumber, get('tile-height').valueAsNumber];
     if (size.every(value => Number.isFinite(value) && value > 0)) view.tileSize = size;
@@ -459,6 +520,7 @@
       if (result.issues.length) fileIssues = result.issues;
       else {
         definition = result.definition;
+        resetPlacement();
         inputIssue = null;
         dimensionIssue = null;
         get('grid-status').textContent = '已导入配置；占地行列与当前定义同步。';

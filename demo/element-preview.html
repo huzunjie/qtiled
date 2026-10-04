@@ -57,7 +57,7 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
-  <script src="./static/js/qtiled-preview.dev.js"></script>
+  <script src="./static/js/qtiled-preview.dev.js?20261004-placement"></script>
   <script src="./static/js/element-files.js"></script>
   <main class="element-demo">
     <h1>四向静态素材 <small>· P0-C</small></h1>
@@ -91,18 +91,28 @@
         <div class="fields">
           <label class="line">配置<select id="sample"><option value="element.json">完整素材</option><option value="cropped.json">裁切示例</option></select></label>
           <div class="field-heading"><h3>方向与图片</h3><output id="source-size">—</output></div>
-          <div class="directions" role="group" aria-label="视图方向">
+          <span class="group-name">镜头方向</span>
+          <div class="directions" role="group" aria-label="镜头方向">
             <button type="button" data-angle="0" aria-pressed="true">0°</button>
             <button type="button" data-angle="90" aria-pressed="false">90°</button>
             <button type="button" data-angle="180" aria-pressed="false">180°</button>
             <button type="button" data-angle="270" aria-pressed="false">270°</button>
           </div>
+          <span class="group-name">对象朝向（画布内按 R 转向）</span>
+          <div class="directions" role="group" aria-label="对象朝向">
+            <button type="button" data-object-angle="0" aria-pressed="true">0°</button>
+            <button type="button" data-object-angle="90" aria-pressed="false">90°</button>
+            <button type="button" data-object-angle="180" aria-pressed="false">180°</button>
+            <button type="button" data-object-angle="270" aria-pressed="false">270°</button>
+          </div>
+          <output id="placement-status" aria-live="polite">—</output>
+          <output id="image-angle" aria-live="polite">素材方向：0°</output>
           <output id="source" aria-label="当前方向图片">—</output>
           <div class="field-heading"><h3>裁切与定位</h3></div>
           <dl>
             <dt>裁切 [x, y, 宽, 高]</dt><dd id="rect">—</dd>
             <dt>像素锚点（相对裁切左上角）</dt><dd id="anchor-value">—</dd>
-            <dt>绘制左上角 / 原点像素</dt><dd id="position">—</dd>
+            <dt>绘制左上角 / 定义原点像素</dt><dd id="position">—</dd>
           </dl>
           <div class="field-heading"><h3>占地</h3></div>
           <dl><dt>占用格子</dt><dd id="world-cells" tabindex="0">—</dd></dl>
@@ -117,7 +127,8 @@
     <details class="note">
       <summary>操作说明与素材约定</summary>
       <p>独立回读：选择素材根目录或图片文件，再导入编辑器导出的 JSON。单选图片以文件名作为引用，目录图片使用目录内相对路径。瓦片尺寸需与编辑预览一致；本页不读取编辑器状态。“载入样本”恢复内置样本。</p>
-      <p>橙色线表示逻辑占地，红色十字表示元素原点。暂定单元格尺寸 80×40，可手动调整。内置样本占地 2×2，原点 [0,0]；锚点按可见底座初步对齐。方向槽采用显式样本配置，原作罗盘映射、占地及步长尚未核实。裁切示例会切去图像边缘并同步移动锚点，剩余像素的世界位置不变；原图不被修改。</p>
+      <p>镜头和对象朝向分别切换，鼠标位于画布且未编辑输入框时按 R 转对象。矩形转向后仍以当前画面最上角的占地格定位：2×2 保持原占地，3×2 交换长宽；切换镜头不会搬动世界占地。不规则占地仍可预览，暂不支持对象转向。导入后对象朝向重置为 0°；复现转向时先选择相同镜头，再按相同顺序转对象，位置和朝向不写入 JSON。</p>
+      <p>橙色线表示逻辑占地，蓝色小框表示上角放置基准格，红色十字表示素材标定用的定义原点；“锚点”开关控制两种标记。暂定单元格尺寸 80×40，可手动调整。内置样本占地 2×2，锚点按可见底座初步对齐，精确原作像素仍待标定。裁切示例会切去图像边缘并同步移动锚点，剩余像素的世界位置不变；原图不被修改。</p>
       <p>四张图片与 JSON 一起放在样本目录中；素材来源与标定依据见 <a href="./static/element-samples/dog/README.md">样本说明</a>。</p>
     </details>
   </main>
@@ -125,11 +136,20 @@
     (async () => {
       const nav = document.querySelector('.navs');
       if (nav) nav.classList.add('closed');
-      const { loadElementSources, importElementDefinition, resolveElementDraw, renderElementPreview } = qtiledPreview;
+      const { loadElementSources, importElementDefinition, resolveElementDraw, resolveElementPlacement, renderElementPreview } = qtiledPreview;
+      if (typeof resolveElementPlacement !== 'function') {
+        document.getElementById('status').textContent = '运行文件尚未更新：请在 QTiled 根目录运行 npm run debug，再刷新此页。';
+        document.querySelectorAll('button, input, select').forEach(input => { input.disabled = true; });
+        return;
+      }
       const container = document.getElementById('element-canvas');
       const scene = new spritejs.Scene({ container, width: 680, height: 440, mode: 'static' });
       const layer = scene.layer('preview', { handleEvent: false });
       const view = { angle: 0, tileSize: [document.getElementById('tile-width').valueAsNumber, document.getElementById('tile-height').valueAsNumber], originPixel: [320, 260] };
+      let objectAngle = 0;
+      let elementGrid = [0, 0];
+      let placementGrid = null;
+      let pointerOnCanvas = false;
       const assetDir = './static/element-samples/dog/';
       const sourceFiles = Object.fromEntries([1, 2, 3, 4].map(number => {
         const path = `images/sculpture_dog0${number}.png`;
@@ -150,13 +170,18 @@
         element.hidden = false;
         element.textContent = issues.map(issue => `${issue.path}: ${issue.message}`).join('\n');
         text('status', '无法显示元素，请修正以上问题后重新加载。');
-        ['source', 'source-size', 'rect', 'anchor-value', 'position', 'world-cells', 'view-scale'].forEach(id => text(id, '—'));
+        placementGrid = null;
+        document.querySelectorAll('[data-object-angle]').forEach(button => { button.disabled = true; });
+        ['source', 'source-size', 'image-angle', 'placement-status', 'rect', 'anchor-value', 'position', 'world-cells', 'view-scale'].forEach(id => text(id, '—'));
       }
 
       function render() {
         if (!definition) return;
-        const draw = resolveElementDraw(definition, [0, 0], view);
-        const footprintBounds = qtiled.shapes.polygon.getBounds(definition.footprint);
+        const draw = resolveElementDraw(definition, elementGrid, view, objectAngle);
+        placementGrid = draw.placementGrid;
+        document.querySelectorAll('[data-object-angle]').forEach(button => { button.disabled = !placementGrid; });
+        text('placement-status', placementGrid ? `蓝框：放置基准格 [${placementGrid}]` : '不规则占地仅预览，暂不支持对象转向。');
+        const footprintBounds = qtiled.shapes.polygon.getBounds(draw.footprint.map(cell => cell.grid));
         const ranges = [[Math.min(-4, footprintBounds.minX - 2), Math.max(4, footprintBounds.maxX + 2)],
           [Math.min(-4, footprintBounds.minY - 2), Math.max(4, footprintBounds.maxY + 2)]];
         const gridPositions = checked('grid') ? qtiled.shapes.polygon.twoDimForEach(...ranges, 'RightDown', (x, y) => qtiledView.projectGrid([x, y], view)) : [];
@@ -164,7 +189,7 @@
         const positions = [];
         const vertexes = qtiled.shapes.rhombus.getVertexes(view.tileSize);
         [0, 90, 180, 270].forEach(angle => {
-          const rotated = resolveElementDraw(definition, [0, 0], { ...view, angle });
+          const rotated = resolveElementDraw(definition, elementGrid, { ...view, angle }, objectAngle);
           positions.push(rotated.position, rotated.position.map((value, i) => value + rotated.rect[i + 2]));
           ranges[0].forEach(x => ranges[1].forEach(y => {
             const center = qtiledView.projectGrid([x, y], { ...view, angle });
@@ -180,12 +205,13 @@
         scene.height = height;
         const scale = Math.min(1, Math.max(1, width - 48) / bounds.width, Math.max(1, height - 48) / bounds.height);
         const preview = renderElementPreview(layer, draw, sources, {
-          gridPositions, footprint: checked('footprint'), anchor: checked('anchor'), bounds: checked('bounds'),
+          gridPositions, footprint: checked('footprint'), anchor: checked('anchor'), placement: checked('anchor'), bounds: checked('bounds'),
         });
         if (preview) preview.attr({ transformOrigin: [0, 0], scale: [scale, scale],
           pos: [width / 2 - (bounds.minX + bounds.maxX) / 2 * scale, height / 2 - (bounds.minY + bounds.maxY) / 2 * scale] });
         const size = sourceInfo[draw.source];
         text('source', draw.source);
+        text('image-angle', `素材方向：${draw.imageAngle}°`);
         text('source-size', `原图 ${size.width} × ${size.height}`);
         text('view-scale', `自动适配 · ${Math.round(scale * 100)}%`);
         text('rect', JSON.stringify(draw.rect));
@@ -198,6 +224,9 @@
         const result = importElementDefinition(jsonBySample.get(document.getElementById('sample').value), sourceInfo);
         if (result.issues.length) return showIssues(result.issues);
         definition = result.definition;
+        elementGrid = [0, 0];
+        objectAngle = 0;
+        document.querySelectorAll('[data-object-angle]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.objectAngle) === 0)));
         document.getElementById('issues').hidden = true;
         text('status', `${Object.keys(sources).length} 张图片已加载 · 配置校验通过`);
         render();
@@ -241,10 +270,29 @@
       }
 
       document.querySelectorAll('[data-angle]').forEach(button => button.addEventListener('click', () => {
+        if (loading) return;
         view.angle = Number(button.dataset.angle);
         document.querySelectorAll('[data-angle]').forEach(item => item.setAttribute('aria-pressed', String(Number(item.dataset.angle) === view.angle)));
         render();
       }));
+      function setObjectAngle(angle) {
+        if (loading || !definition || !placementGrid) return;
+        const placement = resolveElementPlacement(definition, placementGrid, angle, view.angle);
+        elementGrid = placement.grid;
+        objectAngle = placement.objectAngle;
+        document.querySelectorAll('[data-object-angle]').forEach(item => item.setAttribute('aria-pressed', String(Number(item.dataset.objectAngle) === objectAngle)));
+        render();
+      }
+      document.querySelectorAll('[data-object-angle]').forEach(button => button.addEventListener('click', () => setObjectAngle(Number(button.dataset.objectAngle))));
+      container.addEventListener('pointerenter', () => { pointerOnCanvas = true; });
+      container.addEventListener('pointerleave', () => { pointerOnCanvas = false; });
+      document.addEventListener('keydown', event => {
+        const active = document.activeElement;
+        if (!pointerOnCanvas || event.key.toLowerCase() !== 'r' || event.repeat || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey
+          || active?.matches('input, textarea, select, [contenteditable="true"]') || loading || !definition) return;
+        event.preventDefault();
+        setObjectAngle((objectAngle + 90) % 360);
+      });
       document.querySelectorAll('input[type="checkbox"]').forEach(input => input.addEventListener('change', render));
       document.getElementById('sample').addEventListener('change', () => { if (!loading) selectSample(); });
       document.getElementById('reload').addEventListener('click', () => load());

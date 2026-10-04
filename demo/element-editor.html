@@ -79,7 +79,7 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
-  <script src="./static/js/qtiled-preview.dev.js"></script>
+  <script src="./static/js/qtiled-preview.dev.js?20261004-placement"></script>
   <script src="./static/js/pointer.js"></script>
   <script src="./static/js/element-files.js"></script>
   <script src="./static/js/element-snap.js"></script>
@@ -126,19 +126,29 @@
           <div class="fields">
             <label class="line">元素 ID <input id="element-id" type="text"></label>
             <label class="line" title="类别记录用途，不改变图片外观。">类别 <select id="kind"><option value="sprite">精灵 sprite</option><option value="tile">地块 tile</option></select></label>
-            <div class="field-heading footprint-heading"><h3>占地</h3><output id="footprint-shape" class="field-help"></output></div>
+            <div class="field-heading footprint-heading"><h3>基准占地</h3><output id="footprint-shape" class="field-help"></output></div>
             <div class="pair">
               <label>列 <input id="footprint-width" aria-label="占地列" type="number" min="1" step="1" value="2"></label>
               <label>行 <input id="footprint-height" aria-label="占地行" type="number" min="1" step="1" value="2"></label>
             </div>
             <label>占用格子 JSON <textarea id="footprint" rows="1" wrap="off" spellcheck="false"></textarea></label>
             <div class="field-heading"><h3>方向与图片</h3><output id="source-size">—</output></div>
-            <div class="directions" role="group" aria-label="视图方向">
+            <span class="group-name">镜头方向</span>
+            <div class="directions" role="group" aria-label="镜头方向">
               <button type="button" data-angle="0" aria-pressed="true">0°</button>
               <button type="button" data-angle="90" aria-pressed="false">90°</button>
               <button type="button" data-angle="180" aria-pressed="false">180°</button>
               <button type="button" data-angle="270" aria-pressed="false">270°</button>
             </div>
+            <span class="group-name">对象朝向（画布内按 R 转向）</span>
+            <div class="directions" role="group" aria-label="对象朝向">
+              <button type="button" data-object-angle="0" aria-pressed="true">0°</button>
+              <button type="button" data-object-angle="90" aria-pressed="false">90°</button>
+              <button type="button" data-object-angle="180" aria-pressed="false">180°</button>
+              <button type="button" data-object-angle="270" aria-pressed="false">270°</button>
+            </div>
+            <output id="placement-status" aria-live="polite">—</output>
+            <output id="image-angle" aria-live="polite">编辑素材：0°</output>
             <div class="source-row">
               <select id="source" aria-label="当前方向图片"><option value="">请选择图片</option></select>
               <label class="file-button">选图<input id="direction-file" aria-label="为当前方向选择图片" type="file" accept="image/*"></label>
@@ -172,12 +182,13 @@
     </dialog>
     <details class="note">
       <summary>操作说明与素材约定</summary>
-      <p>拖拽图片会调整当前方向的像素锚点，其他方向保持不变。适应画布只调整显示比例和位置，100% 按原始像素显示；视图比例和不透明度不写入导出的 JSON。</p>
-      <p>坐标以逻辑原点为 [0,0]。点选新原点会重新计算占地偏移与四向像素锚点，保持图片和占地的相对位置；调整占地列、行会重建矩形占地。像素锚点可以在图片外。</p>
+      <p>镜头与对象朝向独立切换；图片、裁切和锚点编辑始终作用于“编辑素材”显示的方向。矩形转向保持当前画面上角的放置基准格：2×2 占地不移位，3×2 交换长宽；切换镜头不改变世界占地。不规则占地仍可编辑，暂不支持对象转向。鼠标位于画布且未编辑输入框时，按 R 转对象。</p>
+      <p>拖拽图片会调整当前素材的像素锚点，其他素材保持不变。适应画布只调整显示比例和位置，100% 按原始像素显示；镜头、对象朝向、视图比例和不透明度不写入导出的 JSON。</p>
+      <p>蓝色小框是当前上角的放置基准格；红色十字是素材标定用的定义原点。占地 JSON 以定义原点为 [0,0]；点选新原点会换算偏移、四向锚点和预览位置，保持图片与占地在原处。调整占地列、行会重建矩形占地。像素锚点可以在图片外。</p>
       <p>类别记录用途，不改变图片外观。裁切和像素锚点分别编辑，锚点相对裁切左上角。要让裁切后保留的像素位置不变，裁切起点移动多少，锚点就减去多少。瓦片尺寸只用于预览，不写入元素定义。</p>
       <p>每个方向可单独选图，也可用素材目录批量加载后绑定。单独选图以文件名作为相对引用，独立预览可重新选择这些图片；目录引用相对所选根目录。导出只生成 JSON，图片保持原文件。样本仍为演示标定。</p>
     </details>
   </main>
-  <script src="./static/js/element-editor.js"></script>
+  <script src="./static/js/element-editor.js?20261004-placement"></script>
 </body>
 </html>

@@ -165,6 +165,7 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 
 ### Tile Renderer - 瓦片渲染器
 * [x] [P0-C 静态元素预览](docs/element-preview.md)：可选模块加载精选图片、解释四向裁切/锚点并通过 SpriteJS 显示，附网格和占地覆盖。[素材 Demo](demo/element-preview.html) 的四张图片与 JSON 一同放在样本目录中。
+* [x] 矩形对象转向按当前画面上角占地格定位：`resolveElementPlacement()` 计算位置与朝向，`resolveElementDraw()` 绘制姿态；2×2 占地保持原位，镜头只改变投影。两页及点选/吸附已接入，全量测试、Demo 构建与两页方向组合检查通过；不规则占地不猜转向规则。
 * [ ] 地图场景渲染、画序与遮挡、动画播放
 
 ### Tile Editor - 瓦片编辑器

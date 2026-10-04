@@ -35,16 +35,16 @@
       ]
     },
     "90": {
-      "source": "images/sculpture_dog02.png",
+      "source": "images/sculpture_dog04.png",
       "rect": [
         20,
         10,
         118,
-        90
+        105
       ],
       "anchor": [
         59,
-        39
+        54
       ]
     },
     "180": {
@@ -61,16 +61,16 @@
       ]
     },
     "270": {
-      "source": "images/sculpture_dog04.png",
+      "source": "images/sculpture_dog02.png",
       "rect": [
         20,
         10,
         118,
-        105
+        90
       ],
       "anchor": [
         59,
-        94
+        79
       ]
     }
   }

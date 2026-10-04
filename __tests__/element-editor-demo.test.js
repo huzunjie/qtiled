@@ -6,6 +6,7 @@ import { shapes } from '../src';
 import * as elements from '../src/elements';
 import * as view from '../src/isometric-view';
 import { resolveElementDraw } from '../src/element-preview/draw';
+import { resolveElementPlacement } from '../src/element-preview/placement';
 
 // 执行两页真实事件脚本；DOM、图片加载、下载与 SpriteJS 使用替身，不冒充浏览器验收。
 async function loadPage(name, overrides = {}) {
@@ -36,7 +37,7 @@ async function loadPage(name, overrides = {}) {
     window, document, Option: window.Option, qtiled: { shapes }, qtiledView: view,
     spritejs: { Scene, Polyline: Shape, Label: Shape },
     qtiledPreview: {
-      ...elements, resolveElementDraw, renderElementPreview: render,
+      ...elements, resolveElementDraw, resolveElementPlacement, renderElementPreview: render,
       loadElementSources: async files => {
         const sources = {};
         const sourceInfo = {};
@@ -73,12 +74,13 @@ async function loadPage(name, overrides = {}) {
     await new Promise(resolve => setImmediate(resolve));
   };
   const angle = value => document.querySelector(`[data-angle="${value}"]`).click();
+  const objectAngle = value => document.querySelector(`[data-object-angle="${value}"]`).click();
   const draw = () => render.mock.calls[render.mock.calls.length - 1][1];
   const clickCell = cell => {
     const [clientX, clientY] = layers[2].children.find(node => node.attrs.text === cell.join(',')).attrs.pos;
     get('editor-canvas').dispatchEvent(new window.MouseEvent('click', { clientX, clientY }));
   };
-  return { window, get, change, files, angle, draw, clickCell, preview, errors, layers, download: () => download };
+  return { window, get, change, files, angle, objectAngle, draw, clickCell, preview, errors, layers, download: () => download };
 }
 
 const imageFiles = [1, 2, 3, 4].map(i => ({ name: `sculpture_dog0${i}.png`, type: 'image/png' }));
@@ -100,8 +102,23 @@ test('新建矩形、点选原点、逐向选图、导出后独立页面回读�
     expect(editor.draw().source).toBe(imageFiles[i].name);
     expect(editor.get('export').disabled).toBe(i < 3);
   }
+  // 定义不保存编辑时的世界位置；两页从同一导入初态、同一镜头和转向顺序比较。
+  editor.get('export').click();
+  const initialJson = editor.get('export-json').value;
+  editor.get('close-export').click();
+  await editor.files('definition-file', [{ text: async () => initialJson }]);
+  editor.angle(0);
   const expected = {};
-  for (const angle of [0, 90, 180, 270]) { editor.angle(angle); expected[angle] = editor.draw(); }
+  const footprint = editor.get('footprint').value;
+  for (const objectAngle of [0, 90, 180, 270]) {
+    editor.objectAngle(objectAngle);
+    for (const angle of [0, 90, 180, 270]) {
+      editor.angle(angle);
+      expected[`${angle}/${objectAngle}`] = editor.draw();
+      expect(editor.get('image-angle').textContent).toContain(`${editor.draw().imageAngle}°`);
+      expect(editor.get('footprint').value).toBe(footprint);
+    }
+  }
   editor.get('export').click();
   expect(editor.download()).toBeUndefined();
   expect(editor.get('export-dialog').open).toBe(true);
@@ -113,6 +130,8 @@ test('新建矩形、点选原点、逐向选图、导出后独立页面回读�
   const json = editor.download();
   expect(json).toBe(shownJson);
   expect(JSON.parse(json).footprint).toHaveLength(6);
+  expect(JSON.parse(json).objectAngle).toBeUndefined();
+  expect(JSON.parse(json).angle).toBeUndefined();
   // 新建既清除样本，也清除上一份自选素材；同名图片可以重新载入。
   editor.get('new').click();
   expect(Array.from(editor.get('source').options, option => option.value)).toEqual(['']);
@@ -126,9 +145,12 @@ test('新建矩形、点选原点、逐向选图、导出后独立页面回读�
   const preview = await loadPage('element-preview.html');
   await preview.files('image-files', imageFiles);
   await preview.files('definition-file', [{ name: 'edited.json', text: async () => json }]);
-  for (const angle of [0, 90, 180, 270]) {
-    preview.angle(angle);
-    expect(preview.draw()).toEqual(expected[angle]);
+  for (const objectAngle of [0, 90, 180, 270]) {
+    preview.objectAngle(objectAngle);
+    for (const angle of [0, 90, 180, 270]) {
+      preview.angle(angle);
+      expect(preview.draw()).toEqual(expected[`${angle}/${objectAngle}`]);
+    }
   }
   expect(preview.errors).toEqual([]);
   preview.window.close();
@@ -283,8 +305,9 @@ test('独立预览在四向完整容纳大图与非方形占地，保留原始�
     views: Object.fromEntries([0, 90, 180, 270].map(angle => [angle, { source: 'pagoda.png', rect: [0, 0, 636, 687], anchor: [318, 650] }])),
   };
   await preview.files('definition-file', [{ name: 'pagoda.json', text: async () => JSON.stringify(definition) }]);
-  for (const angle of [0, 90, 180, 270]) {
+  for (const [angle, objectAngle] of [0, 90, 180, 270].flatMap(angle => [0, 90, 180, 270].map(objectAngle => [angle, objectAngle]))) {
     preview.angle(angle);
+    preview.objectAngle(objectAngle);
     const draw = preview.draw();
     const { scale: [s], pos } = preview.preview.attrs;
     const positions = [draw.position, draw.position.map((v, i) => v + draw.rect[i + 2]), ...draw.footprint.map(cell => cell.position)];
@@ -293,4 +316,153 @@ test('独立预览在四向完整容纳大图与非方形占地，保留原始�
   }
   expect(preview.errors).toEqual([]);
   preview.window.close();
+});
+
+test('对象转向后的占地增删与点选原点换回基准偏移，四槽锚点同步补偿', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.change('footprint', '[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]]');
+  const before = {};
+  for (const angle of [0, 90, 180, 270]) { editor.angle(angle); before[angle] = editor.draw().anchor; }
+  editor.angle(90);
+  editor.objectAngle(90);
+  const placed = editor.draw();
+  editor.change('grid-action', 'footprint', 'change');
+  editor.clickCell([0, 2]);
+  expect(JSON.parse(editor.get('footprint').value)).not.toContainEqual([2, 1]);
+  expect(editor.window.document.querySelector('[data-object-angle="180"]').disabled).toBe(true);
+  editor.clickCell([0, 2]);
+  expect(JSON.parse(editor.get('footprint').value)).toContainEqual([2, 1]);
+  editor.change('grid-action', 'origin', 'change');
+  editor.clickCell([0, 2]);
+  expect(JSON.parse(editor.get('footprint').value)).toEqual([[-2, -1], [-1, -1], [0, -1], [-2, 0], [-1, 0], [0, 0]]);
+  expect(editor.draw().origin).toEqual([240, 300]);
+  expect(editor.draw().position).toEqual(placed.position);
+  expect(editor.draw().footprint).toEqual(placed.footprint);
+  expect(editor.draw().placementGrid).toEqual(placed.placementGrid);
+  const deltas = [[120, -20], [40, 60], [-120, 20], [-40, -60]];
+  editor.objectAngle(0);
+  [0, 90, 180, 270].forEach((angle, index) => {
+    editor.angle(angle);
+    expect(editor.draw().anchor).toEqual(before[angle].map((value, axis) => value + deltas[index][axis]));
+  });
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('组合素材槽接收字段、图片绑定与拖拽，取消恢复该槽且不影响其他方向', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('export').click();
+  const original = JSON.parse(editor.get('export-json').value);
+  editor.get('close-export').click();
+  editor.angle(90);
+  editor.objectAngle(90);
+  expect(editor.get('source').value).toBe(original.views[180].source);
+  editor.change('anchor-x', '80.25');
+  editor.change('rect-width', '150');
+  editor.get('full-image').click();
+  await editor.files('direction-file', [{ name: 'replacement.png', type: 'image/png', width: 160, height: 120 }]);
+  expect(editor.draw()).toMatchObject({ angle: 90, objectAngle: 90, imageAngle: 180, source: 'replacement.png', rect: [0, 0, 160, 120] });
+  editor.get('edge-snap').checked = false;
+  const before = editor.draw().anchor.slice();
+  const { scale: [scale], pos } = editor.preview.attrs;
+  const start = editor.draw().position.map((value, i) => (value + 30) * scale + pos[i]);
+  const pointer = (type, point) => {
+    const event = new editor.window.MouseEvent(type, { clientX: point[0], clientY: point[1], button: 0 });
+    Object.defineProperty(event, 'pointerId', { value: 1 });
+    editor.get('editor-canvas').dispatchEvent(event);
+  };
+  pointer('pointerdown', start);
+  pointer('pointermove', [start[0] + 12, start[1] + 8]);
+  expect(editor.draw().anchor[0]).toBeCloseTo(before[0] - 12 / scale, 2);
+  editor.objectAngle(180);
+  expect(editor.draw().objectAngle).toBe(90);
+  pointer('pointercancel', start);
+  expect(editor.draw().anchor).toEqual(before);
+  pointer('pointerdown', start);
+  pointer('pointermove', [start[0] + 12, start[1] + 8]);
+  pointer('pointerup', start);
+  editor.get('export').click();
+  const exported = JSON.parse(editor.get('export-json').value);
+  expect(exported.views[180].anchor).toEqual(editor.draw().anchor);
+  for (const angle of [0, 90, 270]) expect(exported.views[angle]).toEqual(original.views[angle]);
+  expect(exported.footprint).toEqual(original.footprint);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test.each(['element-editor.html', 'element-preview.html'])('%s 的矩形转向固定上角，镜头切换保留世界占地', async name => {
+  const page = await loadPage(name);
+  const initial = page.draw();
+  const cells = draw => draw.footprint.map(cell => cell.grid.join(',')).sort();
+  for (const angle of [90, 180, 270, 0]) {
+    page.objectAngle(angle);
+    expect(cells(page.draw())).toEqual(cells(initial));
+    expect(page.draw().placementGrid).toEqual(initial.placementGrid);
+  }
+  if (name === 'element-editor.html') page.change('footprint-width', '3');
+  else {
+    const definition = JSON.parse(fs.readFileSync(path.join(__dirname, '../demo/static/element-samples/dog/element.json'), 'utf8'));
+    definition.footprint.push([2, 0], [2, 1]);
+    await page.files('definition-file', [{ name: 'rectangle.json', text: async () => JSON.stringify(definition) }]);
+  }
+  for (const angle of [0, 90, 180, 270]) {
+    const previous = page.draw();
+    page.angle(angle);
+    expect(cells(page.draw())).toEqual(cells(previous));
+    const base = page.draw().placementGrid;
+    for (const objectAngle of [90, 180, 270, 0]) {
+      page.objectAngle(objectAngle);
+      expect(page.draw().placementGrid).toEqual(base);
+      const bounds = shapes.polygon.getBounds(page.draw().footprint.map(cell => cell.grid));
+      expect([bounds.width + 1, bounds.height + 1]).toEqual(objectAngle % 180 === 0 ? [3, 2] : [2, 3]);
+    }
+  }
+  expect(page.errors).toEqual([]);
+  page.window.close();
+});
+
+test.each(['element-editor.html', 'element-preview.html'])('%s 缺少放置函数时显示运行包提示', async name => {
+  const page = await loadPage(name, { resolveElementPlacement: undefined });
+  expect(page.get('status').textContent).toContain('运行文件尚未更新');
+  expect(page.get(name === 'element-editor.html' ? 'file-controls' : 'definition-file').disabled).toBe(true);
+  expect(page.errors).toEqual([]);
+  page.window.close();
+});
+
+test('不完整草稿按组合素材槽预览，不把镜头角度当作已配置方向', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('new').click();
+  editor.objectAngle(90);
+  await editor.files('direction-file', [imageFiles[0]]);
+  expect(editor.draw().imageAngle).toBe(90);
+  editor.angle(90);
+  expect(editor.draw()).toBeNull();
+  editor.objectAngle(0);
+  expect(editor.draw().source).toBe(imageFiles[0].name);
+  expect(editor.get('export').disabled).toBe(true);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test.each(['element-editor.html', 'element-preview.html'])('%s 的 R 只在画布内转对象，输入、重复与组合按键不触发', async name => {
+  const page = await loadPage(name);
+  const canvas = page.get(name === 'element-editor.html' ? 'editor-canvas' : 'element-canvas');
+  const press = options => page.window.document.dispatchEvent(new page.window.KeyboardEvent('keydown', { key: 'r', bubbles: true, ...options }));
+  press();
+  expect(page.draw().objectAngle).toBe(0);
+  canvas.dispatchEvent(new page.window.Event('pointerenter'));
+  page.get('tile-width').focus();
+  press();
+  expect(page.draw().objectAngle).toBe(0);
+  page.get('tile-width').blur();
+  for (const options of [{ repeat: true }, { ctrlKey: true }, { shiftKey: true }, { altKey: true }, { metaKey: true }]) press(options);
+  expect(page.draw().objectAngle).toBe(0);
+  press();
+  expect(page.draw()).toMatchObject({ angle: 0, objectAngle: 90, imageAngle: 90 });
+  expect(page.window.document.querySelector('[data-object-angle="90"]').getAttribute('aria-pressed')).toBe('true');
+  canvas.dispatchEvent(new page.window.Event('pointerleave'));
+  press();
+  expect(page.draw().objectAngle).toBe(90);
+  expect(page.errors).toEqual([]);
+  page.window.close();
 });

@@ -1,6 +1,7 @@
 import * as core from '../src';
 import { importElementDefinition } from '../src/elements';
 import { resolveElementDraw } from '../src/element-preview/draw';
+import { resolveElementPlacement } from '../src/element-preview/placement';
 import { loadElementSources } from '../src/element-preview/sources';
 import { renderElementPreview } from '../src/element-preview/spritejs';
 import { Group, Sprite } from 'spritejs';
@@ -21,6 +22,59 @@ const sample = () => ({
   }])),
 });
 
+describe('矩形上角格放置', () => {
+  test.each([2, 3])('%i×2 在四镜头与四对象方向下保持上角，切镜头不搬动世界占地', width => {
+    const definition = sample();
+    // 原点可以在占地外，负偏移与原有小数锚点均不能被重新居中。
+    definition.footprint = Array.from({ length: width * 2 }, (_, i) => [i % width - 4, Math.floor(i / width) + 2]);
+    definition.views[90].anchor = [-0.5, 200.25];
+    const before = JSON.stringify(definition);
+    const base = [7, -3];
+    for (const angle of [0, 90, 180, 270]) {
+      let firstCells;
+      for (const objectAngle of [0, 90, 180, 270, 0]) {
+        const pose = resolveElementPlacement(definition, base, objectAngle, angle);
+        const view = { angle, tileSize: [80, 40], originPixel: [320, 260] };
+        const draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
+        expect(draw.placementGrid).toEqual(base);
+        const top = draw.footprint.reduce((a, b) => a.position[1] < b.position[1] ? a : b);
+        expect(top.grid).toEqual(base);
+        const cells = draw.footprint.map(cell => cell.grid);
+        const bounds = core.shapes.polygon.getBounds(cells);
+        expect([bounds.width + 1, bounds.height + 1]).toEqual(objectAngle % 180 === 0 ? [width, 2] : [2, width]);
+        const sorted = cells.map(cell => cell.join(',')).sort();
+        if (!firstCells) firstCells = sorted;
+        if (width === 2 || objectAngle === 0) expect(sorted).toEqual(firstCells);
+        for (const cameraAngle of [0, 90, 180, 270]) {
+          const other = resolveElementDraw(definition, pose.grid, { ...view, angle: cameraAngle }, pose.objectAngle);
+          expect(other.footprint.map(cell => cell.grid)).toEqual(cells);
+          expect(other.anchor).toEqual(definition.views[other.imageAngle].anchor);
+          expect(other.position.map((value, i) => value + other.anchor[i])).toEqual(other.origin);
+        }
+      }
+    }
+    expect(JSON.stringify(definition)).toBe(before);
+    expect(base).toEqual([7, -3]);
+  });
+
+  test('默认上角落在零格；拒绝非法定位、角度和未定义转向规则的占地', () => {
+    expect(resolveElementPlacement(sample())).toEqual({ grid: [-1, 0], objectAngle: 0 });
+    for (const grid of [null, [1], [0.5, 0], [Infinity, 0], ['0', 0]]) {
+      expect(() => resolveElementPlacement(sample(), grid)).toThrow(TypeError);
+    }
+    for (const angle of [-90, 360, 45, '90', NaN]) {
+      expect(() => resolveElementPlacement(sample(), [0, 0], angle)).toThrow('objectAngle');
+      expect(() => resolveElementPlacement(sample(), [0, 0], 0, angle)).toThrow('viewAngle');
+    }
+    for (const footprint of [[], [[0, 0], [1, 0], [0, 1]], [[0, 0], [0, 0]], [[0.5, 0]], null]) {
+      const definition = { ...sample(), footprint };
+      expect(() => resolveElementPlacement(definition)).toThrow('仅完整矩形');
+    }
+    const irregular = { ...sample(), footprint: [[0, 0], [1, 0], [0, 1]] };
+    expect(resolveElementDraw(irregular)).toMatchObject({ placementGrid: null, placementOrigin: null });
+  });
+});
+
 describe('元素绘制描述', () => {
   test.each([
     [0, [400, 275]], [90, [460, 335]], [180, [340, 365]], [270, [280, 305]],
@@ -39,20 +93,75 @@ describe('元素绘制描述', () => {
     const draw = resolveElementDraw(definition);
     expect(draw.position).toEqual([0.5, -200.25]);
     expect(draw.footprint).toEqual([{ grid: [-2, 0], position: [-8, 4] }]);
+    expect(draw).toMatchObject({ angle: 0, objectAngle: 0, imageAngle: 0 });
+    expect(resolveElementDraw(definition, undefined, undefined, 0)).toEqual(draw);
   });
 
-  test('裁切与锚点一起平移，原图同一点的落位保持不变', () => {
+  const angles = [0, 90, 180, 270];
+  const origins = [[430, 335], [490, 395], [370, 425], [310, 365]];
+  const imageAngles = [[0, 90, 180, 270], [90, 180, 270, 0], [180, 270, 0, 90], [270, 0, 90, 180]];
+  const worldFootprints = [
+    [[2, -1], [3, -1], [4, -1], [2, 0], [3, 0], [4, 0]],
+    [[2, -1], [2, 0], [2, 1], [1, -1], [1, 0], [1, 1]],
+    [[2, -1], [1, -1], [0, -1], [2, -2], [1, -2], [0, -2]],
+    [[2, -1], [2, -2], [2, -3], [3, -1], [3, -2], [3, -3]],
+  ];
+  // 3×2 远角 [2,1] 相对原点的四向像素位移，独立于元素的世界位置。
+  const cornerPositions = [[90, -15], [30, 45], [-90, 15], [-30, -45]];
+  test.each(angles.flatMap((angle, cameraIndex) => angles.map((objectAngle, objectIndex) => [
+    angle, objectAngle, cameraIndex, objectIndex,
+  ])))('镜头 %i 度、对象 %i 度：3×2 占地与图片对齐固定原点', (angle, objectAngle, cameraIndex, objectIndex) => {
     const definition = sample();
-    const full = resolveElementDraw(definition);
-    definition.views[0].rect = [30, 30, 60, 60];
-    definition.views[0].anchor = [10, 50];
-    const cropped = resolveElementDraw(definition);
+    definition.footprint = [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1]];
+    const anchors = [[30, 60], [-0.5, 200.25], [70, 20], [9, 10]];
+    angles.forEach((value, index) => {
+      definition.views[value].anchor = anchors[index];
+      definition.views[value].rect = [10 + index, 20, 100, 80];
+    });
+    const draw = resolveElementDraw(definition, [2, -1], { angle, tileSize: [60, 30], originPixel: [400, 380] }, objectAngle);
+    const imageAngle = imageAngles[cameraIndex][objectIndex];
+    const slot = angles.indexOf(imageAngle);
+    expect(draw).toMatchObject({ angle, objectAngle, imageAngle, source: `${imageAngle}.png` });
+    expect(draw.origin).toEqual(origins[cameraIndex]);
+    expect(draw.footprint.map(cell => cell.grid)).toEqual(worldFootprints[objectIndex]);
+    expect(draw.footprint[0].position).toEqual(draw.origin);
+    expect(draw.footprint[5].position).toEqual(origins[cameraIndex].map((value, index) => value + cornerPositions[slot][index]));
+    expect(draw.anchor).toEqual(anchors[slot]);
+    expect(draw.rect).toEqual([10 + slot, 20, 100, 80]);
+    expect(draw.position.map((value, index) => value + draw.anchor[index])).toEqual(draw.origin);
+  });
+
+  test('原点在占地外的不规则形状保留负偏移，连续切向四次复原', () => {
+    const definition = sample();
+    definition.footprint = [[-2, 0], [-2, 1], [1, 1]];
+    const before = JSON.stringify(definition);
+    const first = resolveElementDraw(definition, [7, 4]);
+    const expected = [
+      [[7, 2], [6, 2], [6, 5]], [[9, 4], [9, 3], [6, 3]],
+      [[7, 6], [8, 6], [8, 3]], [[5, 4], [5, 5], [8, 5]],
+    ];
+    [90, 180, 270, 0].forEach((objectAngle, index) => {
+      const draw = resolveElementDraw(definition, [7, 4], {}, objectAngle);
+      expect(draw.footprint.map(cell => cell.grid)).toEqual(expected[index]);
+      expect(draw.origin).toEqual(first.origin);
+      if (objectAngle === 0) expect(draw).toEqual(first);
+    });
+    expect(JSON.stringify(definition)).toBe(before);
+  });
+
+  test.each([0, 90, 180, 270])('对象 %i 度时裁切与锚点一起平移，原图同一点的落位保持不变', objectAngle => {
+    const definition = sample();
+    const view = { angle: 90, tileSize: [60, 30], originPixel: [400, 380] };
+    const full = resolveElementDraw(definition, [2, -1], view, objectAngle);
+    definition.views[full.imageAngle].rect = [30, 30, 60, 60];
+    definition.views[full.imageAngle].anchor = [10, 50];
+    const cropped = resolveElementDraw(definition, [2, -1], view, objectAngle);
     const sourcePixel = [50, 50];
     const screen = draw => sourcePixel.map((value, index) => draw.position[index] + value - draw.rect[index]);
     expect(screen(cropped)).toEqual(screen(full));
   });
 
-  test('结果不修改或共享输入数组，四向占地保持一致', () => {
+  test.each([0, 90, 180, 270])('对象 %i 度时结果不修改或共享输入数组，镜头切向不改变世界占地', objectAngle => {
     const definition = sample();
     const before = JSON.stringify(definition);
     Object.values(definition.views).forEach(view => { Object.freeze(view.rect); Object.freeze(view.anchor); Object.freeze(view); });
@@ -60,8 +169,10 @@ describe('元素绘制描述', () => {
     Object.freeze(definition.footprint);
     const grid = Object.freeze([-2, 1]);
     const tileSize = Object.freeze([80, 40]);
+    const worldCells = resolveElementDraw(definition, grid, {}, objectAngle).footprint.map(cell => cell.grid);
     for (const angle of [0, 90, 180, 270]) {
-      const result = resolveElementDraw(definition, grid, Object.freeze({ angle, tileSize }));
+      const result = resolveElementDraw(definition, grid, Object.freeze({ angle, tileSize }), objectAngle);
+      expect(result.footprint.map(cell => cell.grid)).toEqual(worldCells);
       result.rect[0] = 999;
       result.anchor[0] = 999;
       result.tileSize[0] = 999;
@@ -78,6 +189,19 @@ describe('元素绘制描述', () => {
     expect(() => resolveElementDraw(definition, [0, 0], { angle: 90 })).toThrow('views.90');
     expect(() => resolveElementDraw(sample(), [0, 0], { angle: 1 })).toThrow(RangeError);
     expect(Object.keys(core).sort()).toEqual(['pathFinding', 'shapes']);
+  });
+
+  test.each([-90, 360, 45, 90.5, '90', null, NaN, Infinity])('非法对象角度 %s 不自动取整或回退', objectAngle => {
+    expect(() => resolveElementDraw(sample(), [0, 0], {}, objectAngle)).toThrow('objectAngle');
+    expect(() => resolveElementDraw(sample(), [0, 0], {}, objectAngle)).toThrow(RangeError);
+  });
+
+  test('按组合后的实际素材槽报告缺向，继承属性不能冒充配置', () => {
+    const definition = sample();
+    delete definition.views[180];
+    expect(() => resolveElementDraw(definition, [0, 0], { angle: 90 }, 90)).toThrow('views.180');
+    definition.views = Object.create(sample().views);
+    expect(() => resolveElementDraw(definition, [0, 0], { angle: 270 }, 180)).toThrow('views.90');
   });
 });
 
@@ -159,7 +283,8 @@ describe('SpriteJS 预览适配（节点替身）', () => {
       const sprites = group.children.filter(child => child instanceof Sprite);
       expect(sprites).toHaveLength(1);
       expect(sprites[0].attributes).toMatchObject({ texture: sources[`${angle}.png`], sourceRect: draw.rect, size: [100, 80], pos: [-30, -60], anchor: [0, 0] });
-      expect(group.children).toHaveLength(9);
+      expect(group.children).toHaveLength(10);
+      expect(group.children.find(node => node.attributes.strokeColor === '#1976b5').attributes.pos).toEqual(draw.placementOrigin);
     }
     expect(renderElementPreview(layer, null)).toBeNull();
     expect(layer.children).toEqual([other]);
@@ -168,7 +293,7 @@ describe('SpriteJS 预览适配（节点替身）', () => {
   test('关闭覆盖层只绘制图片，失败时移除旧预览', () => {
     const layer = new Group();
     const draw = resolveElementDraw(sample());
-    const group = renderElementPreview(layer, draw, sources, { footprint: false, anchor: false });
+    const group = renderElementPreview(layer, draw, sources, { footprint: false, anchor: false, placement: false });
     expect(group.children).toHaveLength(1);
     expect(() => renderElementPreview(layer, draw, {})).toThrow('未加载图片：0.png');
     expect(layer.children).toEqual([]);

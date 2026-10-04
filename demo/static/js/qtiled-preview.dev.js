@@ -121,6 +121,48 @@
 
     return baseVertexes.map(fun);
   }
+  /* 计算一组共用顶点的多边形在平移后的轴对齐包围盒，不包含描边或文字。
+   * @param {Array} positions 位置集合，每项为 [pixelX, pixelY, ...]，忽略附带的网格下标
+   * @param {Array} vertexes 相对每个位置的共用顶点，默认 [[0, 0]]，仅计算位置范围
+   * @return {Object|null} { minX, minY, maxX, maxY, width, height }；任一集合为空时返回 null
+   * 输入为有限数值坐标，不修改输入；分别遍历位置和顶点，复杂度为 O(N + V)。
+   */
+
+  function getBounds(positions = [], vertexes = [[0, 0]]) {
+    if (!positions.length || !vertexes.length) return null;
+    const [positionBounds, vertexBounds] = [positions, vertexes].map(points => {
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+
+      for (const [x, y] of points) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+      }
+
+      return {
+        minX,
+        minY,
+        maxX,
+        maxY
+      };
+    });
+    const minX = positionBounds.minX + vertexBounds.minX;
+    const minY = positionBounds.minY + vertexBounds.minY;
+    const maxX = positionBounds.maxX + vertexBounds.maxX;
+    const maxY = positionBounds.maxY + vertexBounds.maxY;
+    return {
+      minX,
+      minY,
+      maxX,
+      maxY,
+      width: maxX - minX,
+      height: maxY - minY
+    };
+  }
 
   /* 正菱形地图元件方法 */
 
@@ -198,38 +240,99 @@
     return getIsometricPosition(rotateGridPoint(grid, getQuarterTurns(angle)), tileSize, originPixel);
   }
 
-  /** 将已通过元素契约校验的定义解释为绘制数据，不加载图片或创建渲染对象。
-   * @param {Object} definition 由 importElementDefinition/validateElementDefinition 确认有效的定义。
-   * @param {Array<number>} grid 元素世界整数格，默认 [0, 0]。
-   * @param {Object} view P0-B 视图参数，angle 缺省为 0。
-   * @returns {Object} 素材引用、裁切、锚点、左上角位置、原点像素与占地世界格/像素。
-   * 图片锚点相对裁切左上角；位置 = 原点投影 - 锚点，不按图片尺寸猜占地或缩放图片。
+  function checkAngle(angle, name) {
+    if (![0, 90, 180, 270].includes(angle)) {
+      throw new RangeError(`${name} 必须为数字 0、90、180 或 270。`);
+    }
+  }
+  /** 完整矩形在当前镜头下最上角的占地格；空集或非矩形没有已确认的选格规则。 */
+
+
+  function getRectangleTopCell(cells, angle = 0) {
+    checkAngle(angle, 'viewAngle');
+    if (!Array.isArray(cells) || !cells.length || !cells.every(cell => Array.isArray(cell) && cell.length === 2 && cell.every(Number.isInteger))) return null;
+    const rotated = cells.map(cell => rotateGridPoint(cell, angle / 90));
+    const bounds = getBounds(rotated);
+    const count = new Set(rotated.map(cell => cell.join(','))).size;
+    if (count !== cells.length || count !== (bounds.width + 1) * (bounds.height + 1)) return null; // QTiled 等距投影的纵坐标为 (y - x) * halfHeight，上角是 maxX/minY。
+
+    return rotateGridPoint([bounds.maxX, bounds.minY], -angle / 90);
+  }
+  /** 将矩形占地当前画面的上角格对齐放置基准格，返回可直接交给绘制计算的姿态。
+   * @param {Object} definition 已通过元素契约校验的定义；这里只支持完整矩形占地。
+   * @param {Array<number>} placementGrid 光标命中的世界整数格，默认 [0, 0]。
+   * @param {number} objectAngle 目标对象朝向，0、90、180 或 270。
+   * @param {number} viewAngle 放置/转向发生时的镜头角度，之后转镜头不重新调用本函数。
+   * @returns {Object} { grid, objectAngle }；grid 是定义原点的世界格，不是固定转轴。
+   * 每次从原始占地计算，不改 JSON，也不把图片像素锚点当成旋转中心。
    */
 
-  function resolveElementDraw(definition, grid = [0, 0], view = {}) {
+  function resolveElementPlacement(definition, placementGrid = [0, 0], objectAngle = 0, viewAngle = 0) {
+    checkAngle(objectAngle, 'objectAngle');
+    checkAngle(viewAngle, 'viewAngle');
+
+    if (!Array.isArray(placementGrid) || placementGrid.length !== 2 || !placementGrid.every(Number.isInteger)) {
+      throw new TypeError('placementGrid 必须为两个有限整数。');
+    }
+
+    if (!getRectangleTopCell(definition.footprint)) {
+      throw new RangeError('仅完整矩形占地支持上角格定位；不规则占地的转向规则尚未确认。');
+    }
+
+    const offsets = definition.footprint.map(cell => rotateGridPoint(cell, objectAngle / 90));
+    const top = getRectangleTopCell(offsets, viewAngle);
+    return {
+      grid: placementGrid.map((value, i) => value - top[i]),
+      objectAngle
+    };
+  }
+
+  /** 将已通过元素契约校验的定义解释为绘制数据，不加载图片或创建渲染对象。
+   * @param {Object} definition 由 importElementDefinition/validateElementDefinition 确认有效的定义。
+   * @param {Array<number>} grid 定义原点的世界整数格，默认 [0, 0]；放置姿态由 resolveElementPlacement 计算。
+   * @param {Object} view P0-B 视图参数，angle 仅表示镜头角度，缺省为 0。
+   * @param {number} objectAngle 对象朝向，0、90、180 或 270，默认 0；与镜头采用相同旋转正向。
+   * @returns {Object} 镜头/对象/素材角度、素材引用、裁切、锚点、左上角位置、原点像素与占地世界格/像素。
+   * 图片锚点相对裁切左上角；位置 = 原点投影 - 锚点，不按图片尺寸猜占地或缩放图片。
+   * 本函数只绘制给定姿态，不决定转向时的位置；不能固定 grid 后只改 objectAngle 来模拟建筑原地转向。
+   * placementGrid/placementOrigin 是矩形在当前镜头下的上角格/像素；非矩形返回 null，不猜测放置规则。
+   */
+
+  function resolveElementDraw(definition, grid = [0, 0], view = {}, objectAngle = 0) {
+    if (![0, 90, 180, 270].includes(objectAngle)) {
+      throw new RangeError('objectAngle 必须为数字 0、90、180 或 270。');
+    }
+
     const origin = projectGrid(grid, view);
     const {
       angle = 0,
       tileSize = [8, 4]
     } = view;
+    const imageAngle = (angle + objectAngle) % 360;
 
-    if (!Object.prototype.hasOwnProperty.call(definition.views, angle)) {
-      throw new Error(`views.${angle} 缺少显式素材配置。`);
+    if (!Object.prototype.hasOwnProperty.call(definition.views, imageAngle)) {
+      throw new Error(`views.${imageAngle} 缺少显式素材配置。`);
     }
 
     const {
       source,
       rect,
       anchor
-    } = definition.views[angle];
-    const worldCells = getIsometricNeighborsByOffsets(grid, definition.footprint);
+    } = definition.views[imageAngle];
+    const offsets = definition.footprint.map(offset => rotateGridPoint(offset, objectAngle / 90));
+    const worldCells = getIsometricNeighborsByOffsets(grid, offsets);
+    const placementGrid = getRectangleTopCell(worldCells, angle);
     return {
       id: definition.id,
       angle,
+      objectAngle,
+      imageAngle,
       source,
       rect: [...rect],
       anchor: [...anchor],
       origin,
+      placementGrid,
+      placementOrigin: placementGrid ? projectGrid(placementGrid, view) : null,
       position: [origin[0] - anchor[0], origin[1] - anchor[1]],
       tileSize: [...tileSize],
       footprint: worldCells.map(cell => ({
@@ -244,7 +347,7 @@
    * @param {Object} layer SpriteJS Layer，生命周期由调用方管理。
    * @param {Object|null} drawInfo resolveElementDraw 的结果；null 清除本预览。
    * @param {Object} sources loadElementSources 返回的图片索引。
-   * @param {Object} overlays { gridPositions: 像素坐标数组, footprint: true, anchor: true, bounds: false }。
+   * @param {Object} overlays { gridPositions: 像素坐标数组, footprint: true, anchor: true, placement: true, bounds: false }。
    * @returns {Object|null} 当前预览 Group；不改变输入，不在内部异步加载图片。
    */
 
@@ -309,6 +412,16 @@
           lineWidth: 2
         }));
       }
+    }
+
+    if (overlays.placement !== false && drawInfo.placementOrigin) {
+      group.append(new spritejs.Polyline({
+        pos: drawInfo.placementOrigin,
+        points: [[0, -7], [7, 0], [0, 7], [-7, 0]],
+        close: true,
+        strokeColor: '#1976b5',
+        lineWidth: 2
+      }));
     }
 
     layer.append(group);
@@ -498,6 +611,7 @@
   exports.loadElementSources = loadElementSources;
   exports.renderElementPreview = renderElementPreview;
   exports.resolveElementDraw = resolveElementDraw;
+  exports.resolveElementPlacement = resolveElementPlacement;
   exports.validateElementDefinition = validateElementDefinition;
 
   Object.defineProperty(exports, '__esModule', { value: true });
