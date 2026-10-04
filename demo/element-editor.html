@@ -79,7 +79,7 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
-  <script src="./static/js/qtiled-preview.dev.js?20261004-placement"></script>
+  <script src="./static/js/qtiled-preview.dev.js?20261004-auto-placement"></script>
   <script src="./static/js/pointer.js"></script>
   <script src="./static/js/element-files.js"></script>
   <script src="./static/js/element-snap.js"></script>
@@ -112,13 +112,13 @@
             <output id="view-scale" aria-label="逻辑单元格尺寸与视图缩放比例">80×40 · 100%</output>
           </div>
           <div class="grid-control">
-            <label>网格操作 <select id="grid-action"><option value="inspect">查看坐标</option><option value="footprint">增删占地</option><option value="origin">点选原点</option></select></label>
+            <label>网格操作 <select id="grid-action"><option value="inspect">查看坐标</option><option value="footprint">增删占地</option></select></label>
             <label title="识别图片下缘，靠近网格边线时吸附；按住 Alt 临时关闭"><input id="edge-snap" type="checkbox" checked>底边吸附</label>
           </div>
           <label class="opacity-control">不透明度 <input id="image-opacity" type="range" min="0" max="100" value="100"><output id="opacity-value">100%</output></label>
         </fieldset>
         <div class="canvas-scroll" tabindex="0" role="region" aria-label="画布滚动区"><div id="editor-canvas" aria-label="元素编辑网格" title="拖拽图片调整当前方向锚点；单击执行所选网格操作"></div></div>
-        <p id="grid-status" class="note" role="status">先设置占地列、行，再点“新建定义”；选择“点选原点”后点击橙色占地中的一个格子。</p>
+        <p id="grid-status" class="note" role="status">先设置占地列、行，再点“新建定义”；放置基准格自动确定。</p>
       </div>
       <aside>
         <h2>元素参数</h2>
@@ -184,11 +184,11 @@
       <summary>操作说明与素材约定</summary>
       <p>镜头与对象朝向独立切换；图片、裁切和锚点编辑始终作用于“编辑素材”显示的方向。矩形转向保持当前画面上角的放置基准格：2×2 占地不移位，3×2 交换长宽；切换镜头不改变世界占地。不规则占地仍可编辑，暂不支持对象转向。鼠标位于画布且未编辑输入框时，按 R 转对象。</p>
       <p>拖拽图片会调整当前素材的像素锚点，其他素材保持不变。适应画布只调整显示比例和位置，100% 按原始像素显示；镜头、对象朝向、视图比例和不透明度不写入导出的 JSON。</p>
-      <p>蓝色小框是当前上角的放置基准格；红色十字是素材标定用的定义原点。占地 JSON 以定义原点为 [0,0]；点选新原点会换算偏移、四向锚点和预览位置，保持图片与占地在原处。调整占地列、行会重建矩形占地。像素锚点可以在图片外。</p>
+      <p>蓝色小框自动标记当前画面最上方占地格的格心，作为放置基准，无需手动选择。占地 JSON 记录基准朝向的格子坐标，调整列、行会重建矩形占地。拖拽图片或修改像素锚点可调整图片与占地的对齐；像素锚点可以在图片外。</p>
       <p>类别记录用途，不改变图片外观。裁切和像素锚点分别编辑，锚点相对裁切左上角。要让裁切后保留的像素位置不变，裁切起点移动多少，锚点就减去多少。瓦片尺寸只用于预览，不写入元素定义。</p>
       <p>每个方向可单独选图，也可用素材目录批量加载后绑定。单独选图以文件名作为相对引用，独立预览可重新选择这些图片；目录引用相对所选根目录。导出只生成 JSON，图片保持原文件。样本仍为演示标定。</p>
     </details>
   </main>
-  <script src="./static/js/element-editor.js?20261004-placement"></script>
+  <script src="./static/js/element-editor.js?20261004-auto-placement"></script>
 </body>
 </html>

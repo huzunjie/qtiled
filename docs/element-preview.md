@@ -81,7 +81,7 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 `renderElementPreview(layer, drawInfo, sources, overlays = {})` 使用 SpriteJS 3.7.36 的 `Sprite.sourceRect` 裁切、`size` 保持裁切像素大小、`pos` 定位。无需改写原图。
 
-`overlays.gridPositions` 是调用方经同一 P0-B 视图投影后的网格中心数组；缺省为空。`footprint`、`anchor`、`placement` 缺省为 true，`bounds` 缺省为 false。anchor 是定义原点的红色十字，placement 是矩形上角基准格的蓝色小框。网格在素材下方，占地/锚点/裁切边框在上方。
+`overlays.gridPositions` 是调用方经同一 P0-B 视图投影后的网格中心数组；缺省为空。`footprint`、`placement` 缺省为 true，`bounds` 缺省为 false。placement 是自动确定的矩形上角基准格，以蓝色小框标记；页面“放置基准”开关控制其显示。网格在素材下方，占地/放置基准/裁切边框在上方。定义坐标仅用于内部计算，不再绘制红色十字，移除原有 `overlays.anchor` 选项。
 
 函数只替换它在该 layer 中拥有的 Group，不清除调用方其他节点。`drawInfo = null` 清除预览；素材缺失时先清除旧预览再抛出明确错误，防止残留图片冒充当前结果。内部不异步加载，因此切向只使用已经加载的图片，不发生跨方向加载结果覆盖。
 

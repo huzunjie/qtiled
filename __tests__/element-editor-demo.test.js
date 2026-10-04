@@ -85,17 +85,22 @@ async function loadPage(name, overrides = {}) {
 
 const imageFiles = [1, 2, 3, 4].map(i => ({ name: `sculpture_dog0${i}.png`, type: 'image/png' }));
 
-test('新建矩形、点选原点、逐向选图、导出后独立页面回读一致', async () => {
+test('新建矩形自动确定放置基准，逐向选图、导出后独立页面回读一致', async () => {
   const editor = await loadPage('element-editor.html');
   editor.change('footprint-width', '3');
   editor.get('new').click();
   expect(Array.from(editor.get('source').options, option => option.value)).toEqual(['']);
-  expect(JSON.parse(editor.get('footprint').value)).toHaveLength(6);
+  const newFootprint = JSON.parse(editor.get('footprint').value);
+  expect(newFootprint).toHaveLength(6);
   expect(editor.layers[2].children.some(node => node.attrs.text === '-1,0')).toBe(true);
   expect(editor.draw()).toBeNull();
-  // 点击实际显示的格子中心，覆盖视图缩放与平移后的反查。
+  expect(Array.from(editor.get('grid-action').options, option => option.value)).toEqual(['inspect', 'footprint']);
+  expect(editor.layers[2].children.some(node => node.attrs.strokeColor === '#cf3535')).toBe(false);
+  expect(editor.get('placement-status').textContent).toContain('[2,0]');
+  // 默认只查看坐标，点击占地不会重新编号或修改图片锚点。
   editor.clickCell([1, 0]);
-  expect(JSON.parse(editor.get('footprint').value)).toContainEqual([-1, 0]);
+  expect(editor.get('grid-status').textContent).toContain('所选格子 [1,0]');
+  expect(JSON.parse(editor.get('footprint').value)).toEqual(newFootprint);
   for (const [i, angle] of [0, 90, 180, 270].entries()) {
     editor.angle(angle);
     await editor.files('direction-file', [imageFiles[i]]);
@@ -318,7 +323,7 @@ test('独立预览在四向完整容纳大图与非方形占地，保留原始�
   preview.window.close();
 });
 
-test('对象转向后的占地增删与点选原点换回基准偏移，四槽锚点同步补偿', async () => {
+test('对象转向后的占地增删换回基准偏移，查看坐标不改变姿态和四槽锚点', async () => {
   const editor = await loadPage('element-editor.html');
   editor.change('footprint', '[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]]');
   const before = {};
@@ -332,18 +337,15 @@ test('对象转向后的占地增删与点选原点换回基准偏移，四槽�
   expect(editor.window.document.querySelector('[data-object-angle="180"]').disabled).toBe(true);
   editor.clickCell([0, 2]);
   expect(JSON.parse(editor.get('footprint').value)).toContainEqual([2, 1]);
-  editor.change('grid-action', 'origin', 'change');
+  editor.change('grid-action', 'inspect', 'change');
   editor.clickCell([0, 2]);
-  expect(JSON.parse(editor.get('footprint').value)).toEqual([[-2, -1], [-1, -1], [0, -1], [-2, 0], [-1, 0], [0, 0]]);
-  expect(editor.draw().origin).toEqual([240, 300]);
-  expect(editor.draw().position).toEqual(placed.position);
-  expect(editor.draw().footprint).toEqual(placed.footprint);
-  expect(editor.draw().placementGrid).toEqual(placed.placementGrid);
-  const deltas = [[120, -20], [40, 60], [-120, 20], [-40, -60]];
+  expect(editor.get('grid-status').textContent).toContain('基准偏移 [2,1]');
+  expect(JSON.parse(editor.get('footprint').value)).toEqual([[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1]]);
+  expect(editor.draw()).toEqual(placed);
   editor.objectAngle(0);
-  [0, 90, 180, 270].forEach((angle, index) => {
+  [0, 90, 180, 270].forEach(angle => {
     editor.angle(angle);
-    expect(editor.draw().anchor).toEqual(before[angle].map((value, axis) => value + deltas[index][axis]));
+    expect(editor.draw().anchor).toEqual(before[angle]);
   });
   expect(editor.errors).toEqual([]);
   editor.window.close();

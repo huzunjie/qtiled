@@ -347,7 +347,7 @@
    * @param {Object} layer SpriteJS Layer，生命周期由调用方管理。
    * @param {Object|null} drawInfo resolveElementDraw 的结果；null 清除本预览。
    * @param {Object} sources loadElementSources 返回的图片索引。
-   * @param {Object} overlays { gridPositions: 像素坐标数组, footprint: true, anchor: true, placement: true, bounds: false }。
+   * @param {Object} overlays { gridPositions: 像素坐标数组, footprint: true, placement: true, bounds: false }。
    * @returns {Object|null} 当前预览 Group；不改变输入，不在内部异步加载图片。
    */
 
@@ -401,17 +401,6 @@
         strokeColor: '#7395b9',
         lineWidth: 1
       }));
-    }
-
-    if (overlays.anchor !== false) {
-      for (const points of [[[-6, 0], [6, 0]], [[0, -6], [0, 6]]]) {
-        group.append(new spritejs.Polyline({
-          pos: drawInfo.origin,
-          points,
-          strokeColor: '#cf3535',
-          lineWidth: 2
-        }));
-      }
     }
 
     if (overlays.placement !== false && drawInfo.placementOrigin) {

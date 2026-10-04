@@ -283,7 +283,8 @@ describe('SpriteJS 预览适配（节点替身）', () => {
       const sprites = group.children.filter(child => child instanceof Sprite);
       expect(sprites).toHaveLength(1);
       expect(sprites[0].attributes).toMatchObject({ texture: sources[`${angle}.png`], sourceRect: draw.rect, size: [100, 80], pos: [-30, -60], anchor: [0, 0] });
-      expect(group.children).toHaveLength(10);
+      expect(group.children).toHaveLength(8);
+      expect(group.children.some(node => node.attributes.strokeColor === '#cf3535')).toBe(false);
       expect(group.children.find(node => node.attributes.strokeColor === '#1976b5').attributes.pos).toEqual(draw.placementOrigin);
     }
     expect(renderElementPreview(layer, null)).toBeNull();
@@ -293,7 +294,7 @@ describe('SpriteJS 预览适配（节点替身）', () => {
   test('关闭覆盖层只绘制图片，失败时移除旧预览', () => {
     const layer = new Group();
     const draw = resolveElementDraw(sample());
-    const group = renderElementPreview(layer, draw, sources, { footprint: false, anchor: false, placement: false });
+    const group = renderElementPreview(layer, draw, sources, { footprint: false, placement: false });
     expect(group.children).toHaveLength(1);
     expect(() => renderElementPreview(layer, draw, {})).toThrow('未加载图片：0.png');
     expect(layer.children).toEqual([]);

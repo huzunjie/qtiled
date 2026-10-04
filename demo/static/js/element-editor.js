@@ -140,15 +140,12 @@
       }));
     });
     const preview = renderElementPreview(layer, currentDraw, sources,
-      { bounds: true, footprint: false, anchor: false, placement: false });
+      { bounds: true, footprint: false, placement: false });
     if (preview) preview.attr({ pos: camera.offset, scale: [camera.scale, camera.scale], transformOrigin: [0, 0], opacity: Number(get('image-opacity').value) / 100 });
     footprint.forEach(grid => overlayLayer.append(new spritejs.Polyline({
       pos: toScreen(qtiledView.projectGrid(grid, view)), points, close: true,
       strokeColor: '#ce871c', fillColor: 'rgba(255,190,55,0.12)', lineWidth: 2,
     })));
-    for (const cross of [[[-6, 0], [6, 0]], [[0, -6], [0, 6]]]) {
-      overlayLayer.append(new spritejs.Polyline({ pos: toScreen(qtiledView.projectGrid(elementGrid, view)), points: cross, strokeColor: '#cf3535', lineWidth: 2 }));
-    }
     if (placementGrid) {
       overlayLayer.append(new spritejs.Polyline({ pos: toScreen(qtiledView.projectGrid(placementGrid, view)),
         points: [[0, -7], [7, 0], [0, 7], [-7, 0]], close: true, strokeColor: '#1976b5', lineWidth: 2 }));
@@ -242,8 +239,8 @@
     inputIssue = null;
     dimensionIssue = null;
     fileIssues = [];
-    get('grid-action').value = 'origin';
-    get('grid-status').textContent = '点击橙色占地中的格子设置原点，然后逐方向选择图片；当前方向配置好后即可预览。';
+    get('grid-action').value = 'inspect';
+    get('grid-status').textContent = '放置基准格自动确定；逐方向选择图片，拖拽调整图片与占地的对齐。';
     fillFields();
     render({ fit: true });
   }
@@ -272,7 +269,7 @@
         get('definition-file').value = '';
         get('source-files').value = '';
         get('grid-action').value = 'inspect';
-        get('grid-status').textContent = '网格显示相对原点的格子坐标；通过“网格操作”选择查看、增删占地或点选原点。';
+        get('grid-status').textContent = '网格显示世界格坐标；通过“网格操作”查看坐标或增删占地。';
       }
     });
   }
@@ -414,23 +411,6 @@
     const found = definition.footprint.some(cell => cell[0] === grid[0] && cell[1] === grid[1]);
     const action = get('grid-action').value;
     if (action === 'inspect') { get('grid-status').textContent = `所选格子 [${worldGrid}] · 基准偏移 [${grid}]${found ? ' · 已占用' : ' · 未占用'}`; return; }
-    if (action === 'origin') {
-      if (!found) { get('grid-status').textContent = '请选择橙色占地内的格子作为原点。'; return; }
-      definition = applyElementEdit(definition, { field: 'footprint', value: definition.footprint.map(cell => [cell[0] - grid[0], cell[1] - grid[1]]) });
-      // 固定原点重新标定，四向都按各自投影换算，不能只移动当前图片。
-      angles.forEach(angle => {
-        const delta = qtiledView.projectGrid(grid, { angle, tileSize: view.tileSize });
-        const anchor = definition.views[angle].anchor.map((value, i) => value + delta[i]);
-        definition = applyElementEdit(definition, { field: 'anchor', angle, value: anchor });
-      });
-      // 定义原点重命名后同步世界定位，图片与占地保持原位；放置基准格不改变。
-      const offset = qtiled.shapes.polygon.rotateGridPoint(grid, objectAngle / 90);
-      elementGrid = elementGrid.map((value, i) => value + offset[i]);
-      get('grid-status').textContent = `原格子 [${grid}] 已设为 [0,0]；四向锚点与占地偏移已同步换算。`;
-      fillFields();
-      render({ fit: true });
-      return;
-    }
     const footprint = found ? definition.footprint.filter(cell => cell[0] !== grid[0] || cell[1] !== grid[1]) : [...definition.footprint, grid];
     edit('footprint', footprint);
     get('footprint').value = JSON.stringify(footprint);
@@ -459,7 +439,7 @@
     inputIssue = null;
     edit('footprint', qtiled.shapes.polygon.twoDimForEach([minX, minX + width - 1], [minY, minY + height - 1], 'RightDown', (x, y) => [x, y]));
     get('footprint').value = JSON.stringify(definition.footprint);
-    get('grid-status').textContent = `已重建 ${width} × ${height} 占地；可点选格子调整原点。`;
+    get('grid-status').textContent = `已重建 ${width} × ${height} 占地；放置基准格自动确定。`;
   }));
   document.querySelectorAll('[data-angle]').forEach(button => button.addEventListener('click', () => {
     if (busy || drag) return;

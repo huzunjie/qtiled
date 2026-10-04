@@ -169,7 +169,7 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 * [ ] 地图场景渲染、画序与遮挡、动画播放
 
 ### Tile Editor - 瓦片编辑器
-* [x] [P0-D 静态元素编辑](docs/element-editor.md)：四向独立选图、裁切、锚点、占地预设与原点选择、JSON 导出及独立预览回读。[编辑 Demo](demo/element-editor.html) 显示网格坐标并实时反馈当前方向的配置。
+* [x] [P0-D 静态元素编辑](docs/element-editor.md)：四向独立选图、裁切、锚点、占地编辑与自动放置基准、JSON 导出及独立预览回读。[编辑 Demo](demo/element-editor.html) 显示网格坐标并实时反馈当前方向的配置。
 
 ### Sprite Editor - 精灵编辑器
 * [x] 静态精灵与地块共用 P0-D 元素编辑器。

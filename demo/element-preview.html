@@ -57,7 +57,7 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
-  <script src="./static/js/qtiled-preview.dev.js?20261004-placement"></script>
+  <script src="./static/js/qtiled-preview.dev.js?20261004-auto-placement"></script>
   <script src="./static/js/element-files.js"></script>
   <main class="element-demo">
     <h1>四向静态素材 <small>· P0-C</small></h1>
@@ -80,7 +80,7 @@
           <span class="group-name">显示</span>
           <label><input id="grid" type="checkbox" checked>网格</label>
           <label><input id="footprint" type="checkbox" checked>占地</label>
-          <label><input id="anchor" type="checkbox" checked>锚点</label>
+          <label><input id="placement" type="checkbox" checked>放置基准</label>
           <label><input id="bounds" type="checkbox">裁切边框</label>
           <output id="view-scale" aria-label="预览缩放比例">自动适配</output>
         </div>
@@ -112,7 +112,7 @@
           <dl>
             <dt>裁切 [x, y, 宽, 高]</dt><dd id="rect">—</dd>
             <dt>像素锚点（相对裁切左上角）</dt><dd id="anchor-value">—</dd>
-            <dt>绘制左上角 / 定义原点像素</dt><dd id="position">—</dd>
+            <dt>图片左上角</dt><dd id="position">—</dd>
           </dl>
           <div class="field-heading"><h3>占地</h3></div>
           <dl><dt>占用格子</dt><dd id="world-cells" tabindex="0">—</dd></dl>
@@ -128,7 +128,7 @@
       <summary>操作说明与素材约定</summary>
       <p>独立回读：选择素材根目录或图片文件，再导入编辑器导出的 JSON。单选图片以文件名作为引用，目录图片使用目录内相对路径。瓦片尺寸需与编辑预览一致；本页不读取编辑器状态。“载入样本”恢复内置样本。</p>
       <p>镜头和对象朝向分别切换，鼠标位于画布且未编辑输入框时按 R 转对象。矩形转向后仍以当前画面最上角的占地格定位：2×2 保持原占地，3×2 交换长宽；切换镜头不会搬动世界占地。不规则占地仍可预览，暂不支持对象转向。导入后对象朝向重置为 0°；复现转向时先选择相同镜头，再按相同顺序转对象，位置和朝向不写入 JSON。</p>
-      <p>橙色线表示逻辑占地，蓝色小框表示上角放置基准格，红色十字表示素材标定用的定义原点；“锚点”开关控制两种标记。暂定单元格尺寸 80×40，可手动调整。内置样本占地 2×2，锚点按可见底座初步对齐，精确原作像素仍待标定。裁切示例会切去图像边缘并同步移动锚点，剩余像素的世界位置不变；原图不被修改。</p>
+      <p>橙色线表示逻辑占地，蓝色小框自动标记当前画面最上方占地格的格心，无需手动选择；“放置基准”开关控制该标记。暂定单元格尺寸 80×40，可手动调整。内置样本占地 2×2，像素锚点用于对齐图片与占地，精确原作像素仍待标定。裁切示例会切去图像边缘并同步移动锚点，剩余像素的世界位置不变；原图不被修改。</p>
       <p>四张图片与 JSON 一起放在样本目录中；素材来源与标定依据见 <a href="./static/element-samples/dog/README.md">样本说明</a>。</p>
     </details>
   </main>
@@ -205,7 +205,7 @@
         scene.height = height;
         const scale = Math.min(1, Math.max(1, width - 48) / bounds.width, Math.max(1, height - 48) / bounds.height);
         const preview = renderElementPreview(layer, draw, sources, {
-          gridPositions, footprint: checked('footprint'), anchor: checked('anchor'), placement: checked('anchor'), bounds: checked('bounds'),
+          gridPositions, footprint: checked('footprint'), placement: checked('placement'), bounds: checked('bounds'),
         });
         if (preview) preview.attr({ transformOrigin: [0, 0], scale: [scale, scale],
           pos: [width / 2 - (bounds.minX + bounds.maxX) / 2 * scale, height / 2 - (bounds.minY + bounds.maxY) / 2 * scale] });
@@ -216,7 +216,7 @@
         text('view-scale', `自动适配 · ${Math.round(scale * 100)}%`);
         text('rect', JSON.stringify(draw.rect));
         text('anchor-value', JSON.stringify(draw.anchor));
-        text('position', `${JSON.stringify(draw.position)} / ${JSON.stringify(draw.origin)}`);
+        text('position', JSON.stringify(draw.position));
         text('world-cells', draw.footprint.map(cell => JSON.stringify(cell.grid)).join(' '));
       }
 
