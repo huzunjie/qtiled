@@ -6,14 +6,15 @@
   const status = get('status');
   const issues = get('issues');
   const mapUrl = new URL('./static/map-samples/first-static-map.json', document.baseURI);
-  const elementUrl = new URL('./static/element-samples/dog/element.json', document.baseURI);
   const navigation = document.querySelector('.navs');
   if (navigation) navigation.classList.add('closed');
   let layer;
   let root;
+  let selectionGroup;
   let loaded;
   let entities = [];
   let view;
+  let viewportOrigin;
   let angle = 0;
   let selectedGrid = null;
   let selectedId = null;
@@ -33,6 +34,7 @@
   function clear() {
     if (root) root.remove();
     root = null;
+    selectionGroup = null;
     loaded = null;
     entities = [];
     selectedGrid = null;
@@ -54,20 +56,22 @@
     get('entity-footprint').textContent = entity ? entity.draw.footprint.map(item => JSON.stringify(item.grid)).join(' ') : '—';
   }
 
-  function render() {
+  function renderScene() {
     const { Group, Polyline, Label } = window.spritejs;
     const { shapes } = window.qtiled;
     const { projectGrid } = window.qtiledView;
     const { map, elementsById, sources } = loaded;
+    // 先由共享解析器校验，成功后才访问 cells；不另做一遍地图校验。
+    const result = window.qtiledMaps.resolveMapEntities(map, elementsById, { angle });
+    showIssues('地图实体解析失败', result.issues);
+    entities = result.entities;
     view = { angle, tileSize: map.tileSize, originPixel: [0, 0] };
     const cells = map.cells.flatMap((row, y) => row.map((cell, x) => ({ cell, grid: [x, y] })));
     const vertexes = shapes.rhombus.getVertexes(map.tileSize);
     const bounds = shapes.polygon.getBounds(cells.map(item => projectGrid(item.grid, view)), vertexes);
-    view.originPixel = [320 - (bounds.minX + bounds.maxX) / 2, 240 - (bounds.minY + bounds.maxY) / 2];
-    const result = window.qtiledMaps.resolveMapEntities(map, elementsById, view);
-    showIssues('地图实体解析失败', result.issues);
-    entities = result.entities;
-    const next = new Group();
+    viewportOrigin = [320 - (bounds.minX + bounds.maxX) / 2, 240 - (bounds.minY + bounds.maxY) / 2];
+    // 显示平移交给场景容器；元素与格子共用零原点投影，无需再次解析实体。
+    const next = new Group({ pos: viewportOrigin });
     cells.forEach(({ cell, grid }) => {
       const pos = projectGrid(grid, view);
       next.append(new Polyline({ pos, points: vertexes, close: true,
@@ -78,26 +82,37 @@
     // 本样本仅两个不重叠矩形：按占地最下端由远到近绘制，不作为通用遮挡算法。
     const depth = entity => Math.max(...entity.draw.footprint.map(item => item.position[1]));
     [...entities].sort((a, b) => depth(a) - depth(b)).forEach(entity => {
-      // 适配器每个容器只管理一个预览；实例各有自己的容器，避免互相替换。
+      // 适配器每个容器只管理一个元素绘制组；实例各有自己的容器，避免互相替换。
       const holder = new Group();
-      window.qtiledPreview.renderElementPreview(holder, entity.draw, sources, { footprint: false, placement: false });
+      window.qtiledElementRendering.renderElement(holder, entity.draw, sources, { footprint: false, placement: false });
       next.append(holder);
       const footprintBounds = shapes.polygon.getBounds(entity.draw.footprint.map(item => item.position), vertexes);
       next.append(new Label({ text: entity.id, pos: [(footprintBounds.minX + footprintBounds.maxX) / 2, footprintBounds.maxY + 10],
         anchor: [0.5, 0.5], font: '12px sans-serif', fillColor: '#425466' }));
     });
+    if (root) root.remove();
+    root = next;
+    selectionGroup = null;
+    updateSelection();
+    layer.append(root);
+    document.querySelectorAll('[data-angle]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.angle) === angle)));
+    get('view-info').textContent = `${map.tileSize.join(' × ')} px / ${angle}°`;
+  }
+
+  function updateSelection() {
+    const { Group, Polyline } = window.spritejs;
+    const { map } = loaded;
+    const vertexes = window.qtiled.shapes.rhombus.getVertexes(map.tileSize);
+    if (selectionGroup) selectionGroup.remove();
+    selectionGroup = new Group();
     const selectedEntity = entities.find(item => item.id === selectedId);
     const highlight = selectedEntity ? selectedEntity.draw.footprint.map(item => item.grid) : selectedGrid ? [selectedGrid] : [];
     highlight.forEach(grid => {
       if (map.cells[grid[1]]?.[grid[0]] === undefined) return;
-      next.append(new Polyline({ pos: projectGrid(grid, view), points: vertexes, close: true,
+      selectionGroup.append(new Polyline({ pos: window.qtiledView.projectGrid(grid, view), points: vertexes, close: true,
         strokeColor: '#1976b5', fillColor: 'rgba(25, 118, 181, .18)', lineWidth: 2 }));
     });
-    if (root) root.remove();
-    layer.append(next);
-    root = next;
-    document.querySelectorAll('[data-angle]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.angle) === angle)));
-    get('view-info').textContent = `${map.tileSize.join(' × ')} px / ${angle}°`;
+    root.append(selectionGroup);
     showSelection();
   }
 
@@ -115,30 +130,24 @@
     issues.textContent = '';
     status.textContent = '正在加载地图与素材…';
     try {
-      if (!window.qtiledMaps || !window.qtiledPreview || !window.qtiledView || !window.qtiled || !window.spritejs) {
+      if (!window.qtiledMaps || !window.qtiledElementRendering || !window.qtiledView || !window.qtiled || !window.spritejs) {
         throw new Error('缺少 Demo 运行包，请先在项目目录执行 npm run debug');
       }
-      // 固定交付样本的四张图片，不从不合法定义中猜路径；每次重载重新读取图片。
-      const sourceFiles = Object.fromEntries([1, 2, 3, 4].map(index => {
-        const path = `images/sculpture_dog0${index}.png`;
-        const url = new URL(path, elementUrl);
-        url.searchParams.set('reload', `${Date.now()}-${version}`);
-        return [path, url.href];
-      }));
+      const { directory, sourceFiles } = getDogElementSample(`${Date.now()}-${version}`);
+      const elementUrl = new URL(`${directory}element.json`, document.baseURI);
       const [map, definition, images] = await Promise.all([
-        readJson(mapUrl, '地图'), readJson(elementUrl, '元素定义'), window.qtiledPreview.loadElementSources(sourceFiles),
+        readJson(mapUrl, '地图'), readJson(elementUrl, '元素定义'), window.qtiledElementRendering.loadElementSources(sourceFiles),
       ]);
       if (version !== loadVersion) return;
       showIssues('图片加载失败', images.issues);
-      showIssues('元素定义无效', window.qtiledPreview.validateElementDefinition(definition, images.sourceInfo));
+      showIssues('元素定义无效', window.qtiledElementRendering.validateElementDefinition(definition, images.sourceInfo));
       const elementsById = { [definition.id]: definition };
-      showIssues('地图定义无效', window.qtiledMaps.validateMapDefinition(map, elementsById));
       if (!layer) {
         const scene = new window.spritejs.Scene({ container, width: 640, height: 440, mode: 'static' });
         layer = scene.layer('map', { handleEvent: false, contextType: '2d' });
       }
       loaded = { map, elementsById, sources: images.sources };
-      render();
+      renderScene();
       get('map-id').textContent = map.id;
       get('map-summary').textContent = `${map.cells.length} 行 × ${map.cells[0].length} 列 · ${map.cells.flat().filter(Boolean).length} 有效格 · ${entities.length} 实体`;
       controls.disabled = false;
@@ -151,19 +160,19 @@
   document.querySelectorAll('[data-angle]').forEach(button => button.addEventListener('click', () => {
     if (!loaded) return;
     angle = Number(button.dataset.angle);
-    try { render(); } catch (error) { fail(error); }
+    try { renderScene(); } catch (error) { fail(error); }
   }));
   get('pick-mode').addEventListener('change', () => {
     selectedGrid = null;
     selectedId = null;
-    if (loaded) render();
+    if (loaded) updateSelection();
   });
   container.addEventListener('click', event => {
     if (!loaded) return;
-    selectedGrid = window.qtiledView.pickGrid(getPointerPosition(event, container), view);
+    selectedGrid = window.qtiledView.pickGrid(getPointerPosition(event, container), { ...view, originPixel: viewportOrigin });
     const match = get('pick-mode').value === 'entity' && entities.find(entity => entity.draw.footprint.some(({ grid }) => grid[0] === selectedGrid[0] && grid[1] === selectedGrid[1]));
     selectedId = match ? match.id : null;
-    render();
+    updateSelection();
   });
   get('reload').addEventListener('click', reload);
   reload();

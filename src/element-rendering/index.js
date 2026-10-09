@@ -1,6 +1,6 @@
-/* 可选浏览器预览入口：SpriteJS 为外部依赖，不进入 QTiled 核心。 */
+/* 可选元素渲染入口：含纯计算与浏览器适配；SpriteJS 为外部依赖，不进入 QTiled 核心。 */
 export { loadElementSources } from './sources';
 export { resolveElementDraw } from './draw';
 export { resolveElementPlacement } from './placement';
-export { renderElementPreview } from './spritejs-element-renderer';
+export { renderElement } from './spritejs-element-renderer';
 export { importElementDefinition, validateElementDefinition, applyElementEdit, exportElementDefinition } from '../elements';

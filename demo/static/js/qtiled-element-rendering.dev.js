@@ -8,7 +8,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('spritejs')) :
   typeof define === 'function' && define.amd ? define(['exports', 'spritejs'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.qtiledPreview = {}, global.spritejs));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.qtiledElementRendering = {}, global.spritejs));
 }(this, (function (exports, spritejs) { 'use strict';
 
   /** 加载调用方明确列出的图片，不扫描素材库；仅在调用时使用浏览器 API。
@@ -342,19 +342,19 @@
     };
   }
 
-  const previews = new WeakMap();
-  /** 在现有 SpriteJS 容器中替换本函数拥有的预览组，保留调用方其他节点。
-   * @param {Object} layer SpriteJS Layer 或 Group，生命周期由调用方管理；多实例各用独立 Group。
-   * @param {Object|null} drawInfo resolveElementDraw 的结果；null 清除本预览。
+  const renderedGroups = new WeakMap();
+  /** 在现有 SpriteJS 容器中替换本函数拥有的元素组，保留调用方其他节点。
+   * @param {Object} container SpriteJS Layer 或 Group，生命周期由调用方管理；多实例各用独立 Group。
+   * @param {Object|null} drawInfo resolveElementDraw 的结果；null 清除本元素组。
    * @param {Object} sources loadElementSources 返回的图片索引。
    * @param {Object} overlays { gridPositions: 像素坐标数组, footprint: true, placement: true, bounds: false }。
-   * @returns {Object|null} 当前预览 Group；不改变输入，不在内部异步加载图片。
+   * @returns {Object|null} 当前元素 Group；不改变输入，不在内部异步加载图片。
    */
 
-  function renderElementPreview(layer, drawInfo, sources = {}, overlays = {}) {
-    const previous = previews.get(layer);
+  function renderElement(container, drawInfo, sources = {}, overlays = {}) {
+    const previous = renderedGroups.get(container);
     if (previous) previous.remove();
-    previews.delete(layer);
+    renderedGroups.delete(container);
     if (!drawInfo) return null;
     const image = Object.prototype.hasOwnProperty.call(sources, drawInfo.source) ? sources[drawInfo.source] : null;
     if (!image) throw new Error(`未加载图片：${drawInfo.source}`);
@@ -413,8 +413,8 @@
       }));
     }
 
-    layer.append(group);
-    previews.set(layer, group);
+    container.append(group);
+    renderedGroups.set(container, group);
     return group;
   }
 
@@ -598,7 +598,7 @@
   exports.exportElementDefinition = exportElementDefinition;
   exports.importElementDefinition = importElementDefinition;
   exports.loadElementSources = loadElementSources;
-  exports.renderElementPreview = renderElementPreview;
+  exports.renderElement = renderElement;
   exports.resolveElementDraw = resolveElementDraw;
   exports.resolveElementPlacement = resolveElementPlacement;
   exports.validateElementDefinition = validateElementDefinition;
@@ -606,4 +606,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=qtiled-preview.dev.js.map
+//# sourceMappingURL=qtiled-element-rendering.dev.js.map

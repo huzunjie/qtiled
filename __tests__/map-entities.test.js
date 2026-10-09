@@ -1,6 +1,6 @@
 import { resolveMapEntities, validateMapDefinition } from '../src/maps';
 import { validateElementDefinition } from '../src/elements';
-import { resolveElementPlacement } from '../src/element-preview/placement';
+import { resolveElementPlacement } from '../src/element-rendering/placement';
 
 const angles = [0, 90, 180, 270];
 const createElement = () => ({

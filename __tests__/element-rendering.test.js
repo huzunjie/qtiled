@@ -1,9 +1,9 @@
 import * as core from '../src';
 import { importElementDefinition } from '../src/elements';
-import { resolveElementDraw } from '../src/element-preview/draw';
-import { resolveElementPlacement } from '../src/element-preview/placement';
-import { loadElementSources } from '../src/element-preview/sources';
-import { renderElementPreview } from '../src/element-preview/spritejs-element-renderer';
+import { resolveElementDraw } from '../src/element-rendering/draw';
+import { resolveElementPlacement } from '../src/element-rendering/placement';
+import { loadElementSources } from '../src/element-rendering/sources';
+import { renderElement } from '../src/element-rendering/spritejs-element-renderer';
 import { Group, Sprite } from 'spritejs';
 
 jest.mock('spritejs', () => {
@@ -278,7 +278,7 @@ describe('SpriteJS 预览适配（节点替身）', () => {
     layer.append(other);
     for (const angle of [0, 90, 180, 270, 0]) {
       const draw = resolveElementDraw(sample(), [0, 0], { angle });
-      const group = renderElementPreview(layer, draw, sources, { gridPositions: [[0, 0]], bounds: true });
+      const group = renderElement(layer, draw, sources, { gridPositions: [[0, 0]], bounds: true });
       expect(layer.children).toEqual([other, group]);
       const sprites = group.children.filter(child => child instanceof Sprite);
       expect(sprites).toHaveLength(1);
@@ -287,32 +287,32 @@ describe('SpriteJS 预览适配（节点替身）', () => {
       expect(group.children.some(node => node.attributes.strokeColor === '#cf3535')).toBe(false);
       expect(group.children.find(node => node.attributes.strokeColor === '#1976b5').attributes.pos).toEqual(draw.placementOrigin);
     }
-    expect(renderElementPreview(layer, null)).toBeNull();
+    expect(renderElement(layer, null)).toBeNull();
     expect(layer.children).toEqual([other]);
   });
 
   test('关闭覆盖层只绘制图片，失败时移除旧预览', () => {
     const layer = new Group();
     const draw = resolveElementDraw(sample());
-    const group = renderElementPreview(layer, draw, sources, { footprint: false, placement: false });
+    const group = renderElement(layer, draw, sources, { footprint: false, placement: false });
     expect(group.children).toHaveLength(1);
-    expect(() => renderElementPreview(layer, draw, {})).toThrow('未加载图片：0.png');
+    expect(() => renderElement(layer, draw, {})).toThrow('未加载图片：0.png');
     expect(layer.children).toEqual([]);
-    expect(() => renderElementPreview(layer, draw, Object.create(sources))).toThrow('未加载图片');
+    expect(() => renderElement(layer, draw, Object.create(sources))).toThrow('未加载图片');
   });
 
   test('两个实例使用独立容器，切向或清除一项不替换另一项', () => {
     const layer = new Group();
     const holders = [new Group(), new Group()];
     holders.forEach(holder => layer.append(holder));
-    const other = renderElementPreview(holders[1], resolveElementDraw(sample(), [3, 1]), sources);
+    const other = renderElement(holders[1], resolveElementDraw(sample(), [3, 1]), sources);
     for (const angle of [0, 90, 180, 270]) {
-      const first = renderElementPreview(holders[0], resolveElementDraw(sample(), [1, 1], { angle }), sources);
+      const first = renderElement(holders[0], resolveElementDraw(sample(), [1, 1], { angle }), sources);
       expect(holders[0].children).toEqual([first]);
       expect(holders[1].children).toEqual([other]);
       expect(layer.children).toEqual(holders);
     }
-    renderElementPreview(holders[0], null);
+    renderElement(holders[0], null);
     expect(holders[0].children).toEqual([]);
     expect(holders[1].children).toEqual([other]);
   });

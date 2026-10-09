@@ -1,9 +1,9 @@
-/* global qtiled, qtiledView, qtiledPreview, spritejs, getPointerPosition, getElementSourceFiles, getElementLowerEdges, snapElementLowerEdges */
+/* global qtiled, qtiledView, qtiledElementRendering, spritejs, getPointerPosition, getElementSourceFiles, getDogElementSample, getElementLowerEdges, snapElementLowerEdges */
 (async () => {
   const nav = document.querySelector('.navs');
   if (nav) nav.classList.add('closed');
   const { loadElementSources, importElementDefinition, validateElementDefinition,
-    applyElementEdit, exportElementDefinition, resolveElementDraw, resolveElementPlacement, renderElementPreview } = qtiledPreview;
+    applyElementEdit, exportElementDefinition, resolveElementDraw, resolveElementPlacement, renderElement } = qtiledElementRendering;
   const get = id => document.getElementById(id);
   const angles = [0, 90, 180, 270];
   const rectIds = ['rect-x', 'rect-y', 'rect-width', 'rect-height'];
@@ -139,7 +139,7 @@
         fontSize: 10, fillColor: '#657584',
       }));
     });
-    const preview = renderElementPreview(layer, currentDraw, sources,
+    const preview = renderElement(layer, currentDraw, sources,
       { bounds: true, footprint: false, placement: false });
     if (preview) preview.attr({ pos: camera.offset, scale: [camera.scale, camera.scale], transformOrigin: [0, 0], opacity: Number(get('image-opacity').value) / 100 });
     footprint.forEach(grid => overlayLayer.append(new spritejs.Polyline({
@@ -247,12 +247,8 @@
 
   async function loadSample() {
     await loadFiles(async () => {
-      const assetDir = './static/element-samples/dog/';
-      const files = Object.fromEntries([1, 2, 3, 4].map(number => {
-        const path = `images/sculpture_dog0${number}.png`;
-        return [path, `${assetDir}${path}`];
-      }));
-      const loaded = await loadElementSources(files);
+      const { directory: assetDir, sourceFiles } = getDogElementSample();
+      const loaded = await loadElementSources(sourceFiles);
       sources = loaded.sources;
       sourceInfo = loaded.sourceInfo;
       fileIssues = loaded.issues;

@@ -57,11 +57,12 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
-  <script src="./static/js/qtiled-preview.dev.js?20261004-auto-placement"></script>
+  <script src="./static/js/qtiled-element-rendering.dev.js?20261004-auto-placement"></script>
   <script src="./static/js/element-files.js"></script>
+  <script src="./static/js/dog-element-sample.js"></script>
   <main class="element-demo">
     <h1>四向静态素材 <small>· P0-C</small></h1>
-    <p class="intro">独立读取元素 JSON 与素材图片，切换四向核对裁切、锚点和占地。</p>
+    <p class="intro">演示同一份元素定义在四个镜头下的绘制结果，用于核对图片、裁切、锚点与占地。</p>
     <div class="toolbar">
       <div class="tool-group">
         <span class="group-name">文件</span>
@@ -136,7 +137,7 @@
     (async () => {
       const nav = document.querySelector('.navs');
       if (nav) nav.classList.add('closed');
-      const { loadElementSources, importElementDefinition, resolveElementDraw, resolveElementPlacement, renderElementPreview } = qtiledPreview;
+      const { loadElementSources, importElementDefinition, resolveElementDraw, resolveElementPlacement, renderElement } = qtiledElementRendering;
       if (typeof resolveElementPlacement !== 'function') {
         document.getElementById('status').textContent = '运行文件尚未更新：请在 QTiled 根目录运行 npm run debug，再刷新此页。';
         document.querySelectorAll('button, input, select').forEach(input => { input.disabled = true; });
@@ -150,11 +151,7 @@
       let elementGrid = [0, 0];
       let placementGrid = null;
       let pointerOnCanvas = false;
-      const assetDir = './static/element-samples/dog/';
-      const sourceFiles = Object.fromEntries([1, 2, 3, 4].map(number => {
-        const path = `images/sculpture_dog0${number}.png`;
-        return [path, `${assetDir}${path}`];
-      }));
+      const { directory: assetDir, sourceFiles } = getDogElementSample();
       const jsonBySample = new Map();
       let sources = {};
       let sourceInfo = {};
@@ -165,7 +162,7 @@
 
       function showIssues(issues) {
         definition = null;
-        renderElementPreview(layer, null);
+        renderElement(layer, null);
         const element = document.getElementById('issues');
         element.hidden = false;
         element.textContent = issues.map(issue => `${issue.path}: ${issue.message}`).join('\n');
@@ -204,7 +201,7 @@
         scene.width = width;
         scene.height = height;
         const scale = Math.min(1, Math.max(1, width - 48) / bounds.width, Math.max(1, height - 48) / bounds.height);
-        const preview = renderElementPreview(layer, draw, sources, {
+        const preview = renderElement(layer, draw, sources, {
           gridPositions, footprint: checked('footprint'), placement: checked('placement'), bounds: checked('bounds'),
         });
         if (preview) preview.attr({ transformOrigin: [0, 0], scale: [scale, scale],
@@ -236,7 +233,7 @@
         if (loading) return;
         loading = true;
         definition = null;
-        renderElementPreview(layer, null);
+        renderElement(layer, null);
         ['source-files', 'image-files', 'definition-file', 'sample', 'reload'].forEach(id => { document.getElementById(id).disabled = true; });
         text('status', '正在加载图片与元素定义…');
         document.getElementById('issues').hidden = true;

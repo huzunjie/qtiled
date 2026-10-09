@@ -1,19 +1,19 @@
 import { Sprite, Polyline, Group } from 'spritejs';
 import { getVertexes } from '../shapes/rhombus';
 
-const previews = new WeakMap();
+const renderedGroups = new WeakMap();
 
-/** 在现有 SpriteJS 容器中替换本函数拥有的预览组，保留调用方其他节点。
- * @param {Object} layer SpriteJS Layer 或 Group，生命周期由调用方管理；多实例各用独立 Group。
- * @param {Object|null} drawInfo resolveElementDraw 的结果；null 清除本预览。
+/** 在现有 SpriteJS 容器中替换本函数拥有的元素组，保留调用方其他节点。
+ * @param {Object} container SpriteJS Layer 或 Group，生命周期由调用方管理；多实例各用独立 Group。
+ * @param {Object|null} drawInfo resolveElementDraw 的结果；null 清除本元素组。
  * @param {Object} sources loadElementSources 返回的图片索引。
  * @param {Object} overlays { gridPositions: 像素坐标数组, footprint: true, placement: true, bounds: false }。
- * @returns {Object|null} 当前预览 Group；不改变输入，不在内部异步加载图片。
+ * @returns {Object|null} 当前元素 Group；不改变输入，不在内部异步加载图片。
  */
-export function renderElementPreview(layer, drawInfo, sources = {}, overlays = {}) {
-  const previous = previews.get(layer);
+export function renderElement(container, drawInfo, sources = {}, overlays = {}) {
+  const previous = renderedGroups.get(container);
   if (previous) previous.remove();
-  previews.delete(layer);
+  renderedGroups.delete(container);
   if (!drawInfo) return null;
   const image = Object.prototype.hasOwnProperty.call(sources, drawInfo.source) ? sources[drawInfo.source] : null;
   if (!image) throw new Error(`未加载图片：${drawInfo.source}`);
@@ -44,7 +44,7 @@ export function renderElementPreview(layer, drawInfo, sources = {}, overlays = {
     group.append(new Polyline({ pos: drawInfo.placementOrigin,
       points: [[0, -7], [7, 0], [0, 7], [-7, 0]], close: true, strokeColor: '#1976b5', lineWidth: 2 }));
   }
-  layer.append(group);
-  previews.set(layer, group);
+  container.append(group);
+  renderedGroups.set(container, group);
   return group;
 }

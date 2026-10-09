@@ -5,8 +5,8 @@ import { JSDOM } from 'jsdom';
 import { shapes } from '../src';
 import * as elements from '../src/elements';
 import * as view from '../src/isometric-view';
-import { resolveElementDraw } from '../src/element-preview/draw';
-import { resolveElementPlacement } from '../src/element-preview/placement';
+import { resolveElementDraw } from '../src/element-rendering/draw';
+import { resolveElementPlacement } from '../src/element-rendering/placement';
 
 // 执行两页真实事件脚本；DOM、图片加载、下载与 SpriteJS 使用替身，不冒充浏览器验收。
 async function loadPage(name, overrides = {}) {
@@ -36,8 +36,8 @@ async function loadPage(name, overrides = {}) {
   const context = vm.createContext({
     window, document, Option: window.Option, qtiled: { shapes }, qtiledView: view,
     spritejs: { Scene, Polyline: Shape, Label: Shape },
-    qtiledPreview: {
-      ...elements, resolveElementDraw, resolveElementPlacement, renderElementPreview: render,
+    qtiledElementRendering: {
+      ...elements, resolveElementDraw, resolveElementPlacement, renderElement: render,
       loadElementSources: async files => {
         const sources = {};
         const sourceInfo = {};
@@ -59,7 +59,7 @@ async function loadPage(name, overrides = {}) {
     setTimeout: callback => callback(),
   });
   for (const [, attrs, script] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
-    const helper = attrs.match(/static\/js\/(pointer|element-files|element-snap|element-editor)\.js/);
+    const helper = attrs.match(/static\/js\/(pointer|element-files|element-snap|element-editor|dog-element-sample)\.js/);
     if (helper) await vm.runInContext(read(`static/js/${helper[1]}.js`), context);
     else if (!attrs.includes('src=')) await vm.runInContext(script, context);
   }

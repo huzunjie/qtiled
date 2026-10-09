@@ -48,7 +48,7 @@ cell.tile 必须引用 `kind: 'tile'` 且 footprint 恰为 `[[0,0]]` 的元素�
 
 `resolveMapEntities(map, elementsById = {}, view = {})` 先调用上述校验器。成功返回 `{ entities: [...], issues: [] }`；地图无效时返回 `{ entities: null, issues }`，问题路径和代码与校验器一致，不产生部分结果。合法的空实体集合返回 `entities: []`。
 
-元素库须先通过 P0 元素校验。此函数直接引用纯计算的 `element-preview/draw`，不引入 SpriteJS、图片加载或浏览器 API。`view` 仅消费镜头 `angle`（缺省 0）和 `originPixel`（缺省 `[0,0]`）；瓦片尺寸始终来自地图，不消费额外的 `view.tileSize`。每个实体的投影沿用 P0 参数约定，非法镜头参数由既有绘制函数抛错。
+元素库须先通过 P0 元素校验。此函数直接引用纯计算的 `element-rendering/draw`，不引入 SpriteJS、图片加载或浏览器 API。`view` 仅消费镜头 `angle`（缺省 0）和 `originPixel`（缺省 `[0,0]`）；瓦片尺寸始终来自地图，不消费额外的 `view.tileSize`。每个实体的投影沿用 P0 参数约定，非法镜头参数由既有绘制函数抛错。
 
 ```js
 import { resolveMapEntities } from '../src/maps/index';
@@ -63,7 +63,7 @@ const result = resolveMapEntities(map, elementsById, {
 //   grid: [1,1], angle: 0, draw: { ... } }
 ```
 
-每项只包含实例 `id`、素材引用 `element`、定义原点世界格 `grid`、对象 `angle` 和 `draw`。`draw` 沿用 [元素绘制结果](element-preview.md#绘制计算)：其中 `id` 为元素 ID，`angle` 为镜头角度，`objectAngle` 为对象朝向，`imageAngle` 决定素材槽；`footprint` 给出全部 `{grid,position}`。同一元素可产生多个独立实例，顺序与输入一致，不代表遮挡画序。返回的数组不与输入或其他实例共享可修改状态；不回写缺省 angle，不复制附加业务字段到派生结果。
+每项只包含实例 `id`、素材引用 `element`、定义原点世界格 `grid`、对象 `angle` 和 `draw`。`draw` 沿用 [元素绘制结果](element-rendering.md#绘制计算)：其中 `id` 为元素 ID，`angle` 为镜头角度，`objectAngle` 为对象朝向，`imageAngle` 决定素材槽；`footprint` 给出全部 `{grid,position}`。同一元素可产生多个独立实例，顺序与输入一致，不代表遮挡画序。返回的数组不与输入或其他实例共享可修改状态；不回写缺省 angle，不复制附加业务字段到派生结果。
 
 实体的 `grid` 已是定义原点，读取或转镜头直接传入 `resolveElementDraw`，不再调用 `resolveElementPlacement`。切镜头仅更新投影和素材槽。新放置/对象转向时，调用方先用既有矩形放置函数计算配套 `grid/objectAngle`，再将它们作为实体 `grid/angle`；地图编辑命令留给后续切片。
 
@@ -75,9 +75,11 @@ const result = resolveMapEntities(map, elementsById, {
 
 页面独立读取 [地图 JSON](../demo/static/map-samples/first-static-map.json)、共享的 [狗元素定义](../demo/static/element-samples/dog/element.json) 及其四张 PNG；不读取 output、本地编辑器状态或浏览器存储。样本为 4 行 6 列、20 个 land/0 有效格、四个 null 空角，dog-a / dog-b 共用一个静态 v1 定义，各占四格。格距仍为现有 80×40 工作参数，不增加原作标定结论。
 
-加载链为 `loadElementSources` → `validateElementDefinition` → `validateMapDefinition` → `resolveMapEntities`。图片必须全部加载且元素/地图校验成功才显示；失败撤下当前场景、清空信息并显示字段/资源原因，修复后“重新加载”会重新读取 JSON 与图片。重载期间禁用查看控件，以请求编号隔离较早的异步结果。
+加载链为 `loadElementSources` → `validateElementDefinition` → `resolveMapEntities`（内部调用 `validateMapDefinition`）。共享解析器成功后页面才访问 cells，不重复前置校验。图片必须全部加载且元素/地图校验成功才显示；失败撤下当前场景、清空信息并显示字段/资源原因，修复后“重新加载”会重新读取 JSON 与图片。重载期间禁用查看控件，以请求编号隔离较早的异步结果。
 
-画格、反查、边界计算分别复用现有 `getVertexes` / `projectGrid`、`pickGrid` / `getPointerPosition`、`getBounds`。每个实体以独立 SpriteJS Group 作为 `renderElementPreview` 的容器，因此不会互相覆盖；整个新场景组建完成后替换旧组。固定双实例按占地投影最下端由远到近绘制。此画序只服务本样本，未实现通用复杂遮挡。
+画格、反查、边界计算分别复用现有 `getVertexes` / `projectGrid`、`pickGrid` / `getPointerPosition`、`getBounds`。每个实体以独立 SpriteJS Group 作为 `renderElement` 的容器，因此不会互相覆盖；整个新场景组建完成后替换旧组。固定双实例按占地投影最下端由远到近绘制。此画序只服务本样本，未实现通用复杂遮挡。
+
+场景在零原点下解析一次，由根 Group 统一平移到画布内；点击反查使用同一平移作为 originPixel。加载和切镜头重建场景，点选和切换查看方式只更新高亮组与信息，不重新校验、投影或创建实体节点。狗样本资源配置复用 `demo/static/js/dog-element-sample.js`。
 
 镜头 0/90/180/270° 只改变投影、画序及素材槽；实例 grid、angle 和全部世界占地保持不变，读取时不重新调用放置计算。“点击查看”选择“格子属性”时查看坐标/属性；选择“雕塑信息”时，点击雕塑脚下的格子，按反查格匹配全部 footprint 并高亮完整占地。选择保持为世界格/实例 ID，切镜头后仍查看同一对象。空角显示 null，矩阵外显示界外；按地面格选择，不提供像素透明度或遮挡命中。
 

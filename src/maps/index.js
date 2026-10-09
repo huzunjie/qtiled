@@ -1,5 +1,5 @@
 /* 平地地图定义的可选入口，不从核心 src/index.js 导出。 */
-import { resolveElementDraw } from '../element-preview/draw';
+import { resolveElementDraw } from '../element-rendering/draw';
 
 function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);

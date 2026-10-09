@@ -1,13 +1,17 @@
-# P0-C：静态素材预览
+# 静态元素绘制与 SpriteJS 适配
 
-运行顺序为：`loadElementSources()` → `importElementDefinition()` → `resolveElementPlacement()`（放置/转向时）→ `resolveElementDraw()` → `renderElementPreview()`。编辑器和独立预览都可以消费这一流程，不依赖另一页面的临时状态。
+`src/element-rendering` 是元素编辑器、独立素材预览和地图消费者共用的可选模块。`draw`、`placement` 为纯计算入口，`sources` 负责浏览器图片加载，`spritejs-element-renderer` 负责 SpriteJS 节点适配；页面布局、交互状态和样本资源配置留在 Demo。
+
+原 `src/element-preview` 已迁移到本目录，`renderElementPreview` 改名为 `renderElement`；浏览器包与命名空间为 `qtiled-element-rendering.dev.js` / `qtiledElementRendering`。仓库内消费者同步迁移，不保留旧入口。实际素材预览页仍使用 `demo/element-preview.html`，其名称表示页面用途。
+
+运行顺序为：`loadElementSources()` → `importElementDefinition()` → `resolveElementPlacement()`（放置/转向时）→ `resolveElementDraw()` → `renderElement()`。编辑器和独立预览都可以消费这一流程，不依赖另一页面的临时状态。
 
 2026-10-04 上角格定位修正已完成回归：全量 18 suites / 486 tests、Demo 构建及差异检查通过，两页各 16 种镜头/对象组合正常。独立预览已回读导出窗口原文保存的 JSON，下载可用由用户实测确认；具体证据边界见[编辑器验证记录](element-editor.md#验证记录)。
 
 ## 图片加载
 
 ```js
-import { loadElementSources } from '../src/element-preview/sources';
+import { loadElementSources } from '../src/element-rendering/sources';
 
 const { sources, sourceInfo, issues } = await loadElementSources({
   'images/dog.png': '/assets/images/dog.png',
@@ -81,23 +85,25 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 ## SpriteJS 适配
 
-适配器源码为 `src/element-preview/spritejs-element-renderer.js`；`demo/static/js/spritejs3.js` 则是 Demo 使用的第三方 SpriteJS 库文件。
+适配器源码为 `src/element-rendering/spritejs-element-renderer.js`；`demo/static/js/spritejs3.js` 则是 Demo 使用的第三方 SpriteJS 库文件。
 
-`renderElementPreview(layer, drawInfo, sources, overlays = {})` 使用 SpriteJS 3.7.36 的 `Sprite.sourceRect` 裁切、`size` 保持裁切像素大小、`pos` 定位。无需改写原图。
+`renderElement(container, drawInfo, sources, overlays = {})` 使用 SpriteJS 3.7.36 的 `Sprite.sourceRect` 裁切、`size` 保持裁切像素大小、`pos` 定位。无需改写原图。
 
 `overlays.gridPositions` 是调用方经同一 P0-B 视图投影后的网格中心数组；缺省为空。`footprint`、`placement` 缺省为 true，`bounds` 缺省为 false。placement 是自动确定的矩形上角基准格，以蓝色小框标记；页面“放置基准”开关控制其显示。网格在素材下方，占地/放置基准/裁切边框在上方。定义坐标仅用于内部计算，不再绘制红色十字，移除原有 `overlays.anchor` 选项。
 
-函数只替换它在该 layer 中拥有的 Group，不清除调用方其他节点。`drawInfo = null` 清除预览；素材缺失时先清除旧预览再抛出明确错误，防止残留图片冒充当前结果。内部不异步加载，因此切向只使用已经加载的图片，不发生跨方向加载结果覆盖。
+函数只替换它在该容器中拥有的 Group，不清除调用方其他节点。`drawInfo = null` 清除元素组；素材缺失时先清除旧元素组再抛出明确错误，防止残留图片冒充当前结果。内部不异步加载，因此切向只使用已经加载的图片，不发生跨方向加载结果覆盖。
 
 容器也可使用 SpriteJS Group。多实体消费者为每个实例创建独立 Group，再各自调用本函数；同一容器循环调用会替换前一个实例。[静态地图浏览 Demo](../demo/map-preview.html) 采用此方式复用适配器，由页面管理整个场景组的生命周期。
 
-纯计算可从 `src/element-preview/draw`、`src/element-preview/placement` 单独引入。完整可选入口 `src/element-preview` 导出加载、放置、绘制计算、渲染及元素的导入、校验、编辑和导出函数；SpriteJS 由调用方提供为外部依赖，不进入核心 `src/index.js`。Demo 构建输出独立的 `qtiled-preview.dev.js`，浏览器命名空间为 `qtiledPreview`，须在 SpriteJS 后加载。
+纯计算可从 `src/element-rendering/draw`、`src/element-rendering/placement` 单独引入。完整可选入口 `src/element-rendering` 导出加载、放置、绘制计算、渲染及元素的导入、校验、编辑和导出函数；SpriteJS 由调用方提供为外部依赖，不进入核心 `src/index.js`。Demo 构建输出独立的 `qtiled-element-rendering.dev.js`，浏览器命名空间为 `qtiledElementRendering`，须在 SpriteJS 后加载。
 
 ## 样本和边界
 
 [四向静态素材 Demo](../demo/element-preview.html) 使用两份本地 JSON：完整素材与裁切示例。四张图片和 JSON 保存在[样本目录](../demo/static/element-samples/dog/)。没有可视化编辑、导出、地图放置或经营规则。
 
-`npm run debug` 生成运行文件；`npm run dev` 同时监听核心、视图、静态预览和地图四个 Demo 入口。可选模块的正式发布包与 npm 子路径尚未实现，属于后续打包工作。
+狗样本资源目录和图片清单由 `demo/static/js/dog-element-sample.js` 统一提供，供编辑、素材预览和地图浏览三页使用。这个固定样本配置不进入可选模块；各页仍独立加载、校验并持有图片和定义。
+
+`npm run debug` 生成运行文件；`npm run dev` 同时监听核心、视图、元素绘制和地图四个 Demo 入口。可选模块的正式发布包与 npm 子路径尚未实现，属于后续打包工作。
 
 本页与四向视图 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px。独立预览按实际可见宽高自动适配，长占地列表在右侧局部滚动。
 

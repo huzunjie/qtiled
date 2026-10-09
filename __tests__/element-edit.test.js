@@ -1,5 +1,5 @@
 import { applyElementEdit, exportElementDefinition, importElementDefinition, validateElementDefinition } from '../src/elements';
-import { resolveElementDraw } from '../src/element-preview/draw';
+import { resolveElementDraw } from '../src/element-rendering/draw';
 import { projectGrid } from '../src/isometric-view';
 import * as core from '../src';
 

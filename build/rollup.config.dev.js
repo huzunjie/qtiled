@@ -19,7 +19,7 @@ if (process.env.npm_lifecycle_script.indexOf(' -w') !== -1) {
     livereload()
   );
 }
-// 可选视图模块单独构建，核心包不引入该入口；dev 同时监听两份源码。
+// 可选模块各自构建，核心包不引入这些入口；dev 同时监听各份源码。
 const viewConfig = getConf('umd');
 viewConfig.input = 'src/isometric-view/index.js';
 Object.assign(viewConfig.output, {
@@ -27,12 +27,12 @@ Object.assign(viewConfig.output, {
   name: 'qtiledView',
   sourcemap: true,
 });
-const previewConfig = getConf('umd');
-previewConfig.input = 'src/element-preview/index.js';
-previewConfig.external = ['spritejs'];
-Object.assign(previewConfig.output, {
-  file: 'demo/static/js/qtiled-preview.dev.js',
-  name: 'qtiledPreview',
+const renderingConfig = getConf('umd');
+renderingConfig.input = 'src/element-rendering/index.js';
+renderingConfig.external = ['spritejs'];
+Object.assign(renderingConfig.output, {
+  file: 'demo/static/js/qtiled-element-rendering.dev.js',
+  name: 'qtiledElementRendering',
   globals: { spritejs: 'spritejs' },
   sourcemap: true,
 });
@@ -44,4 +44,4 @@ Object.assign(mapsConfig.output, {
   name: 'qtiledMaps',
   sourcemap: true,
 });
-export default [config, viewConfig, previewConfig, mapsConfig];
+export default [config, viewConfig, renderingConfig, mapsConfig];

@@ -6,7 +6,7 @@ import { shapes } from '../src';
 import * as elements from '../src/elements';
 import * as view from '../src/isometric-view';
 import * as maps from '../src/maps';
-import { renderElementPreview } from '../src/element-preview/spritejs-element-renderer';
+import { renderElement } from '../src/element-rendering/spritejs-element-renderer';
 import { Group, Sprite, Polyline, Label } from 'spritejs';
 
 jest.mock('spritejs', () => {
@@ -33,7 +33,7 @@ async function page() {
   window.qtiled = { shapes };
   window.qtiledView = view;
   window.qtiledMaps = { ...maps, resolveMapEntities: resolve };
-  window.qtiledPreview = { ...elements, renderElementPreview, loadElementSources: async files => {
+  window.qtiledElementRendering = { ...elements, renderElement, loadElementSources: async files => {
     const sources = {};
     const sourceInfo = {};
     const batch = ++imageBatch;
@@ -48,6 +48,7 @@ async function page() {
     const isMap = url.pathname.includes('/map-samples/');
     const value = JSON.parse(read(url.pathname.replace('/demo/', '')));
     if (isMap && faults.map) value.entities[0].element = 'missing';
+    if (isMap && faults.cells) value.cells = null;
     if (!isMap && faults.definition) delete value.views[90];
     if (isMap && faults.delay) await faults.delay;
     return { ok: !faults.http, status: 404, json: async () => {
@@ -57,13 +58,14 @@ async function page() {
   });
   const context = vm.createContext({ window, document: window.document, URL, fetch });
   vm.runInContext(read('static/js/pointer.js'), context);
+  vm.runInContext(read('static/js/dog-element-sample.js'), context);
   vm.runInContext(read('static/js/map-preview.js'), context);
   await settle();
   const result = () => resolve.mock.results[resolve.mock.results.length - 1].value.entities;
   const sprites = () => layer.children.flatMap(root => root.children.flatMap(holder => holder.children.flatMap(group => group.children))).filter(node => node instanceof Sprite);
   const clickGrid = grid => {
-    const [, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
-    const [x, y] = view.projectGrid(grid, currentView);
+    const [map, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
+    const [x, y] = view.projectGrid(grid, { ...currentView, tileSize: map.tileSize, originPixel: layer.children[0].attrs.pos });
     // 包含滚动后的容器偏移，覆盖共用指针工具的坐标链。
     get('map-canvas').getBoundingClientRect = () => ({ left: -100, top: 73 });
     get('map-canvas').dispatchEvent(new window.MouseEvent('click', { clientX: x - 100, clientY: y + 73 }));
@@ -99,7 +101,7 @@ test('四镜头保留两个姿态和全部占地；选中实例保持，素材�
     expect(p.result().every(entity => entity.draw.imageAngle === angle)).toBe(true);
     expect(p.get('entity-id').textContent).toBe('dog-a');
     expect(p.get('entity-footprint').textContent).toBe('[1,1] [2,1] [1,2] [2,2]');
-    expect(p.layer.children[0].children.filter(node => node.attrs.strokeColor === '#1976b5')).toHaveLength(4);
+    expect(p.layer.children[0].children.slice(-1)[0].children.filter(node => node.attrs.strokeColor === '#1976b5')).toHaveLength(4);
     p.clickGrid([4, 2]);
     expect(p.get('entity-id').textContent).toBe('dog-b');
     p.clickGrid([1, 1]);
@@ -120,8 +122,27 @@ test('格子模式可查看实体下格属性，空角和矩阵外可区分，�
   expect(p.get('cell-info').textContent).toBe('地图矩阵之外');
 });
 
+test('加载只解析一次，点选和切换查看方式只更新高亮，不重建实体节点', async () => {
+  const p = await page();
+  const root = p.layer.children[0];
+  const sprites = p.sprites();
+  expect(p.resolve).toHaveBeenCalledTimes(1);
+  for (const grid of [[1, 1], [3, 1], [0, 0], [-1, 0]]) p.clickGrid(grid);
+  p.mode('cell');
+  p.clickGrid([1, 1]);
+  expect(p.get('cell-info').textContent).toContain('terrain: land');
+  expect(p.resolve).toHaveBeenCalledTimes(1);
+  expect(p.layer.children[0]).toBe(root);
+  p.sprites().forEach((sprite, index) => expect(sprite).toBe(sprites[index]));
+  p.camera(90);
+  expect(p.resolve).toHaveBeenCalledTimes(2);
+  expect(p.layer.children[0]).not.toBe(root);
+  expect(p.get('cell-grid').textContent).toBe('[1,1]');
+});
+
 test.each([
   ['http', 'HTTP 404'], ['json', '不是有效 JSON'], ['map', 'entities[0].element'],
+  ['cells', 'cells'],
   ['definition', 'views.90'], ['image', 'images/sculpture_dog01.png'],
 ])('%s 失败清空旧数据与图像，修复后同页重载恢复', async (fault, message) => {
   const p = await page();
