@@ -1,6 +1,6 @@
-# 平地地图校验、实体消费与占地索引
+# 平地地图校验、实体消费、占地索引与编辑命令
 
-`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition`、`resolveMapEntities`、`buildMapOccupancy` 与 `checkMapEntityPlacement`。不加入核心导出，模块不包含地图编辑命令、导入导出或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费前两个函数；历史数字不代替新改动验收。
+`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition`、`resolveMapEntities`、`buildMapOccupancy`、`checkMapEntityPlacement` 与 `applyMapEdit`。不加入核心导出，模块不包含导入导出或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费前两个函数；历史数字不代替新改动验收。
 
 ## 测试验证
 
@@ -65,7 +65,7 @@ const result = resolveMapEntities(map, elementsById, {
 
 每项只包含实例 `id`、素材引用 `element`、定义原点世界格 `grid`、对象 `angle` 和 `draw`。`draw` 沿用 [元素绘制结果](element-rendering.md#绘制计算)：其中 `id` 为元素 ID，`angle` 为镜头角度，`objectAngle` 为对象朝向，`imageAngle` 决定素材槽；`footprint` 给出全部 `{grid,position}`。同一元素可产生多个独立实例，顺序与输入一致，不代表遮挡画序。返回的数组不与输入或其他实例共享可修改状态；不回写缺省 angle，不复制附加业务字段到派生结果。
 
-实体的 `grid` 已是定义原点，读取或转镜头直接传入 `resolveElementDraw`，不再调用 `resolveElementPlacement`。切镜头仅更新投影和素材槽。新放置/对象转向时，调用方先用既有矩形放置函数计算配套 `grid/objectAngle`，再将它们作为实体 `grid/angle`；地图编辑命令留给后续切片。
+实体的 `grid` 已是定义原点，读取或转镜头直接传入 `resolveElementDraw`，不再调用 `resolveElementPlacement`。切镜头仅更新投影和素材槽。新放置/对象转向时，调用方先用既有矩形放置函数计算配套 `grid/objectAngle`，再将它们作为实体 `grid/angle`；下述编辑命令接收已经确定姿态的新实体，不提供转向命令。
 
 完整 footprint 不裁剪到 cells：原点在占地外、界外占地、同格多个实例及明确姿态的不规则占地均可派生。A4 再按有效格和场景共存规则判断是否合法。`resolveMapEntities` 不计算 cell.tile 的绘制结果、不创建空间索引或场景节点。
 
@@ -94,10 +94,6 @@ if (!result.issues.length) {
 const candidate = { id: 'dog-new', element: 'sculpture-dog-preview', grid: [1, 1] };
 const placement = checkMapEntityPlacement(map, candidate, elementsById, canCoexist);
 // placement 为 { allowed, issues }，不写入 map.entities。
-
-// 删除后的事实由调用方准备；重建不会改动 result.index。
-const remaining = { ...map, entities: map.entities.filter(entity => entity.id !== 'dog-a') };
-const rebuilt = buildMapOccupancy(remaining, elementsById, canCoexist);
 ```
 
 索引只属于本次计算，是派生快照，不写入地图 JSON；函数不缓存、不接收或更新旧索引。修改事实后重新构建并在成功时替换调用方保存的索引。同格删除一个实例后，其他实例引用按原顺序保留。返回的 Map/数组由调用方持有，可修改，但不会影响输入、其他格或后续重建。
@@ -113,6 +109,59 @@ const rebuilt = buildMapOccupancy(remaining, elementsById, canCoexist);
 `checkMapEntityPlacement(map, entity, elementsById = {}, canCoexist = () => true)` 把候选临时追加到实例数组，复用上述整图检查，返回 `{ allowed, issues }`。它检查新增后的整个场景，已有非法占地或共存冲突也会拒绝新增。候选必须有新 ID；与已有 ID 相同得到 A2 的 `duplicate-entity-id`，不会被当成移动/替换。候选问题路径为追加后的 `entities[n]`，n 是原实例数量。返回成功也不会修改事实或已有索引，编辑命令属于 A5。
 
 问题列表继续使用 `{ path, code, message }`，A2 结构错误原样返回。A4 的几何问题追加 `entityId`、世界 `grid`，路径指向对应 `entities[n]`，代码为 `unsafe-footprint-grid`、`footprint-out-of-bounds` 或 `footprint-invalid-cell`；共存问题使用 `coexistence-rejected`，路径指向 `cells[y][x]`，追加 `grid` 和按查询顺序排列的 `entityIds`。几何错误按实体/占地顺序报告，存在几何错误时不执行共存回调；共存错误按格键顺序报告。修正事实或规则后重新调用即可恢复。
+
+## 单条放置与删除
+
+[编辑命令用例](../__tests__/map-edit.test.js) 新增 27 项，覆盖连续编辑、拒绝后重试、删除保留、输入与旧索引不变、共享引用边界及规则异常。A2/A3/A4/A5 定向回归共 4 suites / 181 tests 通过；完整调用例已独立执行。复跑：`npm test -- --runInBand __tests__/map-definition.test.js __tests__/map-entities.test.js __tests__/map-occupancy.test.js __tests__/map-edit.test.js`。
+
+`applyMapEdit(map, command, elementsById = {}, canCoexist = () => true)` 一次执行一条命令：
+
+- `{ type: 'place', entity }`：追加一个完整实例，已有 ID 返回 `duplicate-entity-id`，不会替换或移动原实体。
+- `{ type: 'remove', id }`：按唯一实例 ID 删除一个实体，保持剩余实体及同格索引 ID 的相对顺序。删除不存在的 ID 返回 `missing-entity`，包括空地图和重复删除。
+
+成功返回 `{ definition, index, issues: [] }`。`definition` 是编辑后的完整地图，`index` 是与之配套的完整 A4 占用索引；调用方只在成功时一次替换保存的整个结果。失败返回 `{ definition: null, index: null, issues }`，不提供部分事实或索引。不接收或修改之前的索引，不保存内部状态，不自动生成 ID。
+
+处理顺序与错误边界：
+
+1. 先用 A2 检查原地图结构和引用。错误原样返回，即使本次要删除的就是错误实例，也不会绕过检查或消除重复 ID。
+2. 再检查命令。非对象（含 null、数组、未传）返回 `$command / invalid-map-edit`；未知或缺少 type 返回 `$command.type / unsupported-map-edit`；删除 ID 不是非空字符串时返回 `$command.id / invalid-id`，找不到则为 `$command.id / missing-entity`。命令附加字段不启用其他能力。
+3. 构造编辑后实体集合，只调用一次 `buildMapOccupancy`，复用结构、引用、完整占地与共存检查。放置候选问题沿用追加后的 `entities[n]` 路径，删除后问题使用剩余数组的新下标。存在任何几何错误时不运行规则；每个共享格仅运行一次规则。已有占地/共存冲突会拒绝放置，删除可消除被删实体造成的冲突；剩余场景仍有问题则整条删除失败。
+4. `canCoexist` 的类型、同步布尔值要求及异常传递沿用 A4；非函数或非布尔结果抛出 TypeError，回调自身异常原样抛出。不将程序错误包装为 issues。前面的结构或命令错误会先返回，规则不会执行。
+
+函数不写入原地图、输入实体或元素库。成功时复制地图外壳、`entities` 数组、每个实体对象和各自的 `grid` 数组；缺省 angle 保持省略，附加字段保留。`cells`（含行和格对象）、`tileSize`、地图及实体的附加嵌套字段与输入共享，须按只读值使用，不承诺通用深拷贝。索引 Map 及每格 ID 数组为本次新建。直接修改返回的实体姿态或索引不会改动输入，但会使这一结果内事实和索引失配；应再次调用命令得到完整新结果。回调参数仍为 A4 的独立姿态副本，外部闭包副作用由调用方负责。
+
+下面是无需图片加载的完整调用例；`views` 满足静态元素格式，地图命令只使用其占地。三次调用分别完成放置、删除及同 ID/位置重放，各次失败均可保留前一个有效结果后修正重试。
+
+```js
+import { applyMapEdit } from '../src/maps/index';
+
+const elementsById = {
+  marker: {
+    version: 1, id: 'marker', kind: 'sprite', footprint: [[0, 0], [1, 0]],
+    views: Object.fromEntries([0, 90, 180, 270].map(angle => [angle, {
+      source: 'marker.png', rect: [0, 0, 80, 80], anchor: [40, 60],
+    }])),
+  },
+};
+const initialMap = {
+  version: 1, id: 'edit-example', tileSize: [80, 40],
+  cells: [[{ terrain: 'land', elevation: 0 }, { terrain: 'land', elevation: 0 }]],
+  entities: [],
+};
+const entity = { id: 'marker-a', element: 'marker', grid: [0, 0] };
+const placed = applyMapEdit(initialMap, { type: 'place', entity }, elementsById);
+if (placed.issues.length) throw new Error(JSON.stringify(placed.issues));
+
+const removed = applyMapEdit(placed.definition, { type: 'remove', id: entity.id }, elementsById);
+if (removed.issues.length) throw new Error(JSON.stringify(removed.issues));
+
+const replayed = applyMapEdit(removed.definition, { type: 'place', entity }, elementsById);
+if (replayed.issues.length) throw new Error(JSON.stringify(replayed.issues));
+// initialMap.entities 仍为空；removed.index 为空。
+// replayed.index: Map { '0,0' => ['marker-a'], '1,0' => ['marker-a'] }
+```
+
+本接口不包含批量事务、移动/旋转、撤销重做、增量索引、文件往返或编辑 UI。
 
 ## 静态地图浏览 Demo
 

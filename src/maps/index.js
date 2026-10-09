@@ -232,3 +232,39 @@ export function checkMapEntityPlacement(definition, entity, elementsById = {}, c
   const result = buildMapOccupancy({ ...definition, entities: [...definition.entities, entity] }, elementsById, canCoexist);
   return { allowed: result.issues.length === 0, issues: result.issues };
 }
+
+/** 执行单条放置/删除命令，同时返回新地图与完整索引，不修改输入。
+ * @param {Object} definition 原地图，结构与引用错误直接拒绝。
+ * @param {Object} command { type: 'place', entity } 或 { type: 'remove', id }。
+ * @param {Object} elementsById 已通过元素契约校验的定义。
+ * @param {Function} canCoexist 沿用 A4 同步规则，仅检查编辑后的完整场景。
+ * @returns {Object} { definition, index, issues }；失败时 definition/index 均为 null。
+ * 成功复制地图外壳、实体数组、各实体及 grid；cells、tileSize 和附加嵌套字段共享只读引用。
+ * 删除可以消除占地/共存问题，但不能绕过原地图的结构/引用错误；回调异常直接抛出。
+ */
+export function applyMapEdit(definition, command, elementsById = {}, canCoexist = () => true) {
+  const issues = validateMapDefinition(definition, elementsById);
+  if (issues.length) return { definition: null, index: null, issues };
+  const reject = (path, code, message) => ({ definition: null, index: null, issues: [{ path, code, message }] });
+  if (!isObject(command)) return reject('$command', 'invalid-map-edit', '地图编辑命令必须是对象。');
+
+  let entities;
+  if (command.type === 'place') {
+    entities = [...definition.entities, command.entity];
+  } else if (command.type === 'remove') {
+    if (!isId(command.id)) return reject('$command.id', 'invalid-id', '待删除的实例 ID 必须是非空字符串。');
+    if (!definition.entities.some(entity => entity.id === command.id)) {
+      return reject('$command.id', 'missing-entity', '待删除的实例 ID 未在地图中找到。');
+    }
+    entities = definition.entities.filter(entity => entity.id !== command.id);
+  } else {
+    return reject('$command.type', 'unsupported-map-edit', '地图编辑命令仅支持 place 或 remove。');
+  }
+
+  // 直接消费一次完整构建的索引，避免候选检查后再次调用同一场景规则。
+  const edited = { ...definition, entities };
+  const result = buildMapOccupancy(edited, elementsById, canCoexist);
+  if (result.issues.length) return { definition: null, index: null, issues: result.issues };
+  edited.entities = entities.map(entity => ({ ...entity, grid: [...entity.grid] }));
+  return { definition: edited, index: result.index, issues: result.issues };
+}
