@@ -1,6 +1,6 @@
-# 平地地图校验、实体消费、占地索引与编辑命令
+# 平地地图校验、实体消费、编辑与文件 IO
 
-`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition`、`resolveMapEntities`、`buildMapOccupancy`、`checkMapEntityPlacement` 与 `applyMapEdit`。不加入核心导出，模块不包含导入导出或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费前两个函数；历史数字不代替新改动验收。
+`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition`、`resolveMapEntities`、`buildMapOccupancy`、`checkMapEntityPlacement`、`applyMapEdit`、`importMapDefinition` 与 `exportMapDefinition`。不加入核心导出，模块不包含文件读写或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费前两个函数；历史数字不代替新改动验收。
 
 ## 测试验证
 
@@ -162,6 +162,91 @@ if (replayed.issues.length) throw new Error(JSON.stringify(replayed.issues));
 ```
 
 本接口不包含批量事务、移动/旋转、撤销重做、增量索引、文件往返或编辑 UI。
+
+## 地图定义导入与导出
+
+[IO 用例](../__tests__/map-io.test.js) 新增 40 项，A2～A6 定向回归共 5 suites / 221 tests 通过。完整公共调用例已执行；本机临时消费者已完成实际文件导出、关闭原页后在新浏览器上下文回读，以及坏文件/引用/共存拒绝保留状态和恢复。此项为文件与数据流程验收，不包含图片渲染或公开 Demo 改造。
+
+复跑定向回归：`npm test -- --runInBand __tests__/map-definition.test.js __tests__/map-entities.test.js __tests__/map-occupancy.test.js __tests__/map-edit.test.js __tests__/map-io.test.js`。
+
+`importMapDefinition(json, elementsById = {}, canCoexist = () => true)` 接收 JSON 文本。成功返回 `{ definition, index, issues: [] }`，包含完整地图和重新构建的 A4 占用索引；失败返回 `{ definition: null, index: null, issues }`。非字符串或解析失败返回 `$ / invalid-json`。不补默认 angle，不转换 ID、位置或方向，不排序实例，不修正坏引用。
+
+`exportMapDefinition(map, elementsById = {}, canCoexist = () => true)` 成功返回 `{ json, issues: [] }`，文本使用两空格缩进并以换行结束；失败返回 `{ json: null, issues }`。导出同样检查完整占地与共存，不能将仅通过 A2 的非法场景保存为有效文件。导出不返回或缓存检查过程中建立的索引。
+
+两个接口先检查下述 JSON 数据边界，然后仅调用一次 `buildMapOccupancy`，复用结构、引用、完整占地及显式场景规则。A2/A4 的错误原样返回，每个共享格仅执行一次规则。规则须是确定性的同步纯函数；类型、非布尔返回值及回调异常沿用 A4，直接抛出，不伪装成文件问题。
+
+### 保存范围与 JavaScript 输入
+
+文件仍是 `version: 1` 地图定义：`cells[y][x]` 的形状、null、格属性，独立 `entities` 的顺序、ID、素材引用、grid 及可选 angle 均按值保留。额外字段也按 JSON 数据保留，但不启用新的地图能力。重复引用按值保存，回读后的引用身份、属性 writable/configurable 标志和空原型不属于文件事实。
+
+IO 接受 null、字符串、布尔值、有限数（不含负零）、无空洞且无附加属性的普通数组，以及仅含可枚举自有字符串数据属性的普通对象（允许空原型）。递归检查所有字段，遇到首个不能无损保存的值返回 `non-json-value` 和字段路径，包括：undefined、函数、Symbol/符号键、BigInt、NaN/Infinity、负零、循环引用、Date/Map/Set/类实例、自定义原型、访问器、不可枚举字段、数组空洞或附加属性。不调用 getter 或自定义 toJSON；合法数据中的普通 `toJSON` 非函数字段可保留。该限制只属于文件 IO，不改变 A2～A5 已有 JavaScript 输入契约。
+
+即使文本能被 JSON.parse 解析，也可能含溢出数（如 `1e400`）或 `-0`；导入同样拒绝，以免随后导出改值。普通 JSON 对象键按解析后的值处理，重复键采用 JSON.parse 的最后一个值；不保留源文本格式。代理对象及对内建原型的修改不在输入契约内，其访问异常不保证转换为 issues。
+
+调用方只传地图定义，不传 `{ definition, index }` 结果壳。元素库和共存规则是独立参数，接口不会把它们附加到文件，也不读取或自动保存图片、镜头、DOM、渲染对象或 UI 状态。这些状态应放在地图外；IO 不按额外字段的名字猜测用途或自动剥离它们。消费者重开后须重新准备相同元素库及规则，库内元素仍以 P0 校验通过为前提；换库或换规则可能使同一文件被拒绝。
+
+### 仅在完整导入成功后替换当前状态
+
+下面是完整的纯计算调用例。实际读文件、写文件或浏览器下载由消费者完成，模块只接收和返回文本。`readMapText` 在导入完全成功后一次替换 `current`；数据失败或规则抛错均不会执行替换，消费者可以显示问题并修正后重试。
+
+```js
+import { applyMapEdit, importMapDefinition, exportMapDefinition } from '../src/maps/index';
+import { validateElementDefinition } from '../src/elements/index';
+
+const elementsById = {
+  marker: {
+    version: 1, id: 'marker', kind: 'sprite', footprint: [[0, 0], [1, 0]],
+    views: Object.fromEntries([0, 90, 180, 270].map(angle => [angle, {
+      source: 'marker.png', rect: [0, 0, 80, 80], anchor: [40, 60],
+    }])),
+  },
+};
+const elementIssues = validateElementDefinition(elementsById.marker, {
+  'marker.png': { width: 80, height: 80 },
+});
+if (elementIssues.length) throw new Error(JSON.stringify(elementIssues));
+const canCoexist = ({ entities }) => entities.length <= 2;
+const initial = {
+  version: 1, id: 'io-example', tileSize: [80, 40],
+  cells: [[{ terrain: 'land', elevation: 0 }, { terrain: 'land', elevation: 0 }, null]],
+  entities: [],
+};
+let current = importMapDefinition(JSON.stringify(initial), elementsById, canCoexist);
+if (current.issues.length) throw new Error(JSON.stringify(current.issues));
+
+for (const command of [
+  { type: 'place', entity: { id: 'z', element: 'marker', grid: [0, 0] } },
+  { type: 'place', entity: { id: 'a', element: 'marker', grid: [1, 0], angle: 180 } },
+  { type: 'remove', id: 'z' },
+  { type: 'place', entity: { id: 'z', element: 'marker', grid: [0, 0] } },
+]) {
+  const edited = applyMapEdit(current.definition, command, elementsById, canCoexist);
+  if (edited.issues.length) throw new Error(JSON.stringify(edited.issues));
+  current = edited;
+}
+const saved = exportMapDefinition(current.definition, elementsById, canCoexist);
+if (saved.issues.length) throw new Error(JSON.stringify(saved.issues));
+// 消费者可将 saved.json 写入实际文件；这里演示如何处理读到的文本。
+function readMapText(text, rule = canCoexist) {
+  const next = importMapDefinition(text, elementsById, rule);
+  if (!next.issues.length) current = next;
+  return next.issues;
+}
+
+const badReference = JSON.parse(saved.json);
+badReference.entities[0].element = 'missing';
+const outOfBounds = JSON.parse(saved.json);
+outOfBounds.entities[0].grid = [9, 0];
+readMapText('{'); // invalid-json，current 保持原地图与原索引
+readMapText(JSON.stringify(badReference)); // missing-element，保持原状态
+readMapText(JSON.stringify(outOfBounds)); // footprint-out-of-bounds，保持原状态
+readMapText(saved.json, () => false); // coexistence-rejected，保持原状态
+readMapText(saved.json); // 修正文件/规则后恢复，替换为独立地图与新建索引
+// current.definition.entities 顺序仍为 a、z；a 为 180°，z 的 angle 仍省略。
+// current.index 的 '1,0' 和 '0,0' 均为 ['a', 'z']。
+```
+
+输入地图、元素库和旧索引不被修改。导入结果不依赖旧页面状态；索引在当前调用中从事实重新生成。以上调用例仅说明内存消费方式，不能替代实际文件落盘、关闭原页面后在独立新页面读取的验收证据。
 
 ## 静态地图浏览 Demo
 

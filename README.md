@@ -165,7 +165,8 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 * [x] [地图实体消费 P1-A-3](docs/map-definition.md#实体消费)：`resolveMapEntities()` 复用元素绘制计算派生实例完整占地与投影；28 项专项测试及全量回归通过，当前消费静态元素。
 * [x] [完整占地与多实体索引 P1-A-4](docs/map-definition.md#完整占地与按格索引)：`buildMapOccupancy()` 检查完整世界占地并建立按格多实例索引，`checkMapEntityPlacement()` 检查候选新增；显式场景规则决定共存，31 项新增用例及 A2/A3/A4 定向回归通过。
 * [x] [单条放置与删除 P1-A-5](docs/map-definition.md#单条放置与删除)：`applyMapEdit()` 成功返回新地图及完整索引，失败保留输入；删除按唯一实例 ID，支持同位置重放。新增 27 项用例，A2/A3/A4/A5 地图定向 181 项通过。
-* [ ] 地图与实体实例数据、场景导入导出
+* [x] [地图定义文件 IO P1-A-6](docs/map-definition.md#地图定义导入与导出)：`importMapDefinition()` 完整校验后返回地图与重建索引，`exportMapDefinition()` 校验后输出 JSON；新增 40 项、地图定向 221 项及实际文件独立页面回读通过。
+* [ ] 地图与实体实例正式模块入口及独立消费 P1-A-7
 
 ### Tile Renderer - 瓦片渲染器
 * [x] [P0-C 静态元素预览](docs/element-rendering.md)：可选模块加载精选图片、解释四向裁切/锚点并通过 SpriteJS 显示，附网格和占地覆盖。[素材 Demo](demo/element-preview.html) 的四张图片与 JSON 一同放在样本目录中。

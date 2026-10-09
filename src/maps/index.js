@@ -268,3 +268,67 @@ export function applyMapEdit(definition, command, elementsById = {}, canCoexist 
   edited.entities = entities.map(entity => ({ ...entity, grid: [...entity.grid] }));
   return { definition: edited, index: result.index, issues: result.issues };
 }
+
+// IO 仅接受普通 JSON 数据，防止 stringify 静默丢字段、改值或执行 toJSON/getter。
+// 只检查当前祖先链，重复引用可按值保存，循环引用不能保存。
+function checkMapJsonValue(value, path = '$', ancestors = new Set()) {
+  const invalid = () => ({ path, code: 'non-json-value', message: '地图文件仅支持可无损保存的普通 JSON 数据。' });
+  if (value === null || typeof value === 'string' || typeof value === 'boolean') return null;
+  if (typeof value === 'number') return Number.isFinite(value) && !Object.is(value, -0) ? null : invalid();
+  if (typeof value !== 'object' || ancestors.has(value)) return invalid();
+  const array = Array.isArray(value);
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== (array ? Array.prototype : Object.prototype) && !(prototype === null && !array)) return invalid();
+  const keys = Reflect.ownKeys(value);
+  if (array && keys.length !== value.length + 1) return invalid();
+  ancestors.add(value);
+  for (const key of keys) {
+    if (array && key === 'length') continue;
+    if (typeof key !== 'string' || (array && (!/^(0|[1-9]\d*)$/.test(key) || Number(key) >= value.length))) return invalid();
+    const childPath = array ? `${path}[${key}]` : path === '$' ? key : `${path}.${key}`;
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    if (!descriptor.enumerable || !Object.prototype.hasOwnProperty.call(descriptor, 'value')) {
+      return { path: childPath, code: 'non-json-value', message: '地图文件字段必须是可枚举的自有数据属性。' };
+    }
+    const issue = checkMapJsonValue(descriptor.value, childPath, ancestors);
+    if (issue) return issue;
+  }
+  ancestors.delete(value);
+  return null;
+}
+
+/** 导入 JSON 文本并重建完整占用；失败不返回部分地图或索引。
+ * @param {string} json 地图定义文本，不接受已解析对象。
+ * @param {Object} elementsById 已通过 P0 校验的元素库，由消费者重新提供。
+ * @param {Function} canCoexist 沿用 A4 同步共存规则，不从文件读取。
+ * @returns {Object} { definition, index, issues }；失败时 definition/index 均为 null。
+ * 保留 JSON 额外字段与省略字段；规则类型/返回值错误及回调异常直接抛出。
+ */
+export function importMapDefinition(json, elementsById = {}, canCoexist = () => true) {
+  const invalidJson = {
+    definition: null, index: null,
+    issues: [{ path: '$', code: 'invalid-json', message: '请输入有效的 JSON 文本。' }],
+  };
+  if (typeof json !== 'string') return invalidJson;
+  let definition;
+  try {
+    definition = JSON.parse(json);
+  } catch (error) {
+    return invalidJson;
+  }
+  const issue = checkMapJsonValue(definition);
+  if (issue) return { definition: null, index: null, issues: [issue] };
+  const result = buildMapOccupancy(definition, elementsById, canCoexist);
+  return { definition: result.issues.length ? null : definition, index: result.index, issues: result.issues };
+}
+
+/** 校验地图事实后导出格式化 JSON；不修改输入或嵌入元素库、规则和派生索引。
+ * @returns {Object} { json, issues }；失败时 json 为 null。
+ * 额外字段按值保存，拒绝会被 JSON 静默丢弃或改写的值，不执行自定义序列化。
+ */
+export function exportMapDefinition(definition, elementsById = {}, canCoexist = () => true) {
+  const issue = checkMapJsonValue(definition);
+  if (issue) return { json: null, issues: [issue] };
+  const { issues } = buildMapOccupancy(definition, elementsById, canCoexist);
+  return { json: issues.length ? null : `${JSON.stringify(definition, null, 2)}\n`, issues };
+}
