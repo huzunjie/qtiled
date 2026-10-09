@@ -161,6 +161,8 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 
 ### Tile Data - 瓦片数据格式约定
 * [x] [静态元素定义 P0-A](docs/element-definition.md)：独立源码入口提供四向素材、裁切、锚点与逻辑占地的校验和 JSON 导入，不加入核心导出。
+* [x] [平地地图校验 P1-A-2](docs/map-definition.md)：可选 `src/maps` 入口提供结构与素材引用校验；95 项定向 Jest 用例及全量回归通过，不判断完整占地或放置合法性。
+* [x] [地图实体消费 P1-A-3](docs/map-definition.md#实体消费)：`resolveMapEntities()` 复用元素绘制计算派生实例完整占地与投影；28 项专项测试及全量回归通过，当前消费静态元素。
 * [ ] 地图与实体实例数据、场景导入导出
 
 ### Tile Renderer - 瓦片渲染器
