@@ -17,17 +17,24 @@
     .map-demo :is(button, select):focus-visible { outline: 2px solid #098d3b; outline-offset: 2px; }
     .map-demo select { padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
     .map-demo .preview-workspace > .viewport { overflow: hidden; }
+    .map-demo .preview-workspace > aside { position: relative; padding: 0; overflow: hidden; }
+    .map-demo .map-details { position: absolute; inset: 0; overflow: auto; scrollbar-gutter: stable; padding: 12px; }
+    .map-demo aside dt { margin-top: 6px; }
+    .map-demo aside h2 { margin-bottom: 8px; }
     .map-demo .canvas-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px; border-bottom: 1px solid #edf0f3; font-size: 12px; }
     .map-demo fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border: 0; margin: 0; padding: 0; }
     .map-demo #reload { margin-left: auto; }
+    .map-demo .click-help { margin: 0; padding: 6px 10px; color: #687383; border-bottom: 1px solid #edf0f3; }
     .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
     .map-demo .canvas-scroll { overflow: auto; }
     .map-demo #map-canvas { position: relative; width: 640px; height: 440px; margin: auto; border: 0; padding: 0; }
     .map-demo #status { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 44px); margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); pointer-events: none; }
     .map-demo #issues { color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .map-demo #cell-info { min-height: 4.8em; }
+    .map-demo #map-summary, .map-demo #entity-source, .map-demo #entity-footprint { min-height: 3.2em; }
     .map-demo #entity-footprint { max-height: 100px; overflow: auto; }
     .map-demo #cell-info, .map-demo #entity-source { white-space: pre-line; }
-    .map-demo aside h2:not(:first-child) { margin-top: 18px; padding-top: 12px; border-top: 1px solid #edf0f3; }
+    .map-demo aside h2:not(:first-child) { margin-top: 10px; padding-top: 8px; border-top: 1px solid #edf0f3; }
   </style>
 </head>
 <body>
@@ -50,10 +57,11 @@
             <button type="button" data-angle="90" aria-pressed="false">90°</button>
             <button type="button" data-angle="180" aria-pressed="false">180°</button>
             <button type="button" data-angle="270" aria-pressed="false">270°</button>
-            <label>点选 <select id="pick-mode"><option value="entity">实体占地</option><option value="cell">格子</option></select></label>
+            <label>点击查看 <select id="pick-mode" aria-describedby="click-help"><option value="entity">雕塑信息</option><option value="cell">格子属性</option></select></label>
           </fieldset>
           <button id="reload" type="button">重新加载</button>
         </div>
+        <p id="click-help" class="click-help">雕塑信息：点击雕塑脚下的格子，查看整座雕塑。格子属性：查看单个格子的地形与高程。</p>
         <p id="issues" role="alert" hidden></p>
         <div class="canvas-stage">
           <div class="canvas-scroll"><div id="map-canvas" role="img" aria-label="静态地图：点击格子或实体的地面占地查看信息"></div></div>
@@ -61,27 +69,29 @@
         </div>
       </div>
       <aside>
-        <h2>地图</h2>
-        <dl>
-          <dt>地图 ID</dt><dd id="map-id">—</dd>
-          <dt>范围与数量</dt><dd id="map-summary">—</dd>
-          <dt>格距 / 镜头</dt><dd id="view-info">—</dd>
-        </dl>
-        <h2>选中格子</h2>
-        <dl>
-          <dt>世界坐标</dt><dd id="cell-grid">—</dd>
-          <dt>格属性</dt><dd id="cell-info">点击画布查看</dd>
-        </dl>
-        <h2>选中实体</h2>
-        <dl>
-          <dt>实例 ID</dt><dd id="entity-id">—</dd>
-          <dt>元素 / 当前图片</dt><dd id="entity-source">—</dd>
-          <dt>定义原点 / 对象朝向</dt><dd id="entity-pose">—</dd>
-          <dt>完整世界占地</dt><dd id="entity-footprint">—</dd>
-        </dl>
-        <p class="note">绿色为有效格，灰色虚线为无效空角。蓝色显示选中格或实体完整占地。</p>
-        <p class="note">实体按地面占地选择；点击雕塑上部仍按下方格子查询。当前只浏览固定样本。</p>
-        <p class="note"><a href="./static/map-samples/first-static-map.json">地图 JSON</a> · <a href="./static/element-samples/dog/element.json">元素定义</a></p>
+        <div class="map-details">
+          <h2>地图</h2>
+          <dl>
+            <dt>地图 ID</dt><dd id="map-id">—</dd>
+            <dt>范围与数量</dt><dd id="map-summary">—</dd>
+            <dt>格距 / 镜头</dt><dd id="view-info">—</dd>
+          </dl>
+          <h2>选中格子</h2>
+          <dl>
+            <dt>世界坐标</dt><dd id="cell-grid">—</dd>
+            <dt>格属性</dt><dd id="cell-info">点击画布查看</dd>
+          </dl>
+          <h2>选中实体</h2>
+          <dl>
+            <dt>实例 ID</dt><dd id="entity-id">—</dd>
+            <dt>元素 / 当前图片</dt><dd id="entity-source">—</dd>
+            <dt>定义原点 / 对象朝向</dt><dd id="entity-pose">—</dd>
+            <dt>完整世界占地</dt><dd id="entity-footprint">—</dd>
+          </dl>
+          <p class="note">绿色为有效格，灰色虚线为无效空角。蓝色显示选中格或实体完整占地。</p>
+          <p class="note">实体按地面占地选择；点击雕塑上部仍按下方格子查询。当前只浏览固定样本。</p>
+          <p class="note"><a href="./static/map-samples/first-static-map.json">地图 JSON</a> · <a href="./static/element-samples/dog/element.json">元素定义</a></p>
+        </div>
       </aside>
     </div>
   </main>
