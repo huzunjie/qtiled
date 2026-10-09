@@ -7,6 +7,7 @@ yarn-error.log*
 sftp-config.json
 .vscode/sftp.json
 .DS_Store
+.playwright-cli
 
 # Runtime data
 pids
