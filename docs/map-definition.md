@@ -252,16 +252,16 @@ readMapText(saved.json); // 修正文件/规则后恢复，替换为独立地图
 
 ## 静态地图浏览 Demo
 
-[P1-C-0 浏览页](../demo/map-preview.html) 已通过本片验收：新增 10 项用例，定向 59 项、全量 21 suites / 619 tests 通过；Demo 构建与真实浏览器四向选择、失败恢复、窄窗口滚动命中通过。ESLint 本机不可用，未执行。先运行 `npm run debug`，再运行 `npm run dev` 并打开 `http://localhost:8033/demo/map-preview.html`；也可将整个 demo 目录交给静态 HTTP 服务。新增 `qtiled-maps.dev.js` 仅是 Demo 构建入口，不代表已提供正式包或 npm 子路径。
+[静态地图浏览](../demo/map-preview.html) 是 C0/C1 共用的唯一公共页面，日常运行使用 Demo 开发包，正式产物隔离消费从同一套 HTML/JS 准备副本。仓库内先执行 `npm run debug` 更新开发包，再运行 `npm run dev`，打开 `http://localhost:8033/demo/map-preview.html`。独立目录的准备步骤见[浏览器消费说明](browser-consumption.md)。
 
-页面独立读取 [地图 JSON](../demo/static/map-samples/first-static-map.json)、共享的 [狗元素定义](../demo/static/element-samples/dog/element.json) 及其四张 PNG；不读取 output、本地编辑器状态或浏览器存储。样本为 4 行 6 列、20 个 land/0 有效格、四个 null 空角，dog-a / dog-b 共用一个静态 v1 定义，各占四格。格距仍为现有 80×40 工作参数，不增加原作标定结论。
+页面读取 [地图 JSON](../demo/static/map-samples/first-static-map.json)、[狗元素定义](../demo/static/element-samples/dog/element.json) 及四张 PNG，不读取编辑器状态或浏览器存储。样本为 4 行 6 列、20 个 land/0 有效格及四个 null 空角；dog-a / dog-b 共享一个定义，各占四格。80×40 仍是已有工作参数，不增加原作标定结论。
 
-加载链为 `loadElementSources` → `validateElementDefinition` → `resolveMapEntities`（内部调用 `validateMapDefinition`）。共享解析器成功后页面才访问 cells，不重复前置校验。图片必须全部加载且元素/地图校验成功才显示；失败撤下当前场景、清空信息并显示字段/资源原因，修复后“重新加载”会重新读取 JSON 与图片。重载期间禁用查看控件，以请求编号隔离较早的异步结果。
+加载链为 `loadElementSources` → `importElementDefinition` → `importMapDefinition` → `resolveMapEntities`。导入时检查完整占地并构建占用索引；首次失败保持空状态，已有场景时继续显示旧地图。地图、索引、图片与下一场景树全部成功后一起替换，失败显示字段/资源原因；修复后“重新加载”重新读取 JSON 和图片。请求编号阻止较早的异步结果覆盖较新的状态。
 
-画格、反查、边界计算分别复用现有 `getVertexes` / `projectGrid`、`pickGrid` / `getPointerPosition`、`getBounds`。每个实体以独立 SpriteJS Group 作为 `renderElement` 的容器，因此不会互相覆盖；整个新场景组建完成后替换旧组。固定双实例按占地投影最下端由远到近绘制。此画序只服务本样本，未实现通用复杂遮挡。
+绿色纯色地面与实体使用独立绘制组，null 不绘制地形；样本没有 `cell.tile`。每实体使用独立 Group 调用 `renderElement`。固定双实例按占地投影最下端由远到近绘制，仅服务本样本，不代表通用复杂画序。
 
-场景在零原点下解析一次，由根 Group 统一平移到画布内；点击反查使用同一平移作为 originPixel。加载和切镜头重建场景，点选和切换查看方式只更新高亮组与信息，不重新校验、投影或创建实体节点。狗样本资源配置复用 `demo/static/js/dog-element-sample.js`。
+镜头 0/90/180/270° 只改变投影、画序与素材槽，矩阵、实例 grid/angle、完整世界占地和索引保持不变。场景在零原点下解析，由根 Group 居中；`pickGrid` 使用相同平移，指针位置每次通过 `getPointerPosition` 获取。点选和切换查看方式只更新高亮与详情，不重新解析或创建实体节点。样本资源配置复用 `dog-element-sample.js`。
 
-镜头 0/90/180/270° 只改变投影、画序及素材槽；实例 grid、angle 和全部世界占地保持不变，读取时不重新调用放置计算。“点击查看”选择“格子属性”时查看坐标/属性；选择“雕塑信息”时，点击雕塑脚下的格子，按反查格匹配全部 footprint 并高亮完整占地。选择保持为世界格/实例 ID，切镜头后仍查看同一对象。空角显示 null，矩阵外显示界外；按地面格选择，不提供像素透明度或遮挡命中。
+“格子属性”查看世界坐标/属性；“雕塑信息”根据指针下的地面格查询占用索引，一次选择一个实例并高亮完整占地。同格多个候选按地图 entities 顺序取第一个，不按图片像素或画序判断。空地、空角、矩阵外点击清除实体选择；空角显示 null，矩阵外显示界外。“清除选择”同时清除格子详情。选中世界格/实例 ID 在切镜头后保留。
 
-本片只浏览固定无底图样本，画布 640×440 原尺寸显示，窄窗口内滚动。右栏与左侧画布区域等高，详情局部滚动，变化字段预留空间，点选不会撑高页面或改变滚动位置。任意素材库/地图导入、cell.tile 绘制、完整占地有效性与共存、空间索引、放置删除保存和正式消费入口留给后续切片。C0 不计为 C1、L1 全验收或地图编辑完成。
+画布以 640×440 原尺寸显示，容器无边框、内边距或 CSS 缩放；窄窗口可横向滚动。右栏与画布区域等高、详情独立滚动，点选不撑高页面。当前只读固定无底图样本，不含任意素材库/地图导入 UI、cell.tile 绘制、放置删除保存、平移缩放、动画或经营。C1 的 L1 验收表示独立静态场景可用，不代表地图编辑或完整遮挡选择完成。

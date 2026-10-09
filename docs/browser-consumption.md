@@ -1,4 +1,4 @@
-# 正式产物的独立静态场景
+# 正式产物的浏览器消费
 
 桌面浏览器可直接通过 `<script>` 加载下列 UMD 文件，无需打包器、源码路径或 Demo 开发包。地图、视图、元素渲染各自构建，不加入核心入口。当前选择 UMD 是为了沿用 SpriteJS 外部全局加载方式；不额外生成可选模块的其他格式。
 
@@ -12,43 +12,42 @@
 
 核心 `main` / `module` 入口保持原样，仅导出 `shapes` / `pathFinding`；原浏览器产物仍为 `dist/qtiled.browser.js`，全局为 `qtiled`。仅做地图 IO/占用/编辑时只需 maps 包，无需 SpriteJS；下面绘制示例不需要核心包。上述路径以本次本地构建或打包内容为准，不代表同名版本已经发布到注册表。
 
-## 构建与准备独立目录
+## 一个公共 Demo，两种运行方式
 
-仓库已包含三份正式可选产物，可直接使用；仅在修改对应源码后，在已有开发依赖的仓库根目录运行 `npm run optional` 重新生成。`npm run build` 也包含此步骤，其余构建与 Demo 命令保持原有行为。产物沿用仓库方式收录在 Git 的 `dist/`，通过构建更新。
+[静态地图浏览](../demo/map-preview.html) 与 [map-preview.js](../demo/static/js/map-preview.js) 是唯一的公共场景页面和交互实现。它合并了 C0 的格子/实体查看与 C1 的占用索引、分层绘制和失败保留能力；没有另一个“独立静态场景”入口。
 
-下面命令在仓库根目录执行，复制页面、正式产物、样本、第三方库和共用样式/指针辅助到独立 HTTP 根目录。`demo/browser-map/index.html` 是可复用页面源文件，不能只打开它而省略依赖准备。已有同名运行目录时，以下命令会更新其中的对应文件：
+日常开发沿用 Demo 的三份 `*.dev.js` 和 `npm run dev`；更新源码后先运行 `npm run debug`，浏览器打开 `http://localhost:8033/demo/map-preview.html`。也可直接使用已有开发产物，以仓库根目录运行 `python3 -m http.server 8033 --bind 127.0.0.1`。该页无需核心包。
+
+验证正式消费时，从同一份 HTML 生成隔离运行副本，只将三条开发包路径换成正式 UMD 路径；页面逻辑、样本、CSS 与辅助文件原样复制。仓库已包含正式产物，仅修改对应源码时才需 `npm run optional` 重新生成；无需为消费者合并重建正式产物。`npm run build` 已包含正式可选模块构建。
+
+## 准备独立运行目录
+
+在仓库根目录执行以下命令，生成的页面和依赖均位于本片 `output` 目录。已有同名目录时更新对应文件：
 
 ```sh
-consumer_dir="output/emperor/p1-c1-static-scene-2026-10-09/consumer"
-mkdir -p "$consumer_dir/lib" "$consumer_dir/vendor" "$consumer_dir/common" "$consumer_dir/assets/dog/images"
-cp demo/browser-map/index.html demo/browser-map/main.js "$consumer_dir/"
-cp dist/qtiled-view.umd.js dist/qtiled-maps.umd.js dist/qtiled-element-rendering.umd.js "$consumer_dir/lib/"
-cp demo/static/js/spritejs3.js "$consumer_dir/vendor/"
-cp demo/static/css/index.css demo/static/css/preview-workspace.css demo/static/js/pointer.js "$consumer_dir/common/"
-cp demo/static/map-samples/first-static-map.json "$consumer_dir/assets/map.json"
-cp demo/static/element-samples/dog/element.json "$consumer_dir/assets/dog/"
-cp demo/static/element-samples/dog/images/*.png "$consumer_dir/assets/dog/images/"
-python3 -m http.server 8048 --bind 127.0.0.1 --directory "$consumer_dir"
+consumer_dir="output/emperor/p1-c1-static-scene-2026-10-09/merged-consumer"
+mkdir -p "$consumer_dir/dist" "$consumer_dir/demo/static/js" "$consumer_dir/demo/static/css" "$consumer_dir/demo/static/map-samples" "$consumer_dir/demo/static/element-samples/dog/images"
+sed -e 's|./static/js/qtiled-view.dev.js|../dist/qtiled-view.umd.js|g' \
+    -e 's|./static/js/qtiled-maps.dev.js|../dist/qtiled-maps.umd.js|g' \
+    -e 's|./static/js/qtiled-element-rendering.dev.js|../dist/qtiled-element-rendering.umd.js|g' \
+    demo/map-preview.html > "$consumer_dir/demo/map-preview.html"
+cp dist/qtiled-view.umd.js dist/qtiled-maps.umd.js dist/qtiled-element-rendering.umd.js "$consumer_dir/dist/"
+cp demo/static/js/spritejs3.js demo/static/js/pointer.js demo/static/js/dog-element-sample.js demo/static/js/navs.js demo/static/js/map-preview.js "$consumer_dir/demo/static/js/"
+cp demo/static/css/index.css demo/static/css/preview-workspace.css "$consumer_dir/demo/static/css/"
+cp demo/static/map-samples/first-static-map.json "$consumer_dir/demo/static/map-samples/"
+cp demo/static/element-samples/dog/element.json "$consumer_dir/demo/static/element-samples/dog/"
+cp demo/static/element-samples/dog/images/*.png "$consumer_dir/demo/static/element-samples/dog/images/"
+python3 -m http.server 8049 --bind 127.0.0.1 --directory "$consumer_dir"
 ```
 
-打开 [独立静态场景](http://127.0.0.1:8048/)。Python 仅作静态服务器，也可用已有的 HTTP 服务；`fetch` 读取文件需要 HTTP，不采用 `file://`。端口被占用时请换一个空闲端口，并修改访问地址。此入口只在本机服务器运行期间可访问。
+打开 [静态地图浏览（正式产物）](http://127.0.0.1:8049/demo/map-preview.html?no_nav)。`no_nav` 使用现有 Demo 导航开关，隐藏隔离目录中不存在的其他示例入口。端口被占用时换一个空闲端口并同步访问地址；服务运行期间才可访问，不能用 `file://` 代替 HTTP。
 
-独立目录共 15 个文件：HTML/JS、3 份正式 UMD、SpriteJS、2 份 CSS、指针辅助、地图/元素 JSON 和 4 张 PNG。所复制的 `spritejs3.js` 是仓库已有的第三方 SpriteJS 3.7.36，保留其版权头；`common/pointer.js` 提供显式的 `getPointerPosition` 全局。运行时不读取 `src`、Demo 开发 bundle 或其他页面状态，也不需要核心包。
+隔离根目录包含 17 个文件：HTML、页面逻辑、3 份 UMD、SpriteJS、2 份 CSS、指针/样本/导航辅助、地图/元素 JSON 和 4 张 PNG。`spritejs3.js` 是已有 SpriteJS 3.7.36，保留版权头；`pointer.js` 与 `dog-element-sample.js` 提供显式辅助函数。运行时不读取 `src`、开发 bundle、其他页面状态或核心包。隔离目录只是一份生成的验收副本，不另行维护页面。
 
-## 场景与交互
+## 消费约定
 
-[index.html](../demo/browser-map/index.html) 列出依赖加载顺序，[main.js](../demo/browser-map/main.js) 是完整只读调用例：
+页面通过 `loadElementSources` / `importElementDefinition` 加载并校验元素，再通过 `importMapDefinition` 取得地图与占用索引。`resolveMapEntities` 计算独立实例；每实例使用自己的 SpriteJS Group 调用 `renderElement`，共享定义不会使实例互相替换。
 
-1. 读取真实元素 JSON、四张图片和地图 JSON，用图片实际尺寸校验元素。`importMapDefinition` 返回地图及完整占用索引。
-2. 保留样本中的 `dog-a` 与 `dog-b`：共享 `sculpture-dog-preview` 定义，位置分别为 `[1,1]`、`[3,1]`，每实例使用独立 SpriteJS Group。没有自动删除或编辑地图的操作。
-3. 绿色纯色地面表示 20 个有效格，四个 `null` 空角不绘制；地面与实体是独立绘制组。此样本没有 `cell.tile`，绿色仅为地形示意，不代表原作地面素材。
-4. 四镜头调用 `resolveMapEntities`，与地面共用地图的 `[80,40]` 格距；只改变投影和素材方向。矩阵、实例位置、对象朝向、完整世界占地与占用索引保持不变，选中 ID 保留。
-5. 点击地面格子，经 `pickGrid` 和占用索引选择一个实例，显示 ID、元素引用、当前图片、世界姿态和完整占地。点选只替换高亮与详情，不重新解析地图或绘制实体。同格多个实例按 `entities` 的输入顺序取第一个，与像素画序无关。空地、空角及地图外点击清除实体选择；“清除选择”同时清除格子详情。
+四镜头只改变显示，按索引选择并查看完整世界占地；格子模式保持可用。只有地图、索引、所有图片和下一绘制树全部成功后才替换场景；坏 JSON、坏引用或缺图保留上次有效状态，修复文件后点击“重新加载”恢复。详细交互与边界统一见[静态地图浏览说明](map-definition.md#静态地图浏览-demo)。
 
-布局沿用静态地图浏览 Demo：详情栏固定在画布右侧并独立滚动，窄窗口只滚动画布区域；画布容器无边框、内边距或 CSS 缩放，每次点击读取当前容器位置。点击雕塑上部仍查询指针下的地面格，不宣称按可见图片像素命中。
-
-## 加载失败与恢复
-
-首次失败显示原因与空状态。已有有效场景时，重新加载期间继续显示旧场景；只有 JSON、引用、完整占用、所有图片及下一绘制树都成功后，才一起替换地图、索引与画面。坏 JSON、坏引用或缺图会保留旧地图和选择，修复 `assets/` 中的文件后点击“重新加载”即可恢复，不需要手工清理画布。
-
-本例使用地图接口默认的共存规则，没有经营规则。地面和实体分组，当前不重叠样本按占地下端由远到近绘制；通用画序、遮挡像素选择、平移缩放、编辑和动画不在此例范围。详细契约见[地图定义](map-definition.md)、[四向视图](isometric-view.md)、[元素渲染](element-rendering.md)。
+本例不提供地图编辑、通用遮挡命中、平移缩放、动画或经营规则。接口契约见[地图定义](map-definition.md)、[四向视图](isometric-view.md)、[元素渲染](element-rendering.md)。

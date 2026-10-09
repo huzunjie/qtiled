@@ -36,7 +36,7 @@ Object.assign(renderingConfig.output, {
   globals: { spritejs: 'spritejs' },
   sourcemap: true,
 });
-// 只供静态地图 Demo 消费；正式模块包由后续消费者单独确定。
+// 地图 Demo 开发包；正式 UMD 由 rollup.config.optional.js 构建。
 const mapsConfig = getConf('umd');
 mapsConfig.input = 'src/maps/index.js';
 Object.assign(mapsConfig.output, {

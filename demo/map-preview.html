@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>静态地图浏览 · QTiled Demo</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="stylesheet" href="./static/css/preview-workspace.css">
   <style>
@@ -40,7 +41,6 @@
 <body>
   <script src="./static/js/navs.js"></script>
   <script src="./static/js/spritejs3.js"></script>
-  <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
   <script src="./static/js/qtiled-element-rendering.dev.js"></script>
   <script src="./static/js/qtiled-maps.dev.js"></script>
@@ -59,6 +59,7 @@
             <button type="button" data-angle="180" aria-pressed="false">180°</button>
             <button type="button" data-angle="270" aria-pressed="false">270°</button>
             <label>点击查看 <select id="pick-mode" aria-describedby="click-help"><option value="entity">雕塑信息</option><option value="cell">格子属性</option></select></label>
+            <button id="clear-selection" type="button">清除选择</button>
           </fieldset>
           <button id="reload" type="button">重新加载</button>
         </div>
@@ -89,8 +90,8 @@
             <dt>定义原点 / 对象朝向</dt><dd id="entity-pose">—</dd>
             <dt>完整世界占地</dt><dd id="entity-footprint">—</dd>
           </dl>
-          <p class="note">绿色为有效格，灰色虚线为无效空角。蓝色显示选中格或实体完整占地。</p>
-          <p class="note">实体按地面占地选择；点击雕塑上部仍按下方格子查询。当前只浏览固定样本。</p>
+          <p class="note">绿色为有效地面，四个空角不绘制地形。蓝色显示选中格或实体完整占地。</p>
+          <p class="note">实体按地面占地选择；同格有多个实例时取地图列表中的第一个，空地清除实体选择。点击雕塑上部仍查询指针下的地面格子。</p>
           <p class="note"><a href="./static/map-samples/first-static-map.json">地图 JSON</a> · <a href="./static/element-samples/dog/element.json">元素定义</a></p>
         </div>
       </aside>

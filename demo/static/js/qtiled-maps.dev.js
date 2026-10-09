@@ -418,7 +418,300 @@
       issues
     };
   }
+  /** 检查完整世界占地并构建按格多实例索引，不改变地图或保留内部状态。
+   * @param {Object} definition 地图定义；先复用 A2 的结构与引用校验。
+   * @param {Object} elementsById 已通过元素契约校验的定义。
+   * @param {Function} canCoexist 同格多实例规则 ({ grid, entities }) => boolean，默认允许共存。
+   * 规则只收到当前格和实例姿态的副本；每个共享格调用一次，须同步返回布尔值。
+   * @returns {Object} { index, issues }；index 为 Map<'x,y', string[]>，失败为 null。
+   * 格键按首次遇到的占地格插入，同格 ID 按 entities 输入顺序排列；不表示像素画序。
+   * 只检查真实占地，不检查定义原点；复用绘制所用旋转/偏移方法，不依赖镜头或像素。
+   */
 
+  function buildMapOccupancy(definition, elementsById = {}, canCoexist = () => true) {
+    const issues = validateMapDefinition(definition, elementsById);
+    if (issues.length) return {
+      index: null,
+      issues
+    };
+    if (typeof canCoexist !== 'function') throw new TypeError('canCoexist 必须是函数。');
+    const {
+      cells,
+      entities
+    } = definition;
+    const index = new Map();
+
+    for (const [entityIndex, entity] of entities.entries()) {
+      const offsets = elementsById[entity.element].footprint.map(offset => rotateGridPoint(offset, (entity.angle || 0) / 90));
+      const worldCells = getIsometricNeighborsByOffsets(entity.grid, offsets);
+
+      for (const grid of worldCells) {
+        const [x, y] = grid;
+        let code;
+        let message;
+
+        if (!grid.every(Number.isSafeInteger)) {
+          code = 'unsafe-footprint-grid';
+          message = '占地世界格必须为安全整数。';
+        } else if (x < 0 || y < 0 || y >= cells.length || x >= cells[0].length) {
+          code = 'footprint-out-of-bounds';
+          message = '实体完整占地超出地图矩阵。';
+        } else if (cells[y][x] === null) {
+          code = 'footprint-invalid-cell';
+          message = '实体完整占地包含 null 无效格。';
+        }
+
+        if (code) {
+          issues.push({
+            path: `entities[${entityIndex}]`,
+            code,
+            message,
+            entityId: entity.id,
+            grid
+          });
+          continue;
+        }
+
+        const key = grid.join(',');
+        if (!index.has(key)) index.set(key, []);
+        index.get(key).push(entity.id);
+      }
+    } // 几何失败时不调用场景规则，也不把裁切后的部分占地作为有效索引返回。
+
+
+    if (issues.length) return {
+      index: null,
+      issues
+    };
+    const entitiesById = new Map(entities.map(entity => [entity.id, entity]));
+
+    for (const [key, entityIds] of index) {
+      if (entityIds.length < 2) continue;
+      const grid = key.split(',').map(Number);
+      const occupants = entityIds.map(id => {
+        const {
+          element,
+          grid: originGrid,
+          angle = 0
+        } = entitiesById.get(id);
+        return {
+          id,
+          element,
+          grid: [...originGrid],
+          angle
+        };
+      });
+      const allowed = canCoexist({
+        grid: [...grid],
+        entities: occupants
+      });
+      if (typeof allowed !== 'boolean') throw new TypeError('canCoexist 必须同步返回布尔值。');
+
+      if (!allowed) {
+        issues.push({
+          path: `cells[${grid[1]}][${grid[0]}]`,
+          code: 'coexistence-rejected',
+          message: '场景规则拒绝该格的实体共存。',
+          grid,
+          entityIds: [...entityIds]
+        });
+      }
+    }
+
+    return {
+      index: issues.length ? null : index,
+      issues
+    };
+  }
+  /** 检查新增实例后的完整场景，不放置实体、不修改已有索引。
+   * 候选 ID 必须与现有实体不同；已有地图错误也会拒绝本次新增。
+   * @returns {Object} { allowed, issues }；候选问题沿用追加后的 entities[n] 路径。
+   */
+
+  function checkMapEntityPlacement(definition, entity, elementsById = {}, canCoexist = () => true) {
+    const issues = validateMapDefinition(definition, elementsById);
+    if (issues.length) return {
+      allowed: false,
+      issues
+    };
+    const result = buildMapOccupancy({ ...definition,
+      entities: [...definition.entities, entity]
+    }, elementsById, canCoexist);
+    return {
+      allowed: result.issues.length === 0,
+      issues: result.issues
+    };
+  }
+  /** 执行单条放置/删除命令，同时返回新地图与完整索引，不修改输入。
+   * @param {Object} definition 原地图，结构与引用错误直接拒绝。
+   * @param {Object} command { type: 'place', entity } 或 { type: 'remove', id }。
+   * @param {Object} elementsById 已通过元素契约校验的定义。
+   * @param {Function} canCoexist 沿用 A4 同步规则，仅检查编辑后的完整场景。
+   * @returns {Object} { definition, index, issues }；失败时 definition/index 均为 null。
+   * 成功复制地图外壳、实体数组、各实体及 grid；cells、tileSize 和附加嵌套字段共享只读引用。
+   * 删除可以消除占地/共存问题，但不能绕过原地图的结构/引用错误；回调异常直接抛出。
+   */
+
+  function applyMapEdit(definition, command, elementsById = {}, canCoexist = () => true) {
+    const issues = validateMapDefinition(definition, elementsById);
+    if (issues.length) return {
+      definition: null,
+      index: null,
+      issues
+    };
+
+    const reject = (path, code, message) => ({
+      definition: null,
+      index: null,
+      issues: [{
+        path,
+        code,
+        message
+      }]
+    });
+
+    if (!isObject(command)) return reject('$command', 'invalid-map-edit', '地图编辑命令必须是对象。');
+    let entities;
+
+    if (command.type === 'place') {
+      entities = [...definition.entities, command.entity];
+    } else if (command.type === 'remove') {
+      if (!isId(command.id)) return reject('$command.id', 'invalid-id', '待删除的实例 ID 必须是非空字符串。');
+
+      if (!definition.entities.some(entity => entity.id === command.id)) {
+        return reject('$command.id', 'missing-entity', '待删除的实例 ID 未在地图中找到。');
+      }
+
+      entities = definition.entities.filter(entity => entity.id !== command.id);
+    } else {
+      return reject('$command.type', 'unsupported-map-edit', '地图编辑命令仅支持 place 或 remove。');
+    } // 直接消费一次完整构建的索引，避免候选检查后再次调用同一场景规则。
+
+
+    const edited = { ...definition,
+      entities
+    };
+    const result = buildMapOccupancy(edited, elementsById, canCoexist);
+    if (result.issues.length) return {
+      definition: null,
+      index: null,
+      issues: result.issues
+    };
+    edited.entities = entities.map(entity => ({ ...entity,
+      grid: [...entity.grid]
+    }));
+    return {
+      definition: edited,
+      index: result.index,
+      issues: result.issues
+    };
+  } // IO 仅接受普通 JSON 数据，防止 stringify 静默丢字段、改值或执行 toJSON/getter。
+  // 只检查当前祖先链，重复引用可按值保存，循环引用不能保存。
+
+  function checkMapJsonValue(value, path = '$', ancestors = new Set()) {
+    const invalid = () => ({
+      path,
+      code: 'non-json-value',
+      message: '地图文件仅支持可无损保存的普通 JSON 数据。'
+    });
+
+    if (value === null || typeof value === 'string' || typeof value === 'boolean') return null;
+    if (typeof value === 'number') return Number.isFinite(value) && !Object.is(value, -0) ? null : invalid();
+    if (typeof value !== 'object' || ancestors.has(value)) return invalid();
+    const array = Array.isArray(value);
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== (array ? Array.prototype : Object.prototype) && !(prototype === null && !array)) return invalid();
+    const keys = Reflect.ownKeys(value);
+    if (array && keys.length !== value.length + 1) return invalid();
+    ancestors.add(value);
+
+    for (const key of keys) {
+      if (array && key === 'length') continue;
+      if (typeof key !== 'string' || array && (!/^(0|[1-9]\d*)$/.test(key) || Number(key) >= value.length)) return invalid();
+      const childPath = array ? `${path}[${key}]` : path === '$' ? key : `${path}.${key}`;
+      const descriptor = Object.getOwnPropertyDescriptor(value, key);
+
+      if (!descriptor.enumerable || !Object.prototype.hasOwnProperty.call(descriptor, 'value')) {
+        return {
+          path: childPath,
+          code: 'non-json-value',
+          message: '地图文件字段必须是可枚举的自有数据属性。'
+        };
+      }
+
+      const issue = checkMapJsonValue(descriptor.value, childPath, ancestors);
+      if (issue) return issue;
+    }
+
+    ancestors.delete(value);
+    return null;
+  }
+  /** 导入 JSON 文本并重建完整占用；失败不返回部分地图或索引。
+   * @param {string} json 地图定义文本，不接受已解析对象。
+   * @param {Object} elementsById 已通过 P0 校验的元素库，由消费者重新提供。
+   * @param {Function} canCoexist 沿用 A4 同步共存规则，不从文件读取。
+   * @returns {Object} { definition, index, issues }；失败时 definition/index 均为 null。
+   * 保留 JSON 额外字段与省略字段；规则类型/返回值错误及回调异常直接抛出。
+   */
+
+
+  function importMapDefinition(json, elementsById = {}, canCoexist = () => true) {
+    const invalidJson = {
+      definition: null,
+      index: null,
+      issues: [{
+        path: '$',
+        code: 'invalid-json',
+        message: '请输入有效的 JSON 文本。'
+      }]
+    };
+    if (typeof json !== 'string') return invalidJson;
+    let definition;
+
+    try {
+      definition = JSON.parse(json);
+    } catch (error) {
+      return invalidJson;
+    }
+
+    const issue = checkMapJsonValue(definition);
+    if (issue) return {
+      definition: null,
+      index: null,
+      issues: [issue]
+    };
+    const result = buildMapOccupancy(definition, elementsById, canCoexist);
+    return {
+      definition: result.issues.length ? null : definition,
+      index: result.index,
+      issues: result.issues
+    };
+  }
+  /** 校验地图事实后导出格式化 JSON；不修改输入或嵌入元素库、规则和派生索引。
+   * @returns {Object} { json, issues }；失败时 json 为 null。
+   * 额外字段按值保存，拒绝会被 JSON 静默丢弃或改写的值，不执行自定义序列化。
+   */
+
+  function exportMapDefinition(definition, elementsById = {}, canCoexist = () => true) {
+    const issue = checkMapJsonValue(definition);
+    if (issue) return {
+      json: null,
+      issues: [issue]
+    };
+    const {
+      issues
+    } = buildMapOccupancy(definition, elementsById, canCoexist);
+    return {
+      json: issues.length ? null : `${JSON.stringify(definition, null, 2)}\n`,
+      issues
+    };
+  }
+
+  exports.applyMapEdit = applyMapEdit;
+  exports.buildMapOccupancy = buildMapOccupancy;
+  exports.checkMapEntityPlacement = checkMapEntityPlacement;
+  exports.exportMapDefinition = exportMapDefinition;
+  exports.importMapDefinition = importMapDefinition;
   exports.resolveMapEntities = resolveMapEntities;
   exports.validateMapDefinition = validateMapDefinition;
 
