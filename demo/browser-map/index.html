@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>独立静态场景 · QTiled Demo</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./common/index.css">
+  <link rel="stylesheet" href="./common/preview-workspace.css">
+  <style>
+    .map-demo { max-width: 1100px; margin: 24px auto; }
+    .map-demo h1 { font-size: 24px; }
+    .map-demo p { opacity: 1; font-size: 12px; line-height: 1.7; }
+    .map-demo .intro, .map-demo .note { color: #687383; }
+    .map-demo button { cursor: pointer; padding: 6px 10px; margin: 0; font-size: 12px; }
+    .map-demo button[aria-pressed="true"] { background: #098d3b; }
+    .map-demo button:disabled { cursor: default; opacity: .45; }
+    .map-demo :is(button, select):focus-visible { outline: 2px solid #098d3b; outline-offset: 2px; }
+    .map-demo .preview-workspace > .viewport { overflow: hidden; }
+    .map-demo .preview-workspace > aside { position: relative; padding: 0; overflow: hidden; }
+    .map-demo .map-details { position: absolute; inset: 0; overflow: auto; scrollbar-gutter: stable; padding: 12px; }
+    .map-demo aside dt { margin-top: 6px; }
+    .map-demo aside h2 { margin-bottom: 8px; }
+    .map-demo .canvas-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px; border-bottom: 1px solid #edf0f3; font-size: 12px; }
+    .map-demo fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border: 0; margin: 0; padding: 0; }
+    .map-demo #reload { margin-left: auto; }
+    .map-demo .click-help { margin: 0; padding: 6px 10px; color: #687383; border-bottom: 1px solid #edf0f3; }
+    .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
+    .map-demo .canvas-scroll { overflow: auto; }
+    .map-demo #map-canvas { position: relative; width: 640px; height: 440px; margin: auto; border: 0; padding: 0; }
+    .map-demo #status { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 44px); margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); pointer-events: none; }
+    .map-demo #issues { color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .map-demo #cell-info { min-height: 4.8em; }
+    .map-demo #map-summary, .map-demo #entity-source, .map-demo #entity-footprint { min-height: 3.2em; }
+    .map-demo #entity-footprint { max-height: 100px; overflow: auto; }
+    .map-demo #cell-info, .map-demo #entity-source { white-space: pre-line; }
+    .map-demo aside h2:not(:first-child) { margin-top: 10px; padding-top: 8px; border-top: 1px solid #edf0f3; }
+  </style>
+</head>
+<body>
+  <main class="map-demo">
+    <h1>独立静态场景</h1>
+    <p class="intro">从地图文件显示多个独立实体；切换镜头不改变世界位置与占地，点击地面占地查看雕塑信息。</p>
+    <div class="preview-workspace">
+      <div class="viewport">
+        <div class="canvas-controls">
+          <fieldset id="controls" disabled aria-label="地图查看控制">
+            <span>镜头</span>
+            <button type="button" data-angle="0" aria-pressed="true">0°</button>
+            <button type="button" data-angle="90" aria-pressed="false">90°</button>
+            <button type="button" data-angle="180" aria-pressed="false">180°</button>
+            <button type="button" data-angle="270" aria-pressed="false">270°</button>
+            <button id="clear-selection" type="button">清除选择</button>
+          </fieldset>
+          <button id="reload" type="button">重新加载</button>
+        </div>
+        <p id="click-help" class="click-help">点击雕塑脚下的格子选择整座雕塑；空白处清选。同格有多个实例时，选择地图列表中的第一个。</p>
+        <p id="issues" role="alert" hidden></p>
+        <div class="canvas-stage">
+          <div class="canvas-scroll"><div id="map-canvas" role="img" aria-label="静态地图：点击格子或实体的地面占地查看信息"></div></div>
+          <p id="status" role="status">正在加载地图与素材…</p>
+        </div>
+      </div>
+      <aside>
+        <div class="map-details">
+          <h2>地图</h2>
+          <dl>
+            <dt>地图 ID</dt><dd id="map-id">—</dd>
+            <dt>范围与数量</dt><dd id="map-summary">—</dd>
+            <dt>格距 / 镜头</dt><dd id="view-info">—</dd>
+          </dl>
+          <h2>选中格子</h2>
+          <dl>
+            <dt>世界坐标</dt><dd id="cell-grid">—</dd>
+            <dt>格属性</dt><dd id="cell-info">点击画布查看</dd>
+          </dl>
+          <h2>选中实体</h2>
+          <dl>
+            <dt>实例 ID</dt><dd id="entity-id">—</dd>
+            <dt>元素 / 当前图片</dt><dd id="entity-source">—</dd>
+            <dt>定义原点 / 对象朝向</dt><dd id="entity-pose">—</dd>
+            <dt>完整世界占地</dt><dd id="entity-footprint">—</dd>
+          </dl>
+          <p class="note">绿色为有效地面，四个空角不绘制。蓝色标出选中实体的完整世界占地。</p>
+          <p class="note">按地面占地查询，不按图片像素命中；点击雕塑上部仍查询指针下的地面格子。</p>
+          <p class="note"><a href="./assets/map.json">地图 JSON</a> · <a href="./assets/dog/element.json">元素定义</a></p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <script src="./vendor/spritejs3.js"></script>
+  <script src="./lib/qtiled-view.umd.js"></script>
+  <script src="./lib/qtiled-maps.umd.js"></script>
+  <script src="./lib/qtiled-element-rendering.umd.js"></script>
+  <script src="./common/pointer.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>
