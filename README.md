@@ -4,6 +4,10 @@
 
 这是一套 Tiled 多边形布局基础库。
 
+## 正式模块消费
+
+核心入口保持 `shapes` / `pathFinding`。地图、四向视图和元素渲染通过 `npm run optional` 构建独立 UMD 产物；路径、外部 SpriteJS 与可复制的最小示例见[浏览器消费说明](docs/browser-consumption.md)。
+
 ## DEMO
 
 结合 [spritejs](https://github.com/spritejs) 的几种基本用法示例：https://lab.pyzy.net/qtiled
@@ -166,7 +170,7 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 * [x] [完整占地与多实体索引 P1-A-4](docs/map-definition.md#完整占地与按格索引)：`buildMapOccupancy()` 检查完整世界占地并建立按格多实例索引，`checkMapEntityPlacement()` 检查候选新增；显式场景规则决定共存，31 项新增用例及 A2/A3/A4 定向回归通过。
 * [x] [单条放置与删除 P1-A-5](docs/map-definition.md#单条放置与删除)：`applyMapEdit()` 成功返回新地图及完整索引，失败保留输入；删除按唯一实例 ID，支持同位置重放。新增 27 项用例，A2/A3/A4/A5 地图定向 181 项通过。
 * [x] [地图定义文件 IO P1-A-6](docs/map-definition.md#地图定义导入与导出)：`importMapDefinition()` 完整校验后返回地图与重建索引，`exportMapDefinition()` 校验后输出 JSON；新增 40 项、地图定向 221 项及实际文件独立页面回读通过。
-* [ ] 地图与实体实例正式模块入口及独立消费 P1-A-7
+* [x] [正式模块入口与独立消费 P1-A-7](docs/browser-consumption.md)：地图、视图、元素渲染三份 UMD 独立构建；正式包隔离消费、SpriteJS 实际绘制及失败恢复通过。
 
 ### Tile Renderer - 瓦片渲染器
 * [x] [P0-C 静态元素预览](docs/element-rendering.md)：可选模块加载精选图片、解释四向裁切/锚点并通过 SpriteJS 显示，附网格和占地覆盖。[素材 Demo](demo/element-preview.html) 的四张图片与 JSON 一同放在样本目录中。

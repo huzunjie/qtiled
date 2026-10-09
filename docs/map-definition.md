@@ -2,6 +2,8 @@
 
 `src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition`、`resolveMapEntities`、`buildMapOccupancy`、`checkMapEntityPlacement`、`applyMapEdit`、`importMapDefinition` 与 `exportMapDefinition`。不加入核心导出，模块不包含文件读写或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费前两个函数；历史数字不代替新改动验收。
 
+独立浏览器项目可直接加载 `dist/qtiled-maps.umd.js`，使用 `window.qtiledMaps`；无需 SpriteJS 或源码解析。路径、构建命令及真实文件调用例见[正式产物消费](browser-consumption.md)。
+
 ## 测试验证
 
 [地图定义用例](../__tests__/map-definition.test.js) 覆盖二维矩阵、无效格、必需属性、素材引用与类别、实体姿态、错误路径及修正恢复；同时检查数组空洞、undefined、NaN、无穷数和安全整数等 JavaScript 输入边界，以及冻结输入不被修改、可选字段不被自动补齐。

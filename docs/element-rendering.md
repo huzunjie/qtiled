@@ -103,7 +103,7 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 狗样本资源目录和图片清单由 `demo/static/js/dog-element-sample.js` 统一提供，供编辑、素材预览和地图浏览三页使用。这个固定样本配置不进入可选模块；各页仍独立加载、校验并持有图片和定义。
 
-`npm run debug` 生成运行文件；`npm run dev` 同时监听核心、视图、元素绘制和地图四个 Demo 入口。可选模块的正式发布包与 npm 子路径尚未实现，属于后续打包工作。
+`npm run debug` 生成 Demo 运行文件；`npm run dev` 同时监听核心、视图、元素绘制和地图四个 Demo 入口。独立项目使用 `npm run optional` 生成的正式 UMD 文件，路径、SpriteJS 加载顺序和完整调用例见[正式产物消费](browser-consumption.md)。
 
 本页与四向视图 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px。独立预览按实际可见宽高自动适配，长占地列表在右侧局部滚动。
 
