@@ -1,6 +1,6 @@
-# 平地地图校验与实体消费
+# 平地地图校验、实体消费与占地索引
 
-`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition` 与 `resolveMapEntities`。不加入核心导出，模块不包含地图导入导出、空间索引或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费这两个函数；历史数字不代替新改动验收。
+`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition`、`resolveMapEntities`、`buildMapOccupancy` 与 `checkMapEntityPlacement`。不加入核心导出，模块不包含地图编辑命令、导入导出或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费前两个函数；历史数字不代替新改动验收。
 
 ## 测试验证
 
@@ -40,7 +40,7 @@ cell.tile 必须引用 `kind: 'tile'` 且 footprint 恰为 `[[0,0]]` 的元素�
 
 问题列表每项为 `{ path, code, message }`，例如 `cells[0][1].terrain` 或 `entities[1].element`。先检查顶层字段，再按行列检查 cells，最后检查实体；父结构非法时跳过相应子检查。失败不修改输入，不补默认字段，不生成半有效地图。
 
-本函数只检查当前平地格式及素材引用。同格多个实例、实体占地越界或重叠不在此处判断；完整占地和共存规则由后续放置检查负责。通行、可建造、风水及五行结果也不由本函数生成。
+本函数只检查当前平地格式及素材引用。同格多个实例、实体占地越界或重叠不在此处判断；完整占地和共存规则由下述 A4 接口负责。通行、可建造、风水及五行结果也不由本函数生成。
 
 ## 实体消费
 
@@ -67,7 +67,52 @@ const result = resolveMapEntities(map, elementsById, {
 
 实体的 `grid` 已是定义原点，读取或转镜头直接传入 `resolveElementDraw`，不再调用 `resolveElementPlacement`。切镜头仅更新投影和素材槽。新放置/对象转向时，调用方先用既有矩形放置函数计算配套 `grid/objectAngle`，再将它们作为实体 `grid/angle`；地图编辑命令留给后续切片。
 
-完整 footprint 不裁剪到 cells：原点在占地外、界外占地、同格多个实例及明确姿态的不规则占地均可派生。A4 再按有效格和场景共存规则判断是否合法。本片不计算 cell.tile 的绘制结果、不创建空间索引或场景节点。
+完整 footprint 不裁剪到 cells：原点在占地外、界外占地、同格多个实例及明确姿态的不规则占地均可派生。A4 再按有效格和场景共存规则判断是否合法。`resolveMapEntities` 不计算 cell.tile 的绘制结果、不创建空间索引或场景节点。
+
+## 完整占地与按格索引
+
+[占地与候选检查用例](../__tests__/map-occupancy.test.js) 共 31 项，与 A2/A3 合计 3 suites / 154 tests 通过。复跑命令：`npm test -- --runInBand __tests__/map-definition.test.js __tests__/map-entities.test.js __tests__/map-occupancy.test.js`。本片按确认范围执行定向验收，未跑全量、构建或浏览器；ESLint 不可用，未执行。
+
+`buildMapOccupancy(map, elementsById = {}, canCoexist = () => true)` 先复用 A2 校验，再用与绘制相同的 `rotateGridPoint`、`getIsometricNeighborsByOffsets` 计算完整世界占地。没有镜头输入，也不投影像素或重新定位原点。元素库仍须先通过元素契约校验；占地必须非空且不重复，计算所得世界格须为安全整数。
+
+逐格检查矩阵边界与 null 无效格，保留每一个失败格的诊断；不会裁切占地或把包围盒内的空洞补成占地。定义原点不代表实际占地：原点位于矩阵外或 null 格，但全部占地有效时可以通过。合法姿态的不规则占地可以检查；新对象如何原地转向仍由既有放置规则负责。
+
+成功返回 `{ index, issues: [] }`，`index` 是 `Map<string, string[]>`。键为世界坐标的 `"x,y"`，值为该格关联的唯一实例 ID 列表；只索引实体实际占地，cell.tile 不产生实例。格键遍历顺序按输入实体及其 footprint 顺序首次插入，同格 ID 按 `map.entities` 输入顺序排列，不排序 ID、不依赖镜头或像素画序。输入实体换序会相应改变查询顺序。有效空地图得到空 Map；任一错误返回 `{ index: null, issues }`，不暴露部分索引。
+
+```js
+import { buildMapOccupancy, checkMapEntityPlacement } from '../src/maps/index';
+
+// map、elementsById 已准备；这里的容量仅为调用方场景规则示例。
+const canCoexist = ({ entities }) => entities.length <= 2;
+const result = buildMapOccupancy(map, elementsById, canCoexist);
+if (!result.issues.length) {
+  const grid = [1, 1];
+  const ids = result.index.get(grid.join(',')) || [];
+  // ids 按地图实例顺序列出，可再通过实例 ID 查询地图事实。
+}
+
+const candidate = { id: 'dog-new', element: 'sculpture-dog-preview', grid: [1, 1] };
+const placement = checkMapEntityPlacement(map, candidate, elementsById, canCoexist);
+// placement 为 { allowed, issues }，不写入 map.entities。
+
+// 删除后的事实由调用方准备；重建不会改动 result.index。
+const remaining = { ...map, entities: map.entities.filter(entity => entity.id !== 'dog-a') };
+const rebuilt = buildMapOccupancy(remaining, elementsById, canCoexist);
+```
+
+索引只属于本次计算，是派生快照，不写入地图 JSON；函数不缓存、不接收或更新旧索引。修改事实后重新构建并在成功时替换调用方保存的索引。同格删除一个实例后，其他实例引用按原顺序保留。返回的 Map/数组由调用方持有，可修改，但不会影响输入、其他格或后续重建。
+
+### 场景共存规则与候选检查
+
+缺省规则允许所有几何有效的同格共存；这只表示通用占地检查通过，不代表某种游戏的建造、通行、接路或风水规则通过。传入 `() => false` 可拒绝全部同格共存，或根据实例 ID/元素 ID 和外部场景配置实现选择性规则，不要求给地图添加游戏分类字段。
+
+几何全部通过后，每个至少含两个实例的共享格调用一次 `canCoexist({ grid, entities })`。`entities` 是该格的完整实例集合，按输入顺序提供 `{ id, element, grid, angle }`；缺省对象角度归一为 0，附加业务字段不复制。回调可检查三实例容量等集合条件，不局限于两两比较；规则应为确定性的纯函数。调用时传入独立副本，修改参数不会改动地图或本次索引。单实例格不调用共存规则，地形条件不在此回调职责内。
+
+规则须同步返回 `true` 或 `false`；`false` 记录具体冲突格及全部关联 ID。非函数、非布尔结果（包括 Promise）抛出 TypeError；规则自己抛出的错误直接向上传递。不吞掉调用方程序错误，也不发布部分索引。外部闭包的副作用由调用方负责。
+
+`checkMapEntityPlacement(map, entity, elementsById = {}, canCoexist = () => true)` 把候选临时追加到实例数组，复用上述整图检查，返回 `{ allowed, issues }`。它检查新增后的整个场景，已有非法占地或共存冲突也会拒绝新增。候选必须有新 ID；与已有 ID 相同得到 A2 的 `duplicate-entity-id`，不会被当成移动/替换。候选问题路径为追加后的 `entities[n]`，n 是原实例数量。返回成功也不会修改事实或已有索引，编辑命令属于 A5。
+
+问题列表继续使用 `{ path, code, message }`，A2 结构错误原样返回。A4 的几何问题追加 `entityId`、世界 `grid`，路径指向对应 `entities[n]`，代码为 `unsafe-footprint-grid`、`footprint-out-of-bounds` 或 `footprint-invalid-cell`；共存问题使用 `coexistence-rejected`，路径指向 `cells[y][x]`，追加 `grid` 和按查询顺序排列的 `entityIds`。几何错误按实体/占地顺序报告，存在几何错误时不执行共存回调；共存错误按格键顺序报告。修正事实或规则后重新调用即可恢复。
 
 ## 静态地图浏览 Demo
 

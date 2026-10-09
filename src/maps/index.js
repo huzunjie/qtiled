@@ -1,5 +1,7 @@
 /* 平地地图定义的可选入口，不从核心 src/index.js 导出。 */
 import { resolveElementDraw } from '../element-rendering/draw';
+import { rotateGridPoint } from '../shapes/polygon';
+import { getIsometricNeighborsByOffsets } from '../shapes/rhombus';
 
 function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -155,4 +157,78 @@ export function resolveMapEntities(definition, elementsById = {}, { angle = 0, o
     };
   });
   return { entities, issues };
+}
+
+/** 检查完整世界占地并构建按格多实例索引，不改变地图或保留内部状态。
+ * @param {Object} definition 地图定义；先复用 A2 的结构与引用校验。
+ * @param {Object} elementsById 已通过元素契约校验的定义。
+ * @param {Function} canCoexist 同格多实例规则 ({ grid, entities }) => boolean，默认允许共存。
+ * 规则只收到当前格和实例姿态的副本；每个共享格调用一次，须同步返回布尔值。
+ * @returns {Object} { index, issues }；index 为 Map<'x,y', string[]>，失败为 null。
+ * 格键按首次遇到的占地格插入，同格 ID 按 entities 输入顺序排列；不表示像素画序。
+ * 只检查真实占地，不检查定义原点；复用绘制所用旋转/偏移方法，不依赖镜头或像素。
+ */
+export function buildMapOccupancy(definition, elementsById = {}, canCoexist = () => true) {
+  const issues = validateMapDefinition(definition, elementsById);
+  if (issues.length) return { index: null, issues };
+  if (typeof canCoexist !== 'function') throw new TypeError('canCoexist 必须是函数。');
+  const { cells, entities } = definition;
+  const index = new Map();
+  for (const [entityIndex, entity] of entities.entries()) {
+    const offsets = elementsById[entity.element].footprint.map(offset => rotateGridPoint(offset, (entity.angle || 0) / 90));
+    const worldCells = getIsometricNeighborsByOffsets(entity.grid, offsets);
+    for (const grid of worldCells) {
+      const [x, y] = grid;
+      let code;
+      let message;
+      if (!grid.every(Number.isSafeInteger)) {
+        code = 'unsafe-footprint-grid';
+        message = '占地世界格必须为安全整数。';
+      } else if (x < 0 || y < 0 || y >= cells.length || x >= cells[0].length) {
+        code = 'footprint-out-of-bounds';
+        message = '实体完整占地超出地图矩阵。';
+      } else if (cells[y][x] === null) {
+        code = 'footprint-invalid-cell';
+        message = '实体完整占地包含 null 无效格。';
+      }
+      if (code) {
+        issues.push({ path: `entities[${entityIndex}]`, code, message, entityId: entity.id, grid });
+        continue;
+      }
+      const key = grid.join(',');
+      if (!index.has(key)) index.set(key, []);
+      index.get(key).push(entity.id);
+    }
+  }
+  // 几何失败时不调用场景规则，也不把裁切后的部分占地作为有效索引返回。
+  if (issues.length) return { index: null, issues };
+  const entitiesById = new Map(entities.map(entity => [entity.id, entity]));
+  for (const [key, entityIds] of index) {
+    if (entityIds.length < 2) continue;
+    const grid = key.split(',').map(Number);
+    const occupants = entityIds.map(id => {
+      const { element, grid: originGrid, angle = 0 } = entitiesById.get(id);
+      return { id, element, grid: [...originGrid], angle };
+    });
+    const allowed = canCoexist({ grid: [...grid], entities: occupants });
+    if (typeof allowed !== 'boolean') throw new TypeError('canCoexist 必须同步返回布尔值。');
+    if (!allowed) {
+      issues.push({
+        path: `cells[${grid[1]}][${grid[0]}]`, code: 'coexistence-rejected',
+        message: '场景规则拒绝该格的实体共存。', grid, entityIds: [...entityIds],
+      });
+    }
+  }
+  return { index: issues.length ? null : index, issues };
+}
+
+/** 检查新增实例后的完整场景，不放置实体、不修改已有索引。
+ * 候选 ID 必须与现有实体不同；已有地图错误也会拒绝本次新增。
+ * @returns {Object} { allowed, issues }；候选问题沿用追加后的 entities[n] 路径。
+ */
+export function checkMapEntityPlacement(definition, entity, elementsById = {}, canCoexist = () => true) {
+  const issues = validateMapDefinition(definition, elementsById);
+  if (issues.length) return { allowed: false, issues };
+  const result = buildMapOccupancy({ ...definition, entities: [...definition.entities, entity] }, elementsById, canCoexist);
+  return { allowed: result.issues.length === 0, issues: result.issues };
 }
