@@ -3,75 +3,31 @@
   "id": "sculpture-dog-preview",
   "kind": "sprite",
   "footprint": [
-    [
-      0,
-      0
-    ],
-    [
-      1,
-      0
-    ],
-    [
-      0,
-      1
-    ],
-    [
-      1,
-      1
-    ]
+    [0, 0],
+    [1, 0],
+    [0, 1],
+    [1, 1]
   ],
   "views": {
     "0": {
       "source": "images/sculpture_dog01.png",
-      "rect": [
-        0,
-        0,
-        158,
-        110
-      ],
-      "anchor": [
-        39,
-        69
-      ]
+      "rect": [0, 0, 158, 110],
+      "anchor": [39, 69]
     },
     "90": {
       "source": "images/sculpture_dog04.png",
-      "rect": [
-        0,
-        0,
-        158,
-        125
-      ],
-      "anchor": [
-        79,
-        64
-      ]
+      "rect": [0, 0, 158, 125],
+      "anchor": [79, 64]
     },
     "180": {
       "source": "images/sculpture_dog03.png",
-      "rect": [
-        0,
-        0,
-        158,
-        126
-      ],
-      "anchor": [
-        119,
-        85
-      ]
+      "rect": [0, 0, 158, 126],
+      "anchor": [119, 85]
     },
     "270": {
       "source": "images/sculpture_dog02.png",
-      "rect": [
-        0,
-        0,
-        158,
-        110
-      ],
-      "anchor": [
-        79,
-        89
-      ]
+      "rect": [0, 0, 158, 110],
+      "anchor": [79, 89]
     }
   }
 }

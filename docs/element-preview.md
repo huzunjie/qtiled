@@ -39,6 +39,8 @@ const { sources, sourceInfo, issues } = await loadElementSources({
 
 裁切的 x/y 是原图取样起点，不再加到 `position` 上。锚点以裁切区域左上角为基准，允许负数或位于区域外。没有方向回退、镜像、重新居中或根据图片尺寸猜占地；返回结果不共享输入中的可修改数组。
 
+调用方应显式提供素材的标定 `view.tileSize`：当前狗样本为 `[80,40]`，通用函数缺省值则是 `[8,4]`，不会自动读取 Demo 表单或从 JSON 推断。修改尺寸不自动缩放图片或 anchor。图片、定义、标定尺寸与运行姿态的交付责任见[元素定义的外部参数约定](element-definition.md#交付给绘制方的参数)。
+
 ### 放置、对象朝向与镜头
 
 根据用户在原作对 2×2、3×2 建筑的实验，矩形放置预览以**当前画面最上角的占地单元格**对齐光标所在格。它不是图片外框角、屋顶像素或永久不变的素材局部格。2×2 转向保持同一组世界占地，3×2 转向交换长宽后仍固定该基准格；不据此推测原作引擎内部转轴。
@@ -89,7 +91,7 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 ## 样本和边界
 
-[四向静态素材 Demo](../demo/element-preview.html) 使用两份本地 JSON：完整素材与裁切示例。四张图片、标定依据和待核实项见[样本说明](../demo/static/element-samples/dog/README.md)。没有可视化编辑、导出、地图放置或经营规则。
+[四向静态素材 Demo](../demo/element-preview.html) 使用两份本地 JSON：完整素材与裁切示例。四张图片和 JSON 保存在[样本目录](../demo/static/element-samples/dog/)。没有可视化编辑、导出、地图放置或经营规则。
 
 `npm run debug` 生成运行文件；`npm run dev` 同时监听核心、视图和静态预览三个 Demo 入口。可选模块的正式发布包与 npm 子路径尚未实现，属于后续打包工作。
 

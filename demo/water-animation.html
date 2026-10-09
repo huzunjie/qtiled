@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>水域动画 · QTiled Demo</title>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/preview-workspace.css">
+  <style>
+    .water-demo { max-width: 1060px; margin: 24px auto; }
+    .water-demo h1 { font-size: 24px; }
+    .water-demo p { opacity: 1; font-size: 13px; line-height: 1.7; }
+    .water-demo .intro, .water-demo .note { color: #687383; }
+    .water-demo fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+    .water-demo .canvas-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px; border-bottom: 1px solid #e1e5e9; }
+    .water-demo .canvas-controls label { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+    .water-demo button { cursor: pointer; margin: 0; }
+    .water-demo button:disabled { cursor: default; opacity: .45; }
+    .water-demo select { padding: 4px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
+    .water-demo :is(button, select, input):focus-visible { outline: 2px solid #098d3b; outline-offset: 3px; }
+    .water-demo .canvas-scroll { overflow: auto; background: #252b33; }
+    .water-demo #water-canvas { position: relative; width: 640px; height: 360px; margin: auto; }
+    .water-demo .timeline { display: flex; align-items: center; gap: 10px; padding: 12px; font-size: 12px; }
+    .water-demo .timeline input { flex: 1; min-width: 60px; }
+    .water-demo .timeline output { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .water-demo #status { margin: 0; padding: 8px 12px; border-top: 1px solid #edf0f3; }
+    .water-demo #status[data-error="true"] { color: #9b3021; background: #fff0ec; }
+    .water-demo aside .note { font-size: 12px; }
+    @media (max-width: 760px) {
+      .water-demo .preview-workspace { flex-direction: column; }
+      .water-demo .preview-workspace > aside { flex-basis: auto; }
+    }
+  </style>
+</head>
+<body>
+  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js"></script>
+  <main class="water-demo">
+    <h1>水域动画</h1>
+    <p class="intro">观察原作的一个 24 帧水面循环，逐帧检查与连铺对照。点击播放开始。</p>
+    <div class="preview-workspace">
+      <div class="viewport">
+        <fieldset id="controls" disabled aria-label="水域预览控制">
+          <div class="canvas-controls">
+            <button id="play" type="button" aria-pressed="false">播放</button>
+            <button id="previous" type="button">上一帧</button>
+            <button id="next" type="button">下一帧</button>
+            <label>每帧时长
+              <select id="duration">
+                <option value="50">50 ms</option>
+                <option value="100" selected>100 ms</option>
+                <option value="200">200 ms</option>
+              </select>
+            </label>
+          </div>
+          <div class="canvas-controls">
+            <label>范围 <select id="layout"><option value="1">单格</option><option value="3" selected>3×3 连铺</option></select></label>
+            <label>各格播放 <select id="phase"><option value="same">同步</option><option value="offset">错开起始帧</option></select></label>
+            <label>缩放 <select id="scale"><option value="1">1×</option><option value="2" selected>2×</option></select></label>
+            <label><input id="grid" type="checkbox">显示网格</label>
+          </div>
+          <div class="canvas-scroll">
+            <div id="water-canvas" role="img" aria-label="水面帧预览，可使用逐帧按钮观察"></div>
+          </div>
+          <div class="timeline">
+            <label for="frame">帧</label>
+            <input id="frame" type="range" min="1" max="24" value="1">
+            <output id="frame-label" for="frame" aria-live="off">1 / 24 · #712</output>
+          </div>
+        </fieldset>
+        <p id="status" role="status">正在加载 24 张水面图片…</p>
+      </div>
+      <aside>
+        <h2>样本与演示设置</h2>
+        <dl>
+          <dt>已确认帧序</dt><dd>#712 → #735 → #712</dd>
+          <dt>图片</dt><dd>78×40 px · 完整水面地块</dd>
+          <dt>连铺格距</dt><dd>80×40 px（当前工作参数）</dd>
+          <dt>定位</dt><dd>各帧共用图片中心（演示标定）</dd>
+        </dl>
+        <p class="note">同步：所有格播放同一帧。错开起始帧：各格从不同帧开始，以相同速度循环。</p>
+        <p class="note">速度和错开规则为演示设置，尚未还原原作规则。</p>
+        <p class="note">逐帧或拖动进度会暂停。切到后台不推进，返回后继续。以上是本页预览行为。</p>
+      </aside>
+    </div>
+  </main>
+  <script type="module" src="./static/js/water-animation.js"></script>
+</body>
+</html>

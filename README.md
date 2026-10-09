@@ -168,6 +168,8 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 * [x] 矩形对象转向按当前画面上角占地格定位：`resolveElementPlacement()` 计算位置与朝向，`resolveElementDraw()` 绘制姿态；2×2 占地保持原位，镜头只改变投影。两页及点选/吸附已接入，全量测试、Demo 构建与两页方向组合检查通过；不规则占地不猜转向规则。
 * [ ] 地图场景渲染、画序与遮挡、动画播放
 
+[水域动画 Demo](demo/water-animation.html) 使用 SpriteJS 绘制原作 24 帧小样，支持单格/3×3、播放暂停、逐帧、速度与网格显示，以及各格同步/错开起始帧对照。帧序有原程序静态依据，时长、起始帧差异和锚点为演示设置。本页不代表正式动画格式、播放器模块或地图编辑已完成。
+
 ### Tile Editor - 瓦片编辑器
 * [x] [P0-D 静态元素编辑](docs/element-editor.md)：四向独立选图、裁切、锚点、占地编辑与自动放置基准、JSON 导出及独立预览回读。[编辑 Demo](demo/element-editor.html) 显示网格坐标并实时反馈当前方向的配置。
 

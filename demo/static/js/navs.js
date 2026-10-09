@@ -8,6 +8,7 @@
     ['isometric-view.html', '四向视图与占地 - 菱形'],
     ['element-preview.html', '四向静态素材 - 菱形'],
     ['element-editor.html', '静态元素编辑器 - 菱形'],
+    ['water-animation.html', '水域动画 - 菱形'],
     ['neighbors-rect.html', '查找相邻Tile - 正矩形'],
     ['neighbors-hexagon.html', '查找相邻Tile - 六边形'],
     ['neighbors-rhombus.html', '查找相邻Tile - 正菱形'],
