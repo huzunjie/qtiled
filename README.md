@@ -168,6 +168,7 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 ### Tile Renderer - 瓦片渲染器
 * [x] [P0-C 静态元素预览](docs/element-preview.md)：可选模块加载精选图片、解释四向裁切/锚点并通过 SpriteJS 显示，附网格和占地覆盖。[素材 Demo](demo/element-preview.html) 的四张图片与 JSON 一同放在样本目录中。
 * [x] 矩形对象转向按当前画面上角占地格定位：`resolveElementPlacement()` 计算位置与朝向，`resolveElementDraw()` 绘制姿态；2×2 占地保持原位，镜头只改变投影。两页及点选/吸附已接入，全量测试、Demo 构建与两页方向组合检查通过；不规则占地不猜转向规则。
+* [x] [P1-C-0 静态地图浏览 Demo](demo/map-preview.html)：独立加载 20 格双实例样本，提供四镜头、格与实体占地点选、失败重载；定向与全量回归、Demo 构建及真实浏览器验收通过。只消费当前静态定义，不包含地图编辑、通用遮挡命中或正式模块发布，见[消费说明](docs/map-definition.md#静态地图浏览-demo)。
 * [ ] 地图场景渲染、画序与遮挡、动画播放
 
 [水域动画 Demo](demo/water-animation.html) 使用 SpriteJS 绘制原作 24 帧小样，支持单格/3×3、播放暂停、逐帧、速度与网格显示，以及各格同步/错开起始帧对照。帧序有原程序静态依据，时长、起始帧差异和锚点为演示设置。本页不代表正式动画格式、播放器模块或地图编辑已完成。

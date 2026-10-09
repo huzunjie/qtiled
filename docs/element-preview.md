@@ -81,11 +81,15 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 ## SpriteJS 适配
 
+适配器源码为 `src/element-preview/spritejs-element-renderer.js`；`demo/static/js/spritejs3.js` 则是 Demo 使用的第三方 SpriteJS 库文件。
+
 `renderElementPreview(layer, drawInfo, sources, overlays = {})` 使用 SpriteJS 3.7.36 的 `Sprite.sourceRect` 裁切、`size` 保持裁切像素大小、`pos` 定位。无需改写原图。
 
 `overlays.gridPositions` 是调用方经同一 P0-B 视图投影后的网格中心数组；缺省为空。`footprint`、`placement` 缺省为 true，`bounds` 缺省为 false。placement 是自动确定的矩形上角基准格，以蓝色小框标记；页面“放置基准”开关控制其显示。网格在素材下方，占地/放置基准/裁切边框在上方。定义坐标仅用于内部计算，不再绘制红色十字，移除原有 `overlays.anchor` 选项。
 
 函数只替换它在该 layer 中拥有的 Group，不清除调用方其他节点。`drawInfo = null` 清除预览；素材缺失时先清除旧预览再抛出明确错误，防止残留图片冒充当前结果。内部不异步加载，因此切向只使用已经加载的图片，不发生跨方向加载结果覆盖。
+
+容器也可使用 SpriteJS Group。多实体消费者为每个实例创建独立 Group，再各自调用本函数；同一容器循环调用会替换前一个实例。[静态地图浏览 Demo](../demo/map-preview.html) 采用此方式复用适配器，由页面管理整个场景组的生命周期。
 
 纯计算可从 `src/element-preview/draw`、`src/element-preview/placement` 单独引入。完整可选入口 `src/element-preview` 导出加载、放置、绘制计算、渲染及元素的导入、校验、编辑和导出函数；SpriteJS 由调用方提供为外部依赖，不进入核心 `src/index.js`。Demo 构建输出独立的 `qtiled-preview.dev.js`，浏览器命名空间为 `qtiledPreview`，须在 SpriteJS 后加载。
 
@@ -93,7 +97,7 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 [四向静态素材 Demo](../demo/element-preview.html) 使用两份本地 JSON：完整素材与裁切示例。四张图片和 JSON 保存在[样本目录](../demo/static/element-samples/dog/)。没有可视化编辑、导出、地图放置或经营规则。
 
-`npm run debug` 生成运行文件；`npm run dev` 同时监听核心、视图和静态预览三个 Demo 入口。可选模块的正式发布包与 npm 子路径尚未实现，属于后续打包工作。
+`npm run debug` 生成运行文件；`npm run dev` 同时监听核心、视图、静态预览和地图四个 Demo 入口。可选模块的正式发布包与 npm 子路径尚未实现，属于后续打包工作。
 
 本页与四向视图 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px。独立预览按实际可见宽高自动适配，长占地列表在右侧局部滚动。
 

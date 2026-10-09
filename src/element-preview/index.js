@@ -2,5 +2,5 @@
 export { loadElementSources } from './sources';
 export { resolveElementDraw } from './draw';
 export { resolveElementPlacement } from './placement';
-export { renderElementPreview } from './spritejs';
+export { renderElementPreview } from './spritejs-element-renderer';
 export { importElementDefinition, validateElementDefinition, applyElementEdit, exportElementDefinition } from '../elements';

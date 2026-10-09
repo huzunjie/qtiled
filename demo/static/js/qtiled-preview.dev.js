@@ -343,8 +343,8 @@
   }
 
   const previews = new WeakMap();
-  /** 在现有 SpriteJS layer 中替换本函数拥有的预览组，保留调用方其他节点。
-   * @param {Object} layer SpriteJS Layer，生命周期由调用方管理。
+  /** 在现有 SpriteJS 容器中替换本函数拥有的预览组，保留调用方其他节点。
+   * @param {Object} layer SpriteJS Layer 或 Group，生命周期由调用方管理；多实例各用独立 Group。
    * @param {Object|null} drawInfo resolveElementDraw 的结果；null 清除本预览。
    * @param {Object} sources loadElementSources 返回的图片索引。
    * @param {Object} overlays { gridPositions: 像素坐标数组, footprint: true, placement: true, bounds: false }。

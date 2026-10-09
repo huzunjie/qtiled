@@ -1,6 +1,6 @@
 # 平地地图校验与实体消费
 
-`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition` 与 `resolveMapEntities`。不加入核心导出，尚无地图导入导出、空间索引或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，本轮全量回归为 20 suites / 609 tests。
+`src/maps/index.js` 是可选源码入口，提供 `validateMapDefinition` 与 `resolveMapEntities`。不加入核心导出，模块不包含地图导入导出、空间索引或场景渲染。A2 校验已通过 95 项定向 Jest 用例和全量回归（19 suites / 581 tests）；A3 静态实体消费已通过 28 项专项用例，对应全量回归为 20 suites / 609 tests。下方 C0 Demo 消费这两个函数；历史数字不代替新改动验收。
 
 ## 测试验证
 
@@ -68,3 +68,17 @@ const result = resolveMapEntities(map, elementsById, {
 实体的 `grid` 已是定义原点，读取或转镜头直接传入 `resolveElementDraw`，不再调用 `resolveElementPlacement`。切镜头仅更新投影和素材槽。新放置/对象转向时，调用方先用既有矩形放置函数计算配套 `grid/objectAngle`，再将它们作为实体 `grid/angle`；地图编辑命令留给后续切片。
 
 完整 footprint 不裁剪到 cells：原点在占地外、界外占地、同格多个实例及明确姿态的不规则占地均可派生。A4 再按有效格和场景共存规则判断是否合法。本片不计算 cell.tile 的绘制结果、不创建空间索引或场景节点。
+
+## 静态地图浏览 Demo
+
+[P1-C-0 浏览页](../demo/map-preview.html) 已通过本片验收：新增 10 项用例，定向 59 项、全量 21 suites / 619 tests 通过；Demo 构建与真实浏览器四向选择、失败恢复、窄窗口滚动命中通过。ESLint 本机不可用，未执行。先运行 `npm run debug`，再运行 `npm run dev` 并打开 `http://localhost:8033/demo/map-preview.html`；也可将整个 demo 目录交给静态 HTTP 服务。新增 `qtiled-maps.dev.js` 仅是 Demo 构建入口，不代表已提供正式包或 npm 子路径。
+
+页面独立读取 [地图 JSON](../demo/static/map-samples/first-static-map.json)、共享的 [狗元素定义](../demo/static/element-samples/dog/element.json) 及其四张 PNG；不读取 output、本地编辑器状态或浏览器存储。样本为 4 行 6 列、20 个 land/0 有效格、四个 null 空角，dog-a / dog-b 共用一个静态 v1 定义，各占四格。格距仍为现有 80×40 工作参数，不增加原作标定结论。
+
+加载链为 `loadElementSources` → `validateElementDefinition` → `validateMapDefinition` → `resolveMapEntities`。图片必须全部加载且元素/地图校验成功才显示；失败撤下当前场景、清空信息并显示字段/资源原因，修复后“重新加载”会重新读取 JSON 与图片。重载期间禁用查看控件，以请求编号隔离较早的异步结果。
+
+画格、反查、边界计算分别复用现有 `getVertexes` / `projectGrid`、`pickGrid` / `getPointerPosition`、`getBounds`。每个实体以独立 SpriteJS Group 作为 `renderElementPreview` 的容器，因此不会互相覆盖；整个新场景组建完成后替换旧组。固定双实例按占地投影最下端由远到近绘制。此画序只服务本样本，未实现通用复杂遮挡。
+
+镜头 0/90/180/270° 只改变投影、画序及素材槽；实例 grid、angle 和全部世界占地保持不变，读取时不重新调用放置计算。点击“格子”查看坐标/属性；点击“实体占地”按反查格匹配全部 footprint，并高亮选中实例完整占地。选择保持为世界格/实例 ID，切镜头后仍查看同一对象。空角显示 null，矩阵外显示界外；按地面格选择，不提供像素透明度或遮挡命中。
+
+本片只浏览固定无底图样本，画布 640×440 原尺寸显示，窄窗口内滚动，右栏不移到底部。任意素材库/地图导入、cell.tile 绘制、完整占地有效性与共存、空间索引、放置删除保存和正式消费入口留给后续切片。C0 不计为 C1、L1 全验收或地图编辑完成。

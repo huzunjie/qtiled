@@ -36,4 +36,12 @@ Object.assign(previewConfig.output, {
   globals: { spritejs: 'spritejs' },
   sourcemap: true,
 });
-export default [config, viewConfig, previewConfig];
+// 只供静态地图 Demo 消费；正式模块包由后续消费者单独确定。
+const mapsConfig = getConf('umd');
+mapsConfig.input = 'src/maps/index.js';
+Object.assign(mapsConfig.output, {
+  file: 'demo/static/js/qtiled-maps.dev.js',
+  name: 'qtiledMaps',
+  sourcemap: true,
+});
+export default [config, viewConfig, previewConfig, mapsConfig];

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "id": "first-static-map",
+  "tileSize": [80, 40],
+  "cells": [
+    [
+      null,
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      null
+    ],
+    [
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 }
+    ],
+    [
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 }
+    ],
+    [
+      null,
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      { "terrain": "land", "elevation": 0 },
+      null
+    ]
+  ],
+  "entities": [
+    { "id": "dog-a", "element": "sculpture-dog-preview", "grid": [1, 1] },
+    { "id": "dog-b", "element": "sculpture-dog-preview", "grid": [3, 1] }
+  ]
+}

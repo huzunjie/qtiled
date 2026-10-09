@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>静态地图浏览 · QTiled Demo</title>
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/preview-workspace.css">
+  <style>
+    .map-demo { max-width: 1100px; margin: 24px auto; }
+    .map-demo h1 { font-size: 24px; }
+    .map-demo p { opacity: 1; font-size: 12px; line-height: 1.7; }
+    .map-demo .intro, .map-demo .note { color: #687383; }
+    .map-demo button { cursor: pointer; padding: 6px 10px; margin: 0; font-size: 12px; }
+    .map-demo button[aria-pressed="true"] { background: #098d3b; }
+    .map-demo button:disabled { cursor: default; opacity: .45; }
+    .map-demo :is(button, select):focus-visible { outline: 2px solid #098d3b; outline-offset: 2px; }
+    .map-demo select { padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
+    .map-demo .preview-workspace > .viewport { overflow: hidden; }
+    .map-demo .canvas-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px; border-bottom: 1px solid #edf0f3; font-size: 12px; }
+    .map-demo fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border: 0; margin: 0; padding: 0; }
+    .map-demo #reload { margin-left: auto; }
+    .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
+    .map-demo .canvas-scroll { overflow: auto; }
+    .map-demo #map-canvas { position: relative; width: 640px; height: 440px; margin: auto; border: 0; padding: 0; }
+    .map-demo #status { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 44px); margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); pointer-events: none; }
+    .map-demo #issues { color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .map-demo #entity-footprint { max-height: 100px; overflow: auto; }
+    .map-demo #cell-info, .map-demo #entity-source { white-space: pre-line; }
+    .map-demo aside h2:not(:first-child) { margin-top: 18px; padding-top: 12px; border-top: 1px solid #edf0f3; }
+  </style>
+</head>
+<body>
+  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled.dev.js"></script>
+  <script src="./static/js/qtiled-view.dev.js"></script>
+  <script src="./static/js/qtiled-preview.dev.js"></script>
+  <script src="./static/js/qtiled-maps.dev.js"></script>
+  <script src="./static/js/pointer.js"></script>
+  <main class="map-demo">
+    <h1>静态地图浏览</h1>
+    <p class="intro">20 个有效格、四个空角，两个狗雕塑共享同一份元素定义。切换镜头，查看同一张地图。</p>
+    <div class="preview-workspace">
+      <div class="viewport">
+        <div class="canvas-controls">
+          <fieldset id="controls" disabled aria-label="地图查看控制">
+            <span>镜头</span>
+            <button type="button" data-angle="0" aria-pressed="true">0°</button>
+            <button type="button" data-angle="90" aria-pressed="false">90°</button>
+            <button type="button" data-angle="180" aria-pressed="false">180°</button>
+            <button type="button" data-angle="270" aria-pressed="false">270°</button>
+            <label>点选 <select id="pick-mode"><option value="entity">实体占地</option><option value="cell">格子</option></select></label>
+          </fieldset>
+          <button id="reload" type="button">重新加载</button>
+        </div>
+        <p id="issues" role="alert" hidden></p>
+        <div class="canvas-stage">
+          <div class="canvas-scroll"><div id="map-canvas" role="img" aria-label="静态地图：点击格子或实体的地面占地查看信息"></div></div>
+          <p id="status" role="status">正在加载地图与素材…</p>
+        </div>
+      </div>
+      <aside>
+        <h2>地图</h2>
+        <dl>
+          <dt>地图 ID</dt><dd id="map-id">—</dd>
+          <dt>范围与数量</dt><dd id="map-summary">—</dd>
+          <dt>格距 / 镜头</dt><dd id="view-info">—</dd>
+        </dl>
+        <h2>选中格子</h2>
+        <dl>
+          <dt>世界坐标</dt><dd id="cell-grid">—</dd>
+          <dt>格属性</dt><dd id="cell-info">点击画布查看</dd>
+        </dl>
+        <h2>选中实体</h2>
+        <dl>
+          <dt>实例 ID</dt><dd id="entity-id">—</dd>
+          <dt>元素 / 当前图片</dt><dd id="entity-source">—</dd>
+          <dt>定义原点 / 对象朝向</dt><dd id="entity-pose">—</dd>
+          <dt>完整世界占地</dt><dd id="entity-footprint">—</dd>
+        </dl>
+        <p class="note">绿色为有效格，灰色虚线为无效空角。蓝色显示选中格或实体完整占地。</p>
+        <p class="note">实体按地面占地选择；点击雕塑上部仍按下方格子查询。当前只浏览固定样本。</p>
+        <p class="note"><a href="./static/map-samples/first-static-map.json">地图 JSON</a> · <a href="./static/element-samples/dog/element.json">元素定义</a></p>
+      </aside>
+    </div>
+  </main>
+  <script src="./static/js/map-preview.js"></script>
+</body>
+</html>

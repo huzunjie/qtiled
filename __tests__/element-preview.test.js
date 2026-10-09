@@ -3,7 +3,7 @@ import { importElementDefinition } from '../src/elements';
 import { resolveElementDraw } from '../src/element-preview/draw';
 import { resolveElementPlacement } from '../src/element-preview/placement';
 import { loadElementSources } from '../src/element-preview/sources';
-import { renderElementPreview } from '../src/element-preview/spritejs';
+import { renderElementPreview } from '../src/element-preview/spritejs-element-renderer';
 import { Group, Sprite } from 'spritejs';
 
 jest.mock('spritejs', () => {
@@ -299,5 +299,21 @@ describe('SpriteJS 预览适配（节点替身）', () => {
     expect(() => renderElementPreview(layer, draw, {})).toThrow('未加载图片：0.png');
     expect(layer.children).toEqual([]);
     expect(() => renderElementPreview(layer, draw, Object.create(sources))).toThrow('未加载图片');
+  });
+
+  test('两个实例使用独立容器，切向或清除一项不替换另一项', () => {
+    const layer = new Group();
+    const holders = [new Group(), new Group()];
+    holders.forEach(holder => layer.append(holder));
+    const other = renderElementPreview(holders[1], resolveElementDraw(sample(), [3, 1]), sources);
+    for (const angle of [0, 90, 180, 270]) {
+      const first = renderElementPreview(holders[0], resolveElementDraw(sample(), [1, 1], { angle }), sources);
+      expect(holders[0].children).toEqual([first]);
+      expect(holders[1].children).toEqual([other]);
+      expect(layer.children).toEqual(holders);
+    }
+    renderElementPreview(holders[0], null);
+    expect(holders[0].children).toEqual([]);
+    expect(holders[1].children).toEqual([other]);
   });
 });
