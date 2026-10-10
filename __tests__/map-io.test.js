@@ -57,7 +57,7 @@ describe('地图文件 IO', () => {
   });
 
   test.each([
-    ['结构', map => { map.version = 2; }, 'unsupported-version'],
+    ['结构', map => { map.version = 3; }, 'unsupported-version'],
     ['引用', map => { map.entities[0].element = 'missing'; }, 'missing-element'],
     ['越界', map => { map.entities[0].grid = [9, 0]; }, 'footprint-out-of-bounds'],
     ['无效格', map => { map.entities[0].grid = [1, 0]; }, 'footprint-invalid-cell'],
@@ -116,5 +116,36 @@ describe('地图文件 IO', () => {
   test.each([null, () => 'yes', () => Promise.resolve(true), () => { throw new Error('规则错误'); }])('规则程序错误继续抛出 %p', rule => {
     expect(() => exportMapDefinition(createMap(), library, rule)).toThrow();
     expect(() => importMapDefinition(JSON.stringify(createMap()), library, rule)).toThrow();
+  });
+});
+
+
+describe('v2 高程地图文件', () => {
+  test('保存单位和等级，四向回读一致；不序列化投影和占用', () => {
+    const map = { ...createMap(), version: 2, elevationStep: 20.5 };
+    map.cells[0].filter(Boolean).forEach(cell => { cell.elevation = 3; });
+    const saved = exportMapDefinition(freeze(map), library);
+    expect(saved.issues).toEqual([]);
+    expect(JSON.parse(saved.json)).toEqual(map);
+    const loaded = importMapDefinition(saved.json, library);
+    expect(loaded.definition).toEqual(map);
+    expect([...loaded.index]).toEqual([['0,0', ['z', 'a']], ['1,0', ['z', 'a']]]);
+    for (const angle of [0, 90, 180, 270]) {
+      expect(resolveMapEntities(loaded.definition, library, { angle })).toEqual(resolveMapEntities(map, library, { angle }));
+    }
+  });
+
+  test('跨高差导入导出均整体拒绝，修正后可恢复原文件', () => {
+    const map = { ...createMap(), version: 2, elevationStep: 20 };
+    const good = exportMapDefinition(map, library);
+    map.cells[0][1].elevation = 1;
+    const loaded = importMapDefinition(JSON.stringify(map), library);
+    expect(loaded.definition).toBeNull();
+    expect(loaded.index).toBeNull();
+    expect(loaded.issues.every(issue => issue.code === 'footprint-elevation-mismatch')).toBe(true);
+    expect(exportMapDefinition(map, library)).toEqual({ json: null, issues: loaded.issues });
+    const restored = importMapDefinition(good.json, library);
+    expect(restored.issues).toEqual([]);
+    expect(restored.definition.cells[0][1].elevation).toBe(0);
   });
 });

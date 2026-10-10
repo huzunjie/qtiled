@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
+import { inflateSync } from 'zlib';
 import { JSDOM } from 'jsdom';
 import * as elements from '../src/elements';
 import * as view from '../src/isometric-view';
@@ -20,13 +21,48 @@ jest.mock('spritejs', () => {
   return { Group: class extends Node {}, Sprite: class extends Node {}, Polyline: class extends Node {}, Label: class extends Node {} };
 }, { virtual: true });
 
-const read = file => fs.readFileSync(path.join(__dirname, '../demo', file), 'utf8');
+const read = file => fs.readFileSync(file === 'static/map-samples/deep-water-map.json'
+  ? path.join(__dirname, 'fixtures/map-samples/deep-water-map.json') : path.join(__dirname, '../demo', file), 'utf8');
 const settle = () => new Promise(resolve => setImmediate(resolve));
+
+// 当前仓库素材均为 8-bit RGBA PNG；拒绝其他格式，避免透明命中替身悄悄丢 alpha。
+const pixelCache = new Map();
+function pngPixels(png) {
+  const key = png.toString('base64');
+  if (pixelCache.has(key)) return pixelCache.get(key);
+  if (png[24] !== 8 || png[25] !== 6 || png[28] !== 0) throw new Error('测试图片需要无隔行的 RGBA8 PNG');
+  const width = png.readUInt32BE(16), height = png.readUInt32BE(20), chunks = [];
+  for (let offset = 8; offset < png.length;) {
+    const length = png.readUInt32BE(offset);
+    if (png.toString('ascii', offset + 4, offset + 8) === 'IDAT') chunks.push(png.subarray(offset + 8, offset + 8 + length));
+    offset += length + 12;
+  }
+  const raw = inflateSync(Buffer.concat(chunks)), stride = width * 4, data = new Uint8ClampedArray(stride * height);
+  for (let y = 0; y < height; y++) {
+    const filter = raw[y * (stride + 1)];
+    for (let x = 0; x < stride; x++) {
+      const i = y * stride + x, a = x >= 4 ? data[i - 4] : 0, b = y ? data[i - stride] : 0;
+      const c = y && x >= 4 ? data[i - stride - 4] : 0, p = a + b - c;
+      const paeth = Math.abs(p - a) <= Math.abs(p - b) && Math.abs(p - a) <= Math.abs(p - c) ? a : Math.abs(p - b) <= Math.abs(p - c) ? b : c;
+      data[i] = (raw[y * (stride + 1) + x + 1] + [0, a, b, Math.floor((a + b) / 2), paeth][filter]) & 255;
+    }
+  }
+  const result = { data, width, height };
+  pixelCache.set(key, result);
+  return result;
+}
 
 // 执行真实页面脚本和计算/渲染适配器，DOM、图片加载与 SpriteJS 节点使用替身。
 async function page(initialFaults = {}, sample = 'first-static-map') {
   const { window } = new JSDOM(read('map-editor.html'), { url: 'http://localhost/demo/map-editor.html' });
   const get = id => window.document.getElementById(id);
+  // 使用仓库 PNG 的真实 RGBA；只替代 Canvas 读图，不模拟浏览器合成结果。
+  window.HTMLCanvasElement.prototype.getContext = () => {
+    let source;
+    return { clearRect() {}, drawImage(image) { source = image; }, getImageData: () => source.pixels };
+  };
+  // 小地图仅作为可控动画夹具，不再出现在对外样本菜单。
+  if (sample === 'deep-water-map') get('map-sample').add(new window.Option('深水测试夹具', sample));
   if (sample !== null) get('map-sample').value = sample;
   const errors = [];
   window.addEventListener('error', event => { errors.push(event.error); event.preventDefault(); });
@@ -97,8 +133,8 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
     const batch = ++imageBatch;
     Object.keys(files).forEach(file => {
       const png = fs.readFileSync(path.join(__dirname, '../demo', files[file].split('?')[0]));
-      sources[file] = { batch, file };
       sourceInfo[file] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
+      sources[file] = { batch, file, ...sourceInfo[file], pixels: pngPixels(png) };
     });
     return { sources, sourceInfo, issues: faults.image ? [{ path: 'images/sculpture_dog01.png', message: '图片加载失败' }] : [] };
   } };
@@ -130,6 +166,8 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/pointer.js'), context);
   vm.runInContext(read('static/js/dog-element-sample.js'), context);
   vm.runInContext(read('static/js/land-water-rules.js'), context);
+  vm.runInContext(read('static/js/elevation-rules.js'), context);
+  vm.runInContext(read('static/js/elevation-rendering.js'), context);
   const terrainResolve = jest.fn(window.landWaterRules.resolve);
   window.landWaterRules.resolve = terrainResolve;
   const terrainStroke = jest.fn(window.landWaterRules.applyStroke);
@@ -140,11 +178,12 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const result = () => resolve.mock.results[resolve.mock.results.length - 1].value.entities;
   const descendants = node => node.children.flatMap(child => [child, ...descendants(child)]);
   const contentLayer = () => contentLayers.find(item => item.canvas === layer.children[0]?.children[0].attrs.texture);
-  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && node.attrs.texture.file !== 'atlas.png');
+  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
   const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && node.attrs.texture.file === 'atlas.png');
   const pointAt = grid => {
     const [map, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
     const local = view.projectGrid(grid, { ...currentView, tileSize: map.tileSize, originPixel: [0, 0] });
+    if (!get('flat-edit').checked) local[1] -= (map.cells[grid[1]]?.[grid[0]]?.elevation || 0) * (map.elevationStep || 0);
     const root = layer.children[0];
     const [x, y] = local.map((value, axis) => root.attrs.pos[axis] + value * (root.attrs.scale?.[axis] ?? 1));
     // 包含滚动后的容器偏移，覆盖共用指针工具的坐标链。
@@ -190,7 +229,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   };
   return { window, get, faults, layer, result, sprites, terrainSprites, clickGrid, camera, mode, reload, resolve, importMap,
     fetch, pointer, tool, save, exportMap, terrainResolve, terrainStroke, resolveFrame, updateFrame, advance, callbacks, tiles, errors, descendants,
-    size, resize, scene: () => scene, screenPointer, captured, worldCenter, occupancy, canvasContext, contentLayer, imageRequests };
+    size, resize, scene: () => scene, screenPointer, captured, worldCenter, occupancy, canvasContext, contentLayer, imageRequests, pointAt, sendPointer };
 }
 
 function setDisplay(p, id, checked) {
@@ -957,7 +996,7 @@ test('完整地表与实体共同按深度排列，前方地表不固定压在�
   const p = await page();
   const content = p.contentLayer().children[0];
   const rendered = content.children.map(holder => holder.children[0].children[0]);
-  const dog = rendered.findIndex(node => node.attrs.texture.file !== 'atlas.png');
+  const dog = rendered.findIndex(node => !['atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
   expect(dog).toBeGreaterThan(0);
   expect(rendered.slice(dog + 1).some(node => node.attrs.texture.file === 'atlas.png')).toBe(true);
 });
@@ -1018,7 +1057,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(5);
+  expect(Object.keys(initial)).toHaveLength(6);
   expect(initial['atlas.png']).toBe('./static/terrain-samples/emperor-land-water/atlas.png');
   expect(Object.values(initial).every(url => !url.includes('?'))).toBe(true);
   const switchSample = async sample => {
@@ -1028,7 +1067,7 @@ test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部�
     expect(p.get('map-id').textContent).toBe(sample);
     expect(p.imageRequests[p.imageRequests.length - 1]).toEqual(initial);
   };
-  await switchSample('deep-water-map');
+  await switchSample('rectangular-water-map');
   for (let i = 0; i < 2; i++) {
     const previous = p.imageRequests[p.imageRequests.length - 1];
     const fetchCount = p.fetch.mock.calls.length;
@@ -1042,12 +1081,566 @@ test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部�
       return url.searchParams.get('reload');
     });
     expect(new Set(tokens).size).toBe(1);
-    expect(p.fetch).toHaveBeenCalledTimes(fetchCount + 4);
-    expect(p.get('map-id').textContent).toBe('deep-water-map');
+    expect(p.fetch).toHaveBeenCalledTimes(fetchCount + 6);
+    expect(p.get('map-id').textContent).toBe('rectangular-water-map');
   }
   await switchSample('first-static-map');
   expect(p.imageRequests).toHaveLength(5);
   expect(p.fetch.mock.calls.every(([, options]) => options.cache === 'no-cache')).toBe(true);
   expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+function flatElevationWorkspace(p) {
+  const map = { version: 1, id: 'height-edit-test', tileSize: [80, 40],
+    cells: Array.from({ length: 12 }, () => Array.from({ length: 12 }, () => ({ terrain: 'land', elevation: 0 }))), entities: [] };
+  p.get('map-json').value = JSON.stringify(map);
+  p.get('read-map').click();
+  expect(p.get('issues').hidden).toBe(true);
+  return map;
+}
+
+function heightStroke(p, tool, grids) {
+  p.tool(tool);
+  // 一笔依据起笔时场景拾取，避免预览抬升后把测试指针也额外移动。
+  const points = grids.map(p.pointAt);
+  p.sendPointer('pointerdown', points[0]);
+  points.slice(1).forEach(point => p.sendPointer('pointermove', point));
+  p.sendPointer('pointerup', points[points.length - 1]);
+}
+
+test('升降与设高整笔提交，重复格不累加，撤销恢复原 v1；JSON 回读保存 v2 高度', async () => {
+  const p = await page();
+  const before = flatElevationWorkspace(p);
+  heightStroke(p, 'raise', [[4, 4], [5, 4], [4, 4]]);
+  const elevated = p.save();
+  expect(elevated.version).toBe(2);
+  expect(elevated.elevationStep).toBe(40);
+  expect(elevated.cells[4].slice(4, 6).map(cell => cell.elevation)).toEqual([1, 1]);
+  expect(elevated.cells.flat().filter(cell => cell.elevation === 1)).toHaveLength(2);
+  p.get('undo').click();
+  expect(p.save()).toEqual(before);
+  p.get('redo').click();
+  expect(p.save()).toEqual(elevated);
+  p.get('read-map').click();
+  expect(p.save()).toEqual(elevated);
+  heightStroke(p, 'lower', [[4, 4], [5, 4]]);
+  expect(p.save().cells.flat().every(cell => cell.elevation === 0)).toBe(true);
+  p.get('target-height').value = '1';
+  heightStroke(p, 'set-height', [[4, 4]]);
+  expect(p.save().cells[4][4].elevation).toBe(1);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('高程预览 resize 取消，保持旧地图和历史，坏 v2 导入也不替换画面', async () => {
+  const p = await page();
+  const before = flatElevationWorkspace(p);
+  const undoDisabled = p.get('undo').disabled;
+  p.tool('raise');
+  p.pointer('pointerdown', [4, 4]);
+  expect(p.get('save-map').disabled).toBe(true);
+  p.resize(611, 479);
+  expect(p.save()).toEqual(before);
+  expect(p.get('undo').disabled).toBe(undoDisabled);
+  const root = p.layer.children[0];
+  const bad = { ...before, version: 2, elevationStep: 40 };
+  bad.cells[4][4].elevation = 17;
+  p.get('map-json').value = JSON.stringify(bad);
+  p.get('read-map').click();
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.layer.children[0]).toBe(root);
+  // before 与 bad 共用测试 cells，只比较页面仍持有的零高程事实。
+  expect(p.save().cells[4][4].elevation).toBe(0);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('抬高水格整笔拒绝；完整实体占地不能被单格抬高', async () => {
+  const p = await page();
+  const initial = p.save();
+  heightStroke(p, 'raise', [[1, 1]]);
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(initial);
+  flatElevationWorkspace(p);
+  heightStroke(p, 'water', [[4, 4]]);
+  const water = p.save();
+  heightStroke(p, 'raise', [[4, 4]]);
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(water);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('高程样本四向保留事实和高处坐标，平移缩放复用首次原尺寸合成', async () => {
+  const p = await page({}, 'elevation-map');
+  expect(p.get('issues').hidden).toBe(true);
+  const before = p.save();
+  expect(before.version).toBe(2);
+  const high = [];
+  before.cells.forEach((row, y) => row.forEach((cell, x) => { if (cell?.elevation === 1) high.push([x, y]); }));
+  expect(high.length).toBeGreaterThan(0);
+  const content = p.contentLayer();
+  expect(content.render).toHaveBeenCalledTimes(1);
+  zoom(p, 83.5);
+  p.tool('pan');
+  p.screenPointer('pointerdown', [300, 200]);
+  p.screenPointer('pointerup', [310, 210]);
+  // 浏览器会在 pointerup 后合成 click，该次点击应被平移抑制。
+  p.get('map-canvas').dispatchEvent(new p.window.MouseEvent('click', { clientX: 210, clientY: 283 }));
+  expect(content.render).toHaveBeenCalledTimes(1);
+  p.tool('select'); p.mode('cell');
+  const grid = high[Math.floor(high.length / 2)];
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    p.clickGrid(grid);
+    expect(p.get('cell-grid').textContent).toBe(`[${grid}]`);
+    expect(p.get('cell-info').textContent).toContain('elevation: 1');
+    expect(p.save()).toEqual(before);
+  }
+  expect(p.imageRequests.some(request => Object.keys(request).includes('elevation-atlas.png'))).toBe(true);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('同一笔联动补平封闭低洞，继续补格只提交一次历史', async () => {
+  const p = await page();
+  const before = flatElevationWorkspace(p);
+  const grids = [[4, 4], [5, 4], [6, 4], [6, 5], [6, 6], [5, 6], [4, 6], [4, 5], [5, 5]];
+  const points = grids.map(p.pointAt);
+  p.tool('raise');
+  p.sendPointer('pointerdown', points[0]);
+  points.slice(1, -1).forEach(point => p.sendPointer('pointermove', point));
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.get('status').textContent).toContain('联动');
+  expect(p.get('save-map').disabled).toBe(true);
+  p.sendPointer('pointermove', points[points.length - 1]);
+  expect(p.get('issues').hidden).toBe(true);
+  p.sendPointer('pointerup', points[points.length - 1]);
+  expect(p.save().cells.flat().filter(cell => cell.elevation === 1)).toHaveLength(9);
+  p.get('undo').click();
+  expect(p.save()).toEqual(before);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('平面编辑四向选取真实世界格，大笔刷可挖低顶层，撤销与取消保持完整事实', async () => {
+  const p = await page({}, 'elevation-multilevel-map');
+  const before = p.save();
+  p.get('flat-edit').click();
+  expect(p.get('click-help').textContent).toContain('平面编辑');
+  p.tool('select'); p.mode('cell');
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    p.clickGrid([12, 12]);
+    expect(p.get('cell-grid').textContent).toBe('[12,12]');
+    expect(p.get('cell-info').textContent).toContain('elevation: 6');
+    expect(p.save()).toEqual(before);
+  }
+  p.get('target-height').value = '4';
+  heightStroke(p, 'set-height', [[12, 12]]);
+  expect(p.get('status').textContent).toContain('已提交整笔');
+  expect(p.save().cells[12][12].elevation).toBe(4);
+  p.get('undo').click();
+  expect(p.save()).toEqual(before);
+  p.get('brush-size').value = '3';
+  const point = p.pointAt([12, 12]);
+  p.sendPointer('pointerdown', point);
+  expect(p.get('status').textContent).toContain('实际改变 9 格');
+  expect(p.get('flat-edit').disabled || p.get('controls').disabled).toBe(true);
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(p.save()).toEqual(before);
+  heightStroke(p, 'set-height', [[12, 12]]);
+  const lowered = p.save();
+  expect(lowered.cells[12][12].elevation).toBe(4);
+  expect(lowered.cells.flat().filter(cell => cell?.elevation === 6)).toHaveLength(0);
+  p.get('undo').click();
+  expect(p.save()).toEqual(before);
+  p.get('redo').click();
+  expect(p.save()).toEqual(lowered);
+  p.get('flat-edit').click();
+  expect(p.save()).toEqual(lowered);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('设高空值不能当作零，大笔刷越界整笔拒绝且不留下预览层', async () => {
+  const p = await page({}, 'elevation-multilevel-map');
+  const before = p.save();
+  p.get('flat-edit').click();
+  p.get('target-height').value = '';
+  heightStroke(p, 'set-height', [[12, 12]]);
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(before);
+  p.get('brush-size').value = '5';
+  heightStroke(p, 'raise', [[1, 1]]);
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(before);
+  expect(p.layer.children).toHaveLength(1);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('合并样本四向点选与空角保持，整笔可取消/撤销/重做，文件不含派生格', async () => {
+  const p = await page({}, 'elevation-multilevel-map');
+  const initial = p.save();
+  p.mode('cell');
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    p.clickGrid([3, 6]);
+    expect(p.get('cell-grid').textContent).toBe('[3,6]');
+    expect(p.get('cell-info').textContent).toContain('elevation: 1');
+    p.get('flat-edit').click();
+    const hole = p.pointAt([3, 5]);
+    p.get('map-canvas').dispatchEvent(new p.window.MouseEvent('click', hole));
+    expect(p.get('cell-grid').textContent).toBe('[3,5]');
+    expect(p.get('cell-info').textContent).toContain('null');
+    expect(p.save()).toEqual(initial);
+    p.get('flat-edit').click();
+  }
+  p.camera(0);
+  const map = flatElevationWorkspace(p);
+  p.get('flat-edit').click();
+  p.get('brush-size').value = '5';
+  p.get('target-height').value = '1';
+  p.tool('set-height');
+  p.pointer('pointerdown', [5, 5]);
+  p.get('cancel-stroke').click();
+  expect(p.save()).toEqual(map);
+  heightStroke(p, 'set-height', [[5, 5]]);
+  const raised = p.save();
+  expect(raised.version).toBe(2);
+  expect(raised.cells[5][5].elevation).toBe(1);
+  expect(raised.cells.flat().every(cell => cell.terrain === 'land')).toBe(true);
+  p.get('undo').click();
+  expect(p.save()).toEqual(map);
+  p.get('redo').click();
+  expect(p.save()).toEqual(raised);
+  p.get('target-height').value = '0';
+  heightStroke(p, 'set-height', [[5, 5]]);
+  expect(p.save().cells[5][5].elevation).toBe(0);
+  heightStroke(p, 'raise', [[5, 5]]);
+  expect(p.save().cells[5][5].elevation).toBe(1);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('预设基准默认8，新建填充实际地面并保留空角，设置与旧图独立且可撤销回读', async () => {
+  const p = await page();
+  const original = p.save();
+  expect(p.get('base-height').value).toBe('8');
+  expect(p.get('new-map').parentElement).toBe(p.get('reload').parentElement);
+  p.get('new-map').click();
+  expect(p.get('issues').hidden).toBe(true);
+  const created = p.save();
+  expect(created).toMatchObject({ version: 2, id: 'new-map', elevationStep: 40, entities: [] });
+  expect(created.cells).toEqual(original.cells.map(row => row.map(cell => cell === null ? null : { terrain: 'land', elevation: 8 })));
+  expect(p.get('fit-map').getAttribute('aria-pressed')).toBe('true');
+  p.get('base-height').value = '4';
+  expect(p.save()).toEqual(created);
+  p.get('undo').click();
+  expect(p.save()).toEqual(original);
+  p.get('redo').click();
+  expect(p.save()).toEqual(created);
+  p.get('map-json').value = JSON.stringify(created);
+  p.get('read-map').click();
+  expect(p.save()).toEqual(created);
+  expect(p.get('base-height').value).toBe('4');
+  const bad = JSON.parse(JSON.stringify(created));
+  bad.cells.flat().find(Boolean).elevation = -1;
+  p.get('map-json').value = JSON.stringify(bad);
+  p.get('read-map').click();
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(created);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test.each(['elevation-multilevel-map', 'rectangular-water-map', 'first-static-map'])('样本%s按最低有效地表平移到8，保留高差、空角和实体，重复加载不累加', async sample => {
+  const p = await page({}, sample);
+  const original = p.save();
+  const min = Math.min(...original.cells.flat().filter(Boolean).map(cell => cell.elevation));
+  expect(p.get('rebase-sample').checked).toBe(false);
+  p.get('rebase-sample').click();
+  expect(p.save()).toEqual(original);
+  await p.reload();
+  expect(p.get('issues').hidden).toBe(true);
+  const shifted = p.save();
+  expect(shifted.cells).toEqual(original.cells.map(row => row.map(cell => cell && { ...cell, elevation: cell.elevation + 8 - min })));
+  expect(shifted.entities).toEqual(original.entities);
+  expect(shifted).toMatchObject({ version: 2, elevationStep: 40, id: original.id, tileSize: original.tileSize });
+  await p.reload();
+  expect(p.save()).toEqual(shifted);
+  p.get('base-height').value = '0';
+  await p.reload();
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells).toEqual(original.cells.map(row => row.map(cell => cell && { ...cell, elevation: cell.elevation - min })));
+  p.get('base-height').value = '8';
+  await p.reload();
+  p.get('base-height').value = '4';
+  p.get('map-json').value = JSON.stringify(original);
+  p.get('read-map').click();
+  expect(p.save()).toEqual(original);
+  p.get('undo').click();
+  expect(p.save()).toEqual(shifted);
+  p.get('rebase-sample').click();
+  await p.reload();
+  expect(p.save()).toEqual(original);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('样本平移越界保留当前地图及撤销，含水样本可平移到8再恢复0', async () => {
+  const p = await page({}, 'elevation-multilevel-map');
+  const original = p.save();
+  p.get('new-map').click();
+  const before = p.save();
+  p.get('rebase-sample').click();
+  p.get('base-height').value = '16';
+  await p.reload();
+  expect(p.get('issues').textContent).toContain('平移后高程超出');
+  expect(p.save()).toEqual(before);
+  p.get('undo').click();
+  expect(p.save()).toEqual(original);
+  p.get('map-sample').value = 'rectangular-water-map';
+  p.get('base-height').value = '8';
+  await p.reload();
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells.flat().filter(Boolean).every(cell => cell.elevation === 8)).toBe(true);
+  p.get('base-height').value = '0';
+  await p.reload();
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells.flat().filter(Boolean).every(cell => cell.elevation === 0)).toBe(true);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('单格降低一级与设为7四向结果一致，联动预览可取消、撤销和重做', async () => {
+  const p = await page();
+  flatElevationWorkspace(p);
+  p.get('new-map').click();
+  p.get('flat-edit').click();
+  const initial = p.save();
+  p.get('brush-size').value = '1';
+  p.get('target-height').value = '7';
+  let expected;
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    p.tool('lower');
+    p.pointer('pointerdown', [5, 5]);
+    expect(p.get('status').textContent).toContain('实际改变 21 格');
+    expect(p.get('rebase-sample').disabled).toBe(true);
+    p.get('cancel-stroke').click();
+    expect(p.save()).toEqual(initial);
+    heightStroke(p, 'lower', [[5, 5]]);
+    const lowered = p.save();
+    expect(lowered.cells[5][5].elevation).toBe(7);
+    if (!expected) expected = lowered;
+    expect(lowered).toEqual(expected);
+    p.get('undo').click();
+    expect(p.save()).toEqual(initial);
+    p.get('redo').click();
+    expect(p.save()).toEqual(lowered);
+    p.get('undo').click();
+    heightStroke(p, 'set-height', [[5, 5]]);
+    expect(p.save()).toEqual(lowered);
+    p.get('undo').click();
+  }
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('基准0与16均可新建，越界升降及无效预设保持原地图；8级地面可向下编辑', async () => {
+  const p = await page();
+  flatElevationWorkspace(p);
+  p.get('new-map').click();
+  p.get('flat-edit').click();
+  p.get('brush-size').value = '5';
+  heightStroke(p, 'lower', [[5, 5]]);
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells[5][5].elevation).toBe(7);
+  p.get('undo').click();
+  expect(p.save().cells[5][5].elevation).toBe(8);
+  for (const [height, tool] of [[0, 'lower'], [16, 'raise']]) {
+    p.get('base-height').value = String(height);
+    p.get('new-map').click();
+    const map = p.save();
+    expect(map.cells.flat().every(cell => cell.elevation === height)).toBe(true);
+    heightStroke(p, tool, [[5, 5]]);
+    expect(p.get('issues').hidden).toBe(false);
+    expect(p.save()).toEqual(map);
+  }
+  const before = p.save();
+  p.get('base-height').value = '-1';
+  p.get('new-map').click();
+  expect(p.get('issues').textContent).toContain('预设基准高度');
+  expect(p.save()).toEqual(before);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('真实素材覆盖旧台地细缝，新增绘制部件的alpha命中与所属格一致，修复不改高度', async () => {
+  const p = await page({}, 'elevation-multilevel-map');
+  const map = p.save();
+  const heights = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/elevation-junction-heights.json')));
+  map.cells = heights.map(row => row.map(elevation => ({ terrain: 'land', elevation })));
+  const library = { ...JSON.parse(read('static/terrain-samples/emperor-land-water/elements.json')),
+    ...JSON.parse(read('static/terrain-samples/emperor-elevation/elements.json')) };
+  const land = JSON.parse(read('static/terrain-samples/emperor-land-water/rules.json'));
+  const rules = JSON.parse(read('static/terrain-samples/emperor-elevation/rules.json'));
+  const repaired = p.window.elevationRules.applyStroke(map, { type: 'raise', grids: [[10, 17]] }, library, land, rules).definition;
+  const before = JSON.stringify(repaired);
+  p.get('map-json').value = before;
+  p.get('read-map').click();
+  p.mode('cell');
+  const pixels = {};
+  for (const [source, directory] of [['atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
+    pixels[source] = pngPixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
+  }
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    const currentView = { angle, tileSize: map.tileSize };
+    const resolved = p.window.elevationRules.resolve(repaired, library, land, rules, angle);
+    const draws = resolved.tiles.flatMap(tile => p.window.elevationRendering.resolveTileDraws(tile, repaired, library, currentView)
+      .map(draw => ({ grid: tile.grid, draw, depth: view.projectGrid(tile.grid, currentView)[1] }))).sort((a, b) => a.depth - b.depth);
+    // 固定地图投影中的连续地表内区，排除素材有意透明的外轮廓。
+    const center = view.projectGrid([12, 12], currentView);
+    const min = [center[0] - 930, center[1] - 465];
+    const width = 1861, height = 931, alpha = new Uint8Array(width * height);
+    for (const { draw } of draws) {
+      const source = pixels[draw.source];
+      for (let y = 0; y < draw.rect[3]; y += 1) for (let x = 0; x < draw.rect[2]; x += 1) {
+        const px = draw.position[0] + x - min[0], py = draw.position[1] + y - min[1];
+        if (px >= 0 && px < width && py >= 0 && py < height && source.data[((draw.rect[1] + y) * source.width + draw.rect[0] + x) * 4 + 3]) alpha[py * width + px] = 1;
+      }
+    }
+    let gaps = 0;
+    for (let y = 0; y < height; y += 1) for (let x = 0; x < width; x += 1) {
+      if (Math.abs(x - 930) / 1000 + Math.abs(y - 465) / 500 < 0.90 && !alpha[y * width + x]) gaps += 1;
+    }
+    expect(gaps).toBe(0);
+    // 原两列窄缝中的一个部件像素，按相同反向画序确定真实可见归属。
+    const part = draws.find(item => item.draw.rect[2] === 1 && item.grid[0] > 6 && item.grid[0] < 18);
+    expect(part).toBeDefined();
+    const point = part.draw.position.map((value, axis) => value + (axis ? 30 : 0));
+    const owner = [...draws].reverse().find(({ draw }) => {
+      const [x, y] = point.map((value, axis) => value - draw.position[axis]);
+      const source = pixels[draw.source];
+      return x >= 0 && y >= 0 && x < draw.rect[2] && y < draw.rect[3]
+        && source.data[((y + draw.rect[1]) * source.width + x + draw.rect[0]) * 4 + 3];
+    });
+    expect(owner).toBeDefined();
+    const root = p.layer.children[0];
+    p.get('map-canvas').dispatchEvent(new p.window.MouseEvent('click', {
+      clientX: -100 + root.attrs.pos[0] + (point[0] + 0.25) * root.attrs.scale[0],
+      clientY: 73 + root.attrs.pos[1] + (point[1] + 0.25) * root.attrs.scale[1],
+    }));
+    expect(p.get('cell-grid').textContent).toBe(JSON.stringify(owner.grid));
+  }
+  expect(JSON.stringify(repaired)).toBe(before);
+  expect(p.save()).toEqual(repaired);
+  p.window.close();
+});
+
+test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度且整笔可撤销', async () => {
+  const p = await page({}, 'deep-water-map');
+  p.get('rebase-sample').click();
+  await p.reload();
+  expect(p.get('issues').hidden).toBe(true);
+  const original = p.save();
+  expect(original.cells.flat().filter(Boolean).every(cell => cell.elevation === 8)).toBe(true);
+  p.mode('cell');
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    p.clickGrid([3, 3]);
+    expect(p.get('cell-grid').textContent).toBe('[3,3]');
+    expect(p.get('cell-info').textContent).toContain('elevation: 8');
+    expect(p.get('cell-info').textContent).toContain('水面: 深处');
+    const frame = p.get('water-frame').textContent;
+    const positions = p.terrainSprites().map(sprite => sprite.attrs.pos);
+    p.advance(100);
+    expect(p.get('water-frame').textContent).not.toBe(frame);
+    expect(p.terrainSprites().map(sprite => sprite.attrs.pos)).toEqual(positions);
+    expect(p.save()).toEqual(original);
+  }
+  p.tool('land');
+  p.pointer('pointerdown', [3, 3]);
+  p.get('cancel-stroke').click();
+  expect(p.save()).toEqual(original);
+  p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
+  const edited = p.save();
+  expect(edited.cells[3][3]).toMatchObject({ terrain: 'land', elevation: 8 });
+  p.get('undo').click(); expect(p.save()).toEqual(original);
+  p.get('redo').click(); expect(p.save()).toEqual(edited);
+  p.tool('water');
+  p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
+  expect(p.save()).toEqual(original);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('对外样本只保留四个入口，多级样本包含高程边缘、空角和沟谷', async () => {
+  const p = await page({}, 'elevation-multilevel-map');
+  expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
+    'rectangular-water-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map',
+  ]);
+  const map = p.save();
+  expect(map.cells[0][0]).toBeNull();
+  expect(map.cells[12][6].terrain).toBe('land');
+  expect(map.cells[6][3].elevation).toBe(1);
+  expect(map.cells[5][3]).toBeNull();
+  expect(map.cells[12][12].elevation).toBe(6);
+  expect(map.cells[18][12].elevation).toBe(1);
+  expect(map.cells[18][18].elevation).toBe(2);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test.each([0, 8, 16])('基准%d加载后地面居中，旋转/缩放/全图及平面编辑保持同一中心格', async height => {
+  const p = await page({}, 'rectangular-water-map');
+  p.get('rebase-sample').checked = true;
+  p.get('base-height').value = String(height);
+  await p.reload();
+  const saved = p.save();
+  const checkCenter = angle => {
+    const root = p.layer.children[0];
+    const point = view.projectGrid([15.5, 15.5], { angle, tileSize: [80, 40] });
+    if (!p.get('flat-edit').checked) point[1] -= height * 40;
+    expectNearPoint(point.map((value, axis) => value * root.attrs.scale[axis] + root.attrs.pos[axis]), [p.size.width / 2, p.size.height / 2]);
+  };
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    checkCenter(angle);
+    p.get('fit-map').click(); checkCenter(angle);
+    p.get('zoom-percent').value = '60';
+    p.get('zoom-percent').dispatchEvent(new p.window.Event('change')); checkCenter(angle);
+    p.get('flat-edit').click(); checkCenter(angle);
+    p.get('flat-edit').click(); checkCenter(angle);
+    p.resize(544, 600); checkCenter(angle);
+    p.get('base-height').value = String(height === 8 ? 0 : 8);
+    p.get('base-height').dispatchEvent(new p.window.Event('change')); checkCenter(angle);
+  }
+  expect(p.save()).toEqual(saved);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('基准8地面下挖预览、取消和撤销不随最低格变化跳动镜头', async () => {
+  const p = await page();
+  flatElevationWorkspace(p);
+  p.get('new-map').click();
+  p.get('native-size').click();
+  const camera = { ...p.layer.children[0].attrs };
+  p.tool('lower');
+  p.pointer('pointerdown', [5, 5]);
+  expect(p.get('status').textContent).toContain('实际改变');
+  expect(p.layer.children[0].attrs.pos).toEqual(camera.pos);
+  p.get('cancel-stroke').click();
+  expect(p.layer.children[0].attrs.pos).toEqual(camera.pos);
+  heightStroke(p, 'lower', [[5, 5]]);
+  expect(p.save().cells[5][5].elevation).toBe(7);
+  expect(p.layer.children[0].attrs.pos).toEqual(camera.pos);
+  p.get('undo').click();
+  expect(p.layer.children[0].attrs.pos).toEqual(camera.pos);
   p.window.close();
 });

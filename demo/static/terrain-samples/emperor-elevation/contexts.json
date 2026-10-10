@@ -1,0 +1,37 @@
+{
+  "map": "../../map-samples/elevation-multilevel-map.json",
+  "samples": [
+    {
+      "id": "edge",
+      "label": "一级直边",
+      "grid": [
+        12,
+        2
+      ]
+    },
+    {
+      "id": "corner",
+      "label": "一级凸角",
+      "grid": [
+        6,
+        7
+      ]
+    },
+    {
+      "id": "concave",
+      "label": "一级凹角",
+      "grid": [
+        11,
+        17
+      ]
+    },
+    {
+      "id": "cliff",
+      "label": "两级直边",
+      "grid": [
+        12,
+        7
+      ]
+    }
+  ]
+}

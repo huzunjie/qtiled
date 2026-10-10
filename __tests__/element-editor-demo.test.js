@@ -843,3 +843,42 @@ test.each(['http', 'definition', 'missing-source'])('狗样本加载失败（%s�
   expect(editor.errors).toEqual([]);
   editor.window.close();
 });
+
+test('高程入口共用真实 32 定义，四向锚点可独立编辑并导出到另一页面', async () => {
+  const definitions = JSON.parse(fs.readFileSync(path.join(__dirname, '../demo/static/terrain-samples/emperor-elevation/elements.json'), 'utf8'));
+  const editor = await loadPage('element-editor.html');
+  editor.get('elevation-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  expect(Object.keys(definitions)).toHaveLength(32);
+  expect(editor.get('terrain-material').options).toHaveLength(33);
+  const id = Object.keys(definitions)[0];
+  for (const angle of [0, 90, 180, 270]) {
+    editor.angle(angle);
+    expect(editor.draw().source).toBe('elevation-atlas.png');
+    expect(editor.draw().rect).toEqual(definitions[id].views[angle].rect);
+    expect(editor.draw().anchor).toEqual(definitions[id].views[angle].anchor);
+  }
+  editor.change('anchor-y', '123');
+  editor.get('export').click();
+  const json = editor.get('export-json').value;
+  editor.get('close-export').click();
+  const saved = JSON.parse(json);
+  expect(saved.views[270].anchor[1]).toBe(123);
+  expect(saved.views[0]).toEqual(definitions[id].views[0]);
+  const imported = await loadPage('element-editor.html');
+  imported.get('elevation-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  await imported.files('definition-file', [{ text: async () => json }]);
+  for (const angle of [0, 90, 180, 270]) {
+    imported.angle(angle);
+    expect(imported.draw().source).toBe('elevation-atlas.png');
+    expect(imported.draw().rect).toEqual(saved.views[angle].rect);
+    expect(imported.draw().anchor).toEqual(saved.views[angle].anchor);
+  }
+  editor.get('elevation-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  editor.angle(270);
+  expect(editor.draw().anchor).toEqual(definitions[id].views[270].anchor);
+  expect(editor.errors.concat(imported.errors)).toEqual([]);
+  editor.window.close(); imported.window.close();
+});

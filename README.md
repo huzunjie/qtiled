@@ -159,23 +159,23 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 
 ### 四向等距视图
 
-* [x] [P0-B 四向视图](docs/isometric-view.md)：核心 `shapes.polygon.rotateGridPoint()` 绕固定原点旋转；可选 `src/isometric-view` 入口组合现有等距投影与反查，提供 `projectGrid()`、`pickGrid()`，不改变世界坐标和逻辑占地。
+* [x] [四向视图](docs/isometric-view.md)：核心 `shapes.polygon.rotateGridPoint()` 绕固定原点旋转；可选 `src/isometric-view` 入口组合现有等距投影与反查，提供 `projectGrid()`、`pickGrid()`，不改变世界坐标和逻辑占地。
 
-[四向视图与占地 Demo](demo/isometric-view.html) 支持 0/90/180/270° 切换、点击世界格、3×2/L 形占地和瓦片尺寸调整。`npm run dev` 同时构建核心与独立视图 Demo 包；只覆盖平地几何，素材预览在 P0-C 接入。
+[四向视图与占地 Demo](demo/isometric-view.html) 支持 0/90/180/270° 切换、点击世界格、3×2/L 形占地和瓦片尺寸调整。`npm run dev` 同时构建核心与独立视图 Demo 包；几何 Demo 展示平地投影，素材显示见[四向素材预览](demo/element-preview.html)。
 
 ### Tile Data - 瓦片数据格式约定
-* [x] [静态元素定义 P0-A](docs/element-definition.md)：独立源码入口提供四向素材、裁切、锚点与逻辑占地的校验和 JSON 导入，不加入核心导出。
-* [x] [平地地图校验 P1-A-2](docs/map-definition.md)：可选 `src/maps` 入口提供结构与素材引用校验；95 项定向 Jest 用例及全量回归通过，不判断完整占地或放置合法性。
-* [x] [地图实体消费 P1-A-3](docs/map-definition.md#实体消费)：`resolveMapEntities()` 复用元素绘制计算派生实例完整占地与投影；28 项专项测试及全量回归通过，当前消费静态元素。
-* [x] [完整占地与多实体索引 P1-A-4](docs/map-definition.md#完整占地与按格索引)：`buildMapOccupancy()` 检查完整世界占地并建立按格多实例索引，`checkMapEntityPlacement()` 检查候选新增；显式场景规则决定共存，31 项新增用例及 A2/A3/A4 定向回归通过。
-* [x] [单条放置与删除 P1-A-5](docs/map-definition.md#单条放置与删除)：`applyMapEdit()` 成功返回新地图及完整索引，失败保留输入；删除按唯一实例 ID，支持同位置重放。新增 27 项用例，A2/A3/A4/A5 地图定向 181 项通过。
-* [x] [地图定义文件 IO P1-A-6](docs/map-definition.md#地图定义导入与导出)：`importMapDefinition()` 完整校验后返回地图与重建索引，`exportMapDefinition()` 校验后输出 JSON；新增 40 项、地图定向 221 项及实际文件独立页面回读通过。
-* [x] [正式模块入口与独立消费 P1-A-7](docs/browser-consumption.md)：地图、视图、元素渲染三份 UMD 独立构建；正式包隔离消费、SpriteJS 实际绘制及失败恢复通过。
+* [x] [静态元素定义](docs/element-definition.md)：独立源码入口提供四向素材、裁切、锚点与逻辑占地的校验和 JSON 导入，不加入核心导出。
+* [x] [平地地图校验](docs/map-definition.md)：可选 `src/maps` 入口提供结构与素材引用校验，不判断完整占地或放置合法性。
+* [x] [地图实体消费](docs/map-definition.md#实体消费)：`resolveMapEntities()` 复用元素绘制计算派生实例完整占地与投影；支持静态元素及共享动画定义。
+* [x] [完整占地与多实体索引](docs/map-definition.md#完整占地与按格索引)：`buildMapOccupancy()` 检查完整世界占地并建立按格多实例索引，`checkMapEntityPlacement()` 检查候选新增；显式场景规则决定共存。
+* [x] [单条放置与删除](docs/map-definition.md#单条放置与删除)：`applyMapEdit()` 成功返回新地图及完整索引，失败保留输入；删除按唯一实例 ID，支持同位置重放。
+* [x] [地图定义文件 IO](docs/map-definition.md#地图定义导入与导出)：`importMapDefinition()` 完整校验后返回地图与重建索引，`exportMapDefinition()` 校验后输出 JSON；支持保存后由独立页面读取。
+* [x] [正式模块入口与独立消费](docs/browser-consumption.md)：地图、视图、元素渲染三份 UMD 独立构建；正式包隔离消费、SpriteJS 实际绘制及失败恢复通过。
 
 ### Tile Renderer - 瓦片渲染器
-* [x] [P0-C 静态元素预览](docs/element-rendering.md)：可选模块加载精选图片、解释四向裁切/锚点并通过 SpriteJS 显示，附网格和占地覆盖。[素材 Demo](demo/element-preview.html) 的四张图片与 JSON 一同放在样本目录中。
+* [x] [静态元素预览](docs/element-rendering.md)：可选模块加载精选图片、解释四向裁切/锚点并通过 SpriteJS 显示，附网格和占地覆盖。[素材 Demo](demo/element-preview.html) 的四张图片与 JSON 一同放在样本目录中。
 * [x] 矩形对象转向按当前画面上角占地格定位：`resolveElementPlacement()` 计算位置与朝向，`resolveElementDraw()` 绘制姿态；2×2 占地保持原位，镜头只改变投影。两页及点选/吸附已接入，全量测试、Demo 构建与两页方向组合检查通过；不规则占地不猜转向规则。
-* [x] [地图浏览 C0/C1 与地表编辑](demo/map-editor.html)：默认 32×32 包围矩阵、544 个有效格的矩形水域样本；保留小水塘、深水和 20 格双实例样本、四镜头及完整占地查看。同一套页面支持正式 UMD 隔离消费，见[运行说明](docs/browser-consumption.md)。
+* [x] [地图浏览与地表编辑](demo/map-editor.html)：默认 32×32 包围矩阵、544 个有效格的矩形水域样本；统一展示小水塘、深水与岸线，另有20格双实例、台地与湖泊、多级台地与凹角样本，支持四镜头及完整占地查看。同一套页面支持正式 UMD 隔离消费，见[运行说明](docs/browser-consumption.md)。
 * [x] [共享水面动画](docs/element-rendering.md)：元素工具与地图共用 v2 序列、帧解析与播放时钟，原地更新 Sprite；普通、过渡、深处水面按水域形态派生。
 * [x] [矩形视口与平移](docs/map-definition.md#矩形视口平移与查看)：画布跟随容器，平移工具左拖或中键拖动；支持查看全图、原尺寸，工作模式转镜头/resize 保持中心世界点，地图事实与整图规则不随视口裁剪改变。
 * [x] 地图辅助显示与分组控制：独立网格/世界坐标开关、按工具显示操作提示，文件与 JSON 文本共用读取；使用像素采样修复小数平移/缩放时的瓦片白缝。
@@ -184,17 +184,30 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 [水域动画 Demo](demo/water-animation.html) 使用 SpriteJS 绘制原作 24 帧小样，支持单格/3×3、播放暂停、逐帧、速度与网格显示，以及各格同步/错开起始帧对照。帧序有原程序静态依据，时长、起始帧差异和锚点为演示设置。本页保留为早期研究小样；统一动画格式与地图消费见上面的共享水面动画。
 
 ### Tile Editor - 瓦片编辑器
-* [x] [P0-D 静态元素编辑](docs/element-editor.md)：四向独立选图、裁切、锚点、占地编辑与自动放置基准、JSON 导出及独立预览回读。[编辑 Demo](demo/element-editor.html) 显示网格坐标并实时反馈当前方向的配置。
-* [x] [S1 方向共用](demo/element-editor.html)：一次将当前图片与裁切应用到所选素材方向，保留各向锚点及独立编辑；仍导出完整 v1 四向定义。可载入地图使用的同一份原作地表素材。
+* [x] [静态元素编辑](docs/element-editor.md)：四向独立选图、裁切、锚点、占地编辑与自动放置基准、JSON 导出及独立预览回读。[编辑 Demo](demo/element-editor.html) 显示网格坐标并实时反馈当前方向的配置。
+* [x] [方向共用](demo/element-editor.html)：一次将当前图片与裁切应用到所选素材方向，保留各向锚点及独立编辑；仍导出完整 v1 四向定义。可载入地图使用的同一份原作地表素材。
 
 ### Sprite Editor - 精灵编辑器
-* [x] 静态精灵与地块共用 P0-D 元素编辑器。
+* [x] 静态精灵与地块共用 元素编辑器。
 * [x] [循环序列与帧编辑](demo/element-editor.html)：共用序列、逐向锚点、单帧裁切与时长、播放暂停、逐帧定位及 JSON 往返。
 * [ ] 动作状态切换、施工/生长等非循环状态编辑。
 
 ### Map Editor - 地图编辑器
-* [x] [普通陆地/水域编辑闭环](docs/map-definition.md#地表编辑与地图浏览-demo)：80×40、零高程样本按真实邻域表选岸线，支持整笔预览/提交/取消、撤销重做和地图文件往返；固定变体重载稳定，失败保留原图。选图规则位于 Demo 工具层；深处随水域形态派生，水面复用元素渲染模块的动画 API。
-* [ ] 高程、海滩与环境、网络设施及组合对象的规则和编辑接入。
+* [x] [普通陆地/水域编辑闭环](docs/map-definition.md#地表编辑与地图浏览-demo)：80×40、0～16级等高平台按真实邻域表选岸线，支持整笔预览/提交/取消、撤销重做和地图文件往返；固定变体重载稳定，失败保留原图。选图规则位于 Demo 工具层；深处随水域形态派生，水面复用元素渲染模块的动画 API。
+* [x] [整级高程与沟谷编辑](docs/map-definition.md#整级高程与沟谷编辑)：0～16级、32张E1/E2及过渡原图，1/3/5格笔刷、联动预览、平面编辑遮挡沟底、合并/分离/填谷、恢复和实际文件回读；元素工具增加共用规则的只读四向上下文。局部修整有静态来源，多轮收敛为工具策略；半坡、坡道、临水混合及完整地形资产制作仍未完成。
+* [ ] 完整多级高程、半坡与坡道、海滩与环境、网络设施及组合对象的规则和编辑接入。
+
+地图地表编辑的真实浏览器效果（同一套素材与规则）：
+
+| 陆地、水域与岸线 | 多级台地与凹角 |
+| --- | --- |
+| ![陆地、水域和自动岸线](docs/images/map-water.jpg) | ![多级台地及四向坡面](docs/images/map-elevation.jpg) |
+
+等高平台也可以绘制水域，加载样本时可整体调整基准高度，视口随实际基准面居中。
+
+![基准高度8的湖泊与岸线](docs/images/map-elevated-water.png)
+
+打开[地图 Demo](demo/map-editor.html)可编辑、切换镜头与保存地图；水面会循环播放。高程支持 0～16 整级，水域及岸线可整体位于非零高度；顶部预设基准高度默认 8，可用于新建平地，也可勾选后加载样本，整体平移并保留高差；下挖联动预览与整笔撤销可用。边缘/空角与已知台阶接缝由共用规则和绘制处理，形态边界见[高程说明](docs/map-definition.md#整级高程与沟谷编辑)。
 
 ## 安装引用
 
@@ -245,4 +258,4 @@ import qtiled from 'qtiled';
 
 ## 备注
 
-目前还只是静态方法库，希望能带来些许便利，有相应问题请随时反馈。
+目前包含静态方法库及具体应用示意，希望能带来些许便利，有相应问题请随时反馈。

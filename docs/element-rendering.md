@@ -6,8 +6,6 @@
 
 运行顺序为：`loadElementSources()` → `importElementDefinition()` → `resolveElementPlacement()`（放置/转向时）→ `resolveElementDraw()` → `renderElement()`。编辑器和独立预览都可以消费这一流程，不依赖另一页面的临时状态。
 
-2026-10-04 上角格定位修正已完成回归：全量 18 suites / 486 tests、Demo 构建及差异检查通过，两页各 16 种镜头/对象组合正常。独立预览已回读导出窗口原文保存的 JSON，下载可用由用户实测确认；具体证据边界见[编辑器验证记录](element-editor.md#验证记录)。
-
 ## 图片加载
 
 ```js
@@ -23,11 +21,11 @@ const { sources, sourceInfo, issues } = await loadElementSources({
 
 返回 `sources`（路径 → 已加载 HTMLImageElement）、`sourceInfo`（路径 → 实际 `{width,height}`）和 `issues`（`{path,code:'source-load-failed',message}`）。一项失败不丢弃其他成功项，问题顺序与输入顺序一致。临时 Blob URL 在加载成功或失败后均释放；返回的图片由调用方持有。只有调用时需要浏览器的 Image/Blob/URL API。
 
-将 JSON 和 `sourceInfo` 传给 P0-A 的导入函数；校验不通过时禁止进入绘制流程。裁切越界、缺方向仍由同一契约校验报告。
+将 JSON 和 `sourceInfo` 传给元素导入函数；校验不通过时禁止进入绘制流程。裁切越界、缺方向仍由同一契约校验报告。
 
 ## 绘制计算
 
-`resolveElementDraw(definition, grid = [0,0], view = {}, objectAngle = 0, playback = {})` 是纯计算；定义须已通过契约校验，grid 为素材标定用的定义原点的世界整数格，view 沿用 P0-B。`objectAngle` 为独立对象朝向，只接受数字 `0/90/180/270`，其他值抛出 `RangeError`。本函数只绘制给定姿态，放置/转向时须先算出配套的 grid，不能把固定 grid 仅切 objectAngle 当成建筑原地转向。原有三/四参数调用保持兼容；v2 未传时间时选第一帧。返回：
+`resolveElementDraw(definition, grid = [0,0], view = {}, objectAngle = 0, playback = {})` 是纯计算；定义须已通过契约校验，grid 为素材标定用的定义原点的世界整数格，view 沿用四向视图约定。`objectAngle` 为独立对象朝向，只接受数字 `0/90/180/270`，其他值抛出 `RangeError`。本函数只绘制给定姿态，放置/转向时须先算出配套的 grid，不能把固定 grid 仅切 objectAngle 当成建筑原地转向。原有三/四参数调用保持兼容；v2 未传时间时选第一帧。返回：
 
 | 字段 | 含义 |
 |---|---|
@@ -35,7 +33,7 @@ const { sources, sourceInfo, issues } = await loadElementSources({
 | `angle` | 镜头角度，继续来自 `view.angle` |
 | `objectAngle / imageAngle` | 对象自身朝向与实际素材槽角度 |
 | `rect / anchor` | 独立复制的裁切与锚点数组 |
-| `origin` | 元素逻辑原点经 P0-B 投影后的像素位置 |
+| `origin` | 元素逻辑原点经四向视图投影后的像素位置 |
 | `placementGrid / placementOrigin` | 当前镜头下矩形最上角的世界格及其投影，用作下次转向的放置基准；非矩形为 `null` |
 | `position` | 图片裁切区域左上角，等于 `origin - anchor` |
 | `tileSize` | 逻辑瓦片尺寸，与图片缩放无关 |
@@ -48,7 +46,7 @@ const { sources, sourceInfo, issues } = await loadElementSources({
 
 ### 共用素材的方向选择
 
-S1 沿用 `imageAngle = (view.angle + objectAngle) % 360` 读取显式视图。多个视图的 `source`、`rect` 相同时，仍读取当前素材槽自己的 `anchor`；`footprint` 则单独按对象朝向旋转。镜头变化只改变投影与素材槽，不改写对象的世界位置、朝向或占地。
+方向共用沿用 `imageAngle = (view.angle + objectAngle) % 360` 读取显式视图。多个视图的 `source`、`rect` 相同时，仍读取当前素材槽自己的 `anchor`；`footprint` 则单独按对象朝向旋转。镜头变化只改变投影与素材槽，不改写对象的世界位置、朝向或占地。
 
 元素编辑器的批量绑定只是一次复制图片引用和裁切的编辑操作；绑定后各方向独立修改，定义中没有持续联动关系。单图四向、部分共用与四向独立均由同一个 `resolveElementDraw` 消费。元素编辑与地图实体测试覆盖了非对称 3×2 占地的 16 种镜头/对象方向组合及保存回读，没有为共用图片另设一套旋转规则。
 
@@ -122,7 +120,7 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 `renderElement(container, drawInfo, sources, overlays = {})` 使用 SpriteJS 3.7.36 的 `Sprite.sourceRect` 裁切、`size` 保持裁切像素大小、`pos` 定位。无需改写原图。
 
-`overlays.gridPositions` 是调用方经同一 P0-B 视图投影后的网格中心数组；缺省为空。`footprint`、`placement` 缺省为 true，`bounds` 缺省为 false。placement 是自动确定的矩形上角基准格，以蓝色小框标记；页面“放置基准”开关控制其显示。网格在素材下方，占地/放置基准/裁切边框在上方。定义坐标仅用于内部计算，不再绘制红色十字，移除原有 `overlays.anchor` 选项。
+`overlays.gridPositions` 是调用方经同一视图投影后的网格中心数组；缺省为空。`footprint`、`placement` 缺省为 true，`bounds` 缺省为 false。placement 是自动确定的矩形上角基准格，以蓝色小框标记；页面“放置基准”开关控制其显示。网格在素材下方，占地/放置基准/裁切边框在上方。定义坐标仅用于内部计算，不再绘制红色十字，移除原有 `overlays.anchor` 选项。
 
 函数只替换它在该容器中拥有的 Group，不清除调用方其他节点。`drawInfo = null` 清除元素组；素材缺失时先清除旧元素组再抛出明确错误，防止残留图片冒充当前结果。内部不异步加载，因此切向只使用已经加载的图片，不发生跨方向加载结果覆盖。
 
@@ -148,10 +146,6 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 本页与四向视图 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px。独立预览按实际可见宽高自动适配，长占地列表在右侧局部滚动。
 
-P0-D 增加独立回读：选择素材根目录或图片文件，再选择编辑器导出的 JSON；导入重新调用 P0-A 校验，并使用本页加载的图片绘制。单独选图以文件名作为引用，目录图片保留目录内相对路径。两页不共享编辑状态。瓦片宽高属于视图参数，需手动与编辑预览保持一致；“载入样本”恢复内置图片与样本。完整流程见[元素编辑工具](element-editor.md)。
+独立回读：选择素材根目录或图片文件，再选择编辑器导出的 JSON；导入重新调用元素校验，并使用本页加载的图片绘制。单独选图以文件名作为引用，目录图片保留目录内相对路径。两页不共享编辑状态。瓦片宽高属于视图参数，需手动与编辑预览保持一致；“载入样本”恢复内置图片与样本。完整流程见[元素编辑工具](element-editor.md)。
 
 独立预览从当前对象转向及平移后的占地建立网格范围，再合并四个镜头方向的素材边界和网格范围，按可见画布自动缩小并居中。该适配只影响显示，不改变侧栏中的裁切、锚点和绘制坐标；适配可能改变屏幕位置/比例，不是放置基准世界格变化。网格至少 9×9，随占地扩展并留出两格。右侧占用格子显示转向后的世界格，另显示当前上角放置基准格。
-
-2026-09-30 布局整理：顶部集中样本与文件操作，画布工具栏放显示开关及适配比例；配置选择、方向与图片、裁切定位、占地和预览尺寸分组放在右栏，操作说明单独折叠。当时先暂缓验证，随后已补做宽窄窗口、四向、长占地滚动与显示开关的真实浏览器检查。该历史证据不覆盖后来的对象转向增补。
-
-2026-10-04 较早的原点格纯旋转方案曾完成两页事件测试、18 suites / 479 tests、Demo 构建、真实 Chrome 及下载回读；用户随后纠正了该规则。那些结果仅为旧方案的技术记录，不覆盖本次上角格定位修正。范围见[编辑器验证记录](element-editor.md#验证记录)。

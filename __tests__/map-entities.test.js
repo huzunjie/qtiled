@@ -159,3 +159,54 @@ describe('地图实体消费', () => {
     expect(map.entities[0]).not.toHaveProperty('angle');
   });
 });
+
+
+describe('v2 平台实体消费', () => {
+  test.each(angles.flatMap(angle => [0, 3, 8].map(height => [angle, height])))('镜头 %i° 高度 %i 同时移动精灵、定位点和占地，世界事实不变', (angle, height) => {
+    const flat = createMap();
+    const map = { ...createMap(), version: 2, elevationStep: 20.5 };
+    map.cells.flat().filter(Boolean).forEach(cell => { cell.elevation = height; });
+    const view = freezeDeep({ angle, originPixel: [300, 200] });
+    const before = JSON.stringify(map);
+    const baseline = resolveMapEntities(flat, { dog: createElement() }, view).entities;
+    const result = resolveMapEntities(freezeDeep(map), { dog: createElement() }, view);
+    expect(result.issues).toEqual([]);
+    result.entities.forEach((entity, i) => {
+      expect(entity.grid).toEqual(baseline[i].grid);
+      expect(entity.draw.rect).toEqual(baseline[i].draw.rect);
+      expect(entity.draw.imageAngle).toBe(baseline[i].draw.imageAngle);
+      ['origin', 'position', 'placementOrigin'].forEach(key => {
+        expect(entity.draw[key]).toEqual([baseline[i].draw[key][0], baseline[i].draw[key][1] - height * 20.5]);
+      });
+      entity.draw.footprint.forEach((cell, j) => {
+        const old = baseline[i].draw.footprint[j];
+        expect(cell).toEqual({ grid: old.grid, position: [old.position[0], old.position[1] - height * 20.5] });
+      });
+    });
+    expect(JSON.stringify(map)).toBe(before);
+  });
+
+  test.each([
+    ['高差', cell => ({ ...cell, elevation: 1 }), 'footprint-elevation-mismatch'],
+    ['空洞', () => null, 'footprint-invalid-cell'],
+  ])('完整占地%s失败不返回另一有效实体，修正后恢复', (name, change, code) => {
+    const map = { ...createMap(), version: 2, elevationStep: 20 };
+    map.cells[2][2] = change(map.cells[2][2]);
+    const result = resolveMapEntities(map, { dog: createElement() });
+    expect(result.entities).toBeNull();
+    expect(result.issues).toEqual([expect.objectContaining({ path: 'entities[0]', code, grid: [2, 2] })]);
+    map.cells[2][2] = { terrain: 'land', elevation: 0 };
+    expect(resolveMapEntities(map, { dog: createElement() }).entities).toHaveLength(2);
+  });
+
+  test('定义原点在矩阵外时，按真正占地的平台高度抬升', () => {
+    const map = { ...createMap(), version: 2, elevationStep: 20 };
+    map.entities = [{ id: 'offset', element: 'dog', grid: [-1, 1] }];
+    map.cells[1][1].elevation = 2;
+    const element = { ...createElement(), footprint: [[2, 0]] };
+    const result = resolveMapEntities(map, { dog: element });
+    expect(result.issues).toEqual([]);
+    expect(result.entities[0].draw.origin).toEqual([0, 0]);
+    expect(result.entities[0].draw.footprint).toEqual([{ grid: [1, 1], position: [80, -40] }]);
+  });
+});

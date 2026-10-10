@@ -412,11 +412,12 @@
     get('grid-status').textContent = '已载入地图共用的原作地表定义；此处编辑副本，导出 JSON 保存修改。';
   }
 
-  get('terrain-sample').addEventListener('click', () => loadFiles(async () => {
-    const directory = './static/terrain-samples/emperor-land-water/';
+  function loadTerrainLibrary(elevation = false) { return loadFiles(async () => {
+    const directory = `./static/terrain-samples/${elevation ? 'emperor-elevation' : 'emperor-land-water'}/`;
+    const atlas = elevation ? 'elevation-atlas.png' : 'atlas.png';
     const [response, loaded] = await Promise.all([
       fetch(`${directory}elements.json`, { cache: 'no-store' }),
-      loadElementSources({ 'atlas.png': `${directory}atlas.png` }),
+      loadElementSources({ [atlas]: `${directory}${atlas}` }),
     ]);
     if (!response.ok) throw new Error(`地表素材定义加载失败（${response.status}）。`);
     if (loaded.issues.length) { fileIssues = loaded.issues; return; }
@@ -437,11 +438,13 @@
     const animationNames = { 'emperor-water-even': '普通水面 · 动画', 'emperor-water-odd': '过渡水面（另一组） · 动画', 'emperor-water-deep': '深处水面 · 动画' };
     get('terrain-material').replaceChildren(new Option('选择原作地表素材', ''), ...ids.map(id => {
       const number = Number(id.split('-').pop());
-      return new Option(animationNames[id] || `${number === 202 ? '陆地' : number >= 664 ? '水面单帧' : '岸线'} · ${number}`, id);
+      return new Option(elevation ? `${number >= 221 ? '一级坡面' : number >= 213 ? '一二级过渡' : '两级坡面'} · ${number}` : animationNames[id] || `${number === 202 ? '陆地' : number >= 664 ? '水面单帧' : '岸线'} · ${number}`, id);
     }));
     get('terrain-material').disabled = false;
     useTerrainMaterial(definitions['emperor-water-deep'] ? 'emperor-water-deep' : ids[0]);
-  }));
+  }); }
+  get('terrain-sample').addEventListener('click', () => loadTerrainLibrary());
+  get('elevation-sample').addEventListener('click', () => loadTerrainLibrary(true));
   get('terrain-material').addEventListener('change', event => {
     if (!terrainLibrary || !terrainLibrary.definitions[event.target.value]) return;
     loadFiles(async () => useTerrainMaterial(event.target.value));

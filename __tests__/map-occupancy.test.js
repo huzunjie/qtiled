@@ -244,3 +244,21 @@ describe('候选实体放置检查', () => {
     });
   });
 });
+
+
+test('v2 完整占地跨高差拒绝且不调用共存回调，世界索引不随平台高度变化', () => {
+  const map = { ...createMap(), version: 2, elevationStep: 20 };
+  const library = createLibrary();
+  const expected = buildMapOccupancy(map, library).index;
+  map.cells[1][2].elevation = 1;
+  const rule = jest.fn(() => true);
+  const failed = buildMapOccupancy(map, library, rule);
+  expect(failed.index).toBeNull();
+  expect(failed.issues.map(({ code, entityId, grid }) => ({ code, entityId, grid }))).toEqual([
+    { code: 'footprint-elevation-mismatch', entityId: 'b', grid: [2, 1] },
+    { code: 'footprint-elevation-mismatch', entityId: 'a', grid: [3, 1] },
+  ]);
+  expect(rule).not.toHaveBeenCalled();
+  map.cells.flat().forEach(cell => { cell.elevation = 2; });
+  expect(buildMapOccupancy(map, library)).toEqual({ index: expected, issues: [] });
+});

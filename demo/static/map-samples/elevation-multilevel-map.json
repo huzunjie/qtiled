@@ -1,0 +1,2022 @@
+{
+  "version": 2,
+  "id": "elevation-multilevel-map",
+  "tileSize": [
+    80,
+    40
+  ],
+  "elevationStep": 40,
+  "cells": [
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null
+    ],
+    [
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null
+    ],
+    [
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      }
+    ],
+    [
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      }
+    ],
+    [
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      }
+    ],
+    [
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      }
+    ],
+    [
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 6
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      }
+    ],
+    [
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 4
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      }
+    ],
+    [
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      }
+    ],
+    [
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null
+    ],
+    [
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 3
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 2
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      {
+        "terrain": "land",
+        "elevation": 1
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      {
+        "terrain": "land",
+        "elevation": 0
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ],
+  "entities": []
+}

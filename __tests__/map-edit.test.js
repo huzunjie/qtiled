@@ -220,3 +220,21 @@ describe('单条地图编辑', () => {
     },
   );
 });
+
+
+test('v2 跨高差放置整体失败，删除不平地基实体可恢复地图', () => {
+  const map = { ...createMap(), version: 2, elevationStep: 20 };
+  map.cells[1][2].elevation = 1;
+  const before = JSON.stringify(map);
+  const library = createLibrary();
+  const entity = createEntity('new', [1, 1]);
+  const failed = applyMapEdit(map, { type: 'place', entity }, library);
+  expect(failed.definition).toBeNull();
+  expect(failed.index).toBeNull();
+  expect(failed.issues[0]).toMatchObject({ code: 'footprint-elevation-mismatch', grid: [2, 1] });
+  expect(JSON.stringify(map)).toBe(before);
+  const repaired = applyMapEdit({ ...map, entities: [entity] }, { type: 'remove', id: 'new' }, library);
+  expect(repaired.issues).toEqual([]);
+  expect(repaired.definition).toEqual(map);
+  expect(repaired.index).toEqual(new Map());
+});

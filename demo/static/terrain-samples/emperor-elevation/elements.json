@@ -1,0 +1,2082 @@
+{
+  "emperor-elevation-221": {
+    "version": 1,
+    "id": "emperor-elevation-221",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      }
+    }
+  },
+  "emperor-elevation-222": {
+    "version": 1,
+    "id": "emperor-elevation-222",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      }
+    }
+  },
+  "emperor-elevation-223": {
+    "version": 1,
+    "id": "emperor-elevation-223",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      }
+    }
+  },
+  "emperor-elevation-224": {
+    "version": 1,
+    "id": "emperor-elevation-224",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      }
+    }
+  },
+  "emperor-elevation-225": {
+    "version": 1,
+    "id": "emperor-elevation-225",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          95
+        ],
+        "anchor": [
+          39,
+          75
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          95
+        ],
+        "anchor": [
+          39,
+          75
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          95
+        ],
+        "anchor": [
+          39,
+          75
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          95
+        ],
+        "anchor": [
+          39,
+          75
+        ]
+      }
+    }
+  },
+  "emperor-elevation-226": {
+    "version": 1,
+    "id": "emperor-elevation-226",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          94
+        ],
+        "anchor": [
+          39,
+          74
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          94
+        ],
+        "anchor": [
+          39,
+          74
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          94
+        ],
+        "anchor": [
+          39,
+          74
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          94
+        ],
+        "anchor": [
+          39,
+          74
+        ]
+      }
+    }
+  },
+  "emperor-elevation-227": {
+    "version": 1,
+    "id": "emperor-elevation-227",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      }
+    }
+  },
+  "emperor-elevation-228": {
+    "version": 1,
+    "id": "emperor-elevation-228",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      }
+    }
+  },
+  "emperor-elevation-229": {
+    "version": 1,
+    "id": "emperor-elevation-229",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          100,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          100,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          100,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          100,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      }
+    }
+  },
+  "emperor-elevation-230": {
+    "version": 1,
+    "id": "emperor-elevation-230",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          100,
+          78,
+          85
+        ],
+        "anchor": [
+          39,
+          65
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          100,
+          78,
+          85
+        ],
+        "anchor": [
+          39,
+          65
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          100,
+          78,
+          85
+        ],
+        "anchor": [
+          39,
+          65
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          100,
+          78,
+          85
+        ],
+        "anchor": [
+          39,
+          65
+        ]
+      }
+    }
+  },
+  "emperor-elevation-231": {
+    "version": 1,
+    "id": "emperor-elevation-231",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          100,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          100,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          100,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          100,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      }
+    }
+  },
+  "emperor-elevation-232": {
+    "version": 1,
+    "id": "emperor-elevation-232",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          100,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          100,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          100,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          100,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      }
+    }
+  },
+  "emperor-elevation-201": {
+    "version": 1,
+    "id": "emperor-elevation-201",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          200,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          200,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          200,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          200,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-elevation-202": {
+    "version": 1,
+    "id": "emperor-elevation-202",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          200,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          200,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          200,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          200,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      }
+    }
+  },
+  "emperor-elevation-203": {
+    "version": 1,
+    "id": "emperor-elevation-203",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          200,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          200,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          200,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          200,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      }
+    }
+  },
+  "emperor-elevation-204": {
+    "version": 1,
+    "id": "emperor-elevation-204",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      }
+    }
+  },
+  "emperor-elevation-205": {
+    "version": 1,
+    "id": "emperor-elevation-205",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          200,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          200,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          200,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          200,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      }
+    }
+  },
+  "emperor-elevation-206": {
+    "version": 1,
+    "id": "emperor-elevation-206",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          200,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      }
+    }
+  },
+  "emperor-elevation-207": {
+    "version": 1,
+    "id": "emperor-elevation-207",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          200,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          200,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          200,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          200,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      }
+    }
+  },
+  "emperor-elevation-208": {
+    "version": 1,
+    "id": "emperor-elevation-208",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          200,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          200,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          200,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          200,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      }
+    }
+  },
+  "emperor-elevation-209": {
+    "version": 1,
+    "id": "emperor-elevation-209",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      }
+    }
+  },
+  "emperor-elevation-210": {
+    "version": 1,
+    "id": "emperor-elevation-210",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          344,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          344,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          344,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          344,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      }
+    }
+  },
+  "emperor-elevation-211": {
+    "version": 1,
+    "id": "emperor-elevation-211",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          344,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          344,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          344,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          344,
+          78,
+          120
+        ],
+        "anchor": [
+          39,
+          100
+        ]
+      }
+    }
+  },
+  "emperor-elevation-212": {
+    "version": 1,
+    "id": "emperor-elevation-212",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          344,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      }
+    }
+  },
+  "emperor-elevation-213": {
+    "version": 1,
+    "id": "emperor-elevation-213",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          344,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          344,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          344,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          312,
+          344,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "emperor-elevation-214": {
+    "version": 1,
+    "id": "emperor-elevation-214",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          344,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          344,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          344,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          390,
+          344,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      }
+    }
+  },
+  "emperor-elevation-215": {
+    "version": 1,
+    "id": "emperor-elevation-215",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          344,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          344,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          344,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          468,
+          344,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      }
+    }
+  },
+  "emperor-elevation-216": {
+    "version": 1,
+    "id": "emperor-elevation-216",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          344,
+          78,
+          136
+        ],
+        "anchor": [
+          39,
+          116
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          344,
+          78,
+          136
+        ],
+        "anchor": [
+          39,
+          116
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          344,
+          78,
+          136
+        ],
+        "anchor": [
+          39,
+          116
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          546,
+          344,
+          78,
+          136
+        ],
+        "anchor": [
+          39,
+          116
+        ]
+      }
+    }
+  },
+  "emperor-elevation-217": {
+    "version": 1,
+    "id": "emperor-elevation-217",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          488,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          488,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          488,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          0,
+          488,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      }
+    }
+  },
+  "emperor-elevation-218": {
+    "version": 1,
+    "id": "emperor-elevation-218",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          488,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          488,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          488,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          78,
+          488,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      }
+    }
+  },
+  "emperor-elevation-219": {
+    "version": 1,
+    "id": "emperor-elevation-219",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          488,
+          78,
+          124
+        ],
+        "anchor": [
+          39,
+          104
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          488,
+          78,
+          124
+        ],
+        "anchor": [
+          39,
+          104
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          488,
+          78,
+          124
+        ],
+        "anchor": [
+          39,
+          104
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          156,
+          488,
+          78,
+          124
+        ],
+        "anchor": [
+          39,
+          104
+        ]
+      }
+    }
+  },
+  "emperor-elevation-220": {
+    "version": 1,
+    "id": "emperor-elevation-220",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          488,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "90": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          488,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "180": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          488,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "270": {
+        "source": "elevation-atlas.png",
+        "rect": [
+          234,
+          488,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      }
+    }
+  }
+}

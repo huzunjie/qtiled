@@ -255,7 +255,7 @@
     };
   }
 
-  /* 平地地图定义的可选入口，不从核心 src/index.js 导出。 */
+  /* 地图定义的可选入口，不从核心 src/index.js 导出。 */
 
   function isObject(value) {
     return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -268,9 +268,9 @@
   function isPair(value, checkNumber) {
     return Array.isArray(value) && value.length === 2 && Array.from(value).every(checkNumber);
   }
-  /** 校验平地地图的结构和素材引用，不读取文件、不修改输入。
-   * @param {Object} definition { version: 1, id, tileSize, cells, entities }
-   * cells[y][x] 为 null 或 { terrain, elevation: 0, tile? }。
+  /** 校验地图的结构和素材引用，不读取文件、不修改输入。
+   * @param {Object} definition { version: 1 | 2, id, tileSize, cells, entities, elevationStep? }
+   * cells[y][x] 为 null 或 { terrain, elevation, tile? }；v1 仅允许 0，v2 允许整数 0..16。
    * entities 中每个实例为 { id, element, grid, angle? }，省略 angle 表示 0°。
    * @param {Object} elementsById 已经通过元素校验的定义，键与元素 id 一致。
    * @returns {Array<Object>} { path, code, message } 问题列表，空列表表示通过。
@@ -292,7 +292,12 @@
       return issues;
     }
 
-    if (definition.version !== 1) issue('version', 'unsupported-version', '地图版本必须为数字 1。');
+    if (![1, 2].includes(definition.version)) issue('version', 'unsupported-version', '地图版本必须为数字 1 或 2。');
+
+    if (definition.version === 2 && (!Number.isFinite(definition.elevationStep) || definition.elevationStep <= 0)) {
+      issue('elevationStep', 'invalid-elevation-step', 'v2 地图必须提供有限正数的每级高程像素高度。');
+    }
+
     if (!isId(definition.id)) issue('id', 'invalid-id', '地图 ID 必须是非空字符串。');
 
     if (!isPair(definition.tileSize, value => Number.isFinite(value) && value > 0)) {
@@ -374,7 +379,9 @@
 
           if (!Number.isFinite(cell.elevation)) {
             issue(`${path}.elevation`, 'invalid-elevation', '高程必须是有限数值。');
-          } else if (cell.elevation !== 0) {
+          } else if (definition.version === 2 && (!Number.isSafeInteger(cell.elevation) || cell.elevation < 0 || cell.elevation > 16)) {
+            issue(`${path}.elevation`, 'unsupported-elevation', 'v2 地图高程必须为 0 到 16 的安全整数。');
+          } else if (definition.version !== 2 && cell.elevation !== 0) {
             issue(`${path}.elevation`, 'unsupported-elevation', '当前平地地图仅支持高程 0。');
           }
 
@@ -425,7 +432,8 @@
    * @returns {Object} { entities, issues }；地图无效时 entities 为 null，不返回部分实例。
    * 每个结果为 { id, element, grid, angle, draw }；angle 是对象朝向，draw.angle 是镜头角度。
    * draw 沿用 resolveElementDraw 的结果，draw.footprint 包含完整世界格及投影像素。
-   * 加载或切镜头不重新执行放置计算；此处不裁剪占地，不判断越界或共存是否合法。
+   * 加载或切镜头不重新执行放置计算；不裁剪占地。v2 先确认占地有效且等高，再统一抬升投影。
+   * v1 沿用仅派生完整占地的行为；两种版本均不判断场景共存是否合法。
    */
 
   function resolveMapEntities(definition, elementsById = {}, {
@@ -437,6 +445,15 @@
       entities: null,
       issues
     };
+
+    if (definition.version === 2) {
+      const occupancy = buildMapOccupancy(definition, elementsById);
+      if (occupancy.issues.length) return {
+        entities: null,
+        issues: occupancy.issues
+      };
+    }
+
     const view = {
       angle,
       originPixel,
@@ -449,18 +466,34 @@
         grid,
         angle: objectAngle = 0
       } = entity;
+      let entityView = view;
+
+      if (definition.version === 2) {
+        // 定义原点可能位于占地外；承托高度只能取实际占地，不能猜原点所在格。
+        const [x, y] = getEntityWorldCells(entity, elementsById)[0];
+        const height = definition.cells[y][x].elevation * definition.elevationStep;
+        entityView = { ...view,
+          originPixel: [originPixel[0], originPixel[1] - height]
+        };
+      }
+
       return {
         id,
         element,
         grid: [...grid],
         angle: objectAngle,
-        draw: resolveElementDraw(elementsById[element], grid, view, objectAngle)
+        draw: resolveElementDraw(elementsById[element], grid, entityView, objectAngle)
       };
     });
     return {
       entities,
       issues
     };
+  }
+
+  function getEntityWorldCells(entity, elementsById) {
+    const offsets = elementsById[entity.element].footprint.map(offset => rotateGridPoint(offset, (entity.angle || 0) / 90));
+    return getIsometricNeighborsByOffsets(entity.grid, offsets);
   }
   /** 检查完整世界占地并构建按格多实例索引，不改变地图或保留内部状态。
    * @param {Object} definition 地图定义；先复用 A2 的结构与引用校验。
@@ -471,6 +504,7 @@
    * 格键按首次遇到的占地格插入，同格 ID 按 entities 输入顺序排列；不表示像素画序。
    * 只检查真实占地，不检查定义原点；复用绘制所用旋转/偏移方法，不依赖镜头或像素。
    */
+
 
   function buildMapOccupancy(definition, elementsById = {}, canCoexist = () => true) {
     const issues = validateMapDefinition(definition, elementsById);
@@ -486,8 +520,8 @@
     const index = new Map();
 
     for (const [entityIndex, entity] of entities.entries()) {
-      const offsets = elementsById[entity.element].footprint.map(offset => rotateGridPoint(offset, (entity.angle || 0) / 90));
-      const worldCells = getIsometricNeighborsByOffsets(entity.grid, offsets);
+      const worldCells = getEntityWorldCells(entity, elementsById);
+      let elevation;
 
       for (const grid of worldCells) {
         const [x, y] = grid;
@@ -503,6 +537,13 @@
         } else if (cells[y][x] === null) {
           code = 'footprint-invalid-cell';
           message = '实体完整占地包含 null 无效格。';
+        } else if (definition.version === 2) {
+          if (elevation === undefined) elevation = cells[y][x].elevation;
+
+          if (cells[y][x].elevation !== elevation) {
+            code = 'footprint-elevation-mismatch';
+            message = '实体完整占地必须位于同一高程的平台上。';
+          }
         }
 
         if (code) {

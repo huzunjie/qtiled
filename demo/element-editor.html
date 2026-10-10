@@ -75,6 +75,11 @@
     .element-editor dialog h2 { margin: 0; font-size: 18px; }
     .element-editor dialog textarea { height: 50vh; font-size: 12px; }
     .element-editor .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+    .element-editor .terrain-context { margin: 16px 0; padding: 12px; background: white; border-radius: 8px; }
+    .element-editor .context-views { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+    .element-editor .context-views figure { margin: 0; min-width: 0; }
+    .element-editor .context-views canvas { display: block; width: 100%; background: #e8ece8; }
+    .element-editor .context-views figcaption { font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
   </style>
 </head>
 <body>
@@ -83,6 +88,10 @@
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
   <script src="./static/js/qtiled-element-rendering.dev.js?20261010-water-animation"></script>
+  <script src="./static/js/qtiled-maps.dev.js"></script>
+  <script src="./static/js/land-water-rules.js"></script>
+  <script src="./static/js/elevation-rules.js"></script>
+  <script src="./static/js/elevation-rendering.js"></script>
   <script src="./static/js/pointer.js"></script>
   <script src="./static/js/element-files.js"></script>
   <script src="./static/js/dog-element-sample.js"></script>
@@ -97,6 +106,7 @@
           <span class="group-name">文件</span>
           <button id="sample" type="button">载入样本</button>
           <button id="terrain-sample" type="button">原作地表素材</button>
+          <button id="elevation-sample" type="button">原作高程素材</button>
           <select id="terrain-material" aria-label="原作地表素材" disabled><option value="">尚未载入地表素材</option></select>
           <button id="new" type="button">新建定义</button>
           <label class="file-button">素材目录<input id="source-files" type="file" webkitdirectory multiple></label>
@@ -203,6 +213,15 @@
         </fieldset>
       </aside>
     </div>
+    <details id="elevation-context" class="terrain-context">
+      <summary>高程形态 · 四向上下文预览</summary>
+      <p class="note">同一世界邻域切换四个镜头，由地图共用规则选择坡面。橙框标记素材所属低格。此处只读，不修改上方正在编辑的元素。</p>
+      <label>形态 <select id="context-sample" disabled aria-label="高程上下文形态"></select></label>
+      <button id="context-reload" type="button">重新载入</button>
+      <p id="context-status" role="status">展开后载入多级地图样本。</p>
+      <div id="context-views" class="context-views"></div>
+      <p class="note"><a href="./map-editor.html">在地图工具中查看「多级台地与凹角」样本</a></p>
+    </details>
     <dialog id="export-dialog" aria-labelledby="export-title">
       <h2 id="export-title">导出 JSON 预览</h2>
       <p>以下为即将下载的配置，图片文件需另行保留。关闭预览可继续编辑。</p>
@@ -220,5 +239,6 @@
     </details>
   </main>
   <script src="./static/js/element-editor.js?20261010-water-animation"></script>
+  <script src="./static/js/elevation-context-preview.js"></script>
 </body>
 </html>

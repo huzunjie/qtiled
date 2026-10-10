@@ -1,6 +1,6 @@
 # 元素定义：静态图片与共享动画
 
-本契约使元素编辑器与独立预览消费同一份数据。本页介绍 P0-A 的定义校验和 JSON 导入；P0-D 增加的不可变编辑与校验后导出见[元素编辑工具](element-editor.md)。纯数据模块不加载图片、不绘制，也不解释游戏规则。
+本契约使元素编辑器与独立预览消费同一份数据。本页介绍定义校验和 JSON 导入；不可变编辑与校验后导出见[元素编辑工具](element-editor.md)。纯数据模块不加载图片、不绘制，也不解释游戏规则。
 
 可选源码入口为 `src/elements/index.js`，没有从核心 `src/index.js` 导出，没有 DOM 或 SpriteJS 依赖。浏览器通过可选元素绘制包使用同一组函数，打包与加载见[正式产物消费](browser-consumption.md)。
 
@@ -82,7 +82,7 @@
 
 v1 的定义、附加字段及静态选图保持兼容。v1 中同名的历史附加字段不会被解读成动画；只有显式 v2 才解释 `sequences` / `sequence`。动画在循环中只改变选中的图片和裁切，不将当前帧或播放器时间写回定义；本版没有动作状态机、逐帧锚点或业务状态映射。
 
-### 静态方向共用（S1）
+### 静态方向共用
 
 [元素编辑器](../demo/element-editor.html) 的“方向共用”将当前素材槽的 `source` 和 `rect` 一次应用到所选方向，显示本次目标以及当前同图同裁切的方向。各方向 `anchor` 保持原值；操作后可单独换图、改裁切或调整锚点，其他方向不联动。这里的目标是素材方向，当前素材槽仍由镜头与对象朝向共同确定。
 
@@ -151,8 +151,8 @@ const result = importElementDefinition(jsonText, sourceInfo);
 
 v2 增加 `invalid-sequences`、`invalid-sequence-id`、`invalid-sequence`、`invalid-frames`、`invalid-frame`、`invalid-frame-duration`、`invalid-timing-source`、`mixed-view-binding`、`invalid-sequence-reference`、`missing-sequence`。例如缺失第二帧定位为 `sequences.water.frames[1]`，该帧越界则定位为 `sequences.water.frames[1].rect`。
 
-## 本片边界与下一步
+## 职责边界与配套能力
 
-P0-A 的成功标准是：同一份完整定义能被校验和读取，非法定义能定位问题，并保持核心入口无新增依赖。通过契约校验不等于原作方向、占地、锚点已校准。
+校验和读取保证：同一份完整定义能被校验和读取，非法定义能定位问题，并保持核心入口无新增依赖。通过契约校验不等于原作方向、占地、锚点已校准。
 
-后续能力分片建立：[P0-B 四向视图](isometric-view.md)、[P0-C 素材预览](element-rendering.md)、[P0-D 编辑与导出](element-editor.md)。各自维持独立职责。
+配套能力：[四向视图](isometric-view.md)、[素材预览](element-rendering.md)、[编辑与导出](element-editor.md)。各自维持独立职责。

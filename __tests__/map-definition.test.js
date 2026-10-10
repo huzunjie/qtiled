@@ -52,7 +52,7 @@ describe('平地地图结构校验', () => {
   test.each([
     ['字符串版本', 'version', '1', 'unsupported-version'],
     ['缺版本', 'version', undefined, 'unsupported-version'],
-    ['未知版本', 'version', 2, 'unsupported-version'],
+    ['未知版本', 'version', 3, 'unsupported-version'],
     ['空 ID', 'id', ' ', 'invalid-id'],
     ['非字符串 ID', 'id', 1, 'invalid-id'],
     ['缺尺寸', 'tileSize', undefined, 'invalid-tile-size'],
@@ -238,5 +238,30 @@ describe('诊断和输入稳定性', () => {
 
   test('可选地图模块不增加核心入口导出', () => {
     expect(Object.keys(core).sort()).toEqual(['pathFinding', 'shapes']);
+  });
+});
+
+
+describe('v2 高程地图结构', () => {
+  test('显式版本与高度单位，非负边界及底图引用可用；不自动迁移 v1', () => {
+    const map = { ...createMap(), version: 2, elevationStep: 20.5 };
+    map.cells[0][0].elevation = 16;
+    map.cells[0][0].tile = 'grass';
+    expect(validateMapDefinition(freezeDeep(map), createLibrary())).toEqual([]);
+    expect(validateMapDefinition({ ...map, cells: [[{ terrain: 'land', elevation: 0 }]] })).toEqual([]);
+    expect(validateMapDefinition({ ...map, version: 1 }, createLibrary())).toEqual([
+      expect.objectContaining({ path: 'cells[0][0].elevation', code: 'unsupported-elevation' }),
+    ]);
+    expect(validateMapDefinition({ ...createMap(), elevationStep: '旧附加字段' })).toEqual([]);
+  });
+
+  test.each([undefined, null, '20', 0, -1, NaN, Infinity])('单位 %p 不可用时定位顶层字段', elevationStep => {
+    expectIssue(validateMapDefinition({ ...createMap(), version: 2, elevationStep }), 'elevationStep', 'invalid-elevation-step');
+  });
+
+  test.each([-16, -1, 0.5, 17, Number.MAX_SAFE_INTEGER + 1])('高程 %p 不属于支持的整数等级', elevation => {
+    const map = { ...createMap(), version: 2, elevationStep: 20 };
+    map.cells[0][0].elevation = elevation;
+    expectIssue(validateMapDefinition(map), 'cells[0][0].elevation', 'unsupported-elevation');
   });
 });
