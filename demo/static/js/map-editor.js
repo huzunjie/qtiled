@@ -115,7 +115,7 @@
   }
 
   async function readText(path) {
-    const response = await fetch(path, { cache: 'no-store' });
+    const response = await fetch(path, { cache: 'no-cache' });
     if (!response.ok) throw new Error(`${path} 加载失败（HTTP ${response.status}）`);
     return response.text();
   }
@@ -304,7 +304,7 @@
     status.textContent = currentScene ? '加载失败 · 保留上次有效地图与选择' : '加载失败 · 当前无地图';
   }
 
-  async function reload() {
+  async function reload(forceReload = false) {
     cancelGesture();
     const requestId = ++loadRequestId;
     clearIssue();
@@ -315,15 +315,16 @@
         throw new Error('运行包缺失或过期；仓库 Demo 请先执行 npm run debug，独立目录请按 docs/browser-consumption.md 重新准备');
       }
       const { loadElementSources, importElementDefinition } = window.qtiledElementRendering;
-      // 复用 Demo 的样本配置；重载绕过图片缓存，修复文件后可恢复。
-      const { directory, sourceFiles } = getDogElementSample(`${Date.now()}-${requestId}`);
+      // 复用 Demo 的样本配置；仅手动重载绕过图片缓存，修复文件后可恢复。
+      const reloadToken = forceReload ? `${Date.now()}-${requestId}` : '';
+      const { directory, sourceFiles } = getDogElementSample(reloadToken);
       const elementUrl = new URL(`${directory}element.json`, document.baseURI);
       const mapUrl = new URL(`./static/map-samples/${get('map-sample').value}.json`, document.baseURI);
       const [elementJson, mapJson, terrainJson, rulesJson, images] = await Promise.all([
         readText(elementUrl), readText(mapUrl),
         readText(new URL(`${terrainDirectory}elements.json`, document.baseURI)),
         readText(new URL(`${terrainDirectory}rules.json`, document.baseURI)),
-        loadElementSources({ ...sourceFiles, 'atlas.png': `${terrainDirectory}atlas.png?reload=${requestId}-${Date.now()}` }),
+        loadElementSources({ ...sourceFiles, 'atlas.png': `${terrainDirectory}atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}` }),
       ]);
       if (requestId !== loadRequestId) return;
       requireSuccess(images);
@@ -648,8 +649,8 @@
     resizeViewport();
     updatePlaybackControls();
   });
-  get('map-sample').addEventListener('change', reload);
-  get('reload').addEventListener('click', reload);
+  get('map-sample').addEventListener('change', () => reload());
+  get('reload').addEventListener('click', () => reload(true));
   updateToolHelp();
   reload();
 })();

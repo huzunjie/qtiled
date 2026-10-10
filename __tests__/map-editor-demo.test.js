@@ -54,6 +54,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   }
   let scene;
   let imageBatch = 0;
+  const imageRequests = [];
   const resolve = jest.fn(maps.resolveMapEntities);
   const importMap = jest.fn(maps.importMapDefinition);
   const occupancy = jest.fn(maps.buildMapOccupancy);
@@ -90,6 +91,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
     buildMapOccupancy: occupancy, exportMapDefinition: exportMap };
   window.qtiledElementRendering = { ...elements, renderElement, resolveElementDraw,
     resolveElementFrame: resolveFrame, updateElementFrame: updateFrame, loadElementSources: async files => {
+    imageRequests.push({ ...files });
     const sources = {};
     const sourceInfo = {};
     const batch = ++imageBatch;
@@ -188,7 +190,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   };
   return { window, get, faults, layer, result, sprites, terrainSprites, clickGrid, camera, mode, reload, resolve, importMap,
     fetch, pointer, tool, save, exportMap, terrainResolve, terrainStroke, resolveFrame, updateFrame, advance, callbacks, tiles, errors, descendants,
-    size, resize, scene: () => scene, screenPointer, captured, worldCenter, occupancy, canvasContext, contentLayer };
+    size, resize, scene: () => scene, screenPointer, captured, worldCenter, occupancy, canvasContext, contentLayer, imageRequests };
 }
 
 function setDisplay(p, id, checked) {
@@ -1009,6 +1011,43 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
   expect(map.cells[0][1].terrain).toBe('water');
   expect(map.cells[0][2].terrain).toBe('water');
   expect(p.get('undo').disabled).toBe(false);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
+  const p = await page();
+  const initial = p.imageRequests[0];
+  expect(Object.keys(initial)).toHaveLength(5);
+  expect(initial['atlas.png']).toBe('./static/terrain-samples/emperor-land-water/atlas.png');
+  expect(Object.values(initial).every(url => !url.includes('?'))).toBe(true);
+  const switchSample = async sample => {
+    p.get('map-sample').value = sample;
+    p.get('map-sample').dispatchEvent(new p.window.Event('change'));
+    await settle();
+    expect(p.get('map-id').textContent).toBe(sample);
+    expect(p.imageRequests[p.imageRequests.length - 1]).toEqual(initial);
+  };
+  await switchSample('deep-water-map');
+  for (let i = 0; i < 2; i++) {
+    const previous = p.imageRequests[p.imageRequests.length - 1];
+    const fetchCount = p.fetch.mock.calls.length;
+    await p.reload();
+    const refreshed = p.imageRequests[p.imageRequests.length - 1];
+    const tokens = Object.keys(initial).map(key => {
+      const url = new URL(refreshed[key], 'http://localhost/demo/');
+      expect(refreshed[key].split('?')[0]).toBe(initial[key]);
+      expect(refreshed[key]).not.toBe(previous[key]);
+      expect(url.searchParams.get('reload')).toMatch(/^\d+-\d+$/);
+      return url.searchParams.get('reload');
+    });
+    expect(new Set(tokens).size).toBe(1);
+    expect(p.fetch).toHaveBeenCalledTimes(fetchCount + 4);
+    expect(p.get('map-id').textContent).toBe('deep-water-map');
+  }
+  await switchSample('first-static-map');
+  expect(p.imageRequests).toHaveLength(5);
+  expect(p.fetch.mock.calls.every(([, options]) => options.cache === 'no-cache')).toBe(true);
   expect(p.errors).toEqual([]);
   p.window.close();
 });
