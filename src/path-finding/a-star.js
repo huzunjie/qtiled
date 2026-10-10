@@ -6,20 +6,20 @@
 *                                                      需要返回邻居坐标值、权重的 tile 二维数组：[[gridX1, gridY1, cost1], [gridX2, gridY2, cost2], ...]
 *                                                      搜索期间邻接关系和权重固定，cost || 1 后为有限正数，累计运算不溢出
 *                                                      每步累计成本保留三位小数，最优路径按此成本比较
-* @param {Number}                maximizable           最大成本更新次数（默认为1e6，用于防止死循环）
+* @param {Number}                maxCostUpdates           最大成本更新次数（默认为1e6，用于防止死循环）
 * @return {Array|null} 匹配的路径集合或 null
 */
 export default function aStar(
   startGrid = [0, 0],
   endGrid = [0, 0],
   getNeighbors = (currentGrid) => [],
-  maximizable = 1e6,
+  maxCostUpdates = 1e6,
 ) {
   const path = [];
   const [startGridX, startGridY] = startGrid;
   const [endGridX, endGridY] = endGrid;
   const startPoint = [startGridX, startGridY, 0];
-  let n = 0;
+  let costUpdateCount = 0;
   // 起止点相同直接返回当前点
   if(startGridX === endGridX && startGridY === endGridY) {
     path.push(startPoint);
@@ -60,8 +60,8 @@ export default function aStar(
         parents[neighborKey] = currPoint;
 
         // 成本更新次数超过上限，抛出异常终止查找
-        n++;
-        if (n > maximizable) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maximizable);
+        costUpdateCount++;
+        if (costUpdateCount > maxCostUpdates) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maxCostUpdates);
         const neiPoint = [gridX, gridY, neiCost];
         // 将成本更新后的节点放入开放点列表，等待确认最低成本
         openlist.push(neiPoint);

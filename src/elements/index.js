@@ -1,4 +1,4 @@
-/* 静态元素定义的可选入口，不从核心 src/index.js 导出。 */
+/* 元素定义的可选入口，不从核心 src/index.js 导出。 */
 
 const VIEW_ANGLES = ['0', '90', '180', '270'];
 
@@ -17,8 +17,8 @@ function isSourcePath(value) {
     && value.split('/').every(part => part !== '' && part !== '.' && part !== '..');
 }
 
-/** 校验静态元素定义，不读取图片、不修复数据、不修改输入。
- * @param {Object} definition { version: 1, id, kind, footprint, views }
+/** 校验元素定义，不读取图片、不修复数据、不修改输入。
+ * @param {Object} definition v1 静态定义，或带显式共享帧序列的 v2 定义。
  * @param {Object} sourceInfo 按相对图片路径索引的 { width, height }，由调用方提供实际尺寸
  * @returns {Array<Object>} 问题列表，每项为 { path, code, message }；空列表表示通过
  * 四向分别使用 '0'/'90'/'180'/'270' 键；锚点相对裁切区域左上角，可在区域之外。
@@ -32,7 +32,7 @@ export function validateElementDefinition(definition, sourceInfo = {}) {
     return issues;
   }
 
-  if (definition.version !== 1) issue('version', 'unsupported-version', '元素定义版本必须为数字 1。');
+  if (![1, 2].includes(definition.version)) issue('version', 'unsupported-version', '元素定义版本必须为数字 1 或 2。');
   if (typeof definition.id !== 'string' || !definition.id.trim()) {
     issue('id', 'invalid-id', '元素 ID 必须是非空字符串。');
   }
@@ -55,6 +55,59 @@ export function validateElementDefinition(definition, sourceInfo = {}) {
     }
   }
 
+  const validateFrame = (frame, path) => {
+    let size;
+    if (!isSourcePath(frame.source)) {
+      issue(`${path}.source`, 'invalid-source-path', '图片必须使用 / 分隔的相对文件路径，不含协议、反斜杠、空路径段或 .、.. 路径段。');
+    } else if (!isObject(sourceInfo) || !Object.prototype.hasOwnProperty.call(sourceInfo, frame.source)) {
+      issue(`${path}.source`, 'missing-source', '图片引用未在 sourceInfo 中找到。');
+    } else {
+      const candidate = sourceInfo[frame.source];
+      if (!isObject(candidate) || !Number.isInteger(candidate.width) || candidate.width <= 0
+        || !Number.isInteger(candidate.height) || candidate.height <= 0) {
+        issue(`${path}.source`, 'invalid-source-size', '图片实际宽高必须是正整数。');
+      } else {
+        size = candidate;
+      }
+    }
+
+    if (!isTuple(frame.rect, 4, Number.isInteger) || frame.rect[0] < 0 || frame.rect[1] < 0
+      || frame.rect[2] <= 0 || frame.rect[3] <= 0) {
+      issue(`${path}.rect`, 'invalid-rect', '裁切矩形必须为 [x, y, width, height]，使用整数，起点非负且宽高为正。');
+    } else if (size && (frame.rect[0] + frame.rect[2] > size.width || frame.rect[1] + frame.rect[3] > size.height)) {
+      issue(`${path}.rect`, 'rect-out-of-bounds', '裁切矩形超出图片实际尺寸。');
+    }
+  };
+
+  if (definition.version === 2 && definition.sequences !== undefined) {
+    if (!isObject(definition.sequences)) {
+      issue('sequences', 'invalid-sequences', '帧序列必须是按名称索引的对象。');
+    } else {
+      Object.entries(definition.sequences).forEach(([id, sequence]) => {
+        const path = `sequences.${id}`;
+        if (!id.trim()) issue(path, 'invalid-sequence-id', '序列名称必须是非空字符串。');
+        if (!isObject(sequence)) {
+          issue(path, 'invalid-sequence', '序列必须提供显式有序帧及作者设定的时长。');
+          return;
+        }
+        if (!Number.isSafeInteger(sequence.frameDurationMs) || sequence.frameDurationMs <= 0) {
+          issue(`${path}.frameDurationMs`, 'invalid-frame-duration', '每帧时长必须是正的安全整数毫秒。');
+        }
+        if (sequence.timingSource !== 'author') {
+          issue(`${path}.timingSource`, 'invalid-timing-source', '本版本的播放时长须明确标记为 author（作者设置）。');
+        }
+        if (!Array.isArray(sequence.frames) || !sequence.frames.length) {
+          issue(`${path}.frames`, 'invalid-frames', '序列必须包含至少一帧显式图片与裁切。');
+        } else {
+          for (const [index, frame] of sequence.frames.entries()) {
+            if (!isObject(frame)) issue(`${path}.frames[${index}]`, 'invalid-frame', '每帧必须是图片与裁切对象。');
+            else validateFrame(frame, `${path}.frames[${index}]`);
+          }
+        }
+      });
+    }
+  }
+
   if (!isObject(definition.views)) {
     issue('views', 'invalid-views', '视图必须是包含 0、90、180、270 四向配置的对象。');
     return issues;
@@ -71,26 +124,17 @@ export function validateElementDefinition(definition, sourceInfo = {}) {
       return;
     }
 
-    let size;
-    if (!isSourcePath(view.source)) {
-      issue(`${path}.source`, 'invalid-source-path', '图片必须使用 / 分隔的相对文件路径，不含协议、反斜杠、空路径段或 .、.. 路径段。');
-    } else if (!isObject(sourceInfo) || !Object.prototype.hasOwnProperty.call(sourceInfo, view.source)) {
-      issue(`${path}.source`, 'missing-source', '图片引用未在 sourceInfo 中找到。');
-    } else {
-      const candidate = sourceInfo[view.source];
-      if (!isObject(candidate) || !Number.isInteger(candidate.width) || candidate.width <= 0
-        || !Number.isInteger(candidate.height) || candidate.height <= 0) {
-        issue(`${path}.source`, 'invalid-source-size', '图片实际宽高必须是正整数。');
-      } else {
-        size = candidate;
+    if (definition.version === 2 && Object.prototype.hasOwnProperty.call(view, 'sequence')) {
+      if (Object.prototype.hasOwnProperty.call(view, 'source') || Object.prototype.hasOwnProperty.call(view, 'rect')) {
+        issue(path, 'mixed-view-binding', '视图须选择静态图片或帧序列，不能同时指定。');
       }
-    }
-
-    if (!isTuple(view.rect, 4, Number.isInteger) || view.rect[0] < 0 || view.rect[1] < 0
-      || view.rect[2] <= 0 || view.rect[3] <= 0) {
-      issue(`${path}.rect`, 'invalid-rect', '裁切矩形必须为 [x, y, width, height]，使用整数，起点非负且宽高为正。');
-    } else if (size && (view.rect[0] + view.rect[2] > size.width || view.rect[1] + view.rect[3] > size.height)) {
-      issue(`${path}.rect`, 'rect-out-of-bounds', '裁切矩形超出图片实际尺寸。');
+      if (typeof view.sequence !== 'string' || !view.sequence.trim()) {
+        issue(`${path}.sequence`, 'invalid-sequence-reference', '序列引用必须是非空字符串。');
+      } else if (!isObject(definition.sequences) || !Object.prototype.hasOwnProperty.call(definition.sequences, view.sequence)) {
+        issue(`${path}.sequence`, 'missing-sequence', '视图引用的帧序列不存在。');
+      }
+    } else {
+      validateFrame(view, path);
     }
 
     if (!isTuple(view.anchor, 2, Number.isFinite)) {
@@ -120,21 +164,38 @@ export function importElementDefinition(json, sourceInfo = {}) {
 
 /** 应用一次工具编辑，返回新定义；允许暂时非法的草稿，由统一校验器报告问题。
  * @param {Object} definition 当前定义或草稿，调用方将其视为不可变数据。
- * @param {Object} edit { field: 'footprint'|'source'|'rect'|'anchor', value, angle? }。
+ * @param {Object} edit { field: 'footprint'|'source'|'rect'|'anchor'|'sequence'|'sequences', value, angle? }。
  * angle 仅在修改视图字段时使用，必须是数字 0/90/180/270。
- * 仅复制修改路径及传入数组；未修改分支与原定义共享，不自动联动裁切和锚点。
+ * 仅复制修改路径及传入数组；sequences 编辑深复制序列数据并显式升为 v2。
+ * 切换 sequence/source/rect 绑定不联动方向锚点，未修改分支与原定义共享。
  */
 export function applyElementEdit(definition, { field, value, angle } = {}) {
   const copyValue = Array.isArray(value)
     ? value.map(item => Array.isArray(item) ? [...item] : item) : value;
   if (field === 'footprint') return { ...definition, footprint: copyValue };
-  if (!['source', 'rect', 'anchor'].includes(field)) throw new TypeError('不支持的元素编辑字段。');
+  if (field === 'sequences') {
+    const copy = input => {
+      if (Array.isArray(input)) return input.map(copy);
+      if (isObject(input)) return Object.fromEntries(Object.entries(input).map(([key, item]) => [key, copy(item)]));
+      return input;
+    };
+    return { ...definition, version: 2, sequences: copy(value) };
+  }
+  if (!['source', 'rect', 'anchor', 'sequence'].includes(field)) throw new TypeError('不支持的元素编辑字段。');
   if (![0, 90, 180, 270].includes(angle)) throw new RangeError('编辑方向必须为 0、90、180、270。');
+  const editedView = { ...definition.views[angle], [field]: copyValue };
+  if (field === 'sequence') {
+    delete editedView.source;
+    delete editedView.rect;
+  } else if (definition.version === 2 && (field === 'source' || field === 'rect')) {
+    delete editedView.sequence;
+  }
   return {
     ...definition,
+    ...(field === 'sequence' ? { version: 2 } : {}),
     views: {
       ...definition.views,
-      [angle]: { ...definition.views[angle], [field]: copyValue },
+      [angle]: editedView,
     },
   };
 }

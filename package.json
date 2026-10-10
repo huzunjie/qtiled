@@ -64,6 +64,7 @@
     "last 2 iOS versions"
   ],
   "jest": {
+    "roots": ["<rootDir>/__tests__"],
     "modulePaths": [
       "src"
     ],

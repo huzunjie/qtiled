@@ -6,10 +6,11 @@ import { shapes } from '../src';
 import * as elements from '../src/elements';
 import * as view from '../src/isometric-view';
 import { resolveElementDraw } from '../src/element-rendering/draw';
+import { resolveElementFrame } from '../src/element-rendering/frame';
 import { resolveElementPlacement } from '../src/element-rendering/placement';
 
 // 执行两页真实事件脚本；DOM、图片加载、下载与 SpriteJS 使用替身，不冒充浏览器验收。
-async function loadPage(name, overrides = {}) {
+async function loadPage(name, overrides = {}, fetchOverride) {
   const read = file => fs.readFileSync(path.join(__dirname, '../demo', file), 'utf8');
   const html = read(name);
   const { window } = new JSDOM(html);
@@ -30,14 +31,22 @@ async function loadPage(name, overrides = {}) {
   window.HTMLDialogElement.prototype.close = function() { this.open = false; this.dispatchEvent(new window.Event('close')); };
   window.HTMLAnchorElement.prototype.click = jest.fn();
   const preview = { attrs: {}, attr(attrs) { this.attrs = attrs; } };
-  const render = jest.fn((layer, draw) => draw ? preview : null);
+  let displayDraw;
+  let now = 0;
+  let requestId = 0;
+  const callbacks = new Map();
+  const render = jest.fn((layer, draw) => { displayDraw = draw; return draw ? preview : null; });
+  const update = jest.fn((layer, frame) => {
+    displayDraw = { ...displayDraw, ...frame, position: displayDraw.origin.map((value, i) => value - frame.anchor[i]) };
+    return preview;
+  });
   window.HTMLElement.prototype.setPointerCapture = jest.fn();
   window.HTMLElement.prototype.hasPointerCapture = () => false;
   const context = vm.createContext({
     window, document, Option: window.Option, qtiled: { shapes }, qtiledView: view,
     spritejs: { Scene, Polyline: Shape, Label: Shape },
     qtiledElementRendering: {
-      ...elements, resolveElementDraw, resolveElementPlacement, renderElement: render,
+      ...elements, resolveElementDraw, resolveElementFrame, resolveElementPlacement, renderElement: render, updateElementFrame: update,
       loadElementSources: async files => {
         const sources = {};
         const sourceInfo = {};
@@ -45,7 +54,9 @@ async function loadPage(name, overrides = {}) {
           sources[key] = { name: key };
           if (files[key].width) sourceInfo[key] = { width: files[key].width, height: files[key].height };
           else {
-            const png = fs.readFileSync(path.join(__dirname, '../demo/static/element-samples/dog/images', path.basename(key)));
+            const png = fs.readFileSync(typeof files[key] === 'string'
+              ? path.join(__dirname, '../demo', files[key])
+              : path.join(__dirname, '../demo/static/element-samples/dog/images', path.basename(key)));
             sourceInfo[key] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
           }
         });
@@ -53,13 +64,16 @@ async function loadPage(name, overrides = {}) {
       },
       ...overrides,
     },
-    fetch: async url => ({ ok: true, text: async () => read(url) }),
+    fetch: fetchOverride || (async url => ({ ok: true, text: async () => read(url) })),
     Blob: class { constructor(parts) { this.text = parts.join(''); } },
     URL: { createObjectURL: blob => { download = blob.text; return 'blob:test'; }, revokeObjectURL() {} },
     setTimeout: callback => callback(),
+    performance: { now: () => now },
+    requestAnimationFrame: callback => { callbacks.set(++requestId, callback); return requestId; },
+    cancelAnimationFrame: id => callbacks.delete(id),
   });
   for (const [, attrs, script] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
-    const helper = attrs.match(/static\/js\/(pointer|element-files|element-snap|element-editor|dog-element-sample)\.js/);
+    const helper = attrs.match(/static\/js\/(pointer|element-files|element-snap|element-editor|dog-element-sample|element-animation-player)\.js/);
     if (helper) await vm.runInContext(read(`static/js/${helper[1]}.js`), context);
     else if (!attrs.includes('src=')) await vm.runInContext(script, context);
   }
@@ -75,15 +89,323 @@ async function loadPage(name, overrides = {}) {
   };
   const angle = value => document.querySelector(`[data-angle="${value}"]`).click();
   const objectAngle = value => document.querySelector(`[data-object-angle="${value}"]`).click();
-  const draw = () => render.mock.calls[render.mock.calls.length - 1][1];
+  const draw = () => displayDraw;
+  const advance = value => {
+    now += value;
+    const pending = [...callbacks.values()];
+    callbacks.clear();
+    pending.forEach(callback => callback(now));
+  };
   const clickCell = cell => {
     const [clientX, clientY] = layers[2].children.find(node => node.attrs.text === cell.join(',')).attrs.pos;
     get('editor-canvas').dispatchEvent(new window.MouseEvent('click', { clientX, clientY }));
   };
-  return { window, get, change, files, angle, objectAngle, draw, clickCell, preview, errors, layers, download: () => download };
+  return { window, get, change, files, angle, objectAngle, draw, clickCell, preview, errors, layers, render, update, advance,
+    callbacks, download: () => download };
 }
 
 const imageFiles = [1, 2, 3, 4].map(i => ({ name: `sculpture_dog0${i}.png`, type: 'image/png' }));
+
+test('水面动画只原地换帧，暂停继续与切向共用时钟，帧选择和播放状态不进入导出', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('terrain-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  expect(editor.get('terrain-material').value).toBe('emperor-water-deep');
+  expect(editor.get('animation-controls').hidden).toBe(false);
+  expect(editor.get('animation-help').textContent).toContain('作者预览节奏');
+  const initial = editor.draw();
+  const grid = editor.layers[0].children;
+  const labels = editor.layers[2].children;
+  const renderCount = editor.render.mock.calls.length;
+  editor.advance(40);
+  expect(editor.update).not.toHaveBeenCalled();
+  editor.advance(60);
+  expect(editor.draw().frameIndex).toBe(1);
+  expect(editor.render).toHaveBeenCalledTimes(renderCount);
+  expect(editor.layers[0].children).toBe(grid);
+  expect(editor.layers[2].children).toBe(labels);
+  expect(editor.draw().footprint).toEqual(initial.footprint);
+  expect(editor.draw().rect).not.toEqual(initial.rect);
+  editor.get('animation-toggle').click();
+  editor.advance(5000);
+  expect(editor.draw().frameIndex).toBe(1);
+  editor.angle(90);
+  expect(editor.draw().frameIndex).toBe(1);
+  editor.get('animation-toggle').click();
+  editor.advance(100);
+  expect(editor.draw().frameIndex).toBe(2);
+  editor.change('animation-frame', '7');
+  expect(editor.draw().frameIndex).toBe(6);
+  expect(editor.get('animation-toggle').textContent).toBe('播放');
+  editor.get('export').click();
+  const json = editor.get('export-json').value;
+  editor.get('close-export').click();
+  editor.get('animation-reset').click();
+  expect(editor.draw().frameIndex).toBe(0);
+  editor.get('export').click();
+  expect(editor.get('export-json').value).toBe(json);
+  editor.get('close-export').click();
+  await editor.files('definition-file', [{ text: async () => json }]);
+  const saved = JSON.parse(json);
+  expect(saved.version).toBe(2);
+  expect(Object.keys(saved.sequences)).toEqual(['water']);
+  expect(saved.sequences.water.frames).toHaveLength(24);
+  expect(Object.values(saved.views).every(value => value.sequence === 'water' && !value.frames)).toBe(true);
+  expect(editor.draw().sequence).toBe('water');
+  editor.window.dispatchEvent(new editor.window.Event('pagehide'));
+  expect(editor.callbacks.size).toBe(0);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('共用动画只存一套帧，逐向锚点、单帧编辑、静态分离与重新绑定可回读', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('terrain-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  editor.change('animation-frame', '5');
+  editor.change('anchor-x', '35');
+  editor.change('rect-width', '76');
+  expect(editor.get('animation-help').textContent).toContain('0°、90°、180°、270°');
+  expect(editor.get('shared-view-status').textContent).toBe('共用序列：0°、90°、180°、270°');
+  editor.angle(90);
+  expect(editor.draw().rect[2]).toBe(76);
+  expect(editor.draw().anchor).toEqual([39, 20]);
+  editor.change('view-sequence', '', 'change');
+  expect(editor.get('animation-controls').hidden).toBe(true);
+  expect(editor.draw().sequence).toBeUndefined();
+  const detached = editor.draw().rect;
+  editor.angle(0);
+  editor.change('rect-width', '74');
+  editor.change('animation-duration', '140');
+  expect(editor.get('animation-duration').value).toBe('140');
+  expect(editor.draw().frameIndex).toBe(4);
+  editor.angle(90);
+  expect(editor.draw().rect).toEqual(detached);
+  expect(editor.draw().anchor).toEqual([39, 20]);
+  editor.angle(0);
+  editor.get('apply-view-binding').click();
+  editor.get('export').click();
+  const json = editor.get('export-json').value;
+  editor.get('close-export').click();
+  const saved = JSON.parse(json);
+  expect(saved.views[0].anchor).toEqual([35, 20]);
+  expect(saved.views[90]).toEqual({ sequence: 'water', anchor: [39, 20] });
+  expect(saved.sequences.water.frames[4].rect[2]).toBe(74);
+  expect(saved.sequences.water.frames[3].rect[2]).toBe(78);
+  expect(saved.sequences.water.frameDurationMs).toBe(140);
+  expect(saved.sequences.water.timingSource).toBe('author');
+  await editor.files('definition-file', [{ text: async () => json }]);
+  editor.change('animation-frame', '5');
+  expect(editor.draw().rect[2]).toBe(74);
+  // 任何共用帧非法都会阻止导出及预览，修复原字段后恢复。
+  editor.change('rect-width', '9999');
+  expect(editor.get('export').disabled).toBe(true);
+  expect(editor.get('issues').textContent).toContain('sequences.water.frames[4].rect');
+  expect(editor.draw()).toBeNull();
+  editor.change('rect-width', '74');
+  expect(editor.get('export').disabled).toBe(false);
+  editor.change('animation-duration', '0');
+  expect(editor.get('export').disabled).toBe(true);
+  expect(editor.get('animation-frame').disabled).toBe(true);
+  editor.change('animation-duration', '100');
+  expect(editor.get('export').disabled).toBe(false);
+  expect(editor.get('animation-frame').disabled).toBe(false);
+  expect(editor.draw().frameIndex).toBe(4);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('同名水面序列导入失败保留原动画，文件问题不覆盖当前定义校验', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('terrain-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  editor.advance(200);
+  editor.get('animation-toggle').click();
+  const original = editor.draw();
+  editor.get('export').click();
+  const candidate = JSON.parse(editor.get('export-json').value);
+  editor.get('close-export').click();
+  candidate.sequences.water.frames[2].rect[2] = 9999;
+  await editor.files('definition-file', [{ text: async () => JSON.stringify(candidate) }]);
+  expect(editor.get('issues').textContent).toContain('sequences.water.frames[2].rect');
+  expect(editor.draw()).toEqual(original);
+  expect(editor.get('shared-view-status').textContent).toBe('共用序列：0°、90°、180°、270°');
+  expect(editor.get('apply-view-binding').disabled).toBe(false);
+  expect(editor.get('export').disabled).toBe(true);
+  editor.get('dismiss-file-issues').click();
+  expect(editor.get('export').disabled).toBe(false);
+  editor.get('animation-toggle').click();
+  editor.advance(100);
+  expect(editor.draw().frameIndex).toBe(3);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('v1 同名历史附加字段保持静态语义，编辑与方向共用不升级或改写这些字段', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('export').click();
+  const definition = JSON.parse(editor.get('export-json').value);
+  editor.get('close-export').click();
+  definition.sequences = { legacy: { note: '历史附加数据' } };
+  for (const current of Object.values(definition.views)) current.sequence = 'legacy';
+  await editor.files('definition-file', [{ text: async () => JSON.stringify(definition) }]);
+  expect(editor.get('export').disabled).toBe(false);
+  expect(editor.get('animation-controls').hidden).toBe(true);
+  expect(editor.get('view-sequence').options).toHaveLength(1);
+  const source = editor.draw().source;
+  editor.advance(500);
+  expect(editor.update).not.toHaveBeenCalled();
+  editor.get('apply-view-binding').click();
+  expect(editor.get('shared-view-status').textContent).toBe('同图同裁切：0°、90°、180°、270°');
+  editor.get('export').click();
+  const saved = JSON.parse(editor.get('export-json').value);
+  expect(saved.version).toBe(1);
+  expect(saved.sequences).toEqual(definition.sequences);
+  expect(Object.values(saved.views).every(current => current.source === source && current.sequence === 'legacy')).toBe(true);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('单图一次绑定四向保留独立锚点，批量结果回读后可单向分离', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.change('footprint-width', '3');
+  editor.get('new').click();
+  const footprint = editor.get('footprint').value;
+  const angles = [0, 90, 180, 270];
+  for (const [index, angle] of angles.entries()) {
+    editor.angle(angle);
+    editor.change('anchor-x', String(10 + index));
+    editor.change('anchor-y', String(20 + index));
+  }
+  editor.angle(0);
+  expect(editor.get('apply-view-binding').disabled).toBe(true);
+  await editor.files('direction-file', [imageFiles[0]]);
+  expect(editor.get('view-binding-targets').textContent).toBe('本次应用：0° → 90°、180°、270°');
+  editor.get('apply-view-binding').click();
+  expect(editor.get('export').disabled).toBe(false);
+  expect(editor.get('shared-view-status').textContent).toBe('同图同裁切：0°、90°、180°、270°');
+  editor.get('export').click();
+  const json = editor.get('export-json').value;
+  editor.get('close-export').click();
+  const saved = JSON.parse(json);
+  expect(Object.keys(saved.views)).toEqual(['0', '90', '180', '270']);
+  expect(saved.version).toBe(1);
+  for (const [index, angle] of angles.entries()) {
+    expect(saved.views[angle]).toEqual({ source: imageFiles[0].name, rect: [0, 0, 158, 110], anchor: [10 + index, 20 + index] });
+  }
+  await editor.files('definition-file', [{ text: async () => json }]);
+  for (const objectAngle of angles) {
+    editor.objectAngle(objectAngle);
+    const worldFootprint = editor.draw().footprint.map(cell => cell.grid);
+    for (const angle of angles) {
+      editor.angle(angle);
+      const index = ((objectAngle + angle) % 360) / 90;
+      expect(editor.draw().source).toBe(imageFiles[0].name);
+      expect(editor.draw().anchor).toEqual([10 + index, 20 + index]);
+      expect(editor.draw().footprint.map(cell => cell.grid)).toEqual(worldFootprint);
+      expect(editor.get('footprint').value).toBe(footprint);
+    }
+  }
+  editor.objectAngle(0);
+  editor.angle(90);
+  editor.change('rect-width', '150');
+  editor.change('anchor-x', '77');
+  expect(editor.get('shared-view-status').textContent).toContain('90°（仅当前方向）');
+  editor.angle(0);
+  expect(editor.draw().rect).toEqual([0, 0, 158, 110]);
+  expect(editor.draw().anchor).toEqual([10, 20]);
+  expect(editor.get('shared-view-status').textContent).toBe('同图同裁切：0°、180°、270°');
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('共用只写选定的素材方向，非法裁切不可扩散，空目标不执行', async () => {
+  const editor = await loadPage('element-editor.html');
+  const setTargets = targets => [0, 90, 180, 270].forEach(angle => {
+    const checkbox = editor.get(`share-angle-${angle}`);
+    checkbox.checked = targets.includes(angle);
+    checkbox.dispatchEvent(new editor.window.Event('change', { bubbles: true }));
+  });
+  editor.get('export').click();
+  const original = JSON.parse(editor.get('export-json').value);
+  editor.get('close-export').click();
+  editor.objectAngle(90);
+  editor.angle(90);
+  expect(editor.get('image-angle').textContent).toContain('180°');
+  setTargets([0]);
+  expect(editor.get('view-binding-targets').textContent).toBe('本次应用：180° → 0°');
+  editor.get('apply-view-binding').click();
+  editor.get('export').click();
+  const copied = JSON.parse(editor.get('export-json').value);
+  editor.get('close-export').click();
+  expect(copied.views[0]).toEqual({ ...original.views[0], source: original.views[180].source, rect: original.views[180].rect });
+  expect(copied.views[90]).toEqual(original.views[90]);
+  expect(copied.views[270]).toEqual(original.views[270]);
+  setTargets([180]);
+  expect(editor.get('apply-view-binding').disabled).toBe(true);
+  expect(editor.get('view-binding-targets').textContent).toContain('至少选择一个其他');
+  setTargets([0, 90, 270]);
+  editor.change('rect-width', '999');
+  expect(editor.get('apply-view-binding').disabled).toBe(true);
+  editor.get('apply-view-binding').click();
+  editor.objectAngle(0);
+  editor.angle(90);
+  expect(editor.draw().rect).toEqual(original.views[90].rect);
+  expect(editor.draw().source).toBe(original.views[90].source);
+  editor.angle(0);
+  expect(editor.draw().rect).toEqual(original.views[180].rect);
+  expect(editor.draw().anchor).toEqual(original.views[0].anchor);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('元素工具读取地图同一份原作地表定义与图集，换材和四向预览不丢锚点', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('terrain-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  const definitions = JSON.parse(fs.readFileSync(path.join(__dirname, '../demo/static/terrain-samples/emperor-land-water/elements.json'), 'utf8'));
+  expect(editor.get('terrain-material').options).toHaveLength(Object.keys(definitions).length + 1);
+  const id = 'emperor-terrain-386';
+  editor.change('terrain-material', id, 'change');
+  await new Promise(resolve => setImmediate(resolve));
+  for (const angle of [0, 90, 180, 270]) {
+    editor.angle(angle);
+    expect(editor.draw().source).toBe('atlas.png');
+    expect(editor.draw().rect).toEqual(definitions[id].views[angle].rect);
+    expect(editor.draw().anchor).toEqual(definitions[id].views[angle].anchor);
+  }
+  editor.change('anchor-y', '123');
+  editor.angle(0);
+  expect(editor.draw().anchor).toEqual(definitions[id].views[0].anchor);
+  editor.get('export').click();
+  const saved = JSON.parse(editor.get('export-json').value);
+  editor.get('close-export').click();
+  expect(saved.views[270].anchor[1]).toBe(123);
+  // 重新选样本读原始库，编辑副本没有污染共享素材资料。
+  editor.change('terrain-material', id, 'change');
+  await new Promise(resolve => setImmediate(resolve));
+  editor.angle(270);
+  expect(editor.draw().anchor).toEqual(definitions[id].views[270].anchor);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test('地表素材加载失败保留之前的定义与图片，报告资源错误', async () => {
+  const editor = await loadPage('element-editor.html', {}, async url => url.includes('terrain-samples')
+    ? { ok: false, status: 404 }
+    : { ok: true, text: async () => fs.readFileSync(path.join(__dirname, '../demo', url), 'utf8') });
+  const original = editor.draw();
+  editor.get('terrain-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  expect(editor.draw()).toEqual(original);
+  expect(editor.get('source').value).toBe(original.source);
+  expect(editor.get('terrain-material').disabled).toBe(true);
+  expect(editor.get('issues').textContent).toContain('地表素材定义加载失败（404）');
+  editor.get('dismiss-file-issues').click();
+  expect(editor.get('export').disabled).toBe(false);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
 
 test('新建矩形自动确定放置基准，逐向选图、导出后独立页面回读一致', async () => {
   const editor = await loadPage('element-editor.html');
@@ -467,4 +789,57 @@ test.each(['element-editor.html', 'element-preview.html'])('%s 的 R 只在画�
   expect(page.draw().objectAngle).toBe(90);
   expect(page.errors).toEqual([]);
   page.window.close();
+});
+
+test.each([true, false])('元素缓存恢复保留原播放状态（播放=%s）与累计帧', async playing => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('terrain-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  editor.advance(200);
+  if (!playing) editor.get('animation-toggle').click();
+  const frame = editor.draw().frameIndex;
+  editor.window.dispatchEvent(new editor.window.PageTransitionEvent('pagehide', { persisted: true }));
+  expect(editor.callbacks.size).toBe(0);
+  editor.advance(5000);
+  editor.window.dispatchEvent(new editor.window.PageTransitionEvent('pageshow', { persisted: true }));
+  expect(editor.callbacks.size).toBe(playing ? 1 : 0);
+  expect(editor.get('animation-toggle').textContent).toBe(playing ? '暂停' : '播放');
+  expect(editor.draw().frameIndex).toBe(frame);
+  if (!playing) editor.get('animation-toggle').click();
+  editor.advance(100);
+  expect(editor.draw().frameIndex).toBe(frame + 1);
+  expect(editor.callbacks.size).toBe(1);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
+});
+
+test.each(['http', 'definition', 'missing-source'])('狗样本加载失败（%s）保留已有地表定义与资源，可重试恢复', async fault => {
+  let failing = false;
+  const editor = await loadPage('element-editor.html', {}, async url => ({
+    ok: !(failing && fault === 'http' && url.includes('/dog/')), status: 404,
+    text: async () => {
+      const json = fs.readFileSync(path.join(__dirname, '../demo', url), 'utf8');
+      if (!failing || !url.includes('/dog/') || fault === 'http') return json;
+      if (fault === 'definition') return '{}';
+      const value = JSON.parse(json);
+      value.views[0].source = 'missing.png';
+      return JSON.stringify(value);
+    },
+  }));
+  editor.get('terrain-sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  editor.get('animation-toggle').click();
+  const before = editor.draw();
+  failing = true;
+  editor.get('sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  expect(editor.draw()).toEqual(before);
+  expect(editor.get('issues').textContent).not.toBe('');
+  failing = false;
+  editor.get('sample').click();
+  await new Promise(resolve => setImmediate(resolve));
+  expect(editor.draw().source).not.toBe('atlas.png');
+  expect(editor.get('export').disabled).toBe(false);
+  expect(editor.errors).toEqual([]);
+  editor.window.close();
 });

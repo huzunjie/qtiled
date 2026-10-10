@@ -1,24 +1,34 @@
 (function(doc) {
   if (location.href.indexOf('no_nav') !== -1) return;
-  var navsArr = [
-    ['ellipse.html', '椭圆形 - Ellipse'],
-    ['rect.html', '正矩形 - Rect'],
-    ['hexagon.html', '六边形 - Hexagon'],
-    ['rhombus.html', '正菱形 - Rhombus'],
-    ['isometric-view.html', '四向视图与占地 - 菱形'],
-    ['element-preview.html', '四向静态素材 - 菱形'],
-    ['element-editor.html', '静态元素编辑器 - 菱形'],
-    ['map-preview.html', '静态地图浏览 - 菱形'],
-    ['water-animation.html', '水域动画 - 菱形'],
-    ['neighbors-rect.html', '查找相邻Tile - 正矩形'],
-    ['neighbors-hexagon.html', '查找相邻Tile - 六边形'],
-    ['neighbors-rhombus.html', '查找相邻Tile - 正菱形'],
-    ['elevation-rhombus.html', '海拔示例 - 菱形'],
-    ['pathfinding-rect.html', 'A*寻路 - 正矩形'],
-    ['pathfinding-hexagon.html', 'A*寻路 - 六边形'],
-    ['pathfinding-rhombus.html', 'A*寻路 - 正菱形'],
-    ['pathfinding-elevation-rhombus.html', 'A* 高差寻路 - 菱形'],
-    ['vast.html', '大量菱形单元交互测试'],
+  const navGroups = [
+    {
+      title: '基础库能力',
+      items: [
+        ['ellipse.html', '椭圆形 - Ellipse'],
+        ['rect.html', '正矩形 - Rect'],
+        ['hexagon.html', '六边形 - Hexagon'],
+        ['rhombus.html', '正菱形 - Rhombus'],
+        ['neighbors-rect.html', '查找相邻Tile - 正矩形'],
+        ['neighbors-hexagon.html', '查找相邻Tile - 六边形'],
+        ['neighbors-rhombus.html', '查找相邻Tile - 正菱形'],
+        ['elevation-rhombus.html', '海拔示例 - 菱形'],
+        ['pathfinding-rect.html', 'A*寻路 - 正矩形'],
+        ['pathfinding-hexagon.html', 'A*寻路 - 六边形'],
+        ['pathfinding-rhombus.html', 'A*寻路 - 正菱形'],
+        ['pathfinding-elevation-rhombus.html', 'A* 高差寻路 - 菱形'],
+        ['isometric-view.html', '四向视图与占地 - 菱形'],
+        ['vast.html', '大量菱形单元交互测试'],
+      ],
+    },
+    {
+      title: '游戏用例与工具',
+      items: [
+        ['element-preview.html', '四向静态素材 - 菱形'],
+        ['water-animation.html', '水域动画 - 菱形'],
+        ['element-editor.html', '元素编辑器 - 菱形'],
+        ['map-editor.html', '地图地表编辑 - 菱形'],
+      ],
+    },
   ];
 
   var navsEl = doc.createElement('div');
@@ -33,10 +43,14 @@
       ' Demo - 示例' +
     '</h3>' +
     '<div>' +
-      navsArr.map(function(item) {
-        var url = item[0];
-        var cls = location.href.indexOf('/' + url) !== -1 ? 'class="active"' : '';
-        return '  <a href="' + url + '" ' + cls + '>' + item[1] + '</a>';
+      navGroups.map(function(group) {
+        return '<section><h3>' + group.title + '</h3>' +
+          group.items.map(function(item) {
+            const url = item[0];
+            const cls = location.href.indexOf('/' + url) !== -1 ? 'class="active"' : '';
+            return '  <a href="' + url + '" ' + cls + '>' + item[1] + '</a>';
+          }).join('') +
+          '</section>';
       }).join('') +
     '</div>' +
     '<a class="github" href="https://github.com/huzunjie/qtiled" target="_blank">QTiled source code in GitHub</a>';

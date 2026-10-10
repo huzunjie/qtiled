@@ -3,13 +3,14 @@ import { importElementDefinition } from '../src/elements';
 import { resolveElementDraw } from '../src/element-rendering/draw';
 import { resolveElementPlacement } from '../src/element-rendering/placement';
 import { loadElementSources } from '../src/element-rendering/sources';
-import { renderElement } from '../src/element-rendering/spritejs-element-renderer';
+import { renderElement, updateElementFrame } from '../src/element-rendering/spritejs-element-renderer';
 import { Group, Sprite } from 'spritejs';
 
 jest.mock('spritejs', () => {
   class Node {
     constructor(attributes = {}) { this.attributes = attributes; this.children = []; }
     append(child) { this.children.push(child); child.parent = this; }
+    attr(attributes) { Object.assign(this.attributes, attributes); }
     remove() { this.parent.children = this.parent.children.filter(child => child !== this); }
   }
   return { Group: class extends Node {}, Sprite: class extends Node {}, Polyline: class extends Node {} };
@@ -315,5 +316,29 @@ describe('SpriteJS 预览适配（节点替身）', () => {
     renderElement(holders[0], null);
     expect(holders[0].children).toEqual([]);
     expect(holders[1].children).toEqual([other]);
+  });
+
+  test('更新当前帧复用节点、保留占地，仅变更图片和尺寸相关覆盖层', () => {
+    const layer = new Group();
+    const draw = resolveElementDraw(sample(), [2, 1]);
+    const group = renderElement(layer, draw, sources, { bounds: true });
+    const children = [...group.children];
+    const next = { source: '90.png', rect: [5, 6, 80, 40], anchor: [31, 61] };
+    expect(updateElementFrame(layer, next, sources)).toBe(group);
+    expect(layer.children).toEqual([group]);
+    expect(group.children).toEqual(children);
+    expect(children[0].attributes).toMatchObject({
+      texture: sources['90.png'], sourceRect: next.rect, size: [80, 40], pos: [draw.origin[0] - 31, draw.origin[1] - 61],
+    });
+    const bounds = children.find(child => child.attributes.strokeColor === '#7395b9');
+    expect(bounds.attributes.points).toEqual([[0, 0], [80, 0], [80, 40], [0, 40]]);
+    expect(children.find(child => child.attributes.strokeColor === '#1976b5').attributes.pos).toEqual(draw.placementOrigin);
+    const before = children.map(child => JSON.stringify(child.attributes));
+    expect(() => updateElementFrame(layer, { ...next, source: 'missing.png' }, sources)).toThrow('未加载图片');
+    expect(() => updateElementFrame(layer, { ...next, rect: [0, 0, 0, 40] }, sources)).toThrow(TypeError);
+    expect(() => updateElementFrame(layer, { ...next, anchor: [NaN, 0] }, sources)).toThrow(TypeError);
+    expect(children.map(child => JSON.stringify(child.attributes))).toEqual(before);
+    renderElement(layer, null);
+    expect(() => updateElementFrame(layer, next, sources)).toThrow('请先调用 renderElement');
   });
 });

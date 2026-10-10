@@ -156,18 +156,61 @@
     return rotateGridPoint([bounds.maxX, bounds.minY], -angle / 90);
   }
 
+  /** 从已校验定义解析一个方向的当前帧，不读时钟、不改定义或世界状态。
+   * @param {Object} definition v1 静态或 v2 共享序列元素定义。
+   * @param {number} imageAngle 已组合好的素材方向，0、90、180、270。
+   * @param {Object} playback { elapsedMs: 非负有限毫秒, phase: 非负安全整数帧偏移 }。
+   * 时间和暂停由调用方管理；phase 只影响循环帧索引，不改变序列、方向或锚点。
+   * @returns {Object} { source, rect, anchor, sequence, frameIndex }，静态 sequence 为 null。
+   */
+  function resolveElementFrame(definition, imageAngle = 0, {
+    elapsedMs = 0,
+    phase = 0
+  } = {}) {
+    if (![0, 90, 180, 270].includes(imageAngle)) throw new RangeError('imageAngle 必须为 0、90、180 或 270。');
+    if (!Number.isFinite(elapsedMs) || elapsedMs < 0) throw new RangeError('elapsedMs 必须是非负有限毫秒。');
+    if (!Number.isSafeInteger(phase) || phase < 0) throw new RangeError('phase 必须是非负安全整数帧偏移。');
+
+    if (!Object.prototype.hasOwnProperty.call(definition.views, imageAngle)) {
+      throw new Error(`views.${imageAngle} 缺少显式素材配置。`);
+    }
+
+    const view = definition.views[imageAngle];
+    let frame = view;
+    let frameIndex = 0;
+    let sequence = null;
+
+    if (definition.version === 2 && Object.prototype.hasOwnProperty.call(view, 'sequence')) {
+      sequence = view.sequence;
+      const clip = definition.sequences[sequence]; // 先将时间与相位分别取余，避免大相位加总丢失低位或长时间乘法溢出。
+
+      const cycle = clip.frameDurationMs * clip.frames.length;
+      frameIndex = (Math.floor(elapsedMs % cycle / clip.frameDurationMs) + phase % clip.frames.length) % clip.frames.length;
+      frame = clip.frames[frameIndex];
+    }
+
+    return {
+      source: frame.source,
+      rect: [...frame.rect],
+      anchor: [...view.anchor],
+      sequence,
+      frameIndex
+    };
+  }
+
   /** 将已通过元素契约校验的定义解释为绘制数据，不加载图片或创建渲染对象。
    * @param {Object} definition 由 importElementDefinition/validateElementDefinition 确认有效的定义。
    * @param {Array<number>} grid 定义原点的世界整数格，默认 [0, 0]；放置姿态由 resolveElementPlacement 计算。
    * @param {Object} view P0-B 视图参数，angle 仅表示镜头角度，缺省为 0。
    * @param {number} objectAngle 对象朝向，0、90、180 或 270，默认 0；与镜头采用相同旋转正向。
+   * @param {Object} playback 可选的 { elapsedMs, phase }；仅选择当前素材帧，不改变几何与放置。
    * @returns {Object} 镜头/对象/素材角度、素材引用、裁切、锚点、左上角位置、原点像素与占地世界格/像素。
    * 图片锚点相对裁切左上角；位置 = 原点投影 - 锚点，不按图片尺寸猜占地或缩放图片。
    * 本函数只绘制给定姿态，不决定转向时的位置；不能固定 grid 后只改 objectAngle 来模拟建筑原地转向。
    * placementGrid/placementOrigin 是矩形在当前镜头下的上角格/像素；非矩形返回 null，不猜测放置规则。
    */
 
-  function resolveElementDraw(definition, grid = [0, 0], view = {}, objectAngle = 0) {
+  function resolveElementDraw(definition, grid = [0, 0], view = {}, objectAngle = 0, playback = {}) {
     if (![0, 90, 180, 270].includes(objectAngle)) {
       throw new RangeError('objectAngle 必须为数字 0、90、180 或 270。');
     }
@@ -178,16 +221,13 @@
       tileSize = [8, 4]
     } = view;
     const imageAngle = (angle + objectAngle) % 360;
-
-    if (!Object.prototype.hasOwnProperty.call(definition.views, imageAngle)) {
-      throw new Error(`views.${imageAngle} 缺少显式素材配置。`);
-    }
-
     const {
       source,
       rect,
-      anchor
-    } = definition.views[imageAngle];
+      anchor,
+      sequence,
+      frameIndex
+    } = resolveElementFrame(definition, imageAngle, playback);
     const offsets = definition.footprint.map(offset => rotateGridPoint(offset, objectAngle / 90));
     const worldCells = getIsometricNeighborsByOffsets(grid, offsets);
     const placementGrid = getRectangleTopCell(worldCells, angle);
@@ -197,6 +237,10 @@
       objectAngle,
       imageAngle,
       source,
+      ...(sequence === null ? {} : {
+        sequence,
+        frameIndex
+      }),
       rect: [...rect],
       anchor: [...anchor],
       origin,

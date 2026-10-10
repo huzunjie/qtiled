@@ -287,18 +287,61 @@
     };
   }
 
+  /** 从已校验定义解析一个方向的当前帧，不读时钟、不改定义或世界状态。
+   * @param {Object} definition v1 静态或 v2 共享序列元素定义。
+   * @param {number} imageAngle 已组合好的素材方向，0、90、180、270。
+   * @param {Object} playback { elapsedMs: 非负有限毫秒, phase: 非负安全整数帧偏移 }。
+   * 时间和暂停由调用方管理；phase 只影响循环帧索引，不改变序列、方向或锚点。
+   * @returns {Object} { source, rect, anchor, sequence, frameIndex }，静态 sequence 为 null。
+   */
+  function resolveElementFrame(definition, imageAngle = 0, {
+    elapsedMs = 0,
+    phase = 0
+  } = {}) {
+    if (![0, 90, 180, 270].includes(imageAngle)) throw new RangeError('imageAngle 必须为 0、90、180 或 270。');
+    if (!Number.isFinite(elapsedMs) || elapsedMs < 0) throw new RangeError('elapsedMs 必须是非负有限毫秒。');
+    if (!Number.isSafeInteger(phase) || phase < 0) throw new RangeError('phase 必须是非负安全整数帧偏移。');
+
+    if (!Object.prototype.hasOwnProperty.call(definition.views, imageAngle)) {
+      throw new Error(`views.${imageAngle} 缺少显式素材配置。`);
+    }
+
+    const view = definition.views[imageAngle];
+    let frame = view;
+    let frameIndex = 0;
+    let sequence = null;
+
+    if (definition.version === 2 && Object.prototype.hasOwnProperty.call(view, 'sequence')) {
+      sequence = view.sequence;
+      const clip = definition.sequences[sequence]; // 先将时间与相位分别取余，避免大相位加总丢失低位或长时间乘法溢出。
+
+      const cycle = clip.frameDurationMs * clip.frames.length;
+      frameIndex = (Math.floor(elapsedMs % cycle / clip.frameDurationMs) + phase % clip.frames.length) % clip.frames.length;
+      frame = clip.frames[frameIndex];
+    }
+
+    return {
+      source: frame.source,
+      rect: [...frame.rect],
+      anchor: [...view.anchor],
+      sequence,
+      frameIndex
+    };
+  }
+
   /** 将已通过元素契约校验的定义解释为绘制数据，不加载图片或创建渲染对象。
    * @param {Object} definition 由 importElementDefinition/validateElementDefinition 确认有效的定义。
    * @param {Array<number>} grid 定义原点的世界整数格，默认 [0, 0]；放置姿态由 resolveElementPlacement 计算。
    * @param {Object} view P0-B 视图参数，angle 仅表示镜头角度，缺省为 0。
    * @param {number} objectAngle 对象朝向，0、90、180 或 270，默认 0；与镜头采用相同旋转正向。
+   * @param {Object} playback 可选的 { elapsedMs, phase }；仅选择当前素材帧，不改变几何与放置。
    * @returns {Object} 镜头/对象/素材角度、素材引用、裁切、锚点、左上角位置、原点像素与占地世界格/像素。
    * 图片锚点相对裁切左上角；位置 = 原点投影 - 锚点，不按图片尺寸猜占地或缩放图片。
    * 本函数只绘制给定姿态，不决定转向时的位置；不能固定 grid 后只改 objectAngle 来模拟建筑原地转向。
    * placementGrid/placementOrigin 是矩形在当前镜头下的上角格/像素；非矩形返回 null，不猜测放置规则。
    */
 
-  function resolveElementDraw(definition, grid = [0, 0], view = {}, objectAngle = 0) {
+  function resolveElementDraw(definition, grid = [0, 0], view = {}, objectAngle = 0, playback = {}) {
     if (![0, 90, 180, 270].includes(objectAngle)) {
       throw new RangeError('objectAngle 必须为数字 0、90、180 或 270。');
     }
@@ -309,16 +352,13 @@
       tileSize = [8, 4]
     } = view;
     const imageAngle = (angle + objectAngle) % 360;
-
-    if (!Object.prototype.hasOwnProperty.call(definition.views, imageAngle)) {
-      throw new Error(`views.${imageAngle} 缺少显式素材配置。`);
-    }
-
     const {
       source,
       rect,
-      anchor
-    } = definition.views[imageAngle];
+      anchor,
+      sequence,
+      frameIndex
+    } = resolveElementFrame(definition, imageAngle, playback);
     const offsets = definition.footprint.map(offset => rotateGridPoint(offset, objectAngle / 90));
     const worldCells = getIsometricNeighborsByOffsets(grid, offsets);
     const placementGrid = getRectangleTopCell(worldCells, angle);
@@ -328,6 +368,10 @@
       objectAngle,
       imageAngle,
       source,
+      ...(sequence === null ? {} : {
+        sequence,
+        frameIndex
+      }),
       rect: [...rect],
       anchor: [...anchor],
       origin,
@@ -353,7 +397,7 @@
 
   function renderElement(container, drawInfo, sources = {}, overlays = {}) {
     const previous = renderedGroups.get(container);
-    if (previous) previous.remove();
+    if (previous) previous.group.remove();
     renderedGroups.delete(container);
     if (!drawInfo) return null;
     const image = Object.prototype.hasOwnProperty.call(sources, drawInfo.source) ? sources[drawInfo.source] : null;
@@ -372,13 +416,14 @@
     }
 
     const [,, width, height] = drawInfo.rect;
-    group.append(new spritejs.Sprite({
+    const sprite = new spritejs.Sprite({
       texture: image,
       sourceRect: [...drawInfo.rect],
       pos: [...drawInfo.position],
       size: [width, height],
       anchor: [0, 0]
-    }));
+    });
+    group.append(sprite);
 
     if (overlays.footprint !== false) {
       drawInfo.footprint.forEach(({
@@ -393,14 +438,17 @@
       })));
     }
 
+    let bounds = null;
+
     if (overlays.bounds) {
-      group.append(new spritejs.Polyline({
+      bounds = new spritejs.Polyline({
         pos: drawInfo.position,
         points: [[0, 0], [width, 0], [width, height], [0, height]],
         close: true,
         strokeColor: '#7395b9',
         lineWidth: 1
-      }));
+      });
+      group.append(bounds);
     }
 
     if (overlays.placement !== false && drawInfo.placementOrigin) {
@@ -414,11 +462,47 @@
     }
 
     container.append(group);
-    renderedGroups.set(container, group);
+    renderedGroups.set(container, {
+      group,
+      sprite,
+      bounds,
+      origin: [...drawInfo.origin]
+    });
     return group;
   }
+  /** 原地更新现有元素的当前帧，不替换组、不修改占地或其他覆盖层。
+   * @param {Object} container 已经调用 renderElement 的同一容器。
+   * @param {Object} frame resolveElementFrame 的结果；锚点属于当前方向而非动画时间。
+   * @param {Object} sources 已加载的图片索引。
+   * @returns {Object} 原有 Group；输入不合法或缺图片时抛错，保留原画面。
+   */
 
-  /* 静态元素定义的可选入口，不从核心 src/index.js 导出。 */
+  function updateElementFrame(container, frame, sources = {}) {
+    const rendered = renderedGroups.get(container);
+    if (!rendered) throw new Error('容器中没有已绘制元素，请先调用 renderElement。');
+
+    if (!frame || typeof frame.source !== 'string' || !frame.source.length || !Array.isArray(frame.rect) || frame.rect.length !== 4 || !Array.from(frame.rect).every(Number.isInteger) || frame.rect[0] < 0 || frame.rect[1] < 0 || frame.rect[2] <= 0 || frame.rect[3] <= 0 || !Array.isArray(frame.anchor) || frame.anchor.length !== 2 || !Array.from(frame.anchor).every(Number.isFinite)) {
+      throw new TypeError('当前帧必须提供有效的图片、裁切与方向锚点。');
+    }
+
+    const image = Object.prototype.hasOwnProperty.call(sources, frame.source) ? sources[frame.source] : null;
+    if (!image) throw new Error(`未加载图片：${frame.source}`);
+    const [,, width, height] = frame.rect;
+    const position = rendered.origin.map((value, index) => value - frame.anchor[index]);
+    rendered.sprite.attr({
+      texture: image,
+      sourceRect: [...frame.rect],
+      size: [width, height],
+      pos: position
+    });
+    if (rendered.bounds) rendered.bounds.attr({
+      pos: position,
+      points: [[0, 0], [width, 0], [width, height], [0, height]]
+    });
+    return rendered.group;
+  }
+
+  /* 元素定义的可选入口，不从核心 src/index.js 导出。 */
   const VIEW_ANGLES = ['0', '90', '180', '270'];
 
   function isObject(value) {
@@ -432,8 +516,8 @@
   function isSourcePath(value) {
     return typeof value === 'string' && value.trim().length > 0 && !/^[a-z][a-z\d+.-]*:/i.test(value) && !value.includes('\\') && value.split('/').every(part => part !== '' && part !== '.' && part !== '..');
   }
-  /** 校验静态元素定义，不读取图片、不修复数据、不修改输入。
-   * @param {Object} definition { version: 1, id, kind, footprint, views }
+  /** 校验元素定义，不读取图片、不修复数据、不修改输入。
+   * @param {Object} definition v1 静态定义，或带显式共享帧序列的 v2 定义。
    * @param {Object} sourceInfo 按相对图片路径索引的 { width, height }，由调用方提供实际尺寸
    * @returns {Array<Object>} 问题列表，每项为 { path, code, message }；空列表表示通过
    * 四向分别使用 '0'/'90'/'180'/'270' 键；锚点相对裁切区域左上角，可在区域之外。
@@ -455,7 +539,7 @@
       return issues;
     }
 
-    if (definition.version !== 1) issue('version', 'unsupported-version', '元素定义版本必须为数字 1。');
+    if (![1, 2].includes(definition.version)) issue('version', 'unsupported-version', '元素定义版本必须为数字 1 或 2。');
 
     if (typeof definition.id !== 'string' || !definition.id.trim()) {
       issue('id', 'invalid-id', '元素 ID 必须是非空字符串。');
@@ -481,6 +565,62 @@
       }
     }
 
+    const validateFrame = (frame, path) => {
+      let size;
+
+      if (!isSourcePath(frame.source)) {
+        issue(`${path}.source`, 'invalid-source-path', '图片必须使用 / 分隔的相对文件路径，不含协议、反斜杠、空路径段或 .、.. 路径段。');
+      } else if (!isObject(sourceInfo) || !Object.prototype.hasOwnProperty.call(sourceInfo, frame.source)) {
+        issue(`${path}.source`, 'missing-source', '图片引用未在 sourceInfo 中找到。');
+      } else {
+        const candidate = sourceInfo[frame.source];
+
+        if (!isObject(candidate) || !Number.isInteger(candidate.width) || candidate.width <= 0 || !Number.isInteger(candidate.height) || candidate.height <= 0) {
+          issue(`${path}.source`, 'invalid-source-size', '图片实际宽高必须是正整数。');
+        } else {
+          size = candidate;
+        }
+      }
+
+      if (!isTuple(frame.rect, 4, Number.isInteger) || frame.rect[0] < 0 || frame.rect[1] < 0 || frame.rect[2] <= 0 || frame.rect[3] <= 0) {
+        issue(`${path}.rect`, 'invalid-rect', '裁切矩形必须为 [x, y, width, height]，使用整数，起点非负且宽高为正。');
+      } else if (size && (frame.rect[0] + frame.rect[2] > size.width || frame.rect[1] + frame.rect[3] > size.height)) {
+        issue(`${path}.rect`, 'rect-out-of-bounds', '裁切矩形超出图片实际尺寸。');
+      }
+    };
+
+    if (definition.version === 2 && definition.sequences !== undefined) {
+      if (!isObject(definition.sequences)) {
+        issue('sequences', 'invalid-sequences', '帧序列必须是按名称索引的对象。');
+      } else {
+        Object.entries(definition.sequences).forEach(([id, sequence]) => {
+          const path = `sequences.${id}`;
+          if (!id.trim()) issue(path, 'invalid-sequence-id', '序列名称必须是非空字符串。');
+
+          if (!isObject(sequence)) {
+            issue(path, 'invalid-sequence', '序列必须提供显式有序帧及作者设定的时长。');
+            return;
+          }
+
+          if (!Number.isSafeInteger(sequence.frameDurationMs) || sequence.frameDurationMs <= 0) {
+            issue(`${path}.frameDurationMs`, 'invalid-frame-duration', '每帧时长必须是正的安全整数毫秒。');
+          }
+
+          if (sequence.timingSource !== 'author') {
+            issue(`${path}.timingSource`, 'invalid-timing-source', '本版本的播放时长须明确标记为 author（作者设置）。');
+          }
+
+          if (!Array.isArray(sequence.frames) || !sequence.frames.length) {
+            issue(`${path}.frames`, 'invalid-frames', '序列必须包含至少一帧显式图片与裁切。');
+          } else {
+            for (const [index, frame] of sequence.frames.entries()) {
+              if (!isObject(frame)) issue(`${path}.frames[${index}]`, 'invalid-frame', '每帧必须是图片与裁切对象。');else validateFrame(frame, `${path}.frames[${index}]`);
+            }
+          }
+        });
+      }
+    }
+
     if (!isObject(definition.views)) {
       issue('views', 'invalid-views', '视图必须是包含 0、90、180、270 四向配置的对象。');
       return issues;
@@ -498,26 +638,18 @@
         return;
       }
 
-      let size;
-
-      if (!isSourcePath(view.source)) {
-        issue(`${path}.source`, 'invalid-source-path', '图片必须使用 / 分隔的相对文件路径，不含协议、反斜杠、空路径段或 .、.. 路径段。');
-      } else if (!isObject(sourceInfo) || !Object.prototype.hasOwnProperty.call(sourceInfo, view.source)) {
-        issue(`${path}.source`, 'missing-source', '图片引用未在 sourceInfo 中找到。');
-      } else {
-        const candidate = sourceInfo[view.source];
-
-        if (!isObject(candidate) || !Number.isInteger(candidate.width) || candidate.width <= 0 || !Number.isInteger(candidate.height) || candidate.height <= 0) {
-          issue(`${path}.source`, 'invalid-source-size', '图片实际宽高必须是正整数。');
-        } else {
-          size = candidate;
+      if (definition.version === 2 && Object.prototype.hasOwnProperty.call(view, 'sequence')) {
+        if (Object.prototype.hasOwnProperty.call(view, 'source') || Object.prototype.hasOwnProperty.call(view, 'rect')) {
+          issue(path, 'mixed-view-binding', '视图须选择静态图片或帧序列，不能同时指定。');
         }
-      }
 
-      if (!isTuple(view.rect, 4, Number.isInteger) || view.rect[0] < 0 || view.rect[1] < 0 || view.rect[2] <= 0 || view.rect[3] <= 0) {
-        issue(`${path}.rect`, 'invalid-rect', '裁切矩形必须为 [x, y, width, height]，使用整数，起点非负且宽高为正。');
-      } else if (size && (view.rect[0] + view.rect[2] > size.width || view.rect[1] + view.rect[3] > size.height)) {
-        issue(`${path}.rect`, 'rect-out-of-bounds', '裁切矩形超出图片实际尺寸。');
+        if (typeof view.sequence !== 'string' || !view.sequence.trim()) {
+          issue(`${path}.sequence`, 'invalid-sequence-reference', '序列引用必须是非空字符串。');
+        } else if (!isObject(definition.sequences) || !Object.prototype.hasOwnProperty.call(definition.sequences, view.sequence)) {
+          issue(`${path}.sequence`, 'missing-sequence', '视图引用的帧序列不存在。');
+        }
+      } else {
+        validateFrame(view, path);
       }
 
       if (!isTuple(view.anchor, 2, Number.isFinite)) {
@@ -558,9 +690,10 @@
   }
   /** 应用一次工具编辑，返回新定义；允许暂时非法的草稿，由统一校验器报告问题。
    * @param {Object} definition 当前定义或草稿，调用方将其视为不可变数据。
-   * @param {Object} edit { field: 'footprint'|'source'|'rect'|'anchor', value, angle? }。
+   * @param {Object} edit { field: 'footprint'|'source'|'rect'|'anchor'|'sequence'|'sequences', value, angle? }。
    * angle 仅在修改视图字段时使用，必须是数字 0/90/180/270。
-   * 仅复制修改路径及传入数组；未修改分支与原定义共享，不自动联动裁切和锚点。
+   * 仅复制修改路径及传入数组；sequences 编辑深复制序列数据并显式升为 v2。
+   * 切换 sequence/source/rect 绑定不联动方向锚点，未修改分支与原定义共享。
    */
 
   function applyElementEdit(definition, {
@@ -572,13 +705,39 @@
     if (field === 'footprint') return { ...definition,
       footprint: copyValue
     };
-    if (!['source', 'rect', 'anchor'].includes(field)) throw new TypeError('不支持的元素编辑字段。');
+
+    if (field === 'sequences') {
+      const copy = input => {
+        if (Array.isArray(input)) return input.map(copy);
+        if (isObject(input)) return Object.fromEntries(Object.entries(input).map(([key, item]) => [key, copy(item)]));
+        return input;
+      };
+
+      return { ...definition,
+        version: 2,
+        sequences: copy(value)
+      };
+    }
+
+    if (!['source', 'rect', 'anchor', 'sequence'].includes(field)) throw new TypeError('不支持的元素编辑字段。');
     if (![0, 90, 180, 270].includes(angle)) throw new RangeError('编辑方向必须为 0、90、180、270。');
+    const editedView = { ...definition.views[angle],
+      [field]: copyValue
+    };
+
+    if (field === 'sequence') {
+      delete editedView.source;
+      delete editedView.rect;
+    } else if (definition.version === 2 && (field === 'source' || field === 'rect')) {
+      delete editedView.sequence;
+    }
+
     return { ...definition,
+      ...(field === 'sequence' ? {
+        version: 2
+      } : {}),
       views: { ...definition.views,
-        [angle]: { ...definition.views[angle],
-          [field]: copyValue
-        }
+        [angle]: editedView
       }
     };
   }
@@ -600,7 +759,9 @@
   exports.loadElementSources = loadElementSources;
   exports.renderElement = renderElement;
   exports.resolveElementDraw = resolveElementDraw;
+  exports.resolveElementFrame = resolveElementFrame;
   exports.resolveElementPlacement = resolveElementPlacement;
+  exports.updateElementFrame = updateElementFrame;
   exports.validateElementDefinition = validateElementDefinition;
 
   Object.defineProperty(exports, '__esModule', { value: true });

@@ -18,8 +18,10 @@ test('鼠标坐标使用当前容器位置，保留小数及容器外坐标', ()
 });
 
 // 执行旧式 demo 的真实脚本，仅替代 DOM 和绘制后端，观察传给几何反查的坐标。
-function createDemo(file) {
+function createDemo(file, finding = pathFinding) {
   const html = fs.readFileSync(path.join(__dirname, '../demo', file), 'utf8');
+  const { window } = new JSDOM(html);
+  Object.defineProperty(window.HTMLElement.prototype, 'innerText', { get() { return this.textContent; } });
   const elements = {};
   for (const [, tag, id, attrs] of html.matchAll(/<([\w-]+)[^>]*?\bid="([^"]+)"([^>]*)>/g)) {
     elements[id] = {
@@ -29,18 +31,19 @@ function createDemo(file) {
       bounds: { left: 100, top: 200 },
       getBoundingClientRect() { return this.bounds; },
       addEventListener(name, handler) { this.events[name] = handler; },
-      querySelectorAll() { return []; },
+      querySelectorAll(selector) { return window.document.getElementById(id).querySelectorAll(selector); },
     };
   }
+  const nodes = new Set();
   class Shape {
     constructor(attrs) { Object.assign(this, attrs); }
     attr(name, value) {
       if (typeof name === 'string') this[name] = value;
       else Object.assign(this, name);
     }
-    remove() {}
+    remove() { nodes.delete(this); }
   }
-  class Scene { layer() { return { append() {} }; } }
+  class Scene { layer() { return { append(...items) { items.forEach(item => nodes.add(item)); } }; } }
   const lookups = [];
   const shapeMethods = {};
   for (const [name, methods] of Object.entries(shapes)) {
@@ -53,12 +56,12 @@ function createDemo(file) {
       };
     }
   }
-  const { window } = new JSDOM();
+  const alert = jest.fn();
   const context = vm.createContext({
     window,
     document: { getElementById: id => elements[id], createElement: window.document.createElement.bind(window.document), addEventListener: window.document.addEventListener.bind(window.document) },
     spritejs: { Scene, Label: Shape, Polyline: Shape },
-    qtiled: { shapes: shapeMethods, pathFinding },
+    qtiled: { shapes: shapeMethods, pathFinding: finding }, alert,
   });
   // 按 HTML 中的真实顺序加载公共脚本和内联脚本，防止漏引或加载过晚。
   for (const [, attrs, script] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
@@ -66,7 +69,7 @@ function createDemo(file) {
     else if (attrs.includes('./static/js/tile-selection.js')) vm.runInContext(fs.readFileSync(path.join(__dirname, '../demo/static/js/tile-selection.js'), 'utf8'), context);
     else if (!attrs.includes('src=')) vm.runInContext(script, context);
   }
-  return { elements, lookups };
+  return { elements, lookups, nodes, alert, window };
 }
 
 test.each([
@@ -92,4 +95,33 @@ test.each([
       }
     });
   });
+});
+
+test.each([
+  ['pathfinding-rect.html', ''], ['pathfinding-hexagon.html', ''],
+  ['pathfinding-rhombus.html', ''], ['pathfinding-rhombus.html', '1'],
+])('%s %s：失败寻路与条件变化清除旧路径', (file, suffix) => {
+  const aStar = jest.fn(() => [[0, 0, 0]]);
+  const { elements, nodes, alert, window } = createDemo(file, { aStar });
+  const get = id => elements[id + suffix];
+  const roads = () => [...nodes].filter(node => /^(道路 |路)\d/.test(String(node.text)));
+  get('start_path_finding').onclick();
+  expect(roads().length).toBeGreaterThan(0);
+  aStar.mockReturnValueOnce(null);
+  get('start_path_finding').onclick();
+  expect(alert).toHaveBeenLastCalledWith('没有通行路径。');
+  expect(roads()).toHaveLength(0);
+  for (const change of [
+    () => get('clear_sta').onclick(),
+    () => get('clear_end').onclick(),
+    () => get('clear_roadblock').onclick(),
+    () => get('dirs').querySelectorAll('[data-dir]')[0].click(),
+    () => get('ckb').onchange(),
+  ]) {
+    get('start_path_finding').onclick();
+    expect(roads().length).toBeGreaterThan(0);
+    change();
+    expect(roads()).toHaveLength(0);
+  }
+  window.close();
 });

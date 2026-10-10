@@ -1,0 +1,990 @@
+{
+  "version": 1,
+  "id": "emperor-ordinary-land-water",
+  "neighborOffsets": [
+    [
+      0,
+      -1
+    ],
+    [
+      1,
+      -1
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      -1,
+      1
+    ],
+    [
+      -1,
+      0
+    ],
+    [
+      -1,
+      -1
+    ]
+  ],
+  "qtiledCameraColumns": [
+    1,
+    0,
+    3,
+    2
+  ],
+  "waterBaseRecord": 386,
+  "elementPrefix": "emperor-terrain-",
+  "landElement": "emperor-terrain-202",
+  "animationElements": {
+    "even": "emperor-water-even",
+    "odd": "emperor-water-odd",
+    "deep": "emperor-water-deep"
+  },
+  "boundary": "non-water",
+  "rows": [
+    {
+      "row": 0,
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        71,
+        71,
+        71,
+        71
+      ],
+      "variants": 1
+    },
+    {
+      "row": 1,
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        39,
+        38,
+        37,
+        36
+      ],
+      "variants": 1
+    },
+    {
+      "row": 2,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        36,
+        39,
+        38,
+        37
+      ],
+      "variants": 1
+    },
+    {
+      "row": 3,
+      "conditions": [
+        1,
+        2,
+        0,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        37,
+        36,
+        39,
+        38
+      ],
+      "variants": 1
+    },
+    {
+      "row": 4,
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        38,
+        37,
+        36,
+        39
+      ],
+      "variants": 1
+    },
+    {
+      "row": 5,
+      "conditions": [
+        1,
+        2,
+        0,
+        2,
+        1,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        32,
+        34,
+        32,
+        34
+      ],
+      "variants": 2
+    },
+    {
+      "row": 6,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        34,
+        32,
+        34,
+        32
+      ],
+      "variants": 2
+    },
+    {
+      "row": 7,
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        0,
+        0,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        24,
+        20,
+        16,
+        28
+      ],
+      "variants": 4
+    },
+    {
+      "row": 8,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        1,
+        2,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        28,
+        24,
+        20,
+        16
+      ],
+      "variants": 4
+    },
+    {
+      "row": 9,
+      "conditions": [
+        0,
+        0,
+        0,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        16,
+        28,
+        24,
+        20
+      ],
+      "variants": 4
+    },
+    {
+      "row": 10,
+      "conditions": [
+        1,
+        2,
+        0,
+        0,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        20,
+        16,
+        28,
+        24
+      ],
+      "variants": 4
+    },
+    {
+      "row": 11,
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        0,
+        1,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        69,
+        68,
+        67,
+        70
+      ],
+      "variants": 1
+    },
+    {
+      "row": 12,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        1,
+        2,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        70,
+        69,
+        68,
+        67
+      ],
+      "variants": 1
+    },
+    {
+      "row": 13,
+      "conditions": [
+        0,
+        1,
+        0,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        67,
+        70,
+        69,
+        68
+      ],
+      "variants": 1
+    },
+    {
+      "row": 14,
+      "conditions": [
+        1,
+        2,
+        0,
+        1,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        68,
+        67,
+        70,
+        69
+      ],
+      "variants": 1
+    },
+    {
+      "row": 15,
+      "conditions": [
+        1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        8,
+        4,
+        0,
+        12
+      ],
+      "variants": 4
+    },
+    {
+      "row": 16,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        12,
+        8,
+        4,
+        0
+      ],
+      "variants": 4
+    },
+    {
+      "row": 17,
+      "conditions": [
+        0,
+        0,
+        0,
+        2,
+        1,
+        2,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        0,
+        12,
+        8,
+        4
+      ],
+      "variants": 4
+    },
+    {
+      "row": 18,
+      "conditions": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        4,
+        0,
+        12,
+        8
+      ],
+      "variants": 4
+    },
+    {
+      "row": 19,
+      "conditions": [
+        1,
+        2,
+        0,
+        1,
+        0,
+        0,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        61,
+        58,
+        55,
+        64
+      ],
+      "variants": 1
+    },
+    {
+      "row": 20,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        0,
+        1,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        64,
+        61,
+        58,
+        55
+      ],
+      "variants": 1
+    },
+    {
+      "row": 21,
+      "conditions": [
+        0,
+        0,
+        0,
+        2,
+        1,
+        2,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        55,
+        64,
+        61,
+        58
+      ],
+      "variants": 1
+    },
+    {
+      "row": 22,
+      "conditions": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        58,
+        55,
+        64,
+        61
+      ],
+      "variants": 1
+    },
+    {
+      "row": 23,
+      "conditions": [
+        1,
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        62,
+        59,
+        56,
+        65
+      ],
+      "variants": 1
+    },
+    {
+      "row": 24,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        0,
+        0,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        65,
+        62,
+        59,
+        56
+      ],
+      "variants": 1
+    },
+    {
+      "row": 25,
+      "conditions": [
+        0,
+        1,
+        0,
+        2,
+        1,
+        2,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        56,
+        65,
+        62,
+        59
+      ],
+      "variants": 1
+    },
+    {
+      "row": 26,
+      "conditions": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        59,
+        56,
+        65,
+        62
+      ],
+      "variants": 1
+    },
+    {
+      "row": 27,
+      "conditions": [
+        1,
+        2,
+        0,
+        1,
+        0,
+        1,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        63,
+        60,
+        57,
+        66
+      ],
+      "variants": 1
+    },
+    {
+      "row": 28,
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        0,
+        1,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        66,
+        63,
+        60,
+        57
+      ],
+      "variants": 1
+    },
+    {
+      "row": 29,
+      "conditions": [
+        0,
+        1,
+        0,
+        2,
+        1,
+        2,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        57,
+        66,
+        63,
+        60
+      ],
+      "variants": 1
+    },
+    {
+      "row": 30,
+      "conditions": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        60,
+        57,
+        66,
+        63
+      ],
+      "variants": 1
+    },
+    {
+      "row": 31,
+      "conditions": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        54,
+        54,
+        54,
+        54
+      ],
+      "variants": 1
+    },
+    {
+      "row": 32,
+      "conditions": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        52,
+        51,
+        50,
+        53
+      ],
+      "variants": 1
+    },
+    {
+      "row": 33,
+      "conditions": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        53,
+        52,
+        51,
+        50
+      ],
+      "variants": 1
+    },
+    {
+      "row": 34,
+      "conditions": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        50,
+        53,
+        52,
+        51
+      ],
+      "variants": 1
+    },
+    {
+      "row": 35,
+      "conditions": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        51,
+        50,
+        53,
+        52
+      ],
+      "variants": 1
+    },
+    {
+      "row": 36,
+      "conditions": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        40,
+        41,
+        40,
+        41
+      ],
+      "variants": 1
+    },
+    {
+      "row": 37,
+      "conditions": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        41,
+        40,
+        41,
+        40
+      ],
+      "variants": 1
+    },
+    {
+      "row": 38,
+      "conditions": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        48,
+        47,
+        46,
+        49
+      ],
+      "variants": 1
+    },
+    {
+      "row": 39,
+      "conditions": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        49,
+        48,
+        47,
+        46
+      ],
+      "variants": 1
+    },
+    {
+      "row": 40,
+      "conditions": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        46,
+        49,
+        48,
+        47
+      ],
+      "variants": 1
+    },
+    {
+      "row": 41,
+      "conditions": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        47,
+        46,
+        49,
+        48
+      ],
+      "variants": 1
+    },
+    {
+      "row": 42,
+      "conditions": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        44,
+        43,
+        42,
+        45
+      ],
+      "variants": 1
+    },
+    {
+      "row": 43,
+      "conditions": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        45,
+        44,
+        43,
+        42
+      ],
+      "variants": 1
+    },
+    {
+      "row": 44,
+      "conditions": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "viewOffsets": [
+        42,
+        45,
+        44,
+        43
+      ],
+      "variants": 1
+    },
+    {
+      "row": 45,
+      "conditions": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "viewOffsets": [
+        43,
+        42,
+        45,
+        44
+      ],
+      "variants": 1
+    }
+  ],
+  "source": {
+    "sg3": "China_Terrain.sg3",
+    "sha256": "56e9fe6bbbbdc93d28f44883bd9bd8f9cfe0198f024a5af1e4589d47319f374d",
+    "tableEditorVA": "0x835628",
+    "tableGameVA": "0xa1da20",
+    "tableSha256": "abd882d6e00acc31cbf1d295fca9e2b6585ea4c1eec81570b040372178e59f4f"
+  },
+  "scope": "平地普通陆地与水，按已证邻域修整派生深处水面；无BEACH、洪水事件、高程、道路或环境模拟。陆地固定原素材202；动画为3套24帧，100ms作者预览设置。",
+  "placement": {
+    "tileSize": [
+      80,
+      40
+    ],
+    "note": "完整原图与底部菱形中心锚点；矩阵外及null按非水处理属于QTiled工具决定。"
+  }
+}

@@ -60,6 +60,7 @@ p {
   right: 0;
   z-index: 2;
   max-width: 280px;
+  max-height: 100%;
   background: rgba(255, 255, 255, 0.9);
   border-left: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);

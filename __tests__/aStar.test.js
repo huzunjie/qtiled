@@ -107,8 +107,8 @@ describe('aStar - 路径属性', () => {
 });
 
 describe('aStar - 超出最大循环次数', () => {
-  test('超出 maximizable 时抛出异常', () => {
-    // 目标可达但 maximizable 极小，触发异常
+  test('超出 maxCostUpdates 时抛出异常', () => {
+    // 目标可达但 maxCostUpdates 极小，触发异常
     expect(() => {
       aStar([0, 0], [10, 10], makeRectNeighborsFn(), 1);
     }).toThrow(/maximum value/);
@@ -161,7 +161,7 @@ describe('aStar - 边界场景', () => {
     expect(last[1]).toBe(2);
   });
 
-  test('maximizable 为 1 时超限抛出异常', () => {
+  test('maxCostUpdates 为 1 时超限抛出异常', () => {
     // 已有测试验证，此处验证消息格式
     expect(() => {
       aStar([0, 0], [5, 5], makeRectNeighborsFn(), 1);
@@ -171,7 +171,7 @@ describe('aStar - 边界场景', () => {
 
 describe('默认参数覆盖 - aStar 函数', () => {
   test('aStar 无参调用：sta 与 end 均为 [0,0] 时直接返回起点', () => {
-    // 触发 staXyNum/endXyNum/getNeighbors/maximizable 全部默认参数分支
+    // 触发 staXyNum/endXyNum/getNeighbors/maxCostUpdates 全部默认参数分支
     // sta===end 时直接 push 起点，path.length > 0，返回路径数组
     const result = aStar();
     expect(result).not.toBeNull();

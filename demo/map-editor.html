@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>地图地表编辑 · QTiled Demo</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/preview-workspace.css">
+  <style>
+    .map-demo { max-width: 1100px; margin: 24px auto; }
+    .map-demo h1 { font-size: 24px; }
+    .map-demo p { opacity: 1; font-size: 12px; line-height: 1.7; }
+    .map-demo .intro, .map-demo .note { color: #687383; }
+    .map-demo button { cursor: pointer; padding: 6px 10px; margin: 0; font-size: 12px; }
+    .map-demo button[aria-pressed="true"] { background: #098d3b; }
+    .map-demo button:disabled { cursor: default; opacity: .45; }
+    .map-demo :is(button, select, input):focus-visible { outline: 2px solid #098d3b; outline-offset: 2px; }
+    .map-demo select { padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
+    .map-demo .preview-workspace > .viewport { overflow: hidden; }
+    .map-demo .preview-workspace > aside { position: relative; padding: 0; overflow: hidden; }
+    .map-demo .map-details { position: absolute; inset: 0; overflow: auto; scrollbar-gutter: stable; padding: 12px; }
+    .map-demo aside dt { margin-top: 6px; }
+    .map-demo aside h2 { margin-bottom: 8px; }
+    .map-demo .canvas-controls { padding: 10px; border-bottom: 1px solid #edf0f3; font-size: 12px; }
+    .map-demo fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+    .map-demo .toolbar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+    .map-demo .toolbar-row + .toolbar-row { margin-top: 8px; }
+    .map-demo .control-group { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+    .map-demo .group-label { color: #687383; min-width: 24px; margin-right: 3px; }
+    .map-demo #zoom-percent { width: 60px; padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; font: inherit; }
+    .map-demo .display-toggle { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; padding: 4px; }
+    .map-demo .display-toggle input { margin: 0; accent-color: #098d3b; }
+    .map-demo .playback-row { margin-top: 8px; padding-top: 8px; border-top: 1px solid #edf0f3; }
+    .map-demo .view-status { color: #687383; margin-left: auto; }
+    .map-demo #coordinates-hint { color: #687383; }
+    .map-demo .selection-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 10px 0; font-size: 12px; }
+    .map-demo textarea { width: 100%; box-sizing: border-box; min-height: 110px; font: 11px monospace; }
+    .map-demo .file-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; font-size: 12px; }
+    .map-demo #map-canvas { touch-action: none; }
+    .map-demo .click-help { margin: 0; padding: 6px 10px; color: #687383; border-bottom: 1px solid #edf0f3; }
+    .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
+    .map-demo #map-canvas { position: relative; width: 100%; height: clamp(360px, 60vh, 640px); overflow: hidden; border: 0; padding: 0; }
+    .map-demo #map-canvas[data-tool="pan"] { cursor: grab; }
+    .map-demo #map-canvas[data-panning="true"] { cursor: grabbing; }
+    .map-demo #status { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 44px); margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); pointer-events: none; }
+    .map-demo #issues { color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .map-demo #cell-info { min-height: 4.8em; }
+    .map-demo #map-summary, .map-demo #entity-source, .map-demo #entity-footprint { min-height: 3.2em; }
+    .map-demo #entity-footprint { max-height: 100px; overflow: auto; }
+    .map-demo #cell-info, .map-demo #entity-source { white-space: pre-line; }
+    .map-demo aside h2:not(:first-child) { margin-top: 10px; padding-top: 8px; border-top: 1px solid #edf0f3; }
+    @media (max-width: 680px) {
+      .map-demo .preview-workspace { flex-direction: column; }
+      .map-demo .preview-workspace > aside { flex: auto; }
+      .map-demo .map-details { position: static; max-height: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="./static/js/navs.js"></script>
+  <script src="./static/js/spritejs3.js"></script>
+  <script src="./static/js/qtiled-view.dev.js"></script>
+  <script src="./static/js/qtiled-element-rendering.dev.js"></script>
+  <script src="./static/js/qtiled-maps.dev.js"></script>
+  <script src="./static/js/pointer.js"></script>
+  <script src="./static/js/dog-element-sample.js"></script>
+  <script src="./static/js/land-water-rules.js"></script>
+  <script src="./static/js/element-animation-player.js"></script>
+  <main class="map-demo">
+    <h1>地图地表编辑</h1>
+    <p class="intro">绘制陆地与水域，岸线随周边地形自动更新。拖动预览整笔，松开提交；切换镜头保留世界格与实体占地。</p>
+    <div class="file-controls">
+      <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="first-static-map">雕塑与陆地</option><option value="land-water-map">小水塘与岸线</option><option value="deep-water-map">宽阔水域与深水</option></select></label>
+      <button id="reload" type="button">重新加载</button>
+      <label>打开地图 <input id="map-file" type="file" accept=".json,application/json"></label>
+      <button id="save-map" type="button" disabled>保存地图</button>
+    </div>
+    <div class="preview-workspace">
+      <div class="viewport">
+        <div class="canvas-controls">
+          <fieldset id="controls" disabled aria-label="地图查看控制">
+            <div class="toolbar-row">
+              <div class="control-group" role="group" aria-label="编辑工具">
+                <label><span class="group-label">编辑</span> <select id="edit-tool" aria-label="编辑工具"><option value="select">查看</option><option value="pan">平移</option><option value="land">陆地笔刷</option><option value="water">水域笔刷</option></select></label>
+                <button id="undo" type="button" disabled>撤销</button>
+                <button id="redo" type="button" disabled>重做</button>
+              </div>
+              <div class="control-group" role="group" aria-label="镜头方向">
+                <span class="group-label">镜头</span>
+                <button type="button" data-angle="0" aria-pressed="true">0°</button>
+                <button type="button" data-angle="90" aria-pressed="false">90°</button>
+                <button type="button" data-angle="180" aria-pressed="false">180°</button>
+                <button type="button" data-angle="270" aria-pressed="false">270°</button>
+              </div>
+            </div>
+            <div class="toolbar-row">
+              <div class="control-group" role="group" aria-label="地图缩放">
+                <label><span class="group-label">缩放</span> <input id="zoom-percent" type="number" min="10" max="400" step="any" value="100" aria-label="缩放比例" title="10%～400%，按 Enter 或离开输入框应用"> %</label>
+                <button id="fit-map" type="button">查看全图</button>
+                <button id="native-size" type="button">原尺寸</button>
+              </div>
+              <output id="viewport-info" class="view-status">工作视口 · 100%</output>
+            </div>
+            <div class="toolbar-row">
+              <div class="control-group" role="group" aria-label="辅助显示">
+                <span class="group-label">显示</span>
+                <label class="display-toggle"><input id="show-grid" type="checkbox">显示网格</label>
+                <label class="display-toggle"><input id="show-coordinates" type="checkbox" aria-describedby="coordinates-hint">显示坐标</label>
+              </div>
+              <span id="coordinates-hint" hidden>坐标过密，放大至 50% 以上查看</span>
+            </div>
+          </fieldset>
+          <div class="toolbar-row playback-row">
+            <div class="control-group" role="group" aria-label="水面动画">
+              <span class="group-label">动画</span>
+              <button id="play-animation" type="button" disabled>暂停动画</button>
+              <button id="restart-animation" type="button" disabled>重播</button>
+              <output id="animation-state" aria-live="polite">水面动画准备中</output>
+            </div>
+            <button id="cancel-stroke" type="button" disabled>取消整笔</button>
+          </div>
+        </div>
+        <p id="click-help" class="click-help">平移：选“平移”左键拖动，或用鼠标中键。笔刷：拖动预览，松开提交；Esc 取消。越过空角或地图边界时整笔拒绝。查看：按地面格选择。</p>
+        <p id="issues" role="alert" hidden></p>
+        <div class="canvas-stage">
+          <div id="map-canvas" role="img" aria-label="地图画布：平移、绘制地表或查看格子和实体"></div>
+          <p id="status" role="status">正在加载地图与素材…</p>
+        </div>
+      </div>
+      <aside>
+        <div class="map-details">
+          <h2>地图</h2>
+          <dl>
+            <dt>地图 ID</dt><dd id="map-id">—</dd>
+            <dt>范围与数量</dt><dd id="map-summary">—</dd>
+            <dt>格距 / 镜头</dt><dd id="view-info">—</dd>
+          </dl>
+          <div class="selection-controls">
+            <label>查看 <select id="pick-mode" aria-describedby="click-help"><option value="entity">雕塑信息</option><option value="cell">格子属性</option></select></label>
+            <button id="clear-selection" type="button">清除选择</button>
+          </div>
+          <h2>选中格子</h2>
+          <dl>
+            <dt>世界坐标</dt><dd id="cell-grid">—</dd>
+            <dt>格属性</dt><dd id="cell-info">点击画布查看</dd>
+            <dt>当前水帧</dt><dd id="water-frame">—</dd>
+          </dl>
+          <h2>选中实体</h2>
+          <dl>
+            <dt>实例 ID</dt><dd id="entity-id">—</dd>
+            <dt>元素 / 当前图片</dt><dd id="entity-source">—</dd>
+            <dt>定义原点 / 对象朝向</dt><dd id="entity-pose">—</dd>
+            <dt>完整世界占地</dt><dd id="entity-footprint">—</dd>
+          </dl>
+          <details><summary>高级：查看 / 粘贴 JSON</summary>
+            <p class="note">与“打开地图”读取同一种地图数据；这里可直接粘贴文本。保存地图时会同步显示导出的 JSON。</p>
+            <textarea id="map-json" aria-label="地图 JSON" placeholder="粘贴地图 JSON，或保存时查看导出内容"></textarea>
+            <button id="read-map" type="button" disabled>读取 JSON</button>
+          </details>
+          <p class="note">蓝色表示选择。当前仅支持零高程普通陆地/水域；边界与空角按非水处理，深处水面由邻域派生。动画默认每帧 100ms，为预览设置；洪水事件、实体通行限制尚未接入。</p>
+          <p class="note">画布随容器调整；平移、缩放和镜头只改变查看位置，不改变地图。靠近真实边界或查看小地图时允许留白，可随时“查看全图”找回地图。</p>
+          <p class="note">网格和坐标仅覆盖有效格，坐标为世界 x,y，不随镜头重新编号。坐标在缩放小于 50% 时暂时隐藏，放大至 50% 以上恢复；显示开关不写入地图文件。</p>
+          <p class="note">实体按地面占地选择；同格有多个实例时取地图列表中的第一个，空地清除实体选择。点击雕塑上部仍查询指针下的地面格子。</p>
+          <p class="note"><a href="./static/terrain-samples/emperor-land-water/elements.json">共用地表素材定义</a> · <a href="./element-editor.html">元素工具</a> · <a href="./static/map-samples/rectangular-water-map.json">地图 JSON</a> · <a href="./static/element-samples/dog/element.json">元素定义</a></p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <script src="./static/js/map-editor.js"></script>
+</body>
+</html>

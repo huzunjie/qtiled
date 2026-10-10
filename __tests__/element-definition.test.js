@@ -43,7 +43,7 @@ describe('静态元素定义校验', () => {
 
   test.each([
     ['字符串版本', d => { d.version = '1'; }, 'version', 'unsupported-version'],
-    ['未知版本', d => { d.version = 2; }, 'version', 'unsupported-version'],
+    ['未知版本', d => { d.version = 3; }, 'version', 'unsupported-version'],
     ['空 ID', d => { d.id = ' '; }, 'id', 'invalid-id'],
     ['业务类别', d => { d.kind = 'house'; }, 'kind', 'invalid-kind'],
     ['空占地', d => { d.footprint = []; }, 'footprint', 'invalid-footprint'],

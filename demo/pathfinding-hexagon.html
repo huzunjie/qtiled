@@ -202,14 +202,14 @@
         actFun = appendStaBlock;
         clearPath();
       };
-      $id('clear_sta').onclick = removeStaBlock;
+      $id('clear_sta').onclick = () => { clearPath(); removeStaBlock(); };
       // 终点
       const [appendEndBlock, removeEndBlock, getEndXyNum] = getBlock('终点', 'rgba(125, 0, 255, 0.8)');
       $id('set_end').onclick = () => {
         actFun = appendEndBlock;
         clearPath();
       };
-      $id('clear_end').onclick = removeEndBlock;
+      $id('clear_end').onclick = () => { clearPath(); removeEndBlock(); };
       // 路障
       const roadblocksRmCaches = {/* [gridX + ',' + gridY]: removeFunction*/}; // 路障集
       const addRoadbock = (gridX, gridY, x, y) => {
@@ -226,13 +226,17 @@
         actFun = addRoadbock;
         clearPath();
       };
-      $id('clear_roadblock').onclick = () => Object.values(roadblocksRmCaches).forEach((fun) => fun());
+      $id('clear_roadblock').onclick = () => {
+        clearPath();
+        Object.values(roadblocksRmCaches).forEach((fun) => fun());
+      };
 
       // 点击瓦片，执行具体行为
       container.addEventListener('click', (e) => {
         if (!actFun) return;
         // 得到索引序号&渲染位置
         const [gridX, gridY, x, y] = getInfoByPos(getPointerPosition(e, container), pos, size, stagger);
+        clearPath();
         actFun(gridX, gridY, x, y);
       });
 
@@ -248,6 +252,7 @@
           const hasActive = el.className === 'active';
           el.className = hasActive ? '' : 'active';
           dirConfs[el.innerText] = !hasActive;
+          clearPath();
         };
       });
 
@@ -266,6 +271,7 @@
       };
 
       const ckbEl = $id('ckb');
+      ckbEl.onchange = clearPath;
       const [minGridX, maxGridX] = gridXRange;
       const [minGridY, maxGridY] = gridYRange;
       const tileVerify = (gridX, gridY) => (
@@ -275,6 +281,7 @@
         && (ckbEl.checked || (gridX >= minGridX && gridX <= maxGridX && gridY >= minGridY && gridY <= maxGridY))
       );
       $id('start_path_finding').onclick = () => {
+        clearPath();
         const staXYNum = getStaXyNum();
         if (!tileVerify(...staXYNum)) return alert('错误的起点，不可通行');
         const endXYNum = getEndXyNum();
@@ -294,7 +301,6 @@
           }
         );
         if (!pathXyNums) return alert('没有通行路径。');
-        clearPath();
         pathXyNums.forEach(([gridX, gridY, cost]) => {
           const [x, y] = getPosition([gridX, gridY], size, stagger, pos);
           addRoad(gridX, gridY, x, y, cost);

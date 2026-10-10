@@ -1,6 +1,7 @@
 import { applyElementEdit, exportElementDefinition, importElementDefinition, validateElementDefinition } from '../src/elements';
 import { resolveElementDraw } from '../src/element-rendering/draw';
 import { projectGrid } from '../src/isometric-view';
+import { resolveMapEntities } from '../src/maps';
 import * as core from '../src';
 
 const angles = [0, 90, 180, 270];
@@ -100,5 +101,47 @@ describe('元素编辑与正式导出', () => {
       expect(after.footprint).toEqual(before.footprint);
     });
     expect(exportElementDefinition(edited, sourceInfo).issues).toEqual([]);
+  });
+
+  test.each([
+    ['单图四向', [0, 0, 0, 0]],
+    ['部分共用', [0, 90, 0, 270]],
+    ['四向独立', [0, 90, 180, 270]],
+  ])('%s 保存回读后，16 种镜头与对象方向共用相同地图消费者且锚点独立', (name, bindings) => {
+    const definition = sample();
+    definition.footprint = [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1]];
+    angles.forEach((angle, index) => {
+      definition.views[angle] = { source: `${bindings[index]}.png`, rect: [2, 3, 150, 110], anchor: [11 + index, 25 + index] };
+    });
+    freeze(definition);
+    const { json, issues } = exportElementDefinition(definition, sourceInfo);
+    expect(issues).toEqual([]);
+    const imported = importElementDefinition(json, sourceInfo).definition;
+    expect(imported).toEqual(definition);
+    const footprints = [
+      [[3, 3], [4, 3], [5, 3], [3, 4], [4, 4], [5, 4]],
+      [[3, 3], [3, 4], [3, 5], [2, 3], [2, 4], [2, 5]],
+      [[3, 3], [2, 3], [1, 3], [3, 2], [2, 2], [1, 2]],
+      [[3, 3], [3, 2], [3, 1], [4, 3], [4, 2], [4, 1]],
+    ];
+    angles.forEach((objectAngle, objectIndex) => {
+      const map = freeze({ version: 1, id: 'shared-sprite-map', tileSize: [80, 40],
+        cells: Array.from({ length: 7 }, () => Array.from({ length: 7 }, () => ({ terrain: 'land', elevation: 0 }))),
+        entities: [{ id: 'shared', element: imported.id, grid: [3, 3], angle: objectAngle }] });
+      angles.forEach(angle => {
+        const view = { angle, tileSize: [80, 40], originPixel: [300, 200] };
+        const draw = resolveElementDraw(imported, [3, 3], view, objectAngle);
+        const imageIndex = ((angle + objectAngle) % 360) / 90;
+        expect(draw.source).toBe(`${bindings[imageIndex]}.png`);
+        expect(draw.anchor).toEqual([11 + imageIndex, 25 + imageIndex]);
+        expect(draw.footprint.map(cell => cell.grid)).toEqual(footprints[objectIndex]);
+        const result = resolveMapEntities(map, { [imported.id]: imported }, view);
+        expect(result.issues).toEqual([]);
+        expect(result.entities[0].draw).toEqual(draw);
+        expect(result.entities[0]).toMatchObject({ id: 'shared', grid: [3, 3], angle: objectAngle });
+      });
+    });
+    expect(imported.views[0].rect).not.toBe(imported.views[180].rect);
+    expect(imported.views[0].anchor).not.toBe(imported.views[180].anchor);
   });
 });

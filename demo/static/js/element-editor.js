@@ -1,9 +1,10 @@
-/* global qtiled, qtiledView, qtiledElementRendering, spritejs, getPointerPosition, getElementSourceFiles, getDogElementSample, getElementLowerEdges, snapElementLowerEdges */
+/* global qtiled, qtiledView, qtiledElementRendering, spritejs, getPointerPosition, getElementSourceFiles, getDogElementSample, getElementLowerEdges, snapElementLowerEdges, createElementAnimationPlayer */
 (async () => {
   const nav = document.querySelector('.navs');
   if (nav) nav.classList.add('closed');
   const { loadElementSources, importElementDefinition, validateElementDefinition,
-    applyElementEdit, exportElementDefinition, resolveElementDraw, resolveElementPlacement, renderElement } = qtiledElementRendering;
+    applyElementEdit, exportElementDefinition, resolveElementDraw, resolveElementFrame,
+    resolveElementPlacement, renderElement, updateElementFrame } = qtiledElementRendering;
   const get = id => document.getElementById(id);
   const angles = [0, 90, 180, 270];
   const rectIds = ['rect-x', 'rect-y', 'rect-width', 'rect-height'];
@@ -23,6 +24,7 @@
   let definition;
   let sources = {};
   let sourceInfo = {};
+  let terrainLibrary = null;
   let busy = false;
   let inputIssue = null;
   let dimensionIssue = null;
@@ -35,11 +37,89 @@
   let exportJson = null;
   const lowerEdgeCache = new WeakMap();
 
-  if (typeof applyElementEdit !== 'function' || typeof exportElementDefinition !== 'function' || typeof resolveElementPlacement !== 'function') {
+  if (typeof applyElementEdit !== 'function' || typeof exportElementDefinition !== 'function' || typeof resolveElementPlacement !== 'function'
+    || typeof resolveElementFrame !== 'function' || typeof updateElementFrame !== 'function') {
     get('status').textContent = '运行文件尚未更新：请在 QTiled 根目录运行 npm run debug，再刷新此页。';
     get('file-controls').disabled = true;
     get('canvas-controls').disabled = true;
     return;
+  }
+  const player = createElementAnimationPlayer(updateAnimation);
+  let resumePlayback = false;
+  window.addEventListener('pagehide', event => {
+    resumePlayback = event.persisted && player.playing;
+    if (event.persisted) player.pause(); else player.dispose();
+  });
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) return;
+    if (resumePlayback) player.play();
+    resumePlayback = false;
+    updateAnimationControls();
+  });
+
+  function isSequenceView(angle = imageAngle()) {
+    return definition?.version === 2 && Object.prototype.hasOwnProperty.call(definition.views[angle], 'sequence');
+  }
+
+  function currentSequence(angle = imageAngle()) {
+    return isSequenceView(angle) ? definition.sequences?.[definition.views[angle].sequence] : null;
+  }
+
+  function previewFrame(angle = imageAngle()) {
+    try {
+      return resolveElementFrame(definition, angle, { elapsedMs: player.elapsed() });
+    } catch (error) {
+      const current = definition?.views?.[angle];
+      return { source: current?.source || '', rect: current?.rect || [0, 0, 1, 1], anchor: current?.anchor || [0, 0] };
+    }
+  }
+
+  function viewHasIssues(issues, angle) {
+    const sequence = isSequenceView(angle) ? definition.views[angle].sequence : null;
+    return issues.some(issue => issue.path === `views.${angle}` || issue.path.startsWith(`views.${angle}.`)
+      || (sequence && (issue.path === 'sequences' || issue.path === `sequences.${sequence}`
+        || issue.path.startsWith(`sequences.${sequence}.`))));
+  }
+
+  function fillFrameFields(frame = previewFrame()) {
+    get('source').value = frame.source;
+    rectIds.forEach((id, i) => { get(id).value = Number.isFinite(frame.rect[i]) ? frame.rect[i] : ''; });
+    const size = sourceInfo[frame.source];
+    get('source-size').textContent = size ? `原图 ${size.width} × ${size.height}` : '未选图';
+    get('source-size').title = size ? '' : '当前方向尚未绑定已加载图片';
+    if (currentSequence() && Number.isInteger(frame.frameIndex)) get('animation-frame').value = frame.frameIndex + 1;
+  }
+
+  function updateAnimationControls() {
+    const sequence = currentSequence();
+    get('animation-controls').hidden = !sequence;
+    get('animation-toggle').textContent = player.playing ? '暂停' : '播放';
+    if (!sequence) return;
+    get('animation-frame').disabled = !Number.isSafeInteger(sequence.frameDurationMs) || sequence.frameDurationMs <= 0;
+    get('animation-duration').value = sequence.frameDurationMs;
+    get('animation-frame').max = sequence.frames.length;
+    get('animation-count').textContent = `/ ${sequence.frames.length}`;
+    const shared = angles.filter(angle => definition.views[angle].sequence === definition.views[imageAngle()].sequence);
+    get('animation-help').textContent = `作者预览节奏。图片和裁切编辑当前帧，影响共用此序列的 ${shared.map(angle => `${angle}°`).join('、')}；锚点只改当前方向。`;
+  }
+
+  function updateAnimation() {
+    if (busy || drag || !currentDraw || !currentSequence()) return;
+    const frame = previewFrame();
+    if (frame.frameIndex === undefined) return;
+    if (currentDraw.frameIndex !== frame.frameIndex || currentDraw.sequence !== frame.sequence) {
+      updateElementFrame(layer, frame, sources);
+      currentDraw = { ...currentDraw, ...frame,
+        position: currentDraw.origin.map((value, i) => value - frame.anchor[i]) };
+      fillFrameFields(frame);
+    }
+    get('animation-toggle').textContent = player.playing ? '暂停' : '播放';
+  }
+
+  function pauseForFrameEdit() {
+    if (!currentSequence()) return;
+    player.pause();
+    updateAnimationControls();
   }
 
   function toScreen(point) {
@@ -53,6 +133,7 @@
   function resetPlacement() {
     elementGrid = [0, 0];
     objectAngle = 0;
+    get('terrain-material').value = '';
     document.querySelectorAll('[data-object-angle]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.objectAngle) === 0)));
   }
 
@@ -114,20 +195,27 @@
       [Math.min(-4, (footprintBounds?.minX ?? 0) - 2), Math.max(4, (footprintBounds?.maxX ?? 0) + 2)],
       [Math.min(-4, (footprintBounds?.minY ?? 0) - 2), Math.max(4, (footprintBounds?.maxY ?? 0) + 2)],
     ];
-    const issues = [...fileIssues, ...(inputIssue ? [inputIssue] : []), ...(dimensionIssue ? [dimensionIssue] : []), ...validateElementDefinition(definition, sourceInfo)];
+    const definitionIssues = validateElementDefinition(definition, sourceInfo);
+    const issues = [...fileIssues, ...(inputIssue ? [inputIssue] : []), ...(dimensionIssue ? [dimensionIssue] : []), ...definitionIssues];
+    updateViewBinding(definitionIssues);
     get('dismiss-file-issues').hidden = fileIssues.length === 0;
     get('issues').hidden = issues.length === 0;
     get('validation').hidden = issues.length === 0;
     get('issues').textContent = issues.map(issue => `${issue.path}: ${issue.message}`).join('\n');
     get('export').disabled = busy || issues.length > 0;
-    const validAngles = angles.filter(angle => !issues.some(issue => issue.path === `views.${angle}` || issue.path.startsWith(`views.${angle}.`)));
+    const validAngles = angles.filter(angle => !viewHasIssues(definitionIssues, angle));
     const summary = `${definition?.kind === 'tile' ? '地块' : '精灵'} · 占地 ${footprint.length} 格 · 镜头 ${view.angle}° / 对象 ${objectAngle}° · 四向 ${validAngles.length}/4`;
     get('status').textContent = busy ? '正在载入…' : `${summary} · ${issues.length ? '草稿待完成，暂不可导出' : '配置校验通过，可以导出 JSON'}`;
     // 草稿允许只预览已配置的当前方向；正式导出仍校验完整四向。
-    const invalidCommon = issues.some(issue => issue.path === '$' || issue.path === 'views' || issue.path.startsWith('footprint'));
-    currentDraw = invalidCommon || !validAngles.includes(imageAngle()) ? null : resolveElementDraw(definition, elementGrid, view, objectAngle);
-    if (fit) fitCamera(gridRanges, vertexes, invalidCommon ? [] : validAngles.map(angle =>
-      resolveElementDraw(definition, elementGrid, { ...view, angle: (angle - objectAngle + 360) % 360 }, objectAngle)));
+    const invalidCommon = definitionIssues.some(issue => issue.path === '$' || issue.path === 'views' || issue.path.startsWith('footprint'));
+    currentDraw = invalidCommon || !validAngles.includes(imageAngle()) ? null
+      : resolveElementDraw(definition, elementGrid, view, objectAngle, { elapsedMs: player.elapsed() });
+    if (fit) fitCamera(gridRanges, vertexes, invalidCommon ? [] : validAngles.flatMap(angle => {
+      const sequence = currentSequence(angle);
+      const times = sequence ? sequence.frames.map((frame, index) => index * sequence.frameDurationMs) : [0];
+      return times.map(elapsedMs => resolveElementDraw(definition, elementGrid,
+        { ...view, angle: (angle - objectAngle + 360) % 360 }, objectAngle, { elapsedMs }));
+    }));
     get('view-scale').textContent = `${view.tileSize.join('×')} · ${Math.round(camera.scale * 100)}%`;
     get('view-scale').title = `逻辑单元格 ${view.tileSize.join('×')} 像素；当前显示约 ${view.tileSize.map(value => Math.round(value * camera.scale * 10) / 10).join('×')} 像素`;
     const points = vertexes.map(vertex => vertex.map(value => value * camera.scale));
@@ -150,22 +238,28 @@
       overlayLayer.append(new spritejs.Polyline({ pos: toScreen(qtiledView.projectGrid(placementGrid, view)),
         points: [[0, -7], [7, 0], [0, 7], [-7, 0]], close: true, strokeColor: '#1976b5', lineWidth: 2 }));
     }
-    const size = sourceInfo[definition?.views[imageAngle()]?.source];
     get('image-angle').textContent = `编辑素材：${imageAngle()}°`;
-    get('source-size').textContent = size ? `原图 ${size.width} × ${size.height}` : '未选图';
-    get('source-size').title = size ? '' : '当前方向尚未绑定已加载图片';
+    if (currentSequence()) fillFrameFields();
+    else {
+      const size = sourceInfo[definition?.views[imageAngle()]?.source];
+      get('source-size').textContent = size ? `原图 ${size.width} × ${size.height}` : '未选图';
+      get('source-size').title = size ? '' : '当前方向尚未绑定已加载图片';
+    }
+    updateAnimationControls();
   }
 
   function fillFields() {
     get('element-id').value = definition.id;
     get('kind').value = definition.kind;
     const current = definition.views[imageAngle()];
+    const frame = previewFrame();
     get('source').replaceChildren(new Option('请选择图片', ''), ...Object.keys(sources).map(path => new Option(path, path)));
-    if (current.source && !Object.prototype.hasOwnProperty.call(sources, current.source)) {
-      get('source').add(new Option(`未加载：${current.source}`, current.source));
+    if (frame.source && !Object.prototype.hasOwnProperty.call(sources, frame.source)) {
+      get('source').add(new Option(`未加载：${frame.source}`, frame.source));
     }
-    get('source').value = current.source;
-    rectIds.forEach((id, i) => { get(id).value = Number.isFinite(current.rect[i]) ? current.rect[i] : ''; });
+    fillFrameFields(frame);
+    get('view-sequence').replaceChildren(new Option('静态图片', ''), ...Object.keys(definition.version === 2 ? definition.sequences || {} : {}).map(id => new Option(`动画：${id}`, id)));
+    get('view-sequence').value = isSequenceView() ? current.sequence : '';
     anchorIds.forEach((id, i) => { get(id).value = Number.isFinite(current.anchor[i]) ? current.anchor[i] : ''; });
     if (!inputIssue) get('footprint').value = JSON.stringify(definition.footprint);
     syncFootprintFields();
@@ -192,9 +286,44 @@
   }
 
   function edit(field, value) {
-    definition = applyElementEdit(definition, { field, value, angle: imageAngle() });
+    if (currentSequence() && (field === 'source' || field === 'rect')) {
+      pauseForFrameEdit();
+      const id = definition.views[imageAngle()].sequence;
+      const sequence = currentSequence();
+      const index = previewFrame().frameIndex;
+      if (!Number.isInteger(index)) {
+        get('grid-status').textContent = '请先修正每帧毫秒，再编辑当前动画帧。';
+        return;
+      }
+      const frames = sequence.frames.map((frame, i) => i === index ? { ...frame, [field]: value } : frame);
+      definition = applyElementEdit(definition, { field: 'sequences', value: { ...definition.sequences, [id]: { ...sequence, frames } } });
+    } else definition = applyElementEdit(definition, { field, value, angle: imageAngle() });
     if (field === 'footprint') { dimensionIssue = null; syncFootprintFields(); }
     render({ fit: true });
+  }
+
+  function bindingTargets() {
+    return angles.filter(angle => angle !== imageAngle() && get(`share-angle-${angle}`).checked);
+  }
+
+  function updateViewBinding(issues) {
+    const angle = imageAngle();
+    const current = definition?.views[angle];
+    const animated = isSequenceView(angle);
+    const valid = (animated ? currentSequence() : current?.source && Array.isArray(current.rect)) && !viewHasIssues(issues, angle);
+    const shared = valid ? angles.filter(value => {
+      const candidate = definition.views[value];
+      return animated ? candidate.sequence === current.sequence
+        : !isSequenceView(value) && candidate.source === current.source && candidate.rect.every((item, index) => item === current.rect[index]);
+    }) : [];
+    get('shared-view-status').textContent = shared.length
+      ? `${animated ? '共用序列' : '同图同裁切'}：${shared.map(value => `${value}°`).join('、')}${shared.length === 1 ? '（仅当前方向）' : ''}`
+      : '当前方向尚无有效图片与裁切。';
+    const targets = bindingTargets();
+    get('view-binding-targets').textContent = targets.length
+      ? `本次应用：${angle}° → ${targets.map(value => `${value}°`).join('、')}` : '请至少选择一个其他素材方向。';
+    get('apply-view-binding').disabled = busy || !valid || targets.length === 0;
+    get('apply-view-binding').textContent = animated ? '将当前动画序列应用到所选方向' : '将当前图片与裁切应用到所选方向';
   }
 
   // 文件加载期间关闭文件和编辑输入，避免较早的异步结果覆盖后来的操作。
@@ -249,15 +378,16 @@
     await loadFiles(async () => {
       const { directory: assetDir, sourceFiles } = getDogElementSample();
       const loaded = await loadElementSources(sourceFiles);
-      sources = loaded.sources;
-      sourceInfo = loaded.sourceInfo;
       fileIssues = loaded.issues;
       if (fileIssues.length) return;
       const response = await fetch(`${assetDir}element.json`, { cache: 'no-store' });
       if (!response.ok) throw new Error(`样本加载失败（${response.status}）。`);
-      const result = importElementDefinition(await response.text(), sourceInfo);
+      const result = importElementDefinition(await response.text(), loaded.sourceInfo);
       if (result.issues.length) fileIssues = result.issues;
       else {
+        // 与地表样本一致，定义和图片全部通过后再替换当前状态。
+        sources = loaded.sources;
+        sourceInfo = loaded.sourceInfo;
         definition = result.definition;
         resetPlacement();
         inputIssue = null;
@@ -270,22 +400,70 @@
     });
   }
 
+  function useTerrainMaterial(id) {
+    definition = terrainLibrary.definitions[id];
+    sources = terrainLibrary.sources;
+    sourceInfo = terrainLibrary.sourceInfo;
+    resetPlacement();
+    get('terrain-material').value = id;
+    inputIssue = null;
+    dimensionIssue = null;
+    get('grid-action').value = 'inspect';
+    get('grid-status').textContent = '已载入地图共用的原作地表定义；此处编辑副本，导出 JSON 保存修改。';
+  }
+
+  get('terrain-sample').addEventListener('click', () => loadFiles(async () => {
+    const directory = './static/terrain-samples/emperor-land-water/';
+    const [response, loaded] = await Promise.all([
+      fetch(`${directory}elements.json`, { cache: 'no-store' }),
+      loadElementSources({ 'atlas.png': `${directory}atlas.png` }),
+    ]);
+    if (!response.ok) throw new Error(`地表素材定义加载失败（${response.status}）。`);
+    if (loaded.issues.length) { fileIssues = loaded.issues; return; }
+    const values = JSON.parse(await response.text());
+    if (!values || Array.isArray(values) || typeof values !== 'object' || !Object.keys(values).length) {
+      throw new Error('地表素材库必须包含按 ID 索引的元素定义。');
+    }
+    const definitions = {};
+    for (const [id, value] of Object.entries(values)) {
+      const result = importElementDefinition(JSON.stringify(value), loaded.sourceInfo);
+      fileIssues.push(...result.issues.map(issue => ({ ...issue, path: `${id}.${issue.path}` })));
+      if (result.definition) definitions[id] = result.definition;
+    }
+    if (fileIssues.length) return;
+    // 定义与真实图片全部通过后再替换，失败时保留原配置和资源。
+    terrainLibrary = { definitions, sources: loaded.sources, sourceInfo: loaded.sourceInfo };
+    const ids = Object.keys(definitions);
+    const animationNames = { 'emperor-water-even': '普通水面 · 动画', 'emperor-water-odd': '过渡水面（另一组） · 动画', 'emperor-water-deep': '深处水面 · 动画' };
+    get('terrain-material').replaceChildren(new Option('选择原作地表素材', ''), ...ids.map(id => {
+      const number = Number(id.split('-').pop());
+      return new Option(animationNames[id] || `${number === 202 ? '陆地' : number >= 664 ? '水面单帧' : '岸线'} · ${number}`, id);
+    }));
+    get('terrain-material').disabled = false;
+    useTerrainMaterial(definitions['emperor-water-deep'] ? 'emperor-water-deep' : ids[0]);
+  }));
+  get('terrain-material').addEventListener('change', event => {
+    if (!terrainLibrary || !terrainLibrary.definitions[event.target.value]) return;
+    loadFiles(async () => useTerrainMaterial(event.target.value));
+  });
+
   get('element-id').addEventListener('input', event => { definition = { ...definition, id: event.target.value }; render(); });
   get('kind').addEventListener('change', event => { definition = { ...definition, kind: event.target.value }; render(); });
   get('source').addEventListener('change', event => {
-    const angle = imageAngle();
-    const firstBinding = !definition.views[angle].source;
+    const source = event.target.value;
+    pauseForFrameEdit();
+    const firstBinding = !previewFrame().source;
     fileIssues = [];
-    definition = applyElementEdit(definition, { field: 'source', angle, value: event.target.value });
-    const size = sourceInfo[event.target.value];
-    if (firstBinding && size) definition = applyElementEdit(definition, { field: 'rect', angle, value: [0, 0, size.width, size.height] });
+    edit('source', source);
+    const size = sourceInfo[source];
+    if (firstBinding && size) edit('rect', [0, 0, size.width, size.height]);
     fillFields();
     render({ fit: true });
   });
   get('direction-file').addEventListener('change', event => {
     const file = event.target.files[0];
     if (!file) return;
-    const angle = imageAngle();
+    pauseForFrameEdit();
     loadFiles(async () => {
       // 相对文件名不可同时指向不同图片；复用已载入图片时使用下拉框。
       if (Object.prototype.hasOwnProperty.call(sources, file.name)) {
@@ -296,18 +474,80 @@
       sources = { ...sources, ...loaded.sources };
       sourceInfo = { ...sourceInfo, ...loaded.sourceInfo };
       const size = sourceInfo[file.name];
-      definition = applyElementEdit(definition, { field: 'source', angle, value: file.name });
-      definition = applyElementEdit(definition, { field: 'rect', angle, value: [0, 0, size.width, size.height] });
+      edit('source', file.name);
+      edit('rect', [0, 0, size.width, size.height]);
     }).finally(() => { event.target.value = ''; });
   });
   for (const [field, ids] of [['rect', rectIds], ['anchor', anchorIds]]) {
     ids.forEach(id => get(id).addEventListener('input', () => edit(field, ids.map(name => get(name).valueAsNumber))));
   }
   get('full-image').addEventListener('click', () => {
-    const size = sourceInfo[definition.views[imageAngle()].source];
+    pauseForFrameEdit();
+    const size = sourceInfo[previewFrame().source];
     if (!size) return;
     edit('rect', [0, 0, size.width, size.height]);
     fillFields();
+  });
+  angles.forEach(angle => get(`share-angle-${angle}`).addEventListener('change', () => {
+    updateViewBinding(validateElementDefinition(definition, sourceInfo));
+  }));
+  get('apply-view-binding').addEventListener('click', () => {
+    if (busy || drag || get('apply-view-binding').disabled) return;
+    const angle = imageAngle();
+    const current = definition.views[angle];
+    const targets = bindingTargets();
+    let candidate = definition;
+    targets.forEach(target => {
+      if (isSequenceView(angle)) candidate = applyElementEdit(candidate, { field: 'sequence', angle: target, value: current.sequence });
+      else {
+        candidate = applyElementEdit(candidate, { field: 'source', angle: target, value: current.source });
+        candidate = applyElementEdit(candidate, { field: 'rect', angle: target, value: current.rect });
+      }
+    });
+    definition = candidate;
+    fillFields();
+    render({ fit: true });
+    get('grid-status').textContent = `已将 ${angle}° ${isSequenceView(angle) ? '动画序列' : '图片与裁切'}应用到 ${targets.map(value => `${value}°`).join('、')}；各方向锚点保持不变。`;
+  });
+  get('view-sequence').addEventListener('change', event => {
+    const sequence = event.target.value;
+    if (sequence) definition = applyElementEdit(definition, { field: 'sequence', angle: imageAngle(), value: sequence });
+    else {
+      const frame = previewFrame();
+      definition = applyElementEdit(definition, { field: 'source', angle: imageAngle(), value: frame.source });
+      definition = applyElementEdit(definition, { field: 'rect', angle: imageAngle(), value: frame.rect });
+    }
+    fillFields();
+    render({ fit: true });
+  });
+  get('animation-toggle').addEventListener('click', () => {
+    if (player.playing) player.pause();
+    else player.play();
+    updateAnimationControls();
+  });
+  get('animation-reset').addEventListener('click', () => { player.reset(); updateAnimationControls(); });
+  get('animation-frame').addEventListener('input', event => {
+    const sequence = currentSequence();
+    const frame = event.target.valueAsNumber;
+    if (!sequence || !Number.isInteger(frame) || frame < 1 || frame > sequence.frames.length
+      || !Number.isSafeInteger(sequence.frameDurationMs) || sequence.frameDurationMs <= 0) return;
+    player.pause();
+    player.seek((frame - 1) * sequence.frameDurationMs);
+    updateAnimationControls();
+  });
+  get('animation-duration').addEventListener('input', event => {
+    const id = definition.views[imageAngle()].sequence;
+    if (!id) return;
+    const frameDurationMs = event.target.valueAsNumber;
+    const frameIndex = previewFrame().frameIndex ?? Math.max(0, get('animation-frame').valueAsNumber - 1);
+    pauseForFrameEdit();
+    definition = applyElementEdit(definition, { field: 'sequences', value: { ...definition.sequences,
+      [id]: { ...currentSequence(), frameDurationMs, timingSource: 'author' } } });
+    if (Number.isSafeInteger(frameDurationMs) && frameDurationMs > 0) player.seek(frameIndex * frameDurationMs);
+    render({ fit: true });
+  });
+  ['source', 'direction-file', ...rectIds, 'animation-duration', 'animation-frame'].forEach(id => {
+    get(id).addEventListener('focus', pauseForFrameEdit);
   });
   get('footprint').addEventListener('input', event => {
     try {
@@ -531,4 +771,5 @@
   });
   newDefinition();
   await loadSample();
+  player.play();
 })();

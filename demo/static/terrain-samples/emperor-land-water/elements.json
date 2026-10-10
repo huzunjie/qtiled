@@ -1,0 +1,10222 @@
+{
+  "emperor-terrain-202": {
+    "version": 1,
+    "id": "emperor-terrain-202",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-terrain-386": {
+    "version": 1,
+    "id": "emperor-terrain-386",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-387": {
+    "version": 1,
+    "id": "emperor-terrain-387",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-388": {
+    "version": 1,
+    "id": "emperor-terrain-388",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-389": {
+    "version": 1,
+    "id": "emperor-terrain-389",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-390": {
+    "version": 1,
+    "id": "emperor-terrain-390",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-391": {
+    "version": 1,
+    "id": "emperor-terrain-391",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-terrain-392": {
+    "version": 1,
+    "id": "emperor-terrain-392",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "emperor-terrain-393": {
+    "version": 1,
+    "id": "emperor-terrain-393",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "emperor-terrain-394": {
+    "version": 1,
+    "id": "emperor-terrain-394",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "emperor-terrain-395": {
+    "version": 1,
+    "id": "emperor-terrain-395",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "emperor-terrain-396": {
+    "version": 1,
+    "id": "emperor-terrain-396",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          60,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "emperor-terrain-397": {
+    "version": 1,
+    "id": "emperor-terrain-397",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          60,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "emperor-terrain-398": {
+    "version": 1,
+    "id": "emperor-terrain-398",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          60,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          60,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          60,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          60,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-terrain-399": {
+    "version": 1,
+    "id": "emperor-terrain-399",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-400": {
+    "version": 1,
+    "id": "emperor-terrain-400",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-401": {
+    "version": 1,
+    "id": "emperor-terrain-401",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-402": {
+    "version": 1,
+    "id": "emperor-terrain-402",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-403": {
+    "version": 1,
+    "id": "emperor-terrain-403",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          120,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          120,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          120,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          120,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-terrain-404": {
+    "version": 1,
+    "id": "emperor-terrain-404",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          120,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          120,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          120,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          120,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-terrain-405": {
+    "version": 1,
+    "id": "emperor-terrain-405",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-406": {
+    "version": 1,
+    "id": "emperor-terrain-406",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-407": {
+    "version": 1,
+    "id": "emperor-terrain-407",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-408": {
+    "version": 1,
+    "id": "emperor-terrain-408",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          120,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-409": {
+    "version": 1,
+    "id": "emperor-terrain-409",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-410": {
+    "version": 1,
+    "id": "emperor-terrain-410",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-terrain-411": {
+    "version": 1,
+    "id": "emperor-terrain-411",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-terrain-412": {
+    "version": 1,
+    "id": "emperor-terrain-412",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-terrain-413": {
+    "version": 1,
+    "id": "emperor-terrain-413",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          180,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-terrain-414": {
+    "version": 1,
+    "id": "emperor-terrain-414",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-415": {
+    "version": 1,
+    "id": "emperor-terrain-415",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-416": {
+    "version": 1,
+    "id": "emperor-terrain-416",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-417": {
+    "version": 1,
+    "id": "emperor-terrain-417",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-418": {
+    "version": 1,
+    "id": "emperor-terrain-418",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-419": {
+    "version": 1,
+    "id": "emperor-terrain-419",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-420": {
+    "version": 1,
+    "id": "emperor-terrain-420",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-421": {
+    "version": 1,
+    "id": "emperor-terrain-421",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-422": {
+    "version": 1,
+    "id": "emperor-terrain-422",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-423": {
+    "version": 1,
+    "id": "emperor-terrain-423",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          240,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-424": {
+    "version": 1,
+    "id": "emperor-terrain-424",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-425": {
+    "version": 1,
+    "id": "emperor-terrain-425",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-terrain-426": {
+    "version": 1,
+    "id": "emperor-terrain-426",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-427": {
+    "version": 1,
+    "id": "emperor-terrain-427",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-terrain-428": {
+    "version": 1,
+    "id": "emperor-terrain-428",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-429": {
+    "version": 1,
+    "id": "emperor-terrain-429",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          300,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          300,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          300,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          300,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-terrain-430": {
+    "version": 1,
+    "id": "emperor-terrain-430",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-431": {
+    "version": 1,
+    "id": "emperor-terrain-431",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-432": {
+    "version": 1,
+    "id": "emperor-terrain-432",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          300,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-terrain-433": {
+    "version": 1,
+    "id": "emperor-terrain-433",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-434": {
+    "version": 1,
+    "id": "emperor-terrain-434",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          360,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          360,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          360,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          360,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-terrain-435": {
+    "version": 1,
+    "id": "emperor-terrain-435",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-436": {
+    "version": 1,
+    "id": "emperor-terrain-436",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-437": {
+    "version": 1,
+    "id": "emperor-terrain-437",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          360,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          360,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          360,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          360,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-terrain-438": {
+    "version": 1,
+    "id": "emperor-terrain-438",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          360,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          360,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          360,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          360,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-terrain-439": {
+    "version": 1,
+    "id": "emperor-terrain-439",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-440": {
+    "version": 1,
+    "id": "emperor-terrain-440",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-441": {
+    "version": 1,
+    "id": "emperor-terrain-441",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-terrain-442": {
+    "version": 1,
+    "id": "emperor-terrain-442",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-443": {
+    "version": 1,
+    "id": "emperor-terrain-443",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-444": {
+    "version": 1,
+    "id": "emperor-terrain-444",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-445": {
+    "version": 1,
+    "id": "emperor-terrain-445",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          420,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-terrain-446": {
+    "version": 1,
+    "id": "emperor-terrain-446",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          420,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-447": {
+    "version": 1,
+    "id": "emperor-terrain-447",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          420,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          420,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          420,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          420,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      }
+    }
+  },
+  "emperor-terrain-448": {
+    "version": 1,
+    "id": "emperor-terrain-448",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          420,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          420,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          420,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          420,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-terrain-449": {
+    "version": 1,
+    "id": "emperor-terrain-449",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      }
+    }
+  },
+  "emperor-terrain-450": {
+    "version": 1,
+    "id": "emperor-terrain-450",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-451": {
+    "version": 1,
+    "id": "emperor-terrain-451",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          480,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          480,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          480,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          480,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-terrain-452": {
+    "version": 1,
+    "id": "emperor-terrain-452",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          480,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          480,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          480,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          480,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-terrain-453": {
+    "version": 1,
+    "id": "emperor-terrain-453",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          480,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          480,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          480,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          480,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-terrain-454": {
+    "version": 1,
+    "id": "emperor-terrain-454",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-455": {
+    "version": 1,
+    "id": "emperor-terrain-455",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          480,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          480,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          480,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          480,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      }
+    }
+  },
+  "emperor-terrain-456": {
+    "version": 1,
+    "id": "emperor-terrain-456",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-457": {
+    "version": 1,
+    "id": "emperor-terrain-457",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-terrain-664": {
+    "version": 1,
+    "id": "emperor-terrain-664",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-665": {
+    "version": 1,
+    "id": "emperor-terrain-665",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-666": {
+    "version": 1,
+    "id": "emperor-terrain-666",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-667": {
+    "version": 1,
+    "id": "emperor-terrain-667",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-668": {
+    "version": 1,
+    "id": "emperor-terrain-668",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-669": {
+    "version": 1,
+    "id": "emperor-terrain-669",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-670": {
+    "version": 1,
+    "id": "emperor-terrain-670",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-671": {
+    "version": 1,
+    "id": "emperor-terrain-671",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-672": {
+    "version": 1,
+    "id": "emperor-terrain-672",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-673": {
+    "version": 1,
+    "id": "emperor-terrain-673",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-674": {
+    "version": 1,
+    "id": "emperor-terrain-674",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-675": {
+    "version": 1,
+    "id": "emperor-terrain-675",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-676": {
+    "version": 1,
+    "id": "emperor-terrain-676",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-677": {
+    "version": 1,
+    "id": "emperor-terrain-677",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-678": {
+    "version": 1,
+    "id": "emperor-terrain-678",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-679": {
+    "version": 1,
+    "id": "emperor-terrain-679",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-680": {
+    "version": 1,
+    "id": "emperor-terrain-680",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-681": {
+    "version": 1,
+    "id": "emperor-terrain-681",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-682": {
+    "version": 1,
+    "id": "emperor-terrain-682",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-683": {
+    "version": 1,
+    "id": "emperor-terrain-683",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-684": {
+    "version": 1,
+    "id": "emperor-terrain-684",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-685": {
+    "version": 1,
+    "id": "emperor-terrain-685",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-686": {
+    "version": 1,
+    "id": "emperor-terrain-686",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-687": {
+    "version": 1,
+    "id": "emperor-terrain-687",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-688": {
+    "version": 1,
+    "id": "emperor-terrain-688",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-689": {
+    "version": 1,
+    "id": "emperor-terrain-689",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-690": {
+    "version": 1,
+    "id": "emperor-terrain-690",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-691": {
+    "version": 1,
+    "id": "emperor-terrain-691",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-692": {
+    "version": 1,
+    "id": "emperor-terrain-692",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-693": {
+    "version": 1,
+    "id": "emperor-terrain-693",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-694": {
+    "version": 1,
+    "id": "emperor-terrain-694",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-695": {
+    "version": 1,
+    "id": "emperor-terrain-695",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-696": {
+    "version": 1,
+    "id": "emperor-terrain-696",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-697": {
+    "version": 1,
+    "id": "emperor-terrain-697",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-698": {
+    "version": 1,
+    "id": "emperor-terrain-698",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-699": {
+    "version": 1,
+    "id": "emperor-terrain-699",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-700": {
+    "version": 1,
+    "id": "emperor-terrain-700",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-701": {
+    "version": 1,
+    "id": "emperor-terrain-701",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-702": {
+    "version": 1,
+    "id": "emperor-terrain-702",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-703": {
+    "version": 1,
+    "id": "emperor-terrain-703",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-704": {
+    "version": 1,
+    "id": "emperor-terrain-704",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-705": {
+    "version": 1,
+    "id": "emperor-terrain-705",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-706": {
+    "version": 1,
+    "id": "emperor-terrain-706",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-707": {
+    "version": 1,
+    "id": "emperor-terrain-707",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-708": {
+    "version": 1,
+    "id": "emperor-terrain-708",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-709": {
+    "version": 1,
+    "id": "emperor-terrain-709",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-710": {
+    "version": 1,
+    "id": "emperor-terrain-710",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-711": {
+    "version": 1,
+    "id": "emperor-terrain-711",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-712": {
+    "version": 1,
+    "id": "emperor-terrain-712",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-713": {
+    "version": 1,
+    "id": "emperor-terrain-713",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-714": {
+    "version": 1,
+    "id": "emperor-terrain-714",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-715": {
+    "version": 1,
+    "id": "emperor-terrain-715",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-716": {
+    "version": 1,
+    "id": "emperor-terrain-716",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-717": {
+    "version": 1,
+    "id": "emperor-terrain-717",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-718": {
+    "version": 1,
+    "id": "emperor-terrain-718",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          900,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-719": {
+    "version": 1,
+    "id": "emperor-terrain-719",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-720": {
+    "version": 1,
+    "id": "emperor-terrain-720",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-721": {
+    "version": 1,
+    "id": "emperor-terrain-721",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-722": {
+    "version": 1,
+    "id": "emperor-terrain-722",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-723": {
+    "version": 1,
+    "id": "emperor-terrain-723",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-724": {
+    "version": 1,
+    "id": "emperor-terrain-724",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-725": {
+    "version": 1,
+    "id": "emperor-terrain-725",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-726": {
+    "version": 1,
+    "id": "emperor-terrain-726",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          960,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-727": {
+    "version": 1,
+    "id": "emperor-terrain-727",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-728": {
+    "version": 1,
+    "id": "emperor-terrain-728",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          78,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-729": {
+    "version": 1,
+    "id": "emperor-terrain-729",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          156,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-730": {
+    "version": 1,
+    "id": "emperor-terrain-730",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          234,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-731": {
+    "version": 1,
+    "id": "emperor-terrain-731",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          312,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-732": {
+    "version": 1,
+    "id": "emperor-terrain-732",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          390,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-733": {
+    "version": 1,
+    "id": "emperor-terrain-733",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          468,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-734": {
+    "version": 1,
+    "id": "emperor-terrain-734",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          546,
+          1020,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-terrain-735": {
+    "version": 1,
+    "id": "emperor-terrain-735",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1080,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1080,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1080,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "atlas.png",
+        "rect": [
+          0,
+          1080,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-water-even": {
+    "version": 2,
+    "id": "emperor-water-even",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "sequences": {
+      "water": {
+        "frames": [
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              540,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              540,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              540,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              540,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              840,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              840,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              840,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              840,
+              78,
+              40
+            ]
+          }
+        ],
+        "frameDurationMs": 100,
+        "timingSource": "author"
+      }
+    },
+    "views": {
+      "0": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-water-odd": {
+    "version": 2,
+    "id": "emperor-water-odd",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "sequences": {
+      "water": {
+        "frames": [
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              540,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              540,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              540,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              600,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              660,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              720,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              780,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              840,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              840,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              840,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              840,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              900,
+              78,
+              40
+            ]
+          }
+        ],
+        "frameDurationMs": 100,
+        "timingSource": "author"
+      }
+    },
+    "views": {
+      "0": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-water-deep": {
+    "version": 2,
+    "id": "emperor-water-deep",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "sequences": {
+      "water": {
+        "frames": [
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              900,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              900,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              900,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              900,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              900,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              900,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              900,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              960,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              78,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              156,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              234,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              312,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              390,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              468,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              546,
+              1020,
+              78,
+              40
+            ]
+          },
+          {
+            "source": "atlas.png",
+            "rect": [
+              0,
+              1080,
+              78,
+              40
+            ]
+          }
+        ],
+        "frameDurationMs": 100,
+        "timingSource": "author"
+      }
+    },
+    "views": {
+      "0": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "sequence": "water",
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  }
+}

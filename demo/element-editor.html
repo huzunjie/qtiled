@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>静态元素编辑器 · QTiled P0-D</title>
+  <title>元素编辑器 · QTiled</title>
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="stylesheet" href="./static/css/preview-workspace.css">
   <style>
@@ -18,6 +18,7 @@
     .element-editor .tool-group:last-child { margin-left: auto; }
     .element-editor .group-name { color: #687383; font-size: 12px; margin-right: 2px; }
     .element-editor .toolbar a { font-size: 12px; }
+    .element-editor #terrain-material { max-width: 160px; }
     .element-editor button { cursor: pointer; padding: 6px 10px; margin: 0; font-size: 12px; }
     .element-editor button[aria-pressed="true"] { background: #098d3b; }
     .element-editor button:disabled { cursor: default; opacity: .45; }
@@ -48,6 +49,8 @@
     .element-editor .crop-heading { justify-content: flex-start; gap: 6px; }
     .element-editor .source-row { display: flex; gap: 5px; align-items: center; }
     .element-editor .source-row select { flex: 1; width: 0; min-width: 0; }
+    .element-editor .shared-directions { display: flex; flex-wrap: wrap; gap: 6px 10px; }
+    .element-editor .shared-directions label { display: flex; align-items: center; gap: 3px; }
     .element-editor summary { cursor: pointer; font-size: 12px; color: #687383; }
     .element-editor textarea { width: 100%; resize: vertical; font-family: ui-monospace, monospace; }
     .element-editor .preview-workspace { align-items: stretch; }
@@ -79,19 +82,22 @@
   <script src="./static/js/spritejs3.js"></script>
   <script src="./static/js/qtiled.dev.js"></script>
   <script src="./static/js/qtiled-view.dev.js"></script>
-  <script src="./static/js/qtiled-element-rendering.dev.js?20261004-auto-placement"></script>
+  <script src="./static/js/qtiled-element-rendering.dev.js?20261010-water-animation"></script>
   <script src="./static/js/pointer.js"></script>
   <script src="./static/js/element-files.js"></script>
   <script src="./static/js/dog-element-sample.js"></script>
   <script src="./static/js/element-snap.js"></script>
+  <script src="./static/js/element-animation-player.js"></script>
   <main class="element-editor">
-    <h1>静态元素编辑器</h1>
-    <p class="intro">用于制作四向静态元素：编辑图片、裁切、锚点与占地，校验后导出 JSON，再由独立预览读取。</p>
+    <h1>元素编辑器</h1>
+    <p class="intro">编辑四向图片或共用动画、逐向锚点与占地；原作地表素材与地图 DEMO 使用同一份定义。校验后导出 JSON 保存。</p>
     <fieldset id="file-controls">
       <div class="toolbar">
         <div class="tool-group">
           <span class="group-name">文件</span>
           <button id="sample" type="button">载入样本</button>
+          <button id="terrain-sample" type="button">原作地表素材</button>
+          <select id="terrain-material" aria-label="原作地表素材" disabled><option value="">尚未载入地表素材</option></select>
           <button id="new" type="button">新建定义</button>
           <label class="file-button">素材目录<input id="source-files" type="file" webkitdirectory multiple></label>
           <label class="file-button">导入 JSON<input id="definition-file" type="file" accept=".json,application/json"></label>
@@ -150,6 +156,17 @@
             </div>
             <output id="placement-status" aria-live="polite">—</output>
             <output id="image-angle" aria-live="polite">编辑素材：0°</output>
+            <label class="line">图片 / 动画 <select id="view-sequence"><option value="">静态图片</option></select></label>
+            <div id="animation-controls" hidden>
+              <div class="tool-group">
+                <button id="animation-toggle" type="button">暂停</button>
+                <button id="animation-reset" type="button">重播</button>
+                <label>帧 <input id="animation-frame" type="number" min="1" step="1" value="1"></label>
+                <output id="animation-count"></output>
+              </div>
+              <label class="line">每帧毫秒 <input id="animation-duration" type="number" min="1" step="1" value="100"></label>
+              <p id="animation-help" class="field-help"></p>
+            </div>
             <div class="source-row">
               <select id="source" aria-label="当前方向图片"><option value="">请选择图片</option></select>
               <label class="file-button">选图<input id="direction-file" aria-label="为当前方向选择图片" type="file" accept="image/*"></label>
@@ -161,6 +178,17 @@
               <label>宽 <input id="rect-width" type="number" step="1"></label>
               <label>高 <input id="rect-height" type="number" step="1"></label>
             </div>
+            <div class="field-heading"><h3>方向共用</h3></div>
+            <output id="shared-view-status" class="field-help" aria-live="polite"></output>
+            <div class="shared-directions" role="group" aria-label="共用当前图片与裁切的目标素材方向">
+              <label><input id="share-angle-0" type="checkbox" checked>0°</label>
+              <label><input id="share-angle-90" type="checkbox" checked>90°</label>
+              <label><input id="share-angle-180" type="checkbox" checked>180°</label>
+              <label><input id="share-angle-270" type="checkbox" checked>270°</label>
+            </div>
+            <button id="apply-view-binding" type="button">将当前图片与裁切应用到所选方向</button>
+            <output id="view-binding-targets" class="field-help" aria-live="polite"></output>
+            <span id="binding-help" class="field-help">保留各方向锚点。静态图片应用后可逐向修改；动画方向共用一份序列。</span>
             <h3 title="相对裁切左上角，可在图片外">像素锚点</h3>
             <div class="pair">
               <label>锚点 X <input id="anchor-x" type="number" step="any"></label>
@@ -187,9 +215,10 @@
       <p>拖拽图片会调整当前素材的像素锚点，其他素材保持不变。适应画布只调整显示比例和位置，100% 按原始像素显示；镜头、对象朝向、视图比例和不透明度不写入导出的 JSON。</p>
       <p>蓝色小框自动标记当前画面最上方占地格的格心，作为放置基准，无需手动选择。占地 JSON 记录基准朝向的格子坐标，调整列、行会重建矩形占地。拖拽图片或修改像素锚点可调整图片与占地的对齐；像素锚点可以在图片外。</p>
       <p>类别记录用途，不改变图片外观。裁切和像素锚点分别编辑，锚点相对裁切左上角。要让裁切后保留的像素位置不变，裁切起点移动多少，锚点就减去多少。瓦片尺寸只用于预览，不写入元素定义。</p>
-      <p>每个方向可单独选图，也可用素材目录批量加载后绑定。单独选图以文件名作为相对引用，独立预览可重新选择这些图片；目录引用相对所选根目录。导出只生成 JSON，图片保持原文件。样本仍为演示标定。</p>
+      <p>每个方向可单独选图，也可用素材目录批量加载后绑定。“方向共用”应用图片或动画序列引用，各方向锚点保持不变。静态图片应用后可逐向独立编辑；动画裁切与图片编辑作用于当前帧，并影响所有引用同一序列的方向。选择“静态图片”可将当前帧转为该方向的独立图片。共用不限制对象转向，占地仍随对象旋转。</p>
+      <p>播放时间、暂停状态与当前帧不写入定义；切镜头、换素材继续同一时钟，只有“重播”明确回到开头。每帧毫秒是作者设定的预览节奏，不代表已还原原作的实际速率。导出只生成 JSON，图片保持原文件；文件回读需重新载入图片。样本仍为演示标定。</p>
     </details>
   </main>
-  <script src="./static/js/element-editor.js?20261004-auto-placement"></script>
+  <script src="./static/js/element-editor.js?20261010-water-animation"></script>
 </body>
 </html>
