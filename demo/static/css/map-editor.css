@@ -40,9 +40,9 @@
 .map-demo #map-canvas[data-panning="true"] { cursor: grabbing; }
 .map-demo #cancel-stroke { position: absolute; right: 10px; bottom: 10px; z-index: 1; }
 .map-demo #cancel-stroke:disabled { visibility: hidden; }
-.map-demo #status { margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); font-size: 11px; }
+.map-demo #status { margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(244,246,248,.8); font-size: 11px; }
 .map-demo .issue-panel { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 135px); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; pointer-events: none; }
-.map-demo #issues { max-height: 140px; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; border-radius: 4px; white-space: pre-wrap; overflow-wrap: anywhere; pointer-events: auto; }
+.map-demo #issues { max-height: 140px; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; color: #9b3021; background: rgba(255,240,236,.8); padding: 10px; margin: 0; border-radius: 4px; white-space: pre-wrap; overflow-wrap: anywhere; pointer-events: auto; }
 .map-demo aside dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; }
 .map-demo aside dt, .map-demo aside dd { margin: 0; }
 .map-demo .wide-detail { grid-column: 1 / -1; }
@@ -79,7 +79,7 @@
 .map-demo #new-map-options { padding: 10px; background: #f4f6f8; border-radius: 4px; }
 .map-demo #new-map-options input { width: 54px; }
 .map-demo #target-height { width: 58px; }
-.map-demo #hover-info { display: block; height: 26px; box-sizing: border-box; padding: 5px 10px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-bottom: 1px solid #edf0f3; color: #526278; }
+.map-demo #hover-info { position: absolute; top: 10px; left: 10px; z-index: 1; max-width: calc(100% - 20px); box-sizing: border-box; padding: 5px 10px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 4px; color: #526278; background: rgba(244,246,248,.8); pointer-events: none; }
 @media (max-width: 759px) {
   .map-demo .preview-workspace { flex-direction: column; }
   .map-demo .preview-workspace > aside { flex: auto; }
