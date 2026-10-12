@@ -126,8 +126,8 @@
     get('height-control').hidden = tool !== 'set-height';
     get('brush-size-control').hidden = !['raise', 'lower', 'set-height'].includes(tool);
     get('click-help').textContent = {
-      select: '点击地面格查看信息，可在详情区选择格子或实体。鼠标中键拖动可平移。',
-      pan: '左键拖动平移，松开结束；Esc 取消本次移动。“查看全图”可找回地图。',
+      select: '点击地面格查看信息。画布内触控板双指上下、左右滚动，或鼠标中键拖动可平移。',
+      pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
       land: '陆地笔刷：拖动预览整笔，松开提交；Esc 取消。越过空角或地图边界会拒绝整笔；中键可平移。',
       water: '水域笔刷：拖动预览整笔，松开提交；Esc 取消。岸线随邻格更新；中键可平移。',
       raise: '升高一级：同一格每笔只升一次，最高 16 级。蓝框为选区，橙框为联动格；松开提交，Esc 取消。',
@@ -500,13 +500,31 @@
     if (!pan || event.pointerId !== pan.pointerId) return;
     const pixel = getPointerPosition(event, container);
     const [dx, dy] = pixel.map((value, axis) => (value - pan.start[axis]) / pan.scale);
+    translateViewport(dx, dy, pan.center);
+  }
+
+  function translateViewport(dx, dy, center = viewport.center) {
     // 用现有投影的两个基向量反解连续位移，不把平移量舍入成整数格。
     const [ax, ay] = window.qtiledView.projectGrid([1, 0], currentScene.view);
     const [bx, by] = window.qtiledView.projectGrid([0, 1], currentScene.view);
     const det = ax * by - ay * bx;
-    viewport.center = [pan.center[0] - (dx * by - dy * bx) / det, pan.center[1] - (ax * dy - ay * dx) / det];
+    viewport.center = [center[0] - (dx * by - dy * bx) / det, center[1] - (ax * dy - ay * dx) / det];
     updateViewport();
   }
+
+  container.addEventListener('wheel', event => {
+    // 捏合产生的 Ctrl+wheel 及浏览器缩放快捷操作保留默认行为。
+    if (!currentScene || event.ctrlKey || event.metaKey) return;
+    event.preventDefault();
+    if (stroke || pan || (!event.deltaX && !event.deltaY)) return;
+    // 触控板通常提供像素；按行滚动按16px换算，按页滚动使用当前视口尺寸。
+    const unit = event.deltaMode === 1 ? [16, 16]
+      : event.deltaMode === 2 ? [viewport.width, viewport.height] : [1, 1];
+    ++loadRequestId;
+    viewport.mode = 'work';
+    translateViewport(-event.deltaX * unit[0] / viewport.scale, -event.deltaY * unit[1] / viewport.scale);
+    status.textContent = '已平移 · 地图未改变';
+  }, { passive: false });
 
   function cancelPan() {
     if (!pan) return;

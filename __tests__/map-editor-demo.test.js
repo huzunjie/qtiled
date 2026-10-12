@@ -1644,3 +1644,65 @@ test('基准8地面下挖预览、取消和撤销不随最低格变化跳动镜�
   expect(p.layer.children[0].attrs.pos).toEqual(camera.pos);
   p.window.close();
 });
+
+test('双轴滚动在四向与缩放下按屏幕距离平移，不重算地图或写入历史', async () => {
+  const p = await page({}, 'elevation-multilevel-map');
+  p.get('rebase-sample').checked = true;
+  await p.reload();
+  const before = p.save();
+  p.tool('water');
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    for (const scale of [38, 100, 200]) {
+      zoom(p, scale);
+      const root = p.layer.children[0], pos = [...root.attrs.pos];
+      const calls = [p.resolve, p.terrainResolve, p.occupancy, p.contentLayer().render].map(spy => spy.mock.calls.length);
+      const event = new p.window.WheelEvent('wheel', { deltaX: 45.5, deltaY: -23.25, bubbles: true, cancelable: true });
+      p.get('map-canvas').dispatchEvent(event);
+      expect(event.defaultPrevented).toBe(true);
+      expectNearPoint(root.attrs.pos, [pos[0] - 45.5, pos[1] + 23.25]);
+      expect(root.attrs.scale).toEqual([scale / 100, scale / 100]);
+      expect(p.layer.children[0]).toBe(root);
+      [p.resolve, p.terrainResolve, p.occupancy, p.contentLayer().render].forEach((spy, i) => expect(spy).toHaveBeenCalledTimes(calls[i]));
+    }
+  }
+  p.get('fit-map').click();
+  const scale = [...p.layer.children[0].attrs.scale];
+  p.get('map-canvas').dispatchEvent(new p.window.WheelEvent('wheel', { deltaY: 20 }));
+  expect(p.layer.children[0].attrs.scale).toEqual(scale);
+  expect(p.get('fit-map').getAttribute('aria-pressed')).toBe('false');
+  expect(p.save()).toEqual(before);
+  expect(p.get('undo').disabled).toBe(true);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('滚动单位、浏览器缩放、画布外滚动及活动手势保护', async () => {
+  const p = await page();
+  const root = p.layer.children[0];
+  const wheel = (options, target = p.get('map-canvas')) => {
+    const event = new p.window.WheelEvent('wheel', { bubbles: true, cancelable: true, ...options });
+    target.dispatchEvent(event);
+    return event;
+  };
+  for (const [deltaMode, distance] of [[1, [16, 16]], [2, [p.size.width, p.size.height]]]) {
+    const pos = [...root.attrs.pos];
+    wheel({ deltaMode, deltaX: 1, deltaY: -1 });
+    expectNearPoint(root.attrs.pos, [pos[0] - distance[0], pos[1] + distance[1]]);
+  }
+  const pos = [...root.attrs.pos];
+  for (const modifier of ['ctrlKey', 'metaKey']) expect(wheel({ deltaY: 20, [modifier]: true }).defaultPrevented).toBe(false);
+  expect(wheel({ deltaY: 20 }, p.window.document.body).defaultPrevented).toBe(false);
+  expect(root.attrs.pos).toEqual(pos);
+  p.get('fit-map').click();
+  for (const tool of ['pan', 'water']) {
+    p.tool(tool);
+    p.pointer('pointerdown', [5, 2]);
+    const active = p.layer.children[0], position = [...active.attrs.pos];
+    expect(wheel({ deltaX: 30, deltaY: 40 }).defaultPrevented).toBe(true);
+    expect(active.attrs.pos).toEqual(position);
+    p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  }
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
