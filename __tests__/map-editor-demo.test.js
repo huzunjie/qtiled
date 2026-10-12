@@ -1328,16 +1328,17 @@ test('合并样本四向点选与空角保持，整笔可取消/撤销/重做，
   p.window.close();
 });
 
-test('预设基准默认8，新建填充实际地面并保留空角，设置与旧图独立且可撤销回读', async () => {
+test('预设基准默认8，新建菱形填满指定范围，设置与旧图独立且可撤销回读', async () => {
   const p = await page();
   const original = p.save();
   expect(p.get('base-height').value).toBe('8');
   expect(p.get('new-map').parentElement).toBe(p.get('reload').parentElement);
   p.get('new-map').click();
+  p.get('create-map').click();
   expect(p.get('issues').hidden).toBe(true);
   const created = p.save();
   expect(created).toMatchObject({ version: 2, id: 'new-map', elevationStep: 40, entities: [] });
-  expect(created.cells).toEqual(original.cells.map(row => row.map(cell => cell === null ? null : { terrain: 'land', elevation: 8 })));
+  expect(created.cells).toEqual(original.cells.map(row => row.map(() => ({ terrain: 'land', elevation: 8 }))));
   expect(p.get('fit-map').getAttribute('aria-pressed')).toBe('true');
   p.get('base-height').value = '4';
   expect(p.save()).toEqual(created);
@@ -1397,6 +1398,7 @@ test('样本平移越界保留当前地图及撤销，含水样本可平移到8�
   const p = await page({}, 'elevation-multilevel-map');
   const original = p.save();
   p.get('new-map').click();
+  p.get('create-map').click();
   const before = p.save();
   p.get('rebase-sample').click();
   p.get('base-height').value = '16';
@@ -1422,6 +1424,7 @@ test('单格降低一级与设为7四向结果一致，联动预览可取消、�
   const p = await page();
   flatElevationWorkspace(p);
   p.get('new-map').click();
+  p.get('create-map').click();
   p.get('flat-edit').click();
   const initial = p.save();
   p.get('brush-size').value = '1';
@@ -1457,6 +1460,7 @@ test('基准0与16均可新建，越界升降及无效预设保持原地图；8�
   const p = await page();
   flatElevationWorkspace(p);
   p.get('new-map').click();
+  p.get('create-map').click();
   p.get('flat-edit').click();
   p.get('brush-size').value = '5';
   heightStroke(p, 'lower', [[5, 5]]);
@@ -1467,6 +1471,7 @@ test('基准0与16均可新建，越界升降及无效预设保持原地图；8�
   for (const [height, tool] of [[0, 'lower'], [16, 'raise']]) {
     p.get('base-height').value = String(height);
     p.get('new-map').click();
+    p.get('create-map').click();
     const map = p.save();
     expect(map.cells.flat().every(cell => cell.elevation === height)).toBe(true);
     heightStroke(p, tool, [[5, 5]]);
@@ -1476,6 +1481,7 @@ test('基准0与16均可新建，越界升降及无效预设保持原地图；8�
   const before = p.save();
   p.get('base-height').value = '-1';
   p.get('new-map').click();
+  p.get('create-map').click();
   expect(p.get('issues').textContent).toContain('预设基准高度');
   expect(p.save()).toEqual(before);
   expect(p.errors).toEqual([]);
@@ -1632,6 +1638,7 @@ test('基准8地面下挖预览、取消和撤销不随最低格变化跳动镜�
   const p = await page();
   flatElevationWorkspace(p);
   p.get('new-map').click();
+  p.get('create-map').click();
   p.get('native-size').click();
   const camera = { ...p.layer.children[0].attrs };
   p.tool('lower');
@@ -1713,6 +1720,7 @@ test('滚动单位、浏览器缩放、画布外滚动及活动手势保护', as
 test('悬停复用纯几何，奇偶尺寸与两形状均不重建地形；参数与离开清理一致', async () => {
   const p = await page({}, 'rectangular-water-map');
   p.get('new-map').click();
+  p.get('create-map').click();
   p.get('flat-edit').click();
   const before = p.save();
   const calls = [p.resolve.mock.calls.length, p.occupancy.mock.calls.length, p.terrainResolve.mock.calls.length];
@@ -1741,7 +1749,8 @@ test('悬停复用纯几何，奇偶尺寸与两形状均不重建地形；参�
 
 test('偶数笔刷在四向缩放后与悬停一致，陆水及设高共享占地且整笔可恢复', async () => {
   const p = await page({}, 'rectangular-water-map');
-  p.get('new-map').click(); p.get('flat-edit').click();
+  p.get('new-map').click();
+  p.get('create-map').click(); p.get('flat-edit').click();
   const before = p.save();
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle); zoom(p, 75);
@@ -1927,4 +1936,93 @@ test('道路透明边缘下保留原地表，四镜头下底图先于道路且�
     expect(p.terrainSprites()).toHaveLength(144);
     expect(images.filter(node => node.attrs.texture.file === 'road-atlas.png')).toHaveLength(1);
   }
+});
+
+
+test.each([[1, 1], [1, 4], [5, 1], [6, 9], [9, 6]])('新建矩形%s×%s的屏幕行宽高与有效格数正确，撤销恢复旧图', async (width, height) => {
+  const p = await page();
+  const before = p.save();
+  p.get('new-map').click();
+  expect(p.save()).toEqual(before);
+  p.get('new-map-shape').value = 'rectangle';
+  p.get('new-map-width').value = width;
+  p.get('new-map-height').value = height;
+  p.get('create-map').click();
+  expect(p.get('issues').hidden).toBe(true);
+  const map = p.save();
+  const rows = new Map();
+  map.cells.forEach((row, y) => row.forEach((cell, x) => {
+    if (!cell) return;
+    expect(cell).toEqual({ terrain: 'land', elevation: 8 });
+    const [px, py] = view.projectGrid([x, y], { tileSize: map.tileSize });
+    if (!rows.has(py)) rows.set(py, []);
+    rows.get(py).push(px);
+  }));
+  expect(map.cells.flat().filter(Boolean)).toHaveLength(width * height);
+  expect(rows.size).toBe(height);
+  for (const xs of rows.values()) {
+    expect(xs).toHaveLength(width);
+    expect(Math.max(...xs) - Math.min(...xs)).toBe((width - 1) * 80);
+  }
+  const ys = [...rows.keys()];
+  expect(Math.max(...ys) - Math.min(...ys)).toBe((height - 1) * 20);
+  expect(p.get('new-map-options').hidden).toBe(true);
+  p.get('undo').click();
+  expect(p.save()).toEqual(before);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('取消新建与无效尺寸保留地图及历史，菱形支持不同边长', async () => {
+  const p = await page();
+  const before = p.save();
+  p.get('new-map').click();
+  p.get('cancel-new-map').click();
+  expect(p.get('new-map-options').hidden).toBe(true);
+  expect(p.get('new-map').getAttribute('aria-expanded')).toBe('false');
+  expect(p.save()).toEqual(before);
+  p.get('new-map').click();
+  for (const invalid of ['', '0', '-1', '1.5', '65']) {
+    p.get('new-map-width').value = invalid;
+    p.get('create-map').click();
+    expect(p.get('issues').textContent).toContain('地图宽高');
+    expect(p.save()).toEqual(before);
+    expect(p.get('undo').disabled).toBe(true);
+  }
+  p.get('new-map-width').value = '7';
+  p.get('new-map-height').value = '3';
+  p.get('create-map').click();
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells).toEqual(Array.from({ length: 3 }, () => Array(7).fill({ terrain: 'land', elevation: 8 })));
+  p.window.close();
+});
+
+test('上方格子和实体工具分别选取，操作随选择显示，实体删除保留地表并可撤销', async () => {
+  const p = await page();
+  const before = p.save();
+  const button = mode => p.window.document.querySelector(`[data-pick-mode="${mode}"]`);
+  expect(p.get('selection-actions').hidden).toBe(true);
+  button('cell').click();
+  p.clickGrid([2, 2]);
+  expect(button('cell').getAttribute('aria-pressed')).toBe('true');
+  expect(button('entity').getAttribute('aria-pressed')).toBe('false');
+  expect(p.get('cell-grid').textContent).toBe('[2,2]');
+  expect(p.get('entity-details').hidden).toBe(true);
+  expect(p.get('selection-actions').hidden).toBe(false);
+  expect(p.get('delete-entity').hidden).toBe(true);
+  button('entity').click();
+  expect(p.get('selection-actions').hidden).toBe(true);
+  p.clickGrid([2, 2]);
+  expect(p.get('entity-id').textContent).toBe('dog-a');
+  expect(p.get('delete-entity').hidden).toBe(false);
+  p.get('delete-entity').click();
+  expect(p.save().entities).toEqual(before.entities.filter(entity => entity.id !== 'dog-a'));
+  expect(p.save().cells).toEqual(before.cells);
+  expect(p.get('delete-entity').hidden).toBe(true);
+  p.get('undo').click();
+  expect(p.save()).toEqual(before);
+  p.get('clear-selection').click();
+  expect(p.get('selection-actions').hidden).toBe(true);
+  expect(p.errors).toEqual([]);
+  p.window.close();
 });

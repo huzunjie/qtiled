@@ -1,4 +1,7 @@
 /* 地图工作台专用布局，不改变元素工具的共用样式。 */
+.map-editor-page .navs.closed:not(:hover):not(:focus-within) h3 { font-size: 10px; line-height: 16px; padding: 3px 6px; }
+.map-editor-page .navs.closed:not(:hover):not(:focus-within) h3 a.nav-switch,
+.map-editor-page .navs.closed:not(:hover):not(:focus-within) h3 a.qgl svg { width: 14px; height: 14px; font-size: 12px; }
 .map-demo { max-width: 1500px; margin: 8px auto; }
 .map-demo h1 { font-size: 18px; margin-right: auto; }
 .map-demo p { opacity: 1; font-size: 12px; line-height: 1.7; }
@@ -12,9 +15,8 @@
 .map-demo .preview-workspace > .viewport { overflow: hidden; }
 .map-demo .preview-workspace > aside { flex-basis: 240px; position: relative; padding: 0; overflow: hidden; border: 1px solid #d7dce2; }
 .map-demo .map-details { position: absolute; inset: 0; overflow: auto; scrollbar-gutter: stable; padding: 12px; }
-.map-demo aside dt { margin-top: 6px; }
 .map-demo aside h2 { margin-bottom: 8px; }
-.map-demo .canvas-controls { padding: 8px; border-bottom: 1px solid #edf0f3; font-size: 12px; background: white; border: 1px solid #d7dce2; border-radius: 6px; margin-bottom: 10px; }
+.map-demo .canvas-controls { padding: 8px; font-size: 12px; background: white; border: 1px solid #d7dce2; border-radius: 6px; margin-bottom: 10px; }
 .map-demo fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; border: 0; margin: 0; padding: 0; min-width: 0; }
 .map-demo .toolbar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
 .map-demo details > summary { cursor: pointer; font-size: 12px; color: #526278; }
@@ -28,11 +30,11 @@
 .map-demo .playback-row { margin-top: 8px; padding-top: 8px; border-top: 1px solid #edf0f3; }
 .map-demo .view-status { display: none; }
 .map-demo #coordinates-hint { color: #687383; }
-.map-demo .selection-controls { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin: 8px 0; font-size: 12px; padding-top: 10px; border-top: 1px solid #edf0f3; }
 .map-demo textarea { width: 100%; box-sizing: border-box; min-height: 110px; font: 11px monospace; }
-.map-demo .file-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; font-size: 12px; }
+.map-demo .file-controls { display: grid; gap: 12px; align-items: center; margin: 0; }
+.map-demo .file-controls, .map-demo #view-controls { font-size: 12px; }
 .map-demo #map-canvas { touch-action: none; position: relative; width: 100%; height: clamp(360px, calc(100vh - 171px), 850px); overflow: hidden; border: 0; padding: 0; }
-.map-demo .click-help { margin: 0; padding: 0; color: #687383; border-bottom: 1px solid #edf0f3; border: 0; min-height: 82px; margin-top: 8px; }
+.map-demo .click-help { margin: 8px 0 0; padding: 0; color: #687383; border: 0; min-height: 82px; }
 .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
 .map-demo #map-canvas[data-tool="pan"] { cursor: grab; }
 .map-demo #map-canvas[data-panning="true"] { cursor: grabbing; }
@@ -55,7 +57,7 @@
 .map-demo .menu > summary { padding: 6px 10px; border-radius: 4px; background: white; color: #334b43; font-size: 13px; }
 .map-demo .menu[open] > summary { background: #dcece2; }
 .map-demo .menu-panel { position: absolute; right: 0; top: calc(100% + 6px); z-index: 5; width: min(360px, calc(100vw - 44px)); max-height: 70vh; overflow: auto; padding: 14px; box-sizing: border-box; border: 1px solid #d7dce2; border-radius: 6px; background: white; box-shadow: 0 8px 24px #20382b26; }
-.map-demo .menu-panel fieldset, .map-demo .file-controls { display: grid; gap: 12px; margin: 0; }
+.map-demo .menu-panel fieldset { display: grid; gap: 12px; margin: 0; }
 .map-demo .menu-panel input[type="file"] { display: block; max-width: 100%; margin-top: 6px; }
 .map-demo .menu-panel details { margin-top: 12px; }
 .map-demo .menu-panel .note { margin-bottom: 0; }
@@ -72,7 +74,10 @@
 .map-demo .tool-grid button { min-height: 36px; background: #edf2ef; color: #30493d; border: 1px solid #d4ded8; text-align: left; padding: 8px; }
 .map-demo .tool-grid button[aria-pressed="true"] { background: #176643; color: white; border-color: #176643; }
 .map-demo button:hover:not(:disabled) { filter: brightness(.92); }
+.map-demo #selection-actions { margin-top: 8px; }
 .map-demo .tool-parameters { padding: 10px 0; min-height: 30px; }
+.map-demo #new-map-options { padding: 10px; background: #f4f6f8; border-radius: 4px; }
+.map-demo #new-map-options input { width: 54px; }
 .map-demo #target-height { width: 58px; }
 .map-demo #hover-info { display: block; height: 26px; box-sizing: border-box; padding: 5px 10px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-bottom: 1px solid #edf0f3; color: #526278; }
 @media (max-width: 759px) {

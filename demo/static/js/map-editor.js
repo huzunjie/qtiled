@@ -132,15 +132,18 @@
     container.dataset.tool = tool;
     document.querySelectorAll('[data-tool]').forEach(button => {
       if (button === container) return;
-      button.setAttribute('aria-pressed', String(button.dataset.tool === tool));
-      if (button.dataset.tool === tool) get('current-tool').textContent = button.textContent;
+      const active = button.dataset.tool === tool && (!button.dataset.pickMode || button.dataset.pickMode === get('pick-mode').value);
+      button.setAttribute('aria-pressed', String(active));
+      if (active) get('current-tool').textContent = button.textContent;
     });
     get('building-control').hidden = tool !== 'building';
     get('height-control').hidden = tool !== 'set-height';
     get('brush-size-control').hidden = !brushTools.includes(tool);
     updateBrushParameters();
     get('click-help').textContent = {
-      select: '点击地面格查看信息。画布内触控板双指上下、左右滚动，或鼠标中键拖动可平移。',
+      select: get('pick-mode').value === 'cell'
+        ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
+        : '点击实体查看完整占地与属性；选中后可删除整个实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：拖动补齐连线；松开提交，Esc 取消。需要平坦陆地；不能经过实体、水面或高差。',
       'erase-road': '拖动擦除道路，保留原地表；松开提交，Esc 取消。',
       building: '民居 2×2：移入画布预览，点击放置，R 转向，Esc 返回查看。两个外观用于四向，相反方向共用素材。',
@@ -299,6 +302,8 @@
     if (cell && tile?.waterKind) get('cell-info').textContent += `\n水面: ${{ ordinary: '普通', transition: '过渡', deep: '深处' }[tile.waterKind]}`;
     if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
     updateWaterFrame();
+    get('selection-actions').hidden = !selectedGrid && !entity;
+    get('delete-entity').hidden = !entity;
     get('entity-details').hidden = !entity;
     get('delete-entity').disabled = !entity || Boolean(stroke);
     get('entity-id').textContent = entity ? entity.id : '—';
@@ -590,7 +595,7 @@
     if (currentScene) updateSelection();
   }
   get('clear-selection').addEventListener('click', clearSelection);
-  get('pick-mode').addEventListener('change', clearSelection);
+  get('pick-mode').addEventListener('change', () => { clearSelection(); updateToolHelp(); });
   container.addEventListener('click', event => {
     if (suppressClick) { suppressClick = false; return; }
     if (!currentScene || stroke || pan) return;
@@ -747,6 +752,10 @@
   document.querySelectorAll('button[data-tool]').forEach(button => button.addEventListener('click', () => {
     if (!currentScene || stroke || pan) return;
     get('edit-tool').value = button.dataset.tool;
+    if (button.dataset.pickMode) {
+      if (get('pick-mode').value !== button.dataset.pickMode) clearSelection();
+      get('pick-mode').value = button.dataset.pickMode;
+    }
     updateToolHelp();
   }));
   const menus = [...document.querySelectorAll('.menu')];
@@ -987,14 +996,49 @@
     clearIssue();
     status.textContent = '已读取地图 · 可撤销';
   }
+  function showNewMapOptions(show) {
+    get('new-map-options').hidden = !show;
+    get('new-map').setAttribute('aria-expanded', String(show));
+  }
   get('new-map').addEventListener('click', () => {
+    if (!currentScene || stroke || pan) return;
+    const show = get('new-map-options').hidden;
+    if (show) {
+      get('new-map-width').value = Math.min(64, currentScene.map.cells[0].length);
+      get('new-map-height').value = Math.min(64, currentScene.map.cells.length);
+    }
+    showNewMapOptions(show);
+  });
+  get('cancel-new-map').addEventListener('click', () => showNewMapOptions(false));
+  get('create-map').addEventListener('click', () => {
     if (!currentScene || stroke || pan) return;
     try {
       const elevation = presetHeight();
+      const [width, height] = ['new-map-width', 'new-map-height'].map(id => Number(get(id).value));
+      if (![width, height].every(value => Number.isInteger(value) && value >= 1 && value <= 64)) {
+        throw new Error('地图宽高必须为 1～64 的整数');
+      }
+      const shape = get('new-map-shape').value;
+      let cells;
+      if (shape === 'rectangle') {
+        // 复用错列菱形布局生成矩形轮廓，再换成地图使用的等距世界格坐标。
+        const grids = window.qtiled.shapes.rhombus.getPositions([0, width - 1], [0, height - 1], currentScene.map.tileSize)
+          .map(([x, y]) => window.qtiledView.pickGrid([x, y], { tileSize: currentScene.map.tileSize }));
+        const minX = Math.min(...grids.map(grid => grid[0]));
+        const minY = Math.min(...grids.map(grid => grid[1]));
+        const columns = Math.max(...grids.map(grid => grid[0])) - minX + 1;
+        const rows = Math.max(...grids.map(grid => grid[1])) - minY + 1;
+        cells = Array.from({ length: rows }, () => Array(columns).fill(null));
+        grids.forEach(([x, y]) => { cells[y - minY][x - minX] = { terrain: 'land', elevation }; });
+      } else if (shape === 'diamond') {
+        cells = Array.from({ length: height }, () => Array.from({ length: width }, () => ({ terrain: 'land', elevation })));
+      } else {
+        throw new Error('请选择菱形或矩形轮廓');
+      }
       const map = {
         version: 2, id: 'new-map', tileSize: [...currentScene.map.tileSize],
         elevationStep: currentScene.elevationRules.elevationStep,
-        cells: currentScene.map.cells.map(row => row.map(cell => cell === null ? null : { terrain: 'land', elevation })),
+        cells,
         entities: [],
       };
       ++loadRequestId;
@@ -1002,7 +1046,9 @@
       clearSelection();
       viewport.mode = 'fit';
       updateViewport();
-      status.textContent = `已新建平地 · 基准高度 ${elevation} · 可撤销`;
+      showNewMapOptions(false);
+      closeMenus();
+      status.textContent = `已新建${shape === 'rectangle' ? '矩形' : '菱形'}地图 ${width} × ${height} · 基准高度 ${elevation} · 可撤销`;
     } catch (error) { fail(error); }
   });
   get('read-map').addEventListener('click', () => {

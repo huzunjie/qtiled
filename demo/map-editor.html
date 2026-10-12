@@ -7,9 +7,9 @@
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./static/css/index.css?20261012113314">
   <link rel="stylesheet" href="./static/css/preview-workspace.css?20261012113314">
-  <link rel="stylesheet" href="./static/css/map-editor.css?20261012190001">
+  <link rel="stylesheet" href="./static/css/map-editor.css?20261012210002">
 </head>
-<body>
+<body class="map-editor-page">
   <script src="./static/js/navs.js?20261012113314"></script>
   <script src="./static/js/spritejs3.js?20261012113314"></script>
   <script src="./static/js/qtiled.dev.js?20261012113314"></script>
@@ -35,9 +35,18 @@
       </div>
       <div class="control-group">
         <button id="reload" type="button">加载样本</button>
-        <button id="new-map" type="button" disabled>新建平地</button>
+        <button id="new-map" type="button" disabled aria-expanded="false" aria-controls="new-map-options">新建地图…</button>
         <button id="save-map" type="button" disabled>保存地图</button>
       </div>
+      <fieldset id="new-map-options" data-editor-controls disabled hidden aria-label="新建地图参数">
+        <label>轮廓 <select id="new-map-shape"><option value="diamond">菱形</option><option value="rectangle">矩形</option></select></label>
+        <div class="control-group">
+          <label>宽 <input id="new-map-width" type="number" min="1" max="64" step="1" value="32"> 格</label>
+          <label>高 <input id="new-map-height" type="number" min="1" max="64" step="1" value="32"> 格</label>
+        </div>
+        <p class="note">宽高均为 1～64 格。矩形按横向格数与交错行数，菱形按两条边的格数；使用上方预设基准高度。</p>
+        <div class="control-group"><button id="create-map" type="button">创建地图</button><button id="cancel-new-map" type="button">取消</button></div>
+      </fieldset>
       <label>打开地图 <input id="map-file" type="file" accept=".json,application/json"></label>
     </div>
           <details><summary>地图 JSON（查看 / 导入）</summary>
@@ -73,7 +82,7 @@
       <details class="menu"><summary>帮助</summary><div class="menu-panel">
           <div>
           <p class="note">方形与菱形按世界网格定义。偶数尺寸向世界 +x/+y 多覆盖一格；镜头旋转不改变占地。蓝框仅表示悬停范围，红框提示越界或空角；完整地形规则在拖动时检查。</p>
-          <p class="note" id="base-height-help">新建沿用当前范围与空角，按预设基准高度填充陆地、清空实体，可撤销。勾选“按基准高度加载”时，将样本最低地表移到此高度，保留高差；打开文件保持原高度。</p>
+          <p class="note" id="base-height-help">新建可选择宽高与菱形/矩形轮廓，按预设基准高度填充陆地、清空实体，可撤销。勾选“按基准高度加载”时，将样本最低地表移到此高度，保留高差；打开文件保持原高度。</p>
           <p class="note">高程为 0～16 级，建议逐级塑形。可在地图边缘和空角旁编辑，空角本身不可绘制。蓝框为选格，橙框为联动格；下挖会按坡面需要联动扩展范围，保留目标高度。平面编辑显示真实高度并选取被遮挡格。临水高差及无法稳定整理的组合整笔拒绝。坡道通行与半坡尚未接入。</p>
           <p class="note">水域与岸线支持 0～16 级的等高平台；水域直接衔接高差或坡面仍受限制。水域可延伸到地图边缘，岸线与深水推导均将无地图数据的邻格视为外接水域，地图边界不会使水面变浅，真实陆岸仍决定深浅过渡。动画默认每帧 100ms，为预览设置；洪水事件尚未接入。</p>
           <p class="note">画布随容器调整；平移、缩放和镜头只改变查看位置，不改变地图。靠近真实边界或查看小地图时允许留白，可随时“查看全图”找回地图。</p>
@@ -112,8 +121,10 @@
         <fieldset id="tool-controls" data-editor-controls disabled aria-label="编辑工具">
           <h2>编辑工具</h2>
           <input id="edit-tool" type="hidden" value="select">
+          <input id="pick-mode" type="hidden" value="entity">
           <div class="tool-grid">
-              <button type="button" data-tool="select" aria-pressed="true">查看</button>
+              <button type="button" data-tool="select" data-pick-mode="cell" aria-pressed="false">查看格子</button>
+              <button type="button" data-tool="select" data-pick-mode="entity" aria-pressed="true">查看实体</button>
               <button type="button" data-tool="pan" aria-pressed="false">平移</button>
               <button type="button" data-tool="land" aria-pressed="false">陆地</button>
               <button type="button" data-tool="water" aria-pressed="false">水域</button>
@@ -124,7 +135,11 @@
               <button type="button" data-tool="building" aria-pressed="false">建筑</button>
               <button type="button" data-tool="set-height" aria-pressed="false">设定高程</button>
           </div>
-          <div class="tool-parameters"><strong id="current-tool">查看</strong> <label id="height-control" hidden>高程 <input id="target-height" aria-label="目标高程" type="number" min="0" max="16" step="1" value="1"></label></div>
+          <div id="selection-actions" class="control-group" hidden>
+            <button id="clear-selection" type="button">清除选择</button>
+            <button id="delete-entity" type="button" disabled hidden>删除实体</button>
+          </div>
+          <div class="tool-parameters"><strong id="current-tool">查看实体</strong> <label id="height-control" hidden>高程 <input id="target-height" aria-label="目标高程" type="number" min="0" max="16" step="1" value="1"></label></div>
           <div id="building-control" hidden>
             <label>建筑 <select id="building-type"><option value="courtyard-house">民居 · 2×2</option></select></label>
             <label>朝向 <select id="building-angle"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></label>
@@ -139,10 +154,6 @@
             <dt>格距 / 镜头</dt><dd id="view-info">—</dd>
           </dl>
           </details>
-          <div class="selection-controls">
-            <label>查看 <select id="pick-mode" aria-describedby="click-help"><option value="entity">实体信息</option><option value="cell">格子属性</option></select></label>
-            <button id="clear-selection" type="button">清除选择</button>
-          </div>
           <h2>选中格子</h2>
           <dl>
             <dt>世界坐标</dt><dd id="cell-grid">—</dd>
@@ -151,7 +162,6 @@
           </dl>
           <section id="entity-details" hidden>
           <h2>选中实体</h2>
-          <button id="delete-entity" type="button" disabled>删除整个实例</button>
           <dl>
             <dt>实例 ID</dt><dd id="entity-id">—</dd>
             <dt class="wide-detail">元素 / 当前图片</dt><dd class="wide-detail" id="entity-source">—</dd>
@@ -162,6 +172,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261012180001"></script>
+  <script src="./static/js/map-editor.js?20261012210001"></script>
 </body>
 </html>
