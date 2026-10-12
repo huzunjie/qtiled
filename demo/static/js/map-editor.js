@@ -25,7 +25,7 @@
   let hoverKey = null;
   let brushKey = null;
   let brushOffsets = [];
-  const brushTools = ['land', 'water', 'raise', 'lower', 'set-height'];
+  const brushTools = ['land', 'water', 'raise-two', 'raise', 'lower', 'lower-two'];
   // 相机只属于当前页面，不写入地图事实或撤销记录；中心允许位于半格。
   const viewport = { width: container.clientWidth || 640, height: container.clientHeight || 440,
     center: null, baseHeight: 0, scale: 1, mode: 'work' };
@@ -137,7 +137,6 @@
       if (active) get('current-tool').textContent = button.textContent;
     });
     get('building-control').hidden = tool !== 'building';
-    get('height-control').hidden = tool !== 'set-height';
     get('brush-size-control').hidden = !brushTools.includes(tool);
     updateBrushParameters();
     get('click-help').textContent = {
@@ -150,9 +149,10 @@
       pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
       land: '陆地笔刷：拖动预览整笔，松开提交；Esc 取消。越过空角或地图边界会拒绝整笔；中键可平移。',
       water: '水域笔刷：拖动预览整笔，松开提交；Esc 取消。岸线随邻格更新；中键可平移。',
-      raise: '升高一级：同一格每笔只升一次，最高 16 级。蓝框为选区，橙框为联动格；松开提交，Esc 取消。',
+      raise: '抬高一级：同一格每笔只升一次，最高 16 级。蓝框为选区，橙框为联动格；松开提交，Esc 取消。',
       lower: '降低一级：最低 0 级；需要坡面空间时会联动扩大下挖范围。蓝框为选区，橙框为联动格。',
-      'set-height': '设定高程 0～16：周边会按坡面规则整理，预览可能修订目标；连续台地请分级绘制。松开提交，Esc 取消。',
+      'raise-two': '抬高两级：同一格每笔目标只增加两级，超出 16 级整笔拒绝；周边沿用现有坡面整理，目标可能修订。松开提交，Esc 取消。',
+      'lower-two': '降低两级：同一格每笔目标只减少两级，低于 0 级整笔拒绝；沿用现有下挖联动。松开提交，Esc 取消。',
     }[tool];
     if (get('flat-edit').checked) get('click-help').textContent += ' 平面编辑按世界格选取，数字为真实高度，可编辑遮挡沟底。';
   }
@@ -889,8 +889,8 @@
       if (stroke.grids.size === previousSize) return;
     }
     try {
-      const { base, grids, terrain, height } = stroke;
-      const command = ['land', 'water'].includes(terrain) ? { terrain } : { type: terrain, height };
+      const { base, grids, terrain } = stroke;
+      const command = ['land', 'water'].includes(terrain) ? { terrain } : { type: terrain.replace('-two', ''), levels: terrain.endsWith('-two') ? 2 : 1 };
       const result = requireSuccess(roadTools.includes(terrain)
         ? window.constructionRules.applyRoadStroke(base.map, [...grids.values()], terrain === 'erase-road')
         : window.elevationRules.applyStroke(base.map, { ...command, grids: [...grids.values()] }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
@@ -945,7 +945,7 @@
     ++loadRequestId; // 新编辑不能被较早的异步读取覆盖。
     // 从全图开始编辑时保持当前缩放，避免新增岸线改变外框导致笔尖漂移。
     viewport.mode = 'work';
-    stroke = { base: currentScene, terrain: tool, height: get('target-height').valueAsNumber,
+    stroke = { base: currentScene, terrain: tool,
       offsets: roadTools.includes(tool) ? [[0, 0]] : getBrushOffsets(),
       grids: new Map(), pointerId: event.pointerId };
     container.setPointerCapture?.(event.pointerId);

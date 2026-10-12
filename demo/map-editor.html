@@ -7,7 +7,7 @@
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./static/css/index.css?20261012181344">
   <link rel="stylesheet" href="./static/css/preview-workspace.css?20261012181344">
-  <link rel="stylesheet" href="./static/css/map-editor.css?20261012181344">
+  <link rel="stylesheet" href="./static/css/map-editor.css?20261012235900">
 </head>
 <body class="map-editor-page">
   <script src="./static/js/navs.js?20261012181344"></script>
@@ -19,7 +19,7 @@
   <script src="./static/js/pointer.js?20261012181344"></script>
   <script src="./static/js/dog-element-sample.js?20261012181344"></script>
   <script src="./static/js/land-water-rules.js?20261012185929"></script>
-  <script src="./static/js/elevation-rules.js?20261012223000"></script>
+  <script src="./static/js/elevation-rules.js?20261013000100"></script>
   <script src="./static/js/construction-rules.js?20261012181344"></script>
   <script src="./static/js/elevation-rendering.js?20261012231001"></script>
   <script src="./static/js/element-animation-player.js?20261012181344"></script>
@@ -132,18 +132,19 @@
               <button type="button" data-tool="pan" aria-pressed="false">平移</button>
               <button type="button" data-tool="land" aria-pressed="false">陆地</button>
               <button type="button" data-tool="water" aria-pressed="false">水域</button>
-              <button type="button" data-tool="raise" aria-pressed="false">升高一级</button>
+              <button type="button" data-tool="raise-two" aria-pressed="false">抬高两级</button>
+              <button type="button" data-tool="raise" aria-pressed="false">抬高一级</button>
               <button type="button" data-tool="lower" aria-pressed="false">降低一级</button>
+              <button type="button" data-tool="lower-two" aria-pressed="false">降低两级</button>
               <button type="button" data-tool="road" aria-pressed="false">道路</button>
               <button type="button" data-tool="erase-road" aria-pressed="false">擦除道路</button>
               <button type="button" data-tool="building" aria-pressed="false">建筑</button>
-              <button type="button" data-tool="set-height" aria-pressed="false">设定高程</button>
           </div>
           <div id="selection-actions" class="control-group" hidden>
             <button id="clear-selection" type="button">清除选择</button>
             <button id="delete-entity" type="button" disabled hidden>删除实体</button>
           </div>
-          <div class="tool-parameters"><strong id="current-tool">查看实体</strong> <label id="height-control" hidden>高程 <input id="target-height" aria-label="目标高程" type="number" min="0" max="16" step="1" value="1"></label></div>
+          <div class="tool-parameters"><strong id="current-tool">查看实体</strong></div>
           <div id="building-control" hidden>
             <label>建筑 <select id="building-type"><option value="courtyard-house">民居 · 2×2</option></select></label>
             <label>朝向 <select id="building-angle"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></label>
@@ -176,6 +177,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261012235001"></script>
+  <script src="./static/js/map-editor.js?20261013000100"></script>
 </body>
 </html>

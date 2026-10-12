@@ -170,6 +170,32 @@ describe('高程整笔事务', () => {
     expect(stroke(result.definition, { type: 'lower', grids: [[4, 4]] }).definition.cells).toEqual(map.cells);
   });
 
+  test.each(['raise', 'lower'])('%s 的两级目标沿用既有整理，默认一级结果不变', type => {
+    const map = createMap();
+    map.cells.flat().forEach(cell => { cell.elevation = 8; });
+    freezeDeep(map);
+    const grids = [[4, 4], [4, 4]];
+    expect(stroke(map, { type, grids, levels: 1 })).toEqual(stroke(map, { type, grids }));
+    const result = stroke(map, { type, grids, levels: 2 });
+    expect(result.issues).toEqual([]);
+    expect(result).toEqual(stroke(map, { type: 'set-height', grids, height: type === 'raise' ? 10 : 6 }));
+    for (const angle of [0, 90, 180, 270]) {
+      expect(stroke(map, { type, grids, levels: 2 }, angle).definition).toEqual(result.definition);
+    }
+  });
+
+  test.each([['raise', 15], ['lower', 1]])('%s 两级越界拒绝整笔且不截断', (type, height) => {
+    const map = createMap();
+    map.cells.flat().forEach(cell => { cell.elevation = height; });
+    const result = stroke(freezeDeep(map), { type, grids: [[4, 4]], levels: 2 });
+    hasIssue(result, 'elevation-stroke-range');
+    expect(result.definition).toBeNull();
+  });
+
+  test.each([0, 3, -1, null, '2'])('非法升降步长 %p 被拒绝', levels => {
+    hasIssue(stroke(createMap(), { type: 'raise', grids: [[4, 4]], levels }), 'invalid-elevation-stroke');
+  });
+
   test('设零不升级版本，零地面下挖拒绝；实体地基不可直接升降', () => {
     const map = createMap(1);
     expect(stroke(map, { type: 'set-height', height: 0, grids: [[4, 4]] }).definition).toEqual(map);

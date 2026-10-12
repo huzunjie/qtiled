@@ -52,6 +52,8 @@
 .map-demo #cell-info, .map-demo #entity-source { white-space: pre-line; }
 .map-demo aside h2:not(:first-child) { margin-top: 10px; padding-top: 8px; border-top: 1px solid #edf0f3; }
 .map-demo [hidden] { display: none !important; }
+/* 笔刷参数隐藏时保留占位，避免切换工具改变工具栏高度或换行。 */
+.map-demo #brush-size-control[hidden] { display: flex !important; visibility: hidden; }
 .map-demo .workbench-header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 8px 0 12px; }
 .map-demo .menu { position: relative; }
 .map-demo .menu > summary { padding: 6px 10px; border-radius: 4px; background: white; color: #334b43; font-size: 13px; }

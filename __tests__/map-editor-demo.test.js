@@ -1113,7 +1113,7 @@ function heightStroke(p, tool, grids) {
   p.sendPointer('pointerup', points[points.length - 1]);
 }
 
-test('升降与设高整笔提交，重复格不累加，撤销恢复原 v1；JSON 回读保存 v2 高度', async () => {
+test('升降整笔提交，重复格不累加，撤销恢复原 v1；JSON 回读保存 v2 高度', async () => {
   const p = await page();
   const before = flatElevationWorkspace(p);
   heightStroke(p, 'raise', [[4, 4], [5, 4], [4, 4]]);
@@ -1130,8 +1130,7 @@ test('升降与设高整笔提交，重复格不累加，撤销恢复原 v1；JS
   expect(p.save()).toEqual(elevated);
   heightStroke(p, 'lower', [[4, 4], [5, 4]]);
   expect(p.save().cells.flat().every(cell => cell.elevation === 0)).toBe(true);
-  p.get('target-height').value = '1';
-  heightStroke(p, 'set-height', [[4, 4]]);
+  heightStroke(p, 'raise', [[4, 4]]);
   expect(p.save().cells[4][4].elevation).toBe(1);
   expect(p.errors).toEqual([]);
   p.window.close();
@@ -1241,8 +1240,7 @@ test('平面编辑四向选取真实世界格，大笔刷可挖低顶层，撤�
     expect(p.get('cell-info').textContent).toContain('elevation: 6');
     expect(p.save()).toEqual(before);
   }
-  p.get('target-height').value = '4';
-  heightStroke(p, 'set-height', [[12, 12]]);
+  heightStroke(p, 'lower-two', [[12, 12]]);
   expect(p.get('status').textContent).toContain('已提交整笔');
   expect(p.save().cells[12][12].elevation).toBe(4);
   p.get('undo').click();
@@ -1254,7 +1252,7 @@ test('平面编辑四向选取真实世界格，大笔刷可挖低顶层，撤�
   expect(p.get('flat-edit').disabled || p.get('controls').disabled).toBe(true);
   p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
   expect(p.save()).toEqual(before);
-  heightStroke(p, 'set-height', [[12, 12]]);
+  heightStroke(p, 'lower-two', [[12, 12]]);
   const lowered = p.save();
   expect(lowered.cells[12][12].elevation).toBe(4);
   expect(lowered.cells.flat().filter(cell => cell?.elevation === 6)).toHaveLength(0);
@@ -1268,14 +1266,12 @@ test('平面编辑四向选取真实世界格，大笔刷可挖低顶层，撤�
   p.window.close();
 });
 
-test('设高空值不能当作零，大笔刷越界整笔拒绝且不留下预览层', async () => {
+test('手动设高入口已移除，大笔刷越界整笔拒绝且不留下预览层', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   const before = p.save();
   p.get('flat-edit').click();
-  p.get('target-height').value = '';
-  heightStroke(p, 'set-height', [[12, 12]]);
-  expect(p.get('issues').hidden).toBe(false);
-  expect(p.save()).toEqual(before);
+  expect(p.get('target-height')).toBeNull();
+  expect(p.window.document.querySelector('[data-tool="set-height"]')).toBeNull();
   p.get('brush-size').value = '5';
   heightStroke(p, 'raise', [[1, 1]]);
   expect(p.get('issues').hidden).toBe(false);
@@ -1306,12 +1302,11 @@ test('合并样本四向点选与空角保持，整笔可取消/撤销/重做，
   const map = flatElevationWorkspace(p);
   p.get('flat-edit').click();
   p.get('brush-size').value = '5';
-  p.get('target-height').value = '1';
-  p.tool('set-height');
+  p.tool('raise');
   p.pointer('pointerdown', [5, 5]);
   p.get('cancel-stroke').click();
   expect(p.save()).toEqual(map);
-  heightStroke(p, 'set-height', [[5, 5]]);
+  heightStroke(p, 'raise', [[5, 5]]);
   const raised = p.save();
   expect(raised.version).toBe(2);
   expect(raised.cells[5][5].elevation).toBe(1);
@@ -1320,8 +1315,7 @@ test('合并样本四向点选与空角保持，整笔可取消/撤销/重做，
   expect(p.save()).toEqual(map);
   p.get('redo').click();
   expect(p.save()).toEqual(raised);
-  p.get('target-height').value = '0';
-  heightStroke(p, 'set-height', [[5, 5]]);
+  heightStroke(p, 'lower', [[5, 5]]);
   expect(p.save().cells[5][5].elevation).toBe(0);
   heightStroke(p, 'raise', [[5, 5]]);
   expect(p.save().cells[5][5].elevation).toBe(1);
@@ -1421,7 +1415,7 @@ test('样本平移越界保留当前地图及撤销，含水样本可平移到8�
   p.window.close();
 });
 
-test('单格降低一级与设为7四向结果一致，联动预览可取消、撤销和重做', async () => {
+test('单格降低一级四向结果一致，联动预览可取消、撤销和重做', async () => {
   const p = await page();
   flatElevationWorkspace(p);
   p.get('new-map').click();
@@ -1429,7 +1423,6 @@ test('单格降低一级与设为7四向结果一致，联动预览可取消、�
   p.get('flat-edit').click();
   const initial = p.save();
   p.get('brush-size').value = '1';
-  p.get('target-height').value = '7';
   let expected;
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
@@ -1449,7 +1442,7 @@ test('单格降低一级与设为7四向结果一致，联动预览可取消、�
     p.get('redo').click();
     expect(p.save()).toEqual(lowered);
     p.get('undo').click();
-    heightStroke(p, 'set-height', [[5, 5]]);
+    heightStroke(p, 'lower', [[5, 5]]);
     expect(p.save()).toEqual(lowered);
     p.get('undo').click();
   }
@@ -1748,7 +1741,7 @@ test('悬停复用纯几何，奇偶尺寸与两形状均不重建地形；参�
   p.window.close();
 });
 
-test('偶数笔刷在四向缩放后与悬停一致，陆水及设高共享占地且整笔可恢复', async () => {
+test('偶数笔刷在四向缩放后与悬停一致，陆水及升高共享占地且整笔可恢复', async () => {
   const p = await page({}, 'rectangular-water-map');
   p.get('new-map').click();
   p.get('create-map').click(); p.get('flat-edit').click();
@@ -1772,7 +1765,7 @@ test('偶数笔刷在四向缩放后与悬停一致，陆水及设高共享占�
     p.get('undo').click(); expect(p.save()).toEqual(before);
   }
   p.get('brush-size').value = '4'; p.get('brush-shape').value = 'diamond';
-  p.get('target-height').value = '9'; p.tool('set-height');
+  p.tool('raise');
   p.pointer('pointerdown', [16, 16]);
   expect(p.get('status').textContent).toContain('选中 12 格');
   p.get('cancel-stroke').click(); expect(p.save()).toEqual(before);
@@ -2172,10 +2165,10 @@ test('道路按最终两点重算：四象限选弯、回拖和无效终点恢�
   p.window.close();
 });
 
-test.each(['water', 'raise', 'lower', 'set-height'])('%s 保持扫刷选区：终点回到起点仍保留经过格', async tool => {
+test.each(['water', 'raise', 'lower', 'raise-two', 'lower-two'])('%s 保持扫刷选区：终点回到起点仍保留经过格', async tool => {
   const p = await constructionPage();
+  const before = p.save();
   p.tool(tool);
-  if (tool === 'set-height') p.get('target-height').value = '9';
   p.pointer('pointerdown', [3, 3]);
   p.pointer('pointermove', [7, 3]);
   p.pointer('pointerup', [3, 3]);
@@ -2183,7 +2176,12 @@ test.each(['water', 'raise', 'lower', 'set-height'])('%s 保持扫刷选区：�
   expect(p.get('issues').hidden).toBe(true);
   for (let x = 3; x <= 7; x++) {
     if (tool === 'water') expect(map.cells[3][x].terrain).toBe('water');
-    else expect(map.cells[3][x].elevation).toBe(tool === 'lower' ? 7 : 9);
+    else expect(map.cells[3][x].elevation).toBe({ raise: 9, lower: 7, 'raise-two': 10, 'lower-two': 6 }[tool]);
   }
+  p.get('undo').click(); expect(p.save()).toEqual(before);
+  p.get('redo').click(); expect(p.save()).toEqual(map);
+  p.get('read-map').click(); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [3, 3]);
+  p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
   p.window.close();
 });

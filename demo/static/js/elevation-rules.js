@@ -274,7 +274,7 @@
   }
 
   /** 一笔总从原快照生成完整候选；失败没有部分地图，调用方可继续累加格子重试预览。
-   * 工具操作：{ terrain: 'land'|'water', grids } 或 { type: 'raise'|'lower'|'set-height', height?, grids }。
+   * 工具操作：{ terrain: 'land'|'water', grids } 或 { type: 'raise'|'lower'|'set-height', height?, levels?: 1|2, grids }。
    */
   function applyStroke(map, command, elements, landRules, elevationRules, angle = 0) {
     if (map && map.version === 1 && command && ['land', 'water'].includes(command.terrain) && !command.type) {
@@ -286,10 +286,12 @@
     // 允许原图形态暂不支持的单笔候选修复，但结构与陆水事实始终必须有效。
     issues.push(...window.landWaterRules.resolve(flatView(map), elements, landRules, angle).issues);
     const heightTool = command && ['raise', 'lower', 'set-height'].includes(command.type);
+    const levels = command?.levels === undefined ? 1 : command.levels;
     if (!isObject(command) || (!heightTool && !['land', 'water'].includes(command.terrain))
       || (command.type && !heightTool) || !Array.isArray(command.grids) || !command.grids.length
+      || (['raise', 'lower'].includes(command.type) && ![1, 2].includes(levels))
       || (command.type === 'set-height' && (!Number.isInteger(command.height) || command.height < MIN_HEIGHT || command.height > MAX_HEIGHT))) {
-      issues.push(issue('$command', 'invalid-elevation-stroke', '笔刷需要有效的地表/升降/设高操作与非空格列表，设高值必须为 0～16 的整数。'));
+      issues.push(issue('$command', 'invalid-elevation-stroke', '笔刷需要有效的地表/升降/设高操作与非空格列表，升降步长必须为 1 或 2，设高值必须为 0～16 的整数。'));
     }
     if (issues.length) return { definition: null, ...failed(issues) };
     const grids = new Map();
@@ -326,7 +328,7 @@
       const cell = cells[y][x];
       if (!heightTool) cell.terrain = command.terrain;
       else if (command.type === 'set-height') cell.elevation = command.height;
-      else cell.elevation += command.type === 'raise' ? 1 : -1;
+      else cell.elevation += command.type === 'raise' ? levels : -levels;
       if (cell.elevation < MIN_HEIGHT || cell.elevation > MAX_HEIGHT) {
         issues.push(issue(`cells[${y}][${x}]`, 'elevation-stroke-range', '升降超出 0～16，整笔取消。'));
       }
