@@ -6,6 +6,7 @@
   const issues = get('issues');
   const terrainDirectory = './static/terrain-samples/emperor-land-water/';
   const constructionDirectory = './static/construction-samples/';
+  const featureTools = ['ramp', 'half-slope'];
   const roadTools = ['road', 'erase-road'];
   const elevationDirectory = './static/terrain-samples/emperor-elevation/';
   const navigation = document.querySelector('.navs');
@@ -143,8 +144,10 @@
       select: get('pick-mode').value === 'cell'
         ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
         : '点击实体查看完整占地与属性；选中后可删除整个实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
-      road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。需要平坦陆地；不能经过实体、水面或高差。',
+      road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
       'erase-road': '拖动擦除道路，保留原地表；松开提交，Esc 取消。',
+      ramp: '一级直边坡道：按下预览，松开切换；Esc 取消。可放在普通坡面或半坡上，再沿高低两端铺路。移除前请先擦路。',
+      'half-slope': '一级直边半坡：将坡面延伸到低侧两格，高程数值不变。点击任一部分切换整体；可相邻放置。改变占地前请先擦路。',
       building: '民居 2×2：移入画布预览，点击放置，R 转向，Esc 返回查看。两个外观用于四向，相反方向共用素材。',
       pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
       land: '陆地笔刷：拖动预览整笔，松开提交；Esc 取消。越过空角或地图边界会拒绝整笔；中键可平移。',
@@ -218,7 +221,7 @@
     if (!currentScene || !event || stroke || pan) { clearHover(); return; }
     const hit = hitAt(event);
     const tool = get('edit-tool').value;
-    const offsets = brushTools.includes(tool) ? getBrushOffsets() : roadTools.includes(tool) ? [[0, 0]] : [];
+    const offsets = brushTools.includes(tool) ? getBrushOffsets() : [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : [];
     const key = `${hit.grid}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}`;
     if (key === hoverKey) return;
     clearHover();
@@ -239,9 +242,13 @@
       return;
     }
     const cell = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]];
-    const grids = window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(hit.grid, offsets);
-    const invalid = hit.missed || grids.some(([x, y]) => !currentScene.map.cells[y]?.[x]);
+    const feature = featureTools.includes(tool) && !hit.missed
+      ? window.elevationRules.applyFeature(currentScene.map, { type: tool, grid: hit.grid },
+        currentScene.elementsById, currentScene.rules, currentScene.elevationRules, cameraAngle) : null;
+    const grids = feature?.selectedGrids || window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(hit.grid, offsets);
+    const invalid = hit.missed || feature?.issues.length || grids.some(([x, y]) => !currentScene.map.cells[y]?.[x]);
     get('hover-info').textContent = `世界 ${hit.grid.join(', ')} · ${hit.missed ? '未命中地表' : cell ? `高度 ${cell.elevation}` : '地图之外 / 空角'}${grids.length ? ` · 占地 ${grids.length} 格${invalid ? ' · 越界、空角或未命中，不能落笔' : ' · 地形规则在拖动时检查'}` : ''}`;
+    if (feature) get('hover-info').textContent = `世界 ${hit.grid.join(', ')} · ${feature.issues[0]?.message || `占地 ${grids.length} 格 · 按下预览，松开切换`}`;
     if (!grids.length) return;
     const { Group, Polyline } = window.spritejs;
     hoverOverlay = new Group({ id: 'map-brush-hover' });
@@ -285,7 +292,9 @@
     const { map, entities, view, vertexes, root } = currentScene;
     const entity = entities.find(item => item.id === selectedEntityId);
     const next = new Group();
-    const highlight = entity ? entity.draw.footprint.map(item => item.grid) : selectedGrid ? [selectedGrid] : [];
+    const selectedTile = currentScene.tiles.find(tile => tile.grid.join(',') === selectedGrid?.join(','));
+    const featureParts = selectedTile?.slopeOwner && currentScene.tiles.filter(tile => tile.slopeOwner?.join(',') === selectedTile.slopeOwner.join(','));
+    const highlight = featureParts ? featureParts.map(tile => tile.grid) : entity ? entity.draw.footprint.map(item => item.grid) : selectedGrid ? [selectedGrid] : [];
     highlight.forEach(grid => {
       if (map.cells[grid[1]]?.[grid[0]] === undefined) return;
       next.append(new Polyline({ pos: projectCell(grid, currentScene), points: vertexes, close: true,
@@ -301,7 +310,7 @@
       : cell ? `terrain: ${cell.terrain}${cell.road ? '\n道路: 普通' : ''}\nelevation: ${cell.elevation}\n素材: ${tile?.element || '无'}\n变体: ${tile?.variant ?? '无'}` : '地图矩阵之外';
     if (cell && tile?.waterKind) get('cell-info').textContent += `\n水面: ${{ ordinary: '普通', transition: '过渡', deep: '深处' }[tile.waterKind]}`;
     if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n近水湿润强度: ${tile.moisture} / 100（派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
-    if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
+    if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.halfSlope ? `半坡${tile.ramp ? '坡道' : ''}（主格 ${tile.slopeOwner}，部件 ${tile.slopePart + 1}/2）` : tile?.ramp ? '坡道' : tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
     updateWaterFrame();
     get('selection-actions').hidden = !selectedGrid && !entity;
     get('delete-entity').hidden = !entity;
@@ -553,6 +562,8 @@
         readText(new URL(`${constructionDirectory}road-rules.json`, document.baseURI)),
         loadElementSources({ ...sourceFiles, 'bare-land-atlas.png': `${terrainDirectory}bare-land-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'grass-atlas.png': `${terrainDirectory}grass-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
+          'slope-features-atlas.png': `${elevationDirectory}slope-features-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
+          'slope-features-dirt-atlas.png': `${elevationDirectory}slope-features-dirt-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'elevation-dirt-atlas.png': `${elevationDirectory}elevation-dirt-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'road-atlas.png': `${constructionDirectory}road-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'house-atlas.png': `${constructionDirectory}house-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`, 'atlas.png': `${terrainDirectory}atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
@@ -855,7 +866,10 @@
     }
     if (stroke.missed) return;
     if (stroke.last && grid.every((value, axis) => value === stroke.last[axis])) return;
-    if (stroke.terrain === 'road') {
+    if (featureTools.includes(stroke.terrain)) {
+      stroke.grids = new Map([[grid.join(','), grid]]);
+      stroke.last = grid;
+    } else if (stroke.terrain === 'road') {
       // 原作平地道路从终点回溯，等长方向按象限固定排序；选区只取本次起终点。
       const start = stroke.start || grid;
       stroke.start = start;
@@ -891,8 +905,10 @@
     try {
       const { base, grids, terrain } = stroke;
       const command = ['land', 'water'].includes(terrain) ? { terrain } : { type: terrain.replace('-two', ''), levels: terrain.endsWith('-two') ? 2 : 1 };
-      const result = requireSuccess(roadTools.includes(terrain)
-        ? window.constructionRules.applyRoadStroke(base.map, [...grids.values()], terrain === 'erase-road')
+      const result = requireSuccess(featureTools.includes(terrain)
+        ? window.elevationRules.applyFeature(base.map, { type: terrain, grid }, base.elementsById, base.rules, base.elevationRules, cameraAngle)
+        : roadTools.includes(terrain)
+        ? window.constructionRules.applyRoadStroke(base.map, [...grids.values()], terrain === 'erase-road', base.groundTiles)
         : window.elevationRules.applyStroke(base.map, { ...command, grids: [...grids.values()] }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
       const occupancy = requireSuccess(window.qtiledMaps.buildMapOccupancy(result.definition, base.elementsById));
       const next = prepareScene({ ...base, map: result.definition, occupancyIndex: occupancy.index }, cameraAngle, result.tiles);
@@ -900,7 +916,8 @@
       const preview = new Group();
       const changes = result.changes || [];
       const linked = changes.filter(change => !change.selected);
-      for (const [grid, selected] of [...grids.values()].map(grid => [grid, true]).concat(linked.map(change => [change.grid, false]))) {
+      const selectedGrids = result.selectedGrids || [...grids.values()];
+      for (const [grid, selected] of selectedGrids.map(grid => [grid, true]).concat(linked.map(change => [change.grid, false]))) {
         preview.append(new Polyline({ pos: projectCell(grid, next), points: next.vertexes, close: true,
           strokeColor: selected ? '#1976b5' : '#d07a18', fillColor: selected ? 'rgba(25,118,181,.15)' : 'rgba(208,122,24,.24)', lineWidth: 2 / viewport.scale }));
       }
@@ -911,7 +928,7 @@
       stroke.failed = false;
       commitScene(next);
       clearIssue();
-      status.textContent = `整笔预览 · 选中 ${grids.size} 格${command.type ? ` · 联动 ${linked.length} 格 · 实际改变 ${changes.length} 格` : ''}${result.adjusted?.length ? ` · ${result.adjusted.length} 格目标经整理调整` : ''} · 松开提交 / Esc 取消`;
+      status.textContent = `整笔预览 · 选中 ${selectedGrids.length} 格${command.type && !featureTools.includes(terrain) ? ` · 联动 ${linked.length} 格 · 实际改变 ${changes.length} 格` : ''}${result.adjusted?.length ? ` · ${result.adjusted.length} 格目标经整理调整` : ''} · 松开提交 / Esc 取消`;
     } catch (error) {
       stroke.failed = true;
       stroke.candidate = null;
@@ -940,13 +957,13 @@
       status.textContent = '正在平移 · 松开结束 / Esc 取消';
       return;
     }
-    if (event.button !== 0 || ![...brushTools, ...roadTools].includes(tool)) return;
+    if (event.button !== 0 || ![...brushTools, ...roadTools, ...featureTools].includes(tool)) return;
     event.preventDefault();
     ++loadRequestId; // 新编辑不能被较早的异步读取覆盖。
     // 从全图开始编辑时保持当前缩放，避免新增岸线改变外框导致笔尖漂移。
     viewport.mode = 'work';
     stroke = { base: currentScene, terrain: tool,
-      offsets: roadTools.includes(tool) ? [[0, 0]] : getBrushOffsets(),
+      offsets: [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : getBrushOffsets(),
       grids: new Map(), pointerId: event.pointerId };
     container.setPointerCapture?.(event.pointerId);
     previewStroke(event);

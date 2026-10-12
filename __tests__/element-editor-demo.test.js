@@ -844,13 +844,13 @@ test.each(['http', 'definition', 'missing-source'])('狗样本加载失败（%s�
   editor.window.close();
 });
 
-test('高程入口共用两主题真实 64 定义，四向锚点可独立编辑并导出到另一页面', async () => {
+test('高程入口共用两主题真实 176 定义，四向锚点可独立编辑并导出到另一页面', async () => {
   const definitions = JSON.parse(fs.readFileSync(path.join(__dirname, '../demo/static/terrain-samples/emperor-elevation/elements.json'), 'utf8'));
   const editor = await loadPage('element-editor.html');
   editor.get('elevation-sample').click();
   await new Promise(resolve => setImmediate(resolve));
-  expect(Object.keys(definitions)).toHaveLength(64);
-  expect(editor.get('terrain-material').options).toHaveLength(65);
+  expect(Object.keys(definitions)).toHaveLength(176);
+  expect(editor.get('terrain-material').options).toHaveLength(177);
   const id = Object.keys(definitions)[0];
   for (const angle of [0, 90, 180, 270]) {
     editor.angle(angle);

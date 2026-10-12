@@ -109,10 +109,16 @@
   }
 
   /** 输出平地/水面和低格坡面；高格保持陆地，投影由消费者减去 elevation * elevationStep。
-   * 纯解析不修改高度，不解释 HALF/RAMP，也不把控制 1/2 当素材。
+   * 纯解析不修改高度；坡道/半坡另由作者标记派生，不把控制 1/2 当素材。
    */
   function resolve(map, elements, landRules, elevationRules, angle = 0) {
-    if (map && map.version === 1) return window.landWaterRules.resolve(map, elements, landRules, angle);
+    if (map && map.version === 1) {
+      if (Array.isArray(map.cells) && map.cells.some(row => Array.isArray(row)
+        && row.some(cell => cell && (cell.ramp !== undefined || cell.halfSlope !== undefined)))) {
+        return failed([issue('version', 'slope-feature-version', '坡道与半坡需要 v2 高程地图。')]);
+      }
+      return window.landWaterRules.resolve(map, elements, landRules, angle);
+    }
     const issues = checkRules(elevationRules);
     if (map?.climate === 'arid' && (typeof elevationRules?.dirtElementPrefix !== 'string' || !elevationRules.dirtElementPrefix.length)) {
       issues.push(issue('$elevationRules.dirtElementPrefix', 'invalid-elevation-rules', '干旱气候需要对应的坡面主题。'));
@@ -176,6 +182,8 @@
       return { ...result, element, rowIndex: row.row, slope: true };
     });
 
+    if (!issues.length) resolveFeatures(map, tiles, elements, elevationRules, column, issues);
+
     // 世界占地沿用地图消费者，避免另造一套实体旋转或原点即占地的假设。
     if (Array.isArray(map.entities) && map.entities.length) {
       if (!window.qtiledMaps || typeof window.qtiledMaps.buildMapOccupancy !== 'function') {
@@ -192,6 +200,105 @@
       }
     }
     return issues.length ? failed(issues) : { tiles, issues };
+  }
+
+  // 原表71～74对应67～70坡道；0x476290按世界方向检查左右半坡，
+  // 0x4772f0选孤立/单侧过渡/连续直边图。这里只开放一级直边，角形另行补证。
+  function resolveFeatures(map, tiles, elements, rules, column, issues) {
+    const byGrid = new Map(tiles.map(tile => [tile.grid.join(','), tile]));
+    const owners = new Map();
+    const parts = new Set();
+    for (const tile of tiles) {
+      const [x, y] = tile.grid;
+      const cell = map.cells[y][x];
+      const path = `cells[${y}][${x}]`;
+      if (['ramp', 'halfSlope'].some(key => cell[key] !== undefined && cell[key] !== true)) {
+        issues.push(issue(path, 'invalid-slope-feature', 'ramp / halfSlope 只允许 true；移除时省略字段。'));
+        continue;
+      }
+      if (!cell.ramp && !cell.halfSlope) continue;
+      const direction = tile.rowIndex - 71;
+      if (cell.terrain !== 'land' || !Number.isInteger(direction) || direction < 0 || direction > 3) {
+        issues.push(issue(path, 'slope-feature-shape', '坡道与半坡只支持一级直边坡面；不能放在平地、转角或两级坡面。'));
+        continue;
+      }
+      const [dx, dy] = neighbors[direction * 2];
+      const high = map.cells[y - dy]?.[x - dx];
+      const low = map.cells[y + dy]?.[x + dx];
+      const grids = cell.halfSlope ? [[x, y], [x + dx, y + dy]] : [[x, y]];
+      if (high?.terrain !== 'land' || high.elevation !== cell.elevation + 1
+        || low?.terrain !== 'land' || low.elevation !== cell.elevation
+        || (cell.halfSlope && (byGrid.get(`${x + dx},${y + dy}`)?.slope || low.ramp || low.halfSlope))) {
+        issues.push(issue(path, 'slope-feature-space', '需要完整的高端与等高低端陆地；半坡低端不能与其他坡面或作者标记重叠。'));
+        continue;
+      }
+      if (grids.some(grid => parts.has(grid.join(',')))) {
+        issues.push(issue(path, 'slope-feature-overlap', '两个坡面部件不能占用同一格。'));
+        continue;
+      }
+      grids.forEach(grid => parts.add(grid.join(',')));
+      owners.set(`${x},${y}`, { tile, cell, direction, grids });
+    }
+    for (const { tile, cell, direction, grids } of owners.values()) {
+      const [x, y] = tile.grid;
+      const [dx, dy] = neighbors[direction * 2];
+      const row = rules.rows.find(value => value.row === tile.rowIndex);
+      const visual = (row.viewRecords[column] - 222) / 2;
+      let record = 233 + visual + (cell.road ? 4 : 0);
+      if (cell.halfSlope) {
+        let side = 0;
+        // 原程序的两侧顺序：N西东、E北南、S东西、W南北。
+        for (const [index, sign] of [1, -1].entries()) {
+          const adjacent = owners.get(`${x + dy * sign},${y - dx * sign}`);
+          if (!adjacent?.cell.halfSlope) continue;
+          if (adjacent.direction !== direction || adjacent.cell.elevation !== cell.elevation) {
+            issues.push(issue(`cells[${y}][${x}]`, 'half-slope-junction', '暂不支持转角或不同高度的半坡交汇。'));
+          } else side |= 1 << index;
+        }
+        const halfRecords = [[317, 303, 301, 269], [319, 307, 305, 271],
+          [321, 309, 311, 273], [323, 315, 313, 275]];
+        record = cell.ramp ? 277 + visual * 2 + (cell.road ? 8 : 0) : halfRecords[visual][side];
+        if (Boolean(cell.road) !== Boolean(map.cells[y + dy][x + dx].road)) {
+          issues.push(issue(`cells[${y}][${x}]`, 'half-slope-road', '半坡道路必须同时覆盖两个部件；请整体铺设或擦除。'));
+        }
+      }
+      grids.forEach((grid, part) => {
+        const element = `${map.climate === 'arid' ? rules.dirtElementPrefix : rules.elementPrefix}${record + part}`;
+        const definition = elements[element];
+        if (!definition || definition.id !== element || definition.kind !== 'tile'
+          || definition.footprint?.length !== 1 || !isGrid(definition.footprint[0]) || definition.footprint[0].some(Boolean)) {
+          issues.push(issue(`cells[${y}][${x}]`, 'missing-slope-feature-element', `缺少合法坡面部件 ${element}。`));
+        }
+        Object.assign(byGrid.get(grid.join(',')), { element, slope: true, slopeOwner: [x, y],
+          slopeDirection: [dx, dy], slopePart: part, ramp: Boolean(cell.ramp), halfSlope: Boolean(cell.halfSlope),
+          ...(cell.road ? { road: cell.road } : {}) });
+      });
+    }
+  }
+
+  // 双格半坡只保存主格作者事实；点击任一部件都切换同一个整体。
+  function applyFeature(map, command, elements, landRules, rules, angle = 0) {
+    const base = resolve(map, elements, landRules, rules, angle);
+    if (base.issues.length) return { definition: null, ...base };
+    if (!['ramp', 'half-slope'].includes(command?.type) || !isGrid(command.grid)) {
+      return { definition: null, ...failed([issue('$command', 'invalid-slope-command', '请选择坡道或半坡及一个有效格子。')]) };
+    }
+    const tile = base.tiles.find(value => value.grid.every((v, i) => v === command.grid[i]));
+    const [x, y] = tile?.slopeOwner || command.grid;
+    const cell = map.cells[y]?.[x];
+    if (!cell) return { definition: null, ...failed([issue('$command.grid', 'slope-feature-outside', '坡面不能放在地图外或空角。')]) };
+    const key = command.type === 'ramp' ? 'ramp' : 'halfSlope';
+    if (cell.road && (cell[key] || key === 'halfSlope')) {
+      return { definition: null, ...failed([issue(`cells[${y}][${x}]`, 'slope-feature-road', '请先擦除道路，再移除坡道或改变半坡占地。')]) };
+    }
+    const cells = map.cells.map(row => row.map(value => value && { ...value }));
+    if (cell[key]) delete cells[y][x][key];
+    else cells[y][x][key] = true;
+    const definition = { ...map, cells };
+    const result = resolve(definition, elements, landRules, rules, angle);
+    const parts = [...base.tiles, ...(result.tiles || [])].filter(value => value.slopeOwner?.join(',') === `${x},${y}`);
+    const selectedGrids = [...new Map([[[x, y].join(','), [x, y]], ...parts.map(value => [value.grid.join(','), value.grid])]).values()];
+    return { definition: result.issues.length ? null : definition, ...result, selectedGrids };
   }
 
   /** 原程序 0x4772f0 的局部规则：控制1/2优先增高，否则按工具方向夹取邻域高差。
@@ -367,5 +474,5 @@
       }).map(([key]) => grids.get(key)) };
   }
 
-  window.elevationRules = { resolve, applyStroke };
+  window.elevationRules = { resolve, applyStroke, applyFeature };
 })();

@@ -19,16 +19,16 @@
   <script src="./static/js/pointer.js?20261012181344"></script>
   <script src="./static/js/dog-element-sample.js?20261012181344"></script>
   <script src="./static/js/land-water-rules.js?20261012185929"></script>
-  <script src="./static/js/elevation-rules.js?20261013000100"></script>
-  <script src="./static/js/construction-rules.js?20261012181344"></script>
-  <script src="./static/js/elevation-rendering.js?20261012231001"></script>
+  <script src="./static/js/elevation-rules.js?20261013000201"></script>
+  <script src="./static/js/construction-rules.js?20261013000200"></script>
+  <script src="./static/js/elevation-rendering.js?20261013000200"></script>
   <script src="./static/js/element-animation-player.js?20261012181344"></script>
   <main class="map-demo">
     <header class="workbench-header">
       <h1>地图编辑工作台</h1>
       <details class="menu"><summary>地图</summary><div class="menu-panel">
     <div class="file-controls">
-      <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="climate-map">三档气候与近水地表</option><option value="elevation-map">台地、转角与湖泊</option><option value="elevation-multilevel-map">多级台地与凹角</option><option value="first-static-map">雕塑与陆地</option><option value="village-map">普通道路与民居</option></select></label>
+      <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="climate-map">三档气候与近水地表</option><option value="slope-features-map">坡道与直边半坡</option><option value="elevation-map">台地、转角与湖泊</option><option value="elevation-multilevel-map">多级台地与凹角</option><option value="first-static-map">雕塑与陆地</option><option value="village-map">普通道路与民居</option></select></label>
       <label>当前地图气候 <select id="map-climate" disabled aria-describedby="climate-help"><option value="">未设气候（原有地表）</option><option value="arid">干旱</option><option value="temperate">温带</option><option value="humid">湿润</option></select></label>
       <p class="note" id="climate-help">更改气候立即更新近水草地与坡面，可撤销。旧图保留原有地表；湿润强度由实际水域派生。</p>
       <div class="control-group">
@@ -136,6 +136,8 @@
               <button type="button" data-tool="raise" aria-pressed="false">抬高一级</button>
               <button type="button" data-tool="lower" aria-pressed="false">降低一级</button>
               <button type="button" data-tool="lower-two" aria-pressed="false">降低两级</button>
+              <button type="button" data-tool="ramp" aria-pressed="false">坡道</button>
+              <button type="button" data-tool="half-slope" aria-pressed="false">半坡</button>
               <button type="button" data-tool="road" aria-pressed="false">道路</button>
               <button type="button" data-tool="erase-road" aria-pressed="false">擦除道路</button>
               <button type="button" data-tool="building" aria-pressed="false">建筑</button>
@@ -177,6 +179,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261013000100"></script>
+  <script src="./static/js/map-editor.js?20261013000200"></script>
 </body>
 </html>

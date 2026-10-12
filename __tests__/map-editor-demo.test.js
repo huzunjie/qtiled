@@ -1061,7 +1061,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(11);
+  expect(Object.keys(initial)).toHaveLength(13);
   expect(initial['atlas.png']).toBe('./static/terrain-samples/emperor-land-water/atlas.png');
   expect(Object.values(initial).every(url => !url.includes('?'))).toBe(true);
   const switchSample = async sample => {
@@ -1585,7 +1585,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'climate-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -2184,4 +2184,42 @@ test.each(['water', 'raise', 'lower', 'raise-two', 'lower-two'])('%s 保持扫�
   p.pointer('pointerdown', [3, 3]);
   p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
   p.window.close();
+});
+
+test('坡道半坡工具：双格归属、整笔取消、铺擦路、撤销重做和导入保持事实', async () => {
+  const p = await page({}, 'slope-features-map');
+  expect(p.errors).toEqual([]);
+  const original = p.save();
+  setDisplay(p, 'flat-edit', true);
+  p.tool('ramp');
+  p.pointer('pointerdown', [11, 4]);
+  expect(p.get('status').textContent).toContain('选中 2 格');
+  p.get('cancel-stroke').click();
+  expect(p.save()).toEqual(original);
+  p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
+  const ramp = p.save();
+  expect(ramp.cells[5][11].ramp).toBe(true);
+  expect(ramp.cells[4][11].ramp).toBeUndefined();
+  p.get('undo').click(); expect(p.save()).toEqual(original);
+  p.get('redo').click(); expect(p.save()).toEqual(ramp);
+  p.tool('road'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
+  const painted = p.save();
+  expect(painted.cells[5][11].road).toBe('ordinary');
+  expect(painted.cells[4][11].road).toBe('ordinary');
+  p.tool('half-slope'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
+  expect(p.get('issues').textContent).toContain('先擦除道路');
+  expect(p.save()).toEqual(painted);
+  p.tool('erase-road'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
+  expect(p.save()).toEqual(ramp);
+  p.tool('half-slope'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
+  expect(p.save().cells[5][11].halfSlope).toBeUndefined();
+  p.get('map-json').value = JSON.stringify(painted);
+  p.get('read-map').click(); await settle();
+  expect(p.save()).toEqual(painted);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    expect(p.get('issues').hidden).toBe(true);
+    expect(p.save()).toEqual(painted);
+  }
+  expect(p.errors).toEqual([]);
 });

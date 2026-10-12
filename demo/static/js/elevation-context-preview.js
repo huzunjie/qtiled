@@ -74,6 +74,8 @@
         window.qtiledElementRendering.loadElementSources({
           'bare-land-atlas.png': new URL('emperor-land-water/bare-land-atlas.png', directory).href,
           'grass-atlas.png': new URL('emperor-land-water/grass-atlas.png', directory).href,
+          'slope-features-atlas.png': new URL('emperor-elevation/slope-features-atlas.png', directory).href,
+          'slope-features-dirt-atlas.png': new URL('emperor-elevation/slope-features-dirt-atlas.png', directory).href,
           'elevation-dirt-atlas.png': new URL('emperor-elevation/elevation-dirt-atlas.png', directory).href,
           'atlas.png': new URL('emperor-land-water/atlas.png', directory).href,
           'elevation-atlas.png': new URL('emperor-elevation/elevation-atlas.png', directory).href,
