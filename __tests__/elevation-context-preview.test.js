@@ -1,3 +1,4 @@
+import { pathFinding } from '../src';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -21,15 +22,16 @@ async function preview(mutate = () => {}) {
     snapshots.push([value, JSON.stringify(value)]);
     return { ok: true, json: async () => value };
   };
+  window.qtiled = { pathFinding };
   window.qtiledMaps = maps;
   window.qtiledView = view;
   const sourceInfo = {};
-  for (const [file, folder] of [['atlas.png', 'emperor-land-water'], ['bare-land-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
+  for (const [file, folder] of [['atlas.png', 'emperor-land-water'], ['bare-land-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation'], ['grass-atlas.png', 'emperor-land-water'], ['elevation-dirt-atlas.png', 'emperor-elevation']]) {
     const png = fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${folder}/${file}`));
     sourceInfo[file] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
   }
   window.qtiledElementRendering = { resolveElementDraw, validateElementDefinition, loadElementSources: async () =>
-    ({ sources: { 'atlas.png': {}, 'elevation-atlas.png': {} }, sourceInfo, issues: [] }) };
+    ({ sources: Object.fromEntries(Object.keys(sourceInfo).map(key => [key, {}])), sourceInfo, issues: [] }) };
   const drawImage = jest.fn();
   window.HTMLCanvasElement.prototype.getContext = () => ({ drawImage, beginPath() {}, moveTo() {}, lineTo() {}, closePath() {}, stroke() {} });
   const context = vm.createContext({ window, document: window.document, URL, Option: window.Option, fetch: window.fetch });
@@ -92,5 +94,19 @@ test('四向上下文整体抬升到高平台不改变原图与锚点', async ()
   expect([...p.get('context-views').children].map(figure => figure.dataset.element))
     .toEqual([228, 222, 224, 226].map(record => `emperor-elevation-${record}`));
   p.snapshots.forEach(([value, before]) => expect(JSON.stringify(value)).toBe(before));
+  p.window.close();
+});
+
+
+test('上下文气候复用地图主题选择，四向变化不改样本事实', async () => {
+  const p = await preview();
+  const before = [...p.get('context-views').children].map(figure => figure.dataset.element);
+  for (const climate of ['arid', 'temperate', 'humid', '']) {
+    p.get('context-climate').value = climate;
+    p.get('context-climate').dispatchEvent(new p.window.Event('change'));
+    expect([...p.get('context-views').children].map(figure => figure.dataset.element))
+      .toEqual(before.map(id => climate === 'arid' ? id.replace('elevation-', 'elevation-dirt-') : id));
+  }
+  p.snapshots.forEach(([value, json]) => expect(JSON.stringify(value)).toBe(json));
   p.window.close();
 });

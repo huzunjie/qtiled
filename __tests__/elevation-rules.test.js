@@ -1,3 +1,4 @@
+import { pathFinding } from '../src';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -12,7 +13,7 @@ const elements = {
   ...load('demo/static/terrain-samples/emperor-elevation/elements.json'),
   dog: { version: 1, id: 'dog', kind: 'sprite', footprint: [[0, 0]], views: {} },
 };
-const context = vm.createContext({ window: { qtiledMaps: maps } });
+const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
 vm.runInContext(read('demo/static/js/land-water-rules.js'), context);
 vm.runInContext(read('demo/static/js/elevation-rules.js'), context);
 const resolve = (map, angle = 0, library = elements, rules = heightRules) => context.window.elevationRules.resolve(map, library, landRules, rules, angle);
@@ -492,4 +493,24 @@ describe('等高平台水域', () => {
     slope.cells[0][0] = { terrain: 'land', elevation: 9 };
     hasIssue(resolve(freezeDeep(slope)), 'unsupported-elevation-water');
   });
+});
+
+test('气候仅切换坡面主题；无近水也遵循整图主题，四向行号、高程和占地不变', () => {
+  const map = createMap();
+  map.cells[4][4].elevation = 2;
+  for (const angle of [0, 90, 180, 270]) {
+    const legacy = resolve(map, angle);
+    for (const climate of ['arid', 'temperate', 'humid']) {
+      const result = resolve({ ...map, climate }, angle);
+      expect(result.issues).toEqual([]);
+      result.tiles.forEach((tile, i) => {
+        expect(tile).toMatchObject({ grid: legacy.tiles[i].grid, elevation: legacy.tiles[i].elevation, slope: legacy.tiles[i].slope, rowIndex: legacy.tiles[i].rowIndex, moisture: 0 });
+        if (tile.slope) {
+          expect(tile.element).toBe(climate === 'arid' ? legacy.tiles[i].element.replace('elevation-', 'elevation-dirt-') : legacy.tiles[i].element);
+          expect(elements[tile.element].footprint).toEqual(elements[legacy.tiles[i].element].footprint);
+        }
+      });
+    }
+  }
+  expect(resolve({ ...map, climate: 'arid' }, 0, elements, { ...heightRules, dirtElementPrefix: '' }).tiles).toBeNull();
 });

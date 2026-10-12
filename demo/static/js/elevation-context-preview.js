@@ -14,8 +14,11 @@
   function render() {
     const { map, elements, sources, landRules, heightRules, samples } = library;
     const sample = samples.find(item => item.id === get('context-sample').value);
+    const contextMap = { ...map };
+    if (get('context-climate').value) contextMap.climate = get('context-climate').value;
+    else delete contextMap.climate;
     const figures = [0, 90, 180, 270].map(angle => {
-      const resolved = window.elevationRules.resolve(map, elements, landRules, heightRules, angle);
+      const resolved = window.elevationRules.resolve(contextMap, elements, landRules, heightRules, angle);
       if (resolved.issues.length) throw new Error(`${resolved.issues[0].path}：${resolved.issues[0].message}`);
       const view = { angle, tileSize: map.tileSize, originPixel: [0, 0] };
       const draws = resolved.tiles.flatMap(tile => window.elevationRendering.resolveTileDraws(tile, map, elements, view)
@@ -70,6 +73,8 @@
         json(new URL('emperor-elevation/rules.json', directory)),
         window.qtiledElementRendering.loadElementSources({
           'bare-land-atlas.png': new URL('emperor-land-water/bare-land-atlas.png', directory).href,
+          'grass-atlas.png': new URL('emperor-land-water/grass-atlas.png', directory).href,
+          'elevation-dirt-atlas.png': new URL('emperor-elevation/elevation-dirt-atlas.png', directory).href,
           'atlas.png': new URL('emperor-land-water/atlas.png', directory).href,
           'elevation-atlas.png': new URL('emperor-elevation/elevation-atlas.png', directory).href,
         }),
@@ -84,6 +89,7 @@
       if (checked.length) throw new Error(checked[0].message);
       library = { map, elements, sources: loaded.sources, landRules, heightRules, samples: catalogue.samples };
       get('context-sample').replaceChildren(...catalogue.samples.map(sample => new Option(sample.label, sample.id)));
+      get('context-climate').value = map.climate || '';
       render();
     } catch (error) {
       library = null;
@@ -92,15 +98,18 @@
     } finally {
       loading = false;
       get('context-sample').disabled = !library;
+      get('context-climate').disabled = !library;
       get('context-reload').disabled = false;
     }
   }
   get('elevation-context').addEventListener('toggle', () => { if (get('elevation-context').open && !library) load(); });
   get('context-reload').addEventListener('click', load);
-  get('context-sample').addEventListener('change', () => {
+  const update = () => {
     try { render(); } catch (error) {
       get('context-views').replaceChildren();
       get('context-status').textContent = `上下文预览失败：${error.message}`;
     }
-  });
+  };
+  get('context-sample').addEventListener('change', update);
+  get('context-climate').addEventListener('change', update);
 })();

@@ -33,3 +33,9 @@
 - [本批 145 张图片的提取清单](../../../../output/emperor/water-animation-implementation-2026-10-10/assets/terrain-manifest.json)与[提取脚本](../../../../output/emperor/water-animation-implementation-2026-10-10/assets/extract-water.mjs)。
 
 素材归原作品权利人所有，本地研究与工具样本不改变其权属。上述证据目录保存在本机，独立分发 Demo 时不要求携带原程序。
+
+## 三档气候地表（2026-10-12）
+
+可选地图字段 `climate` 为 `arid`、`temperate`、`humid`；省略保留原有地表。只按真实水格推导普通草地，空角/界外不作为湿润来源。草地五档各九张、档内固定外观；干旱使用土坡，另两档沿用原坡面。强度/档位/图片不写入地图，未包含树木和资源修正。
+
+草地 `China_Terrain` 202～246、干旱坡面 `China_Elevation_Dirt` 201～232 均逐张匹配并复用 mylong PNG，原尺寸/透明度不变；新增独立图集，既有图集及定义不变。映射和RGB555核对记录在 `output/emperor/climate-implementation-2026-10-12/evidence/asset-mapping.json`，原作关系见同级研究目录。

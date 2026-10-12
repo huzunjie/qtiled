@@ -844,13 +844,13 @@ test.each(['http', 'definition', 'missing-source'])('狗样本加载失败（%s�
   editor.window.close();
 });
 
-test('高程入口共用真实 32 定义，四向锚点可独立编辑并导出到另一页面', async () => {
+test('高程入口共用两主题真实 64 定义，四向锚点可独立编辑并导出到另一页面', async () => {
   const definitions = JSON.parse(fs.readFileSync(path.join(__dirname, '../demo/static/terrain-samples/emperor-elevation/elements.json'), 'utf8'));
   const editor = await loadPage('element-editor.html');
   editor.get('elevation-sample').click();
   await new Promise(resolve => setImmediate(resolve));
-  expect(Object.keys(definitions)).toHaveLength(32);
-  expect(editor.get('terrain-material').options).toHaveLength(33);
+  expect(Object.keys(definitions)).toHaveLength(64);
+  expect(editor.get('terrain-material').options).toHaveLength(65);
   const id = Object.keys(definitions)[0];
   for (const angle of [0, 90, 180, 270]) {
     editor.angle(angle);
@@ -881,4 +881,17 @@ test('高程入口共用真实 32 定义，四向锚点可独立编辑并导出�
   expect(editor.draw().anchor).toEqual(definitions[id].views[270].anchor);
   expect(editor.errors.concat(imported.errors)).toEqual([]);
   editor.window.close(); imported.window.close();
+});
+
+test('草地分档与干旱坡面入口使用共享图集，选择副本不改变原定义', async () => {
+  const editor = await loadPage('element-editor.html');
+  editor.get('terrain-sample').click(); await new Promise(resolve => setImmediate(resolve));
+  editor.change('terrain-material', 'emperor-grass-246', 'change'); await new Promise(resolve => setImmediate(resolve));
+  expect(editor.draw().source).toBe('grass-atlas.png');
+  expect(editor.get('terrain-material').selectedOptions[0].textContent).toContain('第5档');
+  editor.get('elevation-sample').click(); await new Promise(resolve => setImmediate(resolve));
+  editor.change('terrain-material', 'emperor-elevation-dirt-201', 'change'); await new Promise(resolve => setImmediate(resolve));
+  expect(editor.draw().source).toBe('elevation-dirt-atlas.png');
+  expect(editor.get('terrain-material').selectedOptions[0].textContent).toContain('干旱');
+  expect(editor.errors).toEqual([]); editor.window.close();
 });

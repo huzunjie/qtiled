@@ -12,14 +12,14 @@
 <body class="map-editor-page">
   <script src="./static/js/navs.js?20261012181344"></script>
   <script src="./static/js/spritejs3.js?20261012181344"></script>
-  <script src="./static/js/qtiled.dev.js?20261012181344"></script>
+  <script src="./static/js/qtiled.dev.js?20261012185929"></script>
   <script src="./static/js/qtiled-view.dev.js?20261012181344"></script>
   <script src="./static/js/qtiled-element-rendering.dev.js?20261012181344"></script>
   <script src="./static/js/qtiled-maps.dev.js?20261012181344"></script>
   <script src="./static/js/pointer.js?20261012181344"></script>
   <script src="./static/js/dog-element-sample.js?20261012181344"></script>
-  <script src="./static/js/land-water-rules.js?20261012181344"></script>
-  <script src="./static/js/elevation-rules.js?20261012181344"></script>
+  <script src="./static/js/land-water-rules.js?20261012185929"></script>
+  <script src="./static/js/elevation-rules.js?20261012223000"></script>
   <script src="./static/js/construction-rules.js?20261012181344"></script>
   <script src="./static/js/elevation-rendering.js?20261012181344"></script>
   <script src="./static/js/element-animation-player.js?20261012181344"></script>
@@ -28,7 +28,9 @@
       <h1>地图编辑工作台</h1>
       <details class="menu"><summary>地图</summary><div class="menu-panel">
     <div class="file-controls">
-      <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="elevation-map">台地、转角与湖泊</option><option value="elevation-multilevel-map">多级台地与凹角</option><option value="first-static-map">雕塑与陆地</option><option value="village-map">普通道路与民居</option></select></label>
+      <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="climate-map">三档气候与近水地表</option><option value="elevation-map">台地、转角与湖泊</option><option value="elevation-multilevel-map">多级台地与凹角</option><option value="first-static-map">雕塑与陆地</option><option value="village-map">普通道路与民居</option></select></label>
+      <label>当前地图气候 <select id="map-climate" disabled aria-describedby="climate-help"><option value="">未设气候（原有地表）</option><option value="arid">干旱</option><option value="temperate">温带</option><option value="humid">湿润</option></select></label>
+      <p class="note" id="climate-help">更改气候立即更新近水草地与坡面，可撤销。旧图保留原有地表；湿润强度由实际水域派生。</p>
       <div class="control-group">
         <label>预设基准高度 <select id="base-height" aria-label="预设基准高度" aria-describedby="base-height-help"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option></select></label>
         <label class="display-toggle"><input id="rebase-sample" type="checkbox">按基准高度加载</label>
@@ -39,6 +41,7 @@
         <button id="save-map" type="button" disabled>保存地图</button>
       </div>
       <fieldset id="new-map-options" data-editor-controls disabled hidden aria-label="新建地图参数">
+        <label>新地图气候 <select id="new-map-climate"><option value="arid">干旱</option><option value="temperate" selected>温带</option><option value="humid">湿润</option></select></label>
         <label>轮廓 <select id="new-map-shape"><option value="diamond">菱形</option><option value="rectangle">矩形</option></select></label>
         <div class="control-group">
           <label>宽 <input id="new-map-width" type="number" min="1" max="64" step="1" value="32"> 格</label>
@@ -85,6 +88,7 @@
           <p class="note" id="base-height-help">新建可选择宽高与菱形/矩形轮廓，按预设基准高度填充陆地、清空实体，可撤销。勾选“按基准高度加载”时，将样本最低地表移到此高度，保留高差；打开文件保持原高度。</p>
           <p class="note">高程为 0～16 级，建议逐级塑形。可在地图边缘和空角旁编辑，空角本身不可绘制。蓝框为选格，橙框为联动格；下挖会按坡面需要联动扩展范围，保留目标高度。平面编辑显示真实高度并选取被遮挡格。临水高差及无法稳定整理的组合整笔拒绝。坡道通行与半坡尚未接入。</p>
           <p class="note">水域与岸线支持 0～16 级的等高平台；水域直接衔接高差或坡面仍受限制。水域可延伸到地图边缘，岸线与深水推导均将无地图数据的邻格视为外接水域，地图边界不会使水面变浅，真实陆岸仍决定深浅过渡。动画默认每帧 100ms，为预览设置；洪水事件尚未接入。</p>
+          <p class="note">干旱、温带、湿润的近水影响最远为 10、40、60 格，取最近真实水格的八向距离；空角和地图外不作为水源。草地五档内外观固定，干旱使用土坡主题。保存气候和陆水事实，读取时重建草地；树木、资源和农业影响尚未接入。气候样本沿长边观察三档差异。</p>
           <p class="note">画布随容器调整；平移、缩放和镜头只改变查看位置，不改变地图。靠近真实边界或查看小地图时允许留白，可随时“查看全图”找回地图。</p>
           <p class="note">网格和坐标仅覆盖有效格，坐标为世界 x,y，不随镜头重新编号。坐标在缩放小于 50% 时暂时隐藏，放大至 50% 以上恢复；显示开关不写入地图文件。</p>
           <p class="note">旧平地装饰地图按占地选择实体；高程或含民居的地图按可见地表或实体像素选择，透明处不会挡住后方格子。高程笔刷遇实体占地整笔拒绝，避免改变建筑地基。</p>
@@ -172,6 +176,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261012181344"></script>
+  <script src="./static/js/map-editor.js?20261012223000"></script>
 </body>
 </html>

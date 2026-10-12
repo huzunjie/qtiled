@@ -114,6 +114,9 @@
   function resolve(map, elements, landRules, elevationRules, angle = 0) {
     if (map && map.version === 1) return window.landWaterRules.resolve(map, elements, landRules, angle);
     const issues = checkRules(elevationRules);
+    if (map?.climate === 'arid' && (typeof elevationRules?.dirtElementPrefix !== 'string' || !elevationRules.dirtElementPrefix.length)) {
+      issues.push(issue('$elevationRules.dirtElementPrefix', 'invalid-elevation-rules', '干旱气候需要对应的坡面主题。'));
+    }
     if (issues.length) return failed(issues);
     issues.push(...checkHeights(map, elevationRules));
     if (!angles.includes(angle)) issues.push(issue('$view.angle', 'invalid-angle', '镜头必须为 0、90、180 或 270。'));
@@ -159,7 +162,7 @@
         issues.push(issue(path, 'unsupported-elevation-pattern', `高程表行 ${row.row} 超出已取证的普通整级形态。`));
         return result;
       }
-      const element = `${elevationRules.elementPrefix}${record}`;
+      const element = `${map.climate === 'arid' ? elevationRules.dirtElementPrefix : elevationRules.elementPrefix}${record}`;
       const definition = elements[element];
       if (!definition) {
         issues.push(issue(path, 'missing-elevation-element', `缺少高程元素 ${element}。`));

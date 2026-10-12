@@ -300,6 +300,7 @@
     get('cell-info').textContent = !selectedGrid ? '点击画布查看' : cell === null ? 'null · 无效空角'
       : cell ? `terrain: ${cell.terrain}${cell.road ? '\n道路: 普通' : ''}\nelevation: ${cell.elevation}\n素材: ${tile?.element || '无'}\n变体: ${tile?.variant ?? '无'}` : '地图矩阵之外';
     if (cell && tile?.waterKind) get('cell-info').textContent += `\n水面: ${{ ordinary: '普通', transition: '过渡', deep: '深处' }[tile.waterKind]}`;
+    if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n近水湿润强度: ${tile.moisture} / 100（派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
     if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
     updateWaterFrame();
     get('selection-actions').hidden = !selectedGrid && !entity;
@@ -476,6 +477,7 @@
     get('map-id').textContent = next.map.id;
     get('map-summary').textContent = `${next.map.cells.length} 行 × ${next.map.cells[0].length} 列 · ${next.map.cells.flat().filter(Boolean).length} 有效格 · ${next.entities.length} 实体`;
     get('camera-angle').value = String(cameraAngle);
+    get('map-climate').value = next.map.climate || '';
     updateControls();
     updatePlaybackControls();
   }
@@ -490,6 +492,7 @@
     for (const id of ['pick-mode', 'clear-selection']) get(id).disabled = !currentScene || Boolean(stroke);
     get('new-map').disabled = !currentScene || Boolean(stroke);
     get('base-height').disabled = Boolean(stroke);
+    get('map-climate').disabled = !currentScene || Boolean(stroke);
     for (const id of ['save-map', 'view-map-json', 'read-map', 'map-file', 'map-sample', 'reload', 'rebase-sample']) {
       get(id).disabled = Boolean(stroke) || (!currentScene && ['save-map', 'view-map-json', 'read-map'].includes(id));
     }
@@ -550,6 +553,8 @@
         readText(new URL(`${constructionDirectory}elements.json`, document.baseURI)),
         readText(new URL(`${constructionDirectory}road-rules.json`, document.baseURI)),
         loadElementSources({ ...sourceFiles, 'bare-land-atlas.png': `${terrainDirectory}bare-land-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
+          'grass-atlas.png': `${terrainDirectory}grass-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
+          'elevation-dirt-atlas.png': `${elevationDirectory}elevation-dirt-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'road-atlas.png': `${constructionDirectory}road-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'house-atlas.png': `${constructionDirectory}house-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`, 'atlas.png': `${terrainDirectory}atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'elevation-atlas.png': `${elevationDirectory}elevation-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}` }),
@@ -986,6 +991,24 @@
   get('undo').addEventListener('click', () => restoreHistory(undoStack, redoStack));
   get('redo').addEventListener('click', () => restoreHistory(redoStack, undoStack));
 
+  get('map-climate').addEventListener('change', () => {
+    const climate = get('map-climate').value;
+    get('map-climate').value = currentScene?.map.climate || '';
+    if (!currentScene || stroke || pan || climate === (currentScene.map.climate || '')) return;
+    try {
+      const map = { ...currentScene.map };
+      if (climate) map.climate = climate;
+      else delete map.climate;
+      const next = prepareScene({ ...currentScene, map }, cameraAngle);
+      ++loadRequestId;
+      undoStack.push(currentScene.map);
+      redoStack.length = 0;
+      commitScene(next);
+      clearIssue();
+      status.textContent = '已更新气候与地表 · 可撤销';
+    } catch (error) { fail(error); }
+  });
+
   function readMap(json) {
     if (!currentScene || stroke || pan) return;
     const imported = requireSuccess(window.qtiledMaps.importMapDefinition(json, currentScene.elementsById));
@@ -1037,6 +1060,7 @@
       }
       const map = {
         version: 2, id: 'new-map', tileSize: [...currentScene.map.tileSize],
+        climate: get('new-map-climate').value,
         elevationStep: currentScene.elevationRules.elevationStep,
         cells,
         entities: [],

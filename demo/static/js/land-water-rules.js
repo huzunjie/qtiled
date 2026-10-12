@@ -3,6 +3,7 @@
  */
 (function () {
   const angles = [0, 90, 180, 270];
+  const climates = { arid: [10, 10], temperate: [40, 20], humid: [60, 20] };
   const waterNeighbors = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
   const owns = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
   const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -18,6 +19,9 @@
       return [issue('cells', 'invalid-cells', '地表规则需要非空矩形地图。')];
     }
     let count = 0;
+    if (owns(map, 'climate') && (typeof map.climate !== 'string' || !owns(climates, map.climate))) {
+      issues.push(issue('climate', 'unsupported-climate', '气候必须为 arid、temperate 或 humid；旧图可省略。'));
+    }
     for (const [y, row] of map.cells.entries()) {
       if (!Array.isArray(row) || row.length !== map.cells[0].length) {
         issues.push(issue(`cells[${y}]`, 'invalid-row', '地表地图各行必须等宽。'));
@@ -112,6 +116,19 @@
     return markers;
   }
 
+  // 仅真实水格作来源。两遍八邻距离变换求 Chebyshev 距离；空角不是障碍或水源。
+  // 原作普通陆水步骤的参数和换算见 climate-ground-selection-2026-10-12。
+  function deriveMoisture(cells, climate) {
+    const [radius, divisor] = climates[climate];
+    const sources = [];
+    cells.forEach((row, y) => row.forEach((cell, x) => {
+      if (cell?.terrain === 'water') sources.push([x, y]);
+    }));
+    const distances = window.qtiled.pathFinding.getChebyshevDistanceField(cells[0].length, cells.length, sources);
+    return distances.map(row => row.map(distance => distance > radius ? 0
+      : Math.min(100, Math.trunc(100 * (radius + 1 - distance) / divisor))));
+  }
+
   /** 输出整张地图的派生绘制选择，不写回 tile、帧或随机数。
    * 元素库中的定义须先通过 validateElementDefinition；地图实体由 maps 独立校验。
    * terrainVariant 可固定变体输入字节；省略时采用世界格哈希，与镜头和执行次数无关。
@@ -121,11 +138,19 @@
     const issues = [...checkCells(map), ...checkRules(rules)];
     if (!angles.includes(angle)) issues.push(issue('$view.angle', 'invalid-angle', '镜头必须为 0、90、180 或 270。'));
     if (!isObject(elementsById)) issues.push(issue('$elements', 'invalid-element-library', '地表元素库必须为对象。'));
+    if (map?.climate !== undefined && (!Array.isArray(rules?.grassVariants) || rules.grassVariants.length !== 5
+      || !Array.from(rules.grassVariants).every(pool => Array.isArray(pool) && pool.length === 9 && Array.from(pool).every(isString)))) {
+      issues.push(issue('$rules.grassVariants', 'invalid-grass-variants', '气候地表需要五档、每档九张普通草地。'));
+    }
     if (issues.length) return { tiles: null, issues };
+    if (map.climate !== undefined && typeof window.qtiled?.pathFinding?.getChebyshevDistanceField !== 'function') {
+      return { tiles: null, issues: [issue('$qtiled', 'missing-distance-field', '气候地表需要新版 QTiled 距离场接口，请更新核心包并刷新页面。')] };
+    }
 
     const tiles = [];
     const column = rules.qtiledCameraColumns[angle / 90];
     const markers = deriveWaterMarkers(map.cells);
+    const moisture = map.climate === undefined ? null : deriveMoisture(map.cells, map.climate);
     for (const [y, row] of map.cells.entries()) {
       for (const [x, cell] of row.entries()) {
         if (cell === null) continue;
@@ -134,13 +159,23 @@
         let variant = 0;
         let phase = 0;
         let waterKind = null;
-        if (cell.terrain === 'land' && rules.landVariants) {
+        let grassGrade = null;
+        if (cell.terrain === 'land') {
           // 混合坐标高低位，避免少量陆地变体按行列重复；显式外观字节仍优先。
           let hash = Math.imul(x, 374761393) ^ Math.imul(y, 668265263);
           hash = Math.imul(hash ^ (hash >>> 13), 1274126177);
-          const stable = owns(cell, 'terrainVariant') ? cell.terrainVariant : (hash ^ (hash >>> 16)) >>> 0;
-          variant = stable % rules.landVariants.length;
-          element = rules.landVariants[variant];
+          let stable = owns(cell, 'terrainVariant') ? cell.terrainVariant : (hash ^ (hash >>> 16)) >>> 0;
+          let pool = rules.landVariants;
+          if (moisture?.[y][x] > 0) {
+            stable &= 255;
+            const tenth = Math.trunc(moisture[y][x] / 10);
+            grassGrade = tenth === 10 ? 4 : Math.max(0, Math.trunc(tenth / 2) - (tenth % 2 === 0 && stable % 2 ? 1 : 0));
+            pool = rules.grassVariants[grassGrade];
+          }
+          if (pool) {
+            variant = stable % pool.length;
+            element = pool[variant];
+          }
         }
         if (cell.terrain === 'water') {
           // 固定整数运算属于 QTiled 工具设计，不声称复刻原作的随机种子。
@@ -181,7 +216,8 @@
           || !isGrid(definition.footprint[0]) || definition.footprint[0].some(Boolean)) {
           issues.push(issue(`cells[${y}][${x}]`, 'invalid-terrain-element', `地表元素 ${element} 必须是单格 tile。`));
         } else {
-          tiles.push({ grid: [x, y], element, variant, rowIndex, phase, waterKind });
+          tiles.push({ grid: [x, y], element, variant, rowIndex, phase, waterKind,
+            ...(moisture ? { moisture: moisture[y][x], grassGrade } : {}) });
         }
       }
     }

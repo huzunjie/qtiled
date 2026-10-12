@@ -1,3 +1,4 @@
+import { pathFinding } from '../src';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -6,7 +7,7 @@ const read = file => fs.readFileSync(path.join(__dirname, '..', file), 'utf8');
 const samplePath = 'demo/static/terrain-samples/emperor-land-water/';
 const rules = JSON.parse(read(`${samplePath}rules.json`));
 const elements = JSON.parse(read(`${samplePath}elements.json`));
-const context = vm.createContext({ window: {} });
+const context = vm.createContext({ window: { qtiled: { pathFinding } } });
 vm.runInContext(read('demo/static/js/land-water-rules.js'), context);
 const { resolve, applyStroke } = context.window.landWaterRules;
 const angles = [0, 90, 180, 270];
@@ -318,4 +319,100 @@ test('黄土变体均被使用，镜头、重算和JSON回读保持分布，显�
     expect(resolve(map, elements, rules).tiles[0].element).toBe(id);
   });
   expect(resolve(map, elements, { ...rules, landVariants: [] }).issues[0].code).toBe('invalid-terrain-rules');
+});
+
+describe('三档气候的普通陆水派生', () => {
+  const strip = climate => ({ version: 1, id: 'climate', climate, tileSize: [80, 40], entities: [],
+    cells: [Array.from({ length: 64 }, (_, x) => ({ terrain: x ? 'land' : 'water', elevation: 0, terrainVariant: 0 }))] });
+  test.each([
+    ['arid', [[0, 100], [1, 100], [9, 20], [10, 10], [11, 0], [40, 0]]],
+    ['temperate', [[1, 100], [21, 100], [22, 95], [39, 10], [40, 5], [41, 0]]],
+    ['humid', [[1, 100], [41, 100], [42, 95], [59, 10], [60, 5], [61, 0]]],
+  ])('%s 的饱和区、衰减尾部和最大范围符合原作参数', (climate, cases) => {
+    const map = freezeDeep(strip(climate));
+    const result = resolve(map, elements, rules);
+    expect(result.issues).toEqual([]);
+    cases.forEach(([x, moisture]) => expect(result.tiles[x].moisture).toBe(moisture));
+    expect(result.tiles.filter(tile => tile.moisture === 0).every(tile => tile.grassGrade === null && tile.element.startsWith('emperor-bare-land'))).toBe(true);
+  });
+
+  test('八向最近水距与独立坐标算例一致，水源不叠加，空角不作为来源或障碍', () => {
+    const map = strip('arid');
+    const water = [[0, 0], [12, 9], [4, 15]];
+    map.cells = Array.from({ length: 18 }, (_, y) => Array.from({ length: 19 }, (_, x) => x === 9 ? null
+      : ({ terrain: water.some(([sx, sy]) => sx === x && sy === y) ? 'water' : 'land', elevation: 0 })));
+    const result = resolve(map, elements, rules);
+    expect(result.issues).toEqual([]);
+    result.tiles.forEach(tile => {
+      const distance = Math.min(...water.map(([x, y]) => Math.max(Math.abs(x - tile.grid[0]), Math.abs(y - tile.grid[1]))));
+      expect(tile.moisture).toBe(Math.max(0, Math.min(100, (11 - distance) * 10)));
+    });
+    const noWater = { ...map, cells: map.cells.map(row => row.map(cell => cell && { ...cell, terrain: 'land' })) };
+    expect(resolve(noWater, elements, rules).tiles.every(tile => tile.moisture === 0)).toBe(true);
+  });
+
+  test('五档全部九张可达；等级边界分散和档内变体只依赖固定字节', () => {
+    for (const [distance, grade] of [[10, 0], [8, 1], [6, 2], [4, 3], [1, 4]]) {
+      const ids = new Set();
+      for (let byte = 0; byte < 9; byte += 1) {
+        const map = strip('arid'); map.cells[0][distance].terrainVariant = byte;
+        const tile = resolve(map, elements, rules).tiles[distance];
+        expect(tile.grassGrade).toBe(grade); ids.add(tile.element);
+      }
+      expect([...ids]).toEqual(rules.grassVariants[grade]);
+    }
+    for (const [distance, grades] of [[3, [4, 3]], [5, [3, 2]], [7, [2, 1]], [9, [1, 0]]]) {
+      const map = strip('arid');
+      [0, 1].forEach(byte => {
+        map.cells[0][distance].terrainVariant = byte;
+        expect(resolve(map, elements, rules).tiles[distance].grassGrade).toBe(grades[byte]);
+      });
+    }
+  });
+
+  test('四向、重复派生和存读固定；擦除最后水源清除结果，失败整笔不改地图', () => {
+    const map = strip('humid');
+    map.cells[0].forEach(cell => delete cell.terrainVariant);
+    freezeDeep(map);
+    const before = JSON.stringify(map);
+    const initial = resolve(map, elements, rules);
+    for (const angle of angles) {
+      const current = resolve(JSON.parse(before), elements, rules, angle);
+      expect(current.tiles.filter(tile => tile.grassGrade !== null)).toEqual(initial.tiles.filter(tile => tile.grassGrade !== null));
+    }
+    const erased = applyStroke(map, { terrain: 'land', grids: [[0, 0]] }, elements, rules);
+    expect(erased.issues).toEqual([]);
+    expect(erased.tiles.every(tile => tile.moisture === 0 && tile.grassGrade === null)).toBe(true);
+    expect(applyStroke(map, { terrain: 'land', grids: [[0, 0], [-1, 0]] }, elements, rules).definition).toBeNull();
+    expect(JSON.stringify(map)).toBe(before);
+    expect(before).not.toMatch(/moisture|grassGrade|"tile"/);
+  });
+
+  test.each([null, '', 'tropical', ['arid'], {}, 0, '__proto__'])('拒绝非法气候 %p', climate => {
+    expect(resolve(strip(climate), elements, rules)).toMatchObject({ tiles: null, issues: expect.arrayContaining([expect.objectContaining({ path: 'climate' })]) });
+  });
+
+  test('旧图不依赖草地库；启用气候时缺档或缺实际素材明确拒绝', () => {
+    const map = strip('arid'); delete map.climate;
+    const config = { ...rules }; delete config.grassVariants;
+    expect(resolve(map, elements, config)).toEqual(resolve(map, elements, rules));
+    expect(resolve({ ...map, climate: 'arid' }, elements, config).tiles).toBeNull();
+    const missing = { ...elements }; delete missing['emperor-grass-238'];
+    expect(resolve(strip('arid'), missing, rules).tiles).toBeNull();
+  });
+});
+
+test('气候规则实际调用基础距离场，仅传真实水源；旧图不要求新接口', () => {
+  const base = context.window.qtiled;
+  const getChebyshevDistanceField = jest.fn(pathFinding.getChebyshevDistanceField);
+  context.window.qtiled = { pathFinding: { getChebyshevDistanceField } };
+  try {
+    const map = { ...createMap(), climate: 'arid', cells: [[null, { terrain: 'water', elevation: 0 }, { terrain: 'land', elevation: 0 }]] };
+    expect(resolve(map, elements, rules).issues).toEqual([]);
+    expect(getChebyshevDistanceField).toHaveBeenCalledWith(3, 1, [[1, 0]]);
+    context.window.qtiled = {};
+    expect(resolve(map, elements, rules).issues[0].code).toBe('missing-distance-field');
+    delete map.climate;
+    expect(resolve(map, elements, rules).issues).toEqual([]);
+  } finally { context.window.qtiled = base; }
 });

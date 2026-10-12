@@ -1,3 +1,4 @@
+import { pathFinding } from '../src';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -7,7 +8,7 @@ import { resolveElementDraw } from '../src/element-rendering/draw';
 const read = file => fs.readFileSync(path.join(__dirname, '../demo', file), 'utf8');
 const elements = JSON.parse(read('static/construction-samples/elements.json'));
 const rules = JSON.parse(read('static/construction-samples/road-rules.json'));
-const context = vm.createContext({ window: { qtiledMaps: maps } });
+const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
 vm.runInContext(read('static/js/construction-rules.js'), context);
 const construction = context.window.constructionRules;
 const fresh = (height = 8) => ({ version: 2, id: 'test', tileSize: [80, 40], elevationStep: 40,

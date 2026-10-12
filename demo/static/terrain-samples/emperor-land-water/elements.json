@@ -10478,5 +10478,2930 @@
         ]
       }
     }
+  },
+  "emperor-grass-202": {
+    "version": 1,
+    "id": "emperor-grass-202",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-grass-203": {
+    "version": 1,
+    "id": "emperor-grass-203",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-grass-204": {
+    "version": 1,
+    "id": "emperor-grass-204",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-grass-205": {
+    "version": 1,
+    "id": "emperor-grass-205",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-grass-206": {
+    "version": 1,
+    "id": "emperor-grass-206",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-grass-207": {
+    "version": 1,
+    "id": "emperor-grass-207",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-grass-208": {
+    "version": 1,
+    "id": "emperor-grass-208",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-grass-209": {
+    "version": 1,
+    "id": "emperor-grass-209",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-grass-210": {
+    "version": 1,
+    "id": "emperor-grass-210",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-grass-211": {
+    "version": 1,
+    "id": "emperor-grass-211",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      }
+    }
+  },
+  "emperor-grass-212": {
+    "version": 1,
+    "id": "emperor-grass-212",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          58,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          58,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          58,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          58,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-grass-213": {
+    "version": 1,
+    "id": "emperor-grass-213",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      }
+    }
+  },
+  "emperor-grass-214": {
+    "version": 1,
+    "id": "emperor-grass-214",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-grass-215": {
+    "version": 1,
+    "id": "emperor-grass-215",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      }
+    }
+  },
+  "emperor-grass-216": {
+    "version": 1,
+    "id": "emperor-grass-216",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      }
+    }
+  },
+  "emperor-grass-217": {
+    "version": 1,
+    "id": "emperor-grass-217",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          58,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      }
+    }
+  },
+  "emperor-grass-218": {
+    "version": 1,
+    "id": "emperor-grass-218",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-grass-219": {
+    "version": 1,
+    "id": "emperor-grass-219",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          58,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-grass-220": {
+    "version": 1,
+    "id": "emperor-grass-220",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          116,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          116,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          116,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          116,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      }
+    }
+  },
+  "emperor-grass-221": {
+    "version": 1,
+    "id": "emperor-grass-221",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          116,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          116,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          116,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          116,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-grass-222": {
+    "version": 1,
+    "id": "emperor-grass-222",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-grass-223": {
+    "version": 1,
+    "id": "emperor-grass-223",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-grass-224": {
+    "version": 1,
+    "id": "emperor-grass-224",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          116,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          116,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          116,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          116,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-grass-225": {
+    "version": 1,
+    "id": "emperor-grass-225",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          116,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-grass-226": {
+    "version": 1,
+    "id": "emperor-grass-226",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          116,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          116,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          116,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          116,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-grass-227": {
+    "version": 1,
+    "id": "emperor-grass-227",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          116,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          116,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          116,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          116,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      }
+    }
+  },
+  "emperor-grass-228": {
+    "version": 1,
+    "id": "emperor-grass-228",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          116,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          116,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          116,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          116,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-grass-229": {
+    "version": 1,
+    "id": "emperor-grass-229",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          174,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          174,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          174,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          174,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      }
+    }
+  },
+  "emperor-grass-230": {
+    "version": 1,
+    "id": "emperor-grass-230",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-grass-231": {
+    "version": 1,
+    "id": "emperor-grass-231",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          174,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          174,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          174,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          174,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "emperor-grass-232": {
+    "version": 1,
+    "id": "emperor-grass-232",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          174,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-grass-233": {
+    "version": 1,
+    "id": "emperor-grass-233",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          174,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          174,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          174,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          174,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      }
+    }
+  },
+  "emperor-grass-234": {
+    "version": 1,
+    "id": "emperor-grass-234",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          174,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          174,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          174,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          174,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-grass-235": {
+    "version": 1,
+    "id": "emperor-grass-235",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          174,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          174,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          174,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          174,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-grass-236": {
+    "version": 1,
+    "id": "emperor-grass-236",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          174,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          174,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          174,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          174,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-grass-237": {
+    "version": 1,
+    "id": "emperor-grass-237",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          174,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          174,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          174,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          174,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-grass-238": {
+    "version": 1,
+    "id": "emperor-grass-238",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          232,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          232,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          232,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          0,
+          232,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      }
+    }
+  },
+  "emperor-grass-239": {
+    "version": 1,
+    "id": "emperor-grass-239",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          232,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          232,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          232,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          78,
+          232,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-grass-240": {
+    "version": 1,
+    "id": "emperor-grass-240",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          232,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          232,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          232,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          156,
+          232,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-grass-241": {
+    "version": 1,
+    "id": "emperor-grass-241",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          234,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-grass-242": {
+    "version": 1,
+    "id": "emperor-grass-242",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          232,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          232,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          232,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          312,
+          232,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-grass-243": {
+    "version": 1,
+    "id": "emperor-grass-243",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          232,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          232,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          232,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          390,
+          232,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-grass-244": {
+    "version": 1,
+    "id": "emperor-grass-244",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          232,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          232,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          232,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          468,
+          232,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-grass-245": {
+    "version": 1,
+    "id": "emperor-grass-245",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          546,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-grass-246": {
+    "version": 1,
+    "id": "emperor-grass-246",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          624,
+          232,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
   }
 }

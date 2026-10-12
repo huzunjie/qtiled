@@ -85,12 +85,12 @@
 <body>
   <script src="./static/js/navs.js?20261012181344"></script>
   <script src="./static/js/spritejs3.js?20261012181344"></script>
-  <script src="./static/js/qtiled.dev.js?20261012181344"></script>
+  <script src="./static/js/qtiled.dev.js?20261012185929"></script>
   <script src="./static/js/qtiled-view.dev.js?20261012181344"></script>
   <script src="./static/js/qtiled-element-rendering.dev.js?20261012181344"></script>
   <script src="./static/js/qtiled-maps.dev.js?20261012181344"></script>
-  <script src="./static/js/land-water-rules.js?20261012181344"></script>
-  <script src="./static/js/elevation-rules.js?20261012181344"></script>
+  <script src="./static/js/land-water-rules.js?20261012185929"></script>
+  <script src="./static/js/elevation-rules.js?20261012223000"></script>
   <script src="./static/js/elevation-rendering.js?20261012181344"></script>
   <script src="./static/js/pointer.js?20261012181344"></script>
   <script src="./static/js/element-files.js?20261012181344"></script>
@@ -217,6 +217,7 @@
       <summary>高程形态 · 四向上下文预览</summary>
       <p class="note">同一世界邻域切换四个镜头，由地图共用规则选择坡面。橙框标记素材所属低格。此处只读，不修改上方正在编辑的元素。</p>
       <label>形态 <select id="context-sample" disabled aria-label="高程上下文形态"></select></label>
+      <label>气候 <select id="context-climate" disabled aria-label="高程上下文气候"><option value="">未设气候（原有地表）</option><option value="arid">干旱</option><option value="temperate">温带</option><option value="humid">湿润</option></select></label>
       <button id="context-reload" type="button">重新载入</button>
       <p id="context-status" role="status">展开后载入多级地图样本。</p>
       <div id="context-views" class="context-views"></div>
@@ -238,7 +239,7 @@
       <p>播放时间、暂停状态与当前帧不写入定义；切镜头、换素材继续同一时钟，只有“重播”明确回到开头。每帧毫秒是作者设定的预览节奏，不代表已还原原作的实际速率。导出只生成 JSON，图片保持原文件；文件回读需重新载入图片。样本仍为演示标定。</p>
     </details>
   </main>
-  <script src="./static/js/element-editor.js?20261012181344"></script>
-  <script src="./static/js/elevation-context-preview.js?20261012181344"></script>
+  <script src="./static/js/element-editor.js?20261012223000"></script>
+  <script src="./static/js/elevation-context-preview.js?20261012223000"></script>
 </body>
 </html>

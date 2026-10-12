@@ -2078,5 +2078,2085 @@
         ]
       }
     }
+  },
+  "emperor-elevation-dirt-201": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-201",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-202": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-202",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-203": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-203",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          115
+        ],
+        "anchor": [
+          39,
+          95
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-204": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-204",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-205": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-205",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-206": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-206",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          125
+        ],
+        "anchor": [
+          39,
+          105
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-207": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-207",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          0,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-208": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-208",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          0,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-209": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-209",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          0,
+          78,
+          128
+        ],
+        "anchor": [
+          39,
+          108
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-210": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-210",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          134,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          134,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          134,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          134,
+          78,
+          134
+        ],
+        "anchor": [
+          39,
+          114
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-211": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-211",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          134,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          134,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          134,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          134,
+          78,
+          118
+        ],
+        "anchor": [
+          39,
+          98
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-212": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-212",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          134,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          134,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          134,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          134,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-213": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-213",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          134,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          134,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          134,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          134,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-214": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-214",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          134,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          134,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          134,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          134,
+          78,
+          112
+        ],
+        "anchor": [
+          39,
+          92
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-215": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-215",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          134,
+          78,
+          109
+        ],
+        "anchor": [
+          39,
+          89
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          134,
+          78,
+          109
+        ],
+        "anchor": [
+          39,
+          89
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          134,
+          78,
+          109
+        ],
+        "anchor": [
+          39,
+          89
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          134,
+          78,
+          109
+        ],
+        "anchor": [
+          39,
+          89
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-216": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-216",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          134,
+          78,
+          126
+        ],
+        "anchor": [
+          39,
+          106
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          134,
+          78,
+          126
+        ],
+        "anchor": [
+          39,
+          106
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          134,
+          78,
+          126
+        ],
+        "anchor": [
+          39,
+          106
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          134,
+          78,
+          126
+        ],
+        "anchor": [
+          39,
+          106
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-217": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-217",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          134,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          134,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          134,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          134,
+          78,
+          113
+        ],
+        "anchor": [
+          39,
+          93
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-218": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-218",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          134,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          134,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          134,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          134,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-219": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-219",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          268,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          268,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          268,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          268,
+          78,
+          117
+        ],
+        "anchor": [
+          39,
+          97
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-220": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-220",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          268,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          268,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          268,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          268,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-221": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-221",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          268,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          268,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          268,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          268,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-222": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-222",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          268,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          268,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          268,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          268,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-223": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-223",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          268,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          268,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          268,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          268,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-224": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-224",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          390,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-225": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-225",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          268,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          268,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          268,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          468,
+          268,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-226": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-226",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          546,
+          268,
+          78,
+          84
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-227": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-227",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          268,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          268,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          268,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          624,
+          268,
+          78,
+          73
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-228": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-228",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          402,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          402,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          402,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          0,
+          402,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-229": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-229",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          402,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          402,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          402,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          78,
+          402,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-230": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-230",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          402,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          402,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          402,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          156,
+          402,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-231": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-231",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          402,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          402,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          402,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          234,
+          402,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      }
+    }
+  },
+  "emperor-elevation-dirt-232": {
+    "version": 1,
+    "id": "emperor-elevation-dirt-232",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          402,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          402,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "180": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          402,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "270": {
+        "source": "elevation-dirt-atlas.png",
+        "rect": [
+          312,
+          402,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      }
+    }
   }
 }

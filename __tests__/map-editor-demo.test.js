@@ -1,3 +1,4 @@
+import { pathFinding } from '../src';
 import { resolveElementPlacement } from '../src/element-rendering/placement';
 import fs from 'fs';
 import path from 'path';
@@ -123,7 +124,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   Sprite.prototype.forceUpdate = jest.fn();
   window.ResizeObserver = ResizeObserver;
   window.qtiledView = view;
-  window.qtiled = { shapes };
+  window.qtiled = { shapes, pathFinding };
   // 计算模块来自 Jest realm，工具脚本来自 VM；JSON 文件在实际浏览器属于同一 realm。
   const exportMap = jest.fn((map, library) => maps.exportMapDefinition(JSON.parse(JSON.stringify(map)), library));
   window.qtiledMaps = { ...maps, resolveMapEntities: resolve, importMapDefinition: importMap,
@@ -182,8 +183,8 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const result = () => resolve.mock.results[resolve.mock.results.length - 1].value.entities;
   const descendants = node => node.children.flatMap(child => [child, ...descendants(child)]);
   const contentLayer = () => contentLayers.find(item => item.canvas === layer.children[0]?.children[0].attrs.texture);
-  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['atlas.png', 'bare-land-atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
-  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['atlas.png', 'bare-land-atlas.png'].includes(node.attrs.texture.file));
+  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
+  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file));
   const pointAt = grid => {
     const [map, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
     const local = view.projectGrid(grid, { ...currentView, tileSize: map.tileSize, originPixel: [0, 0] });
@@ -999,9 +1000,9 @@ test('完整地表与实体共同按深度排列，前方地表不固定压在�
   const p = await page();
   const content = p.contentLayer().children[0];
   const rendered = content.children.map(holder => holder.children[0].children[0]);
-  const dog = rendered.findIndex(node => !['atlas.png', 'bare-land-atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
+  const dog = rendered.findIndex(node => !['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
   expect(dog).toBeGreaterThan(0);
-  expect(rendered.slice(dog + 1).some(node => ['atlas.png', 'bare-land-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
+  expect(rendered.slice(dog + 1).some(node => ['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
 });
 
 test.each([true, false])('地图缓存恢复保留原播放状态（播放=%s）、累计时间和尺寸监听', async playing => {
@@ -1060,7 +1061,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(9);
+  expect(Object.keys(initial)).toHaveLength(11);
   expect(initial['atlas.png']).toBe('./static/terrain-samples/emperor-land-water/atlas.png');
   expect(Object.values(initial).every(url => !url.includes('?'))).toBe(true);
   const switchSample = async sample => {
@@ -1591,7 +1592,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'climate-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -2023,6 +2024,71 @@ test('上方格子和实体工具分别选取，操作随选择显示，实体�
   expect(p.save()).toEqual(before);
   p.get('clear-selection').click();
   expect(p.get('selection-actions').hidden).toBe(true);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('气候更改共用历史和保存；非法气候导入保留地图，旧图可恢复原显示', async () => {
+  const p = await page({}, 'climate-map');
+  expect(p.get('issues').hidden).toBe(true);
+  const before = p.save();
+  const change = value => { p.get('map-climate').value = value; p.get('map-climate').dispatchEvent(new p.window.Event('change')); };
+  expect(p.get('map-climate').value).toBe('temperate');
+  zoom(p, 70);
+  const center = p.worldCenter();
+  change('arid');
+  const dry = p.save();
+  expect(dry).toEqual({ ...before, climate: 'arid' });
+  expect(p.worldCenter()).toEqual(center);
+  expect(p.get('zoom-percent').value).toBe('70');
+  const dryTiles = p.tiles().filter(tile => tile.grassGrade !== null);
+  for (const angle of [90, 180, 270, 0]) {
+    p.camera(angle);
+    expect(p.tiles().filter(tile => tile.grassGrade !== null)).toEqual(dryTiles);
+  }
+  p.get('undo').click(); expect(p.save()).toEqual(before); expect(p.get('map-climate').value).toBe('temperate');
+  p.get('redo').click(); expect(p.save()).toEqual(dry);
+  change('humid'); expect(p.tiles().filter(tile => tile.grassGrade !== null).length).toBeGreaterThan(dryTiles.length);
+  p.get('map-json').value = JSON.stringify({ ...before, climate: 'bad' });
+  p.get('read-map').click();
+  expect(p.get('issues').textContent).toContain('climate');
+  expect(p.save().climate).toBe('humid');
+  change('');
+  expect(p.save()).not.toHaveProperty('climate');
+  expect(p.tiles().every(tile => !Object.prototype.hasOwnProperty.call(tile, 'moisture'))).toBe(true);
+  expect(p.save().cells).toEqual(before.cells);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('新图三档选项、画水取消/提交/擦除和文件回读统一重建气候地表', async () => {
+  const p = await page();
+  p.get('new-map').click();
+  expect(p.get('new-map-climate').value).toBe('temperate');
+  p.get('new-map-width').value = '16'; p.get('new-map-height').value = '16';
+  p.get('new-map-climate').value = 'arid'; p.get('create-map').click();
+  expect(p.save().climate).toBe('arid');
+  expect(p.tiles().every(tile => tile.moisture === 0)).toBe(true);
+  p.tool('water'); p.pointer('pointerdown', [8, 8]);
+  expect(p.get('map-climate').disabled).toBe(true);
+  p.get('cancel-stroke').click();
+  expect(p.save().cells.flat().every(cell => cell.terrain === 'land')).toBe(true);
+  expect(p.terrainSprites().every(node => node.attrs.texture.file === 'bare-land-atlas.png')).toBe(true);
+  p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
+  const wet = p.save();
+  const tiles = p.tiles();
+  expect(tiles.some(tile => tile.grassGrade === 4)).toBe(true);
+  expect(JSON.stringify(wet)).not.toMatch(/moisture|grassGrade|"tile"/);
+  p.tool('select'); p.mode('cell'); p.clickGrid([7, 8]);
+  expect(p.get('cell-info').textContent).toContain('近水湿润强度: 100');
+  expect(p.get('cell-info').textContent).toContain('气候: 干旱');
+  p.tool('land'); p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
+  expect(p.tiles().every(tile => tile.moisture === 0)).toBe(true);
+  p.get('undo').click(); expect(p.tiles()).toEqual(tiles);
+  Object.defineProperty(p.get('map-file'), 'files', { configurable: true, value: [{ text: async () => JSON.stringify(wet) }] });
+  p.get('map-file').dispatchEvent(new p.window.Event('change')); await settle();
+  expect(p.save()).toEqual(wet); expect(p.tiles()).toEqual(tiles);
+  expect(p.get('issues').hidden).toBe(true);
   expect(p.errors).toEqual([]);
   p.window.close();
 });

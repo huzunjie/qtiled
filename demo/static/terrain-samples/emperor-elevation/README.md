@@ -11,3 +11,9 @@
 取证、指纹、完整像素解码、方向正反例和源文件归档见 [evidence/review.md](../../../../output/emperor/elevation-edit-implementation-2026-10-10/evidence/review.md)。
 
 新增20图、局部修整与工具策略、实际浏览器及文件验收见[高程实用化续批](../../../../output/emperor/elevation-practical-2026-10-10/review.md)。
+
+## 三档气候地表（2026-10-12）
+
+可选地图字段 `climate` 为 `arid`、`temperate`、`humid`；省略保留原有地表。只按真实水格推导普通草地，空角/界外不作为湿润来源。草地五档各九张、档内固定外观；干旱使用土坡，另两档沿用原坡面。强度/档位/图片不写入地图，未包含树木和资源修正。
+
+草地 `China_Terrain` 202～246、干旱坡面 `China_Elevation_Dirt` 201～232 均逐张匹配并复用 mylong PNG，原尺寸/透明度不变；新增独立图集，既有图集及定义不变。映射和RGB555核对记录在 `output/emperor/climate-implementation-2026-10-12/evidence/asset-mapping.json`，原作关系见同级研究目录。

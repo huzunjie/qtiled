@@ -59,7 +59,12 @@
 
 ### Pathfinding - 寻路
 * [x] AStar
+* [x] getChebyshevDistanceField：整数矩阵的八邻最近来源距离场
 * [x] [菱形高差寻路 Demo](demo/pathfinding-elevation-rhombus.html)：错列、等距布局复用现有 A*，在邻居回调中筛选方向、边界、路障和相邻格高差。最大高差可在 0～3 间调整，默认 1，上下行对称，保留原移动成本。
+
+`pathFinding.getChebyshevDistanceField(width, height, sources)` 返回 `distances[y][x]`：每格到最近来源的 `max(|dx|, |dy|)`。宽高为正安全整数，来源为矩阵内整数 `[x,y]` 数组；重复来源等效，空来源得到全 `Infinity`。例如 `(3, 2, [[0,0]])` 返回 `[[0,1,2],[1,1,2]]`。输入结构或整数类型错误抛 `TypeError`，非正尺寸或越界来源抛 `RangeError`。
+
+该函数不修改输入，只计算普通整数矩阵的八邻距离，不解释障碍、高程、六边形/错列拓扑或气候。时间 O(宽×高+来源数)、空间 O(宽×高)。Demo 自行收集真实水格并换算湿润强度，距离场不进入地图文件。
 
 `pathFinding.aStar(startGrid, endGrid, getNeighbors, maxCostUpdates)` 使用启发值为 0 的 Dijkstra 策略，按累计成本取点，在终点出队时确认最低成本路径。返回 `[[x, y, 累计成本], ...]`，有限搜索耗尽后返回 `null`；起终点重合时返回 `[[x, y, 0]]`。邻居顺序固定时，等成本节点按入队顺序处理，等成本路线保留先找到的父节点。
 

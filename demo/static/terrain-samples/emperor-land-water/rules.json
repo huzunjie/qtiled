@@ -979,7 +979,7 @@
     "tableGameVA": "0xa1da20",
     "tableSha256": "abd882d6e00acc31cbf1d295fca9e2b6585ea4c1eec81570b040372178e59f4f"
   },
-  "scope": "平地普通陆地与水，按已证邻域修整派生深处水面；无BEACH、洪水事件、高程、道路或环境模拟。陆地固定原素材202；动画为3套24帧，100ms作者预览设置。",
+  "scope": "普通陆地与水，按已证邻域修整派生深处水面。可选三档climate按真实水格距离派生五档普通草地；缺省气候保持原有地表，裸地沿用黄土变体。无BEACH、洪水事件、树木/资源修正；动画为3套24帧，100ms作者预览设置。",
   "placement": {
     "tileSize": [
       80,
@@ -992,5 +992,62 @@
     "emperor-bare-land-1",
     "emperor-bare-land-2",
     "emperor-bare-land-3"
+  ],
+  "grassVariants": [
+    [
+      "emperor-grass-202",
+      "emperor-grass-203",
+      "emperor-grass-204",
+      "emperor-grass-205",
+      "emperor-grass-206",
+      "emperor-grass-207",
+      "emperor-grass-208",
+      "emperor-grass-209",
+      "emperor-grass-210"
+    ],
+    [
+      "emperor-grass-211",
+      "emperor-grass-212",
+      "emperor-grass-213",
+      "emperor-grass-214",
+      "emperor-grass-215",
+      "emperor-grass-216",
+      "emperor-grass-217",
+      "emperor-grass-218",
+      "emperor-grass-219"
+    ],
+    [
+      "emperor-grass-220",
+      "emperor-grass-221",
+      "emperor-grass-222",
+      "emperor-grass-223",
+      "emperor-grass-224",
+      "emperor-grass-225",
+      "emperor-grass-226",
+      "emperor-grass-227",
+      "emperor-grass-228"
+    ],
+    [
+      "emperor-grass-229",
+      "emperor-grass-230",
+      "emperor-grass-231",
+      "emperor-grass-232",
+      "emperor-grass-233",
+      "emperor-grass-234",
+      "emperor-grass-235",
+      "emperor-grass-236",
+      "emperor-grass-237"
+    ],
+    [
+      "emperor-grass-238",
+      "emperor-grass-239",
+      "emperor-grass-240",
+      "emperor-grass-241",
+      "emperor-grass-242",
+      "emperor-grass-243",
+      "emperor-grass-244",
+      "emperor-grass-245",
+      "emperor-grass-246"
+    ]
   ]
 }

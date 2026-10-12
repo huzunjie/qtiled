@@ -938,11 +938,61 @@ function gridCoordToKey([gridX, gridY]) {
   return `${gridX}_${gridY}`;
 }
 
+/**
+ * 计算整数矩阵到最近来源格的八邻距离 max(|dx|, |dy|)。
+ * 不解释障碍、高程或投影拓扑；调用方提供来源，不修改输入。
+ * @param {number} width 正安全整数列数
+ * @param {number} height 正安全整数行数
+ * @param {Array<Array<number>>} sources 地图内的整数 [x, y] 坐标，允许重复或空数组
+ * @returns {Array<Array<number>>} distances[y][x]；无来源时为 Infinity
+ * @throws {TypeError} 输入结构或整数类型无效
+ * @throws {RangeError} 尺寸非正或来源越界
+ */
+function getChebyshevDistanceField$1(width, height, sources) {
+  if (!Number.isSafeInteger(width) || !Number.isSafeInteger(height)) {
+    throw new TypeError('距离场宽高必须为安全整数。');
+  }
+
+  if (width <= 0 || height <= 0) throw new RangeError('距离场宽高必须为正数。');
+  if (!Array.isArray(sources)) throw new TypeError('距离场来源必须为坐标数组。');
+
+  for (const grid of sources) {
+    if (!Array.isArray(grid) || grid.length !== 2 || !Array.from(grid).every(Number.isSafeInteger)) {
+      throw new TypeError('距离场来源必须为整数 [x, y] 坐标。');
+    }
+
+    if (grid[0] < 0 || grid[0] >= width || grid[1] < 0 || grid[1] >= height) {
+      throw new RangeError('距离场来源不能超出矩阵范围。');
+    }
+  }
+
+  const distances = Array.from({
+    length: height
+  }, () => Array(width).fill(Infinity));
+
+  for (const [x, y] of sources) distances[y][x] = 0; // 两遍扫描传播八邻距离，时间 O(width * height + sources.length)。
+
+
+  for (const step of [1, -1]) {
+    for (let y = step === 1 ? 0 : height - 1; y >= 0 && y < height; y += step) {
+      for (let x = step === 1 ? 0 : width - 1; x >= 0 && x < width; x += step) {
+        var _distances, _distances2, _distances3;
+
+        distances[y][x] = Math.min(distances[y][x], 1 + Math.min(distances[y][x - step] ?? Infinity, ((_distances = distances[y - step]) === null || _distances === void 0 ? void 0 : _distances[x - 1]) ?? Infinity, ((_distances2 = distances[y - step]) === null || _distances2 === void 0 ? void 0 : _distances2[x]) ?? Infinity, ((_distances3 = distances[y - step]) === null || _distances3 === void 0 ? void 0 : _distances3[x + 1]) ?? Infinity));
+      }
+    }
+  }
+
+  return distances;
+}
+
 const aStar = aStar$1;
+const getChebyshevDistanceField = getChebyshevDistanceField$1;
 
 var pathFindingObj = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  aStar: aStar
+  aStar: aStar,
+  getChebyshevDistanceField: getChebyshevDistanceField
 });
 
 // 基础图形方法
