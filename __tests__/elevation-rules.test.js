@@ -49,7 +49,7 @@ describe('整级高程真实素材规则', () => {
       const result = resolve(map, angle);
       expect(result.issues).toEqual([]);
       expect(result.tiles.filter(tile => tile.slope)).toHaveLength(8);
-      expect(at(result, 4, 4)).toMatchObject({ elevation: 1, slope: false, element: landRules.landElement });
+      expect(at(result, 4, 4)).toMatchObject({ elevation: 1, slope: false, element: expect.stringMatching(/^emperor-bare-land/) });
       // 中心南侧较高：原表行71。记录是独立像素校准后的QTiled镜头顺序。
       expect(at(result, 4, 3)).toMatchObject({ elevation: 0, slope: true, rowIndex: 71,
         element: `emperor-elevation-${[228, 222, 224, 226][turn]}` });

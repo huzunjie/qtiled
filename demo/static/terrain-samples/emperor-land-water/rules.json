@@ -43,7 +43,7 @@
   ],
   "waterBaseRecord": 386,
   "elementPrefix": "emperor-terrain-",
-  "landElement": "emperor-terrain-202",
+  "landElement": "emperor-bare-land",
   "animationElements": {
     "even": "emperor-water-even",
     "odd": "emperor-water-odd",
@@ -986,5 +986,11 @@
       40
     ],
     "note": "完整原图与底部菱形中心锚点；矩阵外及null按非水处理属于QTiled工具决定。"
-  }
+  },
+  "landVariants": [
+    "emperor-bare-land",
+    "emperor-bare-land-1",
+    "emperor-bare-land-2",
+    "emperor-bare-land-3"
+  ]
 }

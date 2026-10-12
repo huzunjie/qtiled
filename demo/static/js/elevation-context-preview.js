@@ -69,6 +69,7 @@
         json(new URL('emperor-elevation/elements.json', directory)), json(new URL('emperor-land-water/rules.json', directory)),
         json(new URL('emperor-elevation/rules.json', directory)),
         window.qtiledElementRendering.loadElementSources({
+          'bare-land-atlas.png': new URL('emperor-land-water/bare-land-atlas.png', directory).href,
           'atlas.png': new URL('emperor-land-water/atlas.png', directory).href,
           'elevation-atlas.png': new URL('emperor-elevation/elevation-atlas.png', directory).href,
         }),

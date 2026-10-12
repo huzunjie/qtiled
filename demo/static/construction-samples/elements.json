@@ -1,0 +1,1249 @@
+{
+  "road-782": {
+    "version": 1,
+    "id": "road-782",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-783": {
+    "version": 1,
+    "id": "road-783",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-784": {
+    "version": 1,
+    "id": "road-784",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-785": {
+    "version": 1,
+    "id": "road-785",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-786": {
+    "version": 1,
+    "id": "road-786",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-787": {
+    "version": 1,
+    "id": "road-787",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-788": {
+    "version": 1,
+    "id": "road-788",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-789": {
+    "version": 1,
+    "id": "road-789",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-790": {
+    "version": 1,
+    "id": "road-790",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-791": {
+    "version": 1,
+    "id": "road-791",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-792": {
+    "version": 1,
+    "id": "road-792",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-793": {
+    "version": 1,
+    "id": "road-793",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          40,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-794": {
+    "version": 1,
+    "id": "road-794",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          0,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-795": {
+    "version": 1,
+    "id": "road-795",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          78,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-796": {
+    "version": 1,
+    "id": "road-796",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          156,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-797": {
+    "version": 1,
+    "id": "road-797",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          234,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-798": {
+    "version": 1,
+    "id": "road-798",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          312,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "road-799": {
+    "version": 1,
+    "id": "road-799",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "90": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "180": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      },
+      "270": {
+        "source": "road-atlas.png",
+        "rect": [
+          390,
+          80,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          19
+        ]
+      }
+    }
+  },
+  "courtyard-house": {
+    "version": 1,
+    "id": "courtyard-house",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "house-atlas.png",
+        "rect": [
+          0,
+          0,
+          158,
+          110
+        ],
+        "anchor": [
+          39,
+          69
+        ]
+      },
+      "90": {
+        "source": "house-atlas.png",
+        "rect": [
+          158,
+          0,
+          158,
+          110
+        ],
+        "anchor": [
+          79,
+          49
+        ]
+      },
+      "180": {
+        "source": "house-atlas.png",
+        "rect": [
+          0,
+          0,
+          158,
+          110
+        ],
+        "anchor": [
+          119,
+          69
+        ]
+      },
+      "270": {
+        "source": "house-atlas.png",
+        "rect": [
+          158,
+          0,
+          158,
+          110
+        ],
+        "anchor": [
+          79,
+          89
+        ]
+      }
+    }
+  }
+}

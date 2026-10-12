@@ -8,6 +8,7 @@
 .map-demo button:disabled { cursor: default; opacity: .45; }
 .map-demo :is(button, select, input):focus-visible { outline: 2px solid #098d3b; outline-offset: 2px; }
 .map-demo select { padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
+.map-demo #building-control label { font-size: 12px; }
 .map-demo .preview-workspace > .viewport { overflow: hidden; }
 .map-demo .preview-workspace > aside { flex-basis: 240px; position: relative; padding: 0; overflow: hidden; border: 1px solid #d7dce2; }
 .map-demo .map-details { position: absolute; inset: 0; overflow: auto; scrollbar-gutter: stable; padding: 12px; }
@@ -30,16 +31,16 @@
 .map-demo .selection-controls { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin: 8px 0; font-size: 12px; padding-top: 10px; border-top: 1px solid #edf0f3; }
 .map-demo textarea { width: 100%; box-sizing: border-box; min-height: 110px; font: 11px monospace; }
 .map-demo .file-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; font-size: 12px; }
-.map-demo #map-canvas { touch-action: none; position: relative; width: 100%; height: clamp(360px, calc(100vh - 235px), 850px); overflow: hidden; border: 0; padding: 0; }
+.map-demo #map-canvas { touch-action: none; position: relative; width: 100%; height: clamp(360px, calc(100vh - 171px), 850px); overflow: hidden; border: 0; padding: 0; }
 .map-demo .click-help { margin: 0; padding: 0; color: #687383; border-bottom: 1px solid #edf0f3; border: 0; min-height: 82px; margin-top: 8px; }
 .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
 .map-demo #map-canvas[data-tool="pan"] { cursor: grab; }
 .map-demo #map-canvas[data-panning="true"] { cursor: grabbing; }
 .map-demo #cancel-stroke { position: absolute; right: 10px; bottom: 10px; z-index: 1; }
 .map-demo #cancel-stroke:disabled { visibility: hidden; }
-.map-demo #status { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 135px); margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); pointer-events: none; font-size: 11px; }
-.map-demo .issue-panel { height: 64px; overflow: hidden; border-top: 1px solid #edf0f3; }
-.map-demo #issues { height: 100%; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.map-demo #status { margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); font-size: 11px; }
+.map-demo .issue-panel { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 135px); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; pointer-events: none; }
+.map-demo #issues { max-height: 140px; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; border-radius: 4px; white-space: pre-wrap; overflow-wrap: anywhere; pointer-events: auto; }
 .map-demo aside dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; }
 .map-demo aside dt, .map-demo aside dd { margin: 0; }
 .map-demo .wide-detail { grid-column: 1 / -1; }
@@ -60,6 +61,7 @@
 .map-demo .menu-panel .note { margin-bottom: 0; }
 .map-demo #controls { gap: 10px 16px; }
 .map-demo .control-group + .control-group { padding-left: 12px; border-left: 1px solid #e3e8e5; }
+.map-demo .file-controls .control-group { padding-left: 0; border-left: 0; }
 .map-demo .brush-swatch { display: grid; grid-template-columns: repeat(9, 3px); grid-template-rows: repeat(9, 3px); gap: 1px; padding: 2px; }
 .map-demo .brush-swatch i { background: #dfe6e2; }
 .map-demo .brush-swatch i[data-filled="true"] { background: #23875c; }

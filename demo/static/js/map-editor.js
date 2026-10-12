@@ -5,6 +5,8 @@
   const status = get('status');
   const issues = get('issues');
   const terrainDirectory = './static/terrain-samples/emperor-land-water/';
+  const constructionDirectory = './static/construction-samples/';
+  const roadTools = ['road', 'erase-road'];
   const elevationDirectory = './static/terrain-samples/emperor-elevation/';
   const navigation = document.querySelector('.navs');
   if (navigation) navigation.classList.add('closed');
@@ -133,11 +135,15 @@
       button.setAttribute('aria-pressed', String(button.dataset.tool === tool));
       if (button.dataset.tool === tool) get('current-tool').textContent = button.textContent;
     });
+    get('building-control').hidden = tool !== 'building';
     get('height-control').hidden = tool !== 'set-height';
     get('brush-size-control').hidden = !brushTools.includes(tool);
     updateBrushParameters();
     get('click-help').textContent = {
       select: '点击地面格查看信息。画布内触控板双指上下、左右滚动，或鼠标中键拖动可平移。',
+      road: '普通道路宽 1 格：拖动补齐连线；松开提交，Esc 取消。需要平坦陆地；不能经过实体、水面或高差。',
+      'erase-road': '拖动擦除道路，保留原地表；松开提交，Esc 取消。',
+      building: '民居 2×2：移入画布预览，点击放置，R 转向，Esc 返回查看。两个外观用于四向，相反方向共用素材。',
       pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
       land: '陆地笔刷：拖动预览整笔，松开提交；Esc 取消。越过空角或地图边界会拒绝整笔；中键可平移。',
       water: '水域笔刷：拖动预览整笔，松开提交；Esc 取消。岸线随邻格更新；中键可平移。',
@@ -183,17 +189,52 @@
     get('hover-info').textContent = '移到画布查看坐标与笔刷占地';
   }
 
-  // 悬停只计算占地，不运行地形整理、不建索引、不写入地图或历史。
+  function buildingPreview(hit) {
+    const element = get('building-type').value;
+    const angle = Number(get('building-angle').value);
+    const definition = currentScene.elementsById[element];
+    const placement = window.qtiledElementRendering.resolveElementPlacement(definition, hit.grid, angle, cameraAngle);
+    let number = 1;
+    while (currentScene.map.entities.some(entity => entity.id === `house-${number}`)) number++;
+    const entity = { id: `house-${number}`, element, grid: placement.grid, angle };
+    const height = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]]?.elevation ?? viewport.baseHeight;
+    const draw = window.qtiledElementRendering.resolveElementDraw(definition, entity.grid,
+      { ...currentScene.view, originPixel: [0, currentScene.flatEditing ? 0 : -height * (currentScene.map.elevationStep || 0)] }, angle);
+    let error = '';
+    try {
+      if (hit.missed) throw new Error('未命中地表，不能放置');
+      requireSuccess(window.constructionRules.validate(
+        { ...currentScene.map, entities: [...currentScene.map.entities, entity] }, currentScene.groundTiles, currentScene.elementsById));
+    } catch (reason) { error = reason.message; }
+    return { entity, draw, error };
+  }
+
+  // 地形悬停只计算占地；建筑用同一兼容检查预览，不写入地图或历史。
   function updateHover(event = hoverPointer) {
     if (event) hoverPointer = { clientX: event.clientX, clientY: event.clientY };
     if (!currentScene || !event || stroke || pan) { clearHover(); return; }
     const hit = hitAt(event);
     const tool = get('edit-tool').value;
-    const offsets = brushTools.includes(tool) ? getBrushOffsets() : [];
-    const key = `${hit.grid}:${Boolean(hit.missed)}:${tool}:${brushKey}`;
+    const offsets = brushTools.includes(tool) ? getBrushOffsets() : roadTools.includes(tool) ? [[0, 0]] : [];
+    const key = `${hit.grid}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}`;
     if (key === hoverKey) return;
     clearHover();
     hoverKey = key;
+    if (tool === 'building') {
+      const preview = buildingPreview(hit);
+      const { Group, Polyline } = window.spritejs;
+      hoverOverlay = new Group({ id: 'map-building-hover', opacity: 0.65 });
+      if (!currentScene.flatEditing) window.qtiledElementRendering.renderElement(hoverOverlay, preview.draw,
+        currentScene.sources, { footprint: false, placement: false });
+      preview.draw.footprint.forEach(({ position }) => hoverOverlay.append(new Polyline({
+        pos: position, points: currentScene.vertexes, close: true,
+        strokeColor: preview.error ? '#bc3e30' : '#1976b5',
+        fillColor: preview.error ? 'rgba(188,62,48,.3)' : 'rgba(25,118,181,.2)', lineWidth: 2 / viewport.scale,
+      })));
+      currentScene.root.append(hoverOverlay);
+      get('hover-info').textContent = `民居 · 2×2 · ${preview.entity.angle}° · ${preview.error || '可放置 · 点击确认 / R 转向 / Esc 取消'}`;
+      return;
+    }
     const cell = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]];
     const grids = window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(hit.grid, offsets);
     const invalid = hit.missed || grids.some(([x, y]) => !currentScene.map.cells[y]?.[x]);
@@ -254,11 +295,12 @@
     get('cell-grid').textContent = selectedGrid ? JSON.stringify(selectedGrid) : '—';
     const tile = currentScene.tiles.find(item => selectedGrid && item.grid[0] === selectedGrid[0] && item.grid[1] === selectedGrid[1]);
     get('cell-info').textContent = !selectedGrid ? '点击画布查看' : cell === null ? 'null · 无效空角'
-      : cell ? `terrain: ${cell.terrain}\nelevation: ${cell.elevation}\n素材: ${tile?.element || '无'}\n变体: ${tile?.variant ?? '无'}` : '地图矩阵之外';
+      : cell ? `terrain: ${cell.terrain}${cell.road ? '\n道路: 普通' : ''}\nelevation: ${cell.elevation}\n素材: ${tile?.element || '无'}\n变体: ${tile?.variant ?? '无'}` : '地图矩阵之外';
     if (cell && tile?.waterKind) get('cell-info').textContent += `\n水面: ${{ ordinary: '普通', transition: '过渡', deep: '深处' }[tile.waterKind]}`;
     if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
     updateWaterFrame();
     get('entity-details').hidden = !entity;
+    get('delete-entity').disabled = !entity || Boolean(stroke);
     get('entity-id').textContent = entity ? entity.id : '—';
     get('entity-source').textContent = entity ? `${entity.element}\n${entity.draw.source}` : '—';
     get('entity-pose').textContent = entity ? `${JSON.stringify(entity.grid)} / ${entity.angle}°` : '—';
@@ -273,7 +315,9 @@
     if (map.tileSize[0] !== 80 || map.tileSize[1] !== 40) {
       throw new Error('tileSize：当前原作地表素材需要 80 × 40 格距。');
     }
-    const tiles = resolvedTiles ?? requireSuccess(window.elevationRules.resolve(map, elementsById, rules, elevationRules, nextAngle)).tiles;
+    const groundTiles = resolvedTiles ?? requireSuccess(window.elevationRules.resolve(map, elementsById, rules, elevationRules, nextAngle)).tiles;
+    const construction = requireSuccess(window.constructionRules.resolve(map, groundTiles, elementsById, mapState.roadRules, nextAngle));
+    const tiles = construction.tiles;
     const view = { angle: nextAngle, tileSize: map.tileSize, originPixel: [0, 0] };
     const flatEditing = get('flat-edit').checked;
     const { entities } = requireSuccess(window.qtiledMaps.resolveMapEntities(map, elementsById, view));
@@ -308,7 +352,7 @@
     const animated = [];
     const elapsedMs = player.elapsed();
     // 完整岸线图片含上凸内容，按格心投影深度绘制，不截掉覆盖部分。
-    tiles.forEach(tile => {
+    tiles.forEach((tile, tileIndex) => {
       const holder = new Group();
       if (flatEditing) {
         const cell = map.cells[tile.grid[1]][tile.grid[0]];
@@ -316,14 +360,16 @@
         holder.append(new Polyline({ pos, points: vertexes, close: true, lineWidth: 1,
           strokeColor: '#788c86', fillColor: cell.terrain === 'water' ? '#9acbdc'
             : `hsl(95, 24%, ${88 - cell.elevation * 3}%)` }));
-        holder.append(new Label({ text: String(cell.elevation), pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
+        holder.append(new Label({ text: `${cell.elevation}${cell.road ? ' 路' : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
         content.append(holder);
         return;
       }
-      const definition = elementsById[tile.element];
       const phase = tile.phase || 0;
-      const draws = window.elevationRendering.resolveTileDraws(tile, map, elementsById, view, { elapsedMs, phase });
+      // 道路图只有78px宽，透明边缘不能替代80px地表；保留原地表再叠加道路。
+      const layers = tile.road ? [groundTiles[tileIndex], tile] : [tile];
+      const draws = layers.flatMap(value => window.elevationRendering.resolveTileDraws(value, map, elementsById, view, { elapsedMs, phase }));
       draws.forEach((draw, index) => {
+        const definition = elementsById[draw.id];
         const part = index ? new Group() : holder;
         includeDraw(draw, definition);
         window.qtiledElementRendering.renderElement(part, draw, sources, { footprint: false, placement: false });
@@ -333,7 +379,7 @@
       });
     });
     // 按未抬升的世界占地下端排序，防止台地的垂直位移把前后关系颠倒。
-    // 本批只支持等高地基；不作为任意多格交错或跨高差实体的通用画序。
+    // 本批完整2×2地基采用此画序；不作为任意尺寸交错或组合实体的通用画序。
     const depth = entity => Math.max(...entity.draw.footprint.map(item => item.position[1]));
     [...entities].sort((a, b) => depth(a) - depth(b)).forEach(entity => {
       // renderElement 每个容器管理一个元素绘制组；共享定义的实例也必须各用独立容器。
@@ -368,8 +414,8 @@
     contentLayer.render();
     const contentImage = new Sprite({ texture: canvas, pos: rasterOrigin, size: rasterSize, anchor: [0, 0] });
     root.append(contentImage, labels, gridOverlay, coordinateOverlay);
-    const sourcePixels = map.version === 2 ? mapState.sourcePixels || readSourcePixels(sources) : mapState.sourcePixels;
-    return { ...mapState, root, entities, tiles, animated, view, vertexes, bounds, mapCenter, flatEditing,
+    const sourcePixels = mapState.sourcePixels || readSourcePixels(sources);
+    return { ...mapState, occupancyIndex: construction.index, groundTiles, root, entities, tiles, animated, view, vertexes, bounds, mapCenter, flatEditing,
       sourcePixels, drawables, contentLayer, contentImage, gridOverlay, coordinateOverlay, guideScale: null, selection: null };
   }
 
@@ -439,8 +485,8 @@
     for (const id of ['pick-mode', 'clear-selection']) get(id).disabled = !currentScene || Boolean(stroke);
     get('new-map').disabled = !currentScene || Boolean(stroke);
     get('base-height').disabled = Boolean(stroke);
-    for (const id of ['save-map', 'read-map', 'map-file', 'map-sample', 'reload', 'rebase-sample']) {
-      get(id).disabled = Boolean(stroke) || (!currentScene && ['save-map', 'read-map'].includes(id));
+    for (const id of ['save-map', 'view-map-json', 'read-map', 'map-file', 'map-sample', 'reload', 'rebase-sample']) {
+      get(id).disabled = Boolean(stroke) || (!currentScene && ['save-map', 'view-map-json', 'read-map'].includes(id));
     }
   }
 
@@ -481,7 +527,7 @@
     try {
       const baseHeight = get('rebase-sample').checked ? presetHeight() : null;
       if (window.location.protocol === 'file:') throw new Error('本页需要 HTTP 服务');
-      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.landWaterRules || !window.elevationRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
+      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.landWaterRules || !window.elevationRules || !window.constructionRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
         throw new Error('运行包缺失或过期；仓库 Demo 请先执行 npm run debug，独立目录请按 docs/browser-consumption.md 重新准备');
       }
       const { loadElementSources, importElementDefinition } = window.qtiledElementRendering;
@@ -490,19 +536,23 @@
       const { directory, sourceFiles } = getDogElementSample(reloadToken);
       const elementUrl = new URL(`${directory}element.json`, document.baseURI);
       const mapUrl = new URL(`./static/map-samples/${get('map-sample').value}.json`, document.baseURI);
-      const [elementJson, mapJson, terrainJson, rulesJson, elevationJson, elevationRulesJson, images] = await Promise.all([
+      const [elementJson, mapJson, terrainJson, rulesJson, elevationJson, elevationRulesJson, constructionJson, roadRulesJson, images] = await Promise.all([
         readText(elementUrl), readText(mapUrl),
         readText(new URL(`${terrainDirectory}elements.json`, document.baseURI)),
         readText(new URL(`${terrainDirectory}rules.json`, document.baseURI)),
         readText(new URL(`${elevationDirectory}elements.json`, document.baseURI)),
         readText(new URL(`${elevationDirectory}rules.json`, document.baseURI)),
-        loadElementSources({ ...sourceFiles, 'atlas.png': `${terrainDirectory}atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
+        readText(new URL(`${constructionDirectory}elements.json`, document.baseURI)),
+        readText(new URL(`${constructionDirectory}road-rules.json`, document.baseURI)),
+        loadElementSources({ ...sourceFiles, 'bare-land-atlas.png': `${terrainDirectory}bare-land-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
+          'road-atlas.png': `${constructionDirectory}road-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
+          'house-atlas.png': `${constructionDirectory}house-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`, 'atlas.png': `${terrainDirectory}atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
           'elevation-atlas.png': `${elevationDirectory}elevation-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}` }),
       ]);
       if (requestId !== loadRequestId) return;
       requireSuccess(images);
       const element = requireSuccess(importElementDefinition(elementJson, images.sourceInfo)).definition;
-      const elementsById = { ...JSON.parse(terrainJson), ...JSON.parse(elevationJson) };
+      const elementsById = { ...JSON.parse(terrainJson), ...JSON.parse(elevationJson), ...JSON.parse(constructionJson) };
       Object.entries(elementsById).forEach(([id, definition]) => {
         requireSuccess({ issues: window.qtiledElementRendering.validateElementDefinition(definition, images.sourceInfo) });
         if (id !== definition.id) throw new Error(`地表素材键 ${id} 与定义 ID 不一致`);
@@ -514,7 +564,7 @@
       const map = baseHeight === null ? imported.definition : rebaseSample(imported.definition, baseHeight, elevationRules.elevationStep);
       // 地图、索引、图片与独立绘制树全部准备成功后一次替换；失败不触碰 currentScene。
       const next = prepareScene({ map, occupancyIndex: imported.index, elementsById, sources: images.sources,
-        rules, elevationRules }, cameraAngle);
+        rules, elevationRules, roadRules: JSON.parse(roadRulesJson) }, cameraAngle);
       undoStack.length = 0;
       redoStack.length = 0;
       const firstLoad = !currentScene;
@@ -543,22 +593,77 @@
   get('pick-mode').addEventListener('change', clearSelection);
   container.addEventListener('click', event => {
     if (suppressClick) { suppressClick = false; return; }
-    if (!currentScene || get('edit-tool').value !== 'select') return;
+    if (!currentScene || stroke || pan) return;
+    const tool = get('edit-tool').value;
     const hit = hitAt(event);
+    if (tool === 'building') {
+      try {
+        const preview = buildingPreview(hit);
+        if (preview.error) throw new Error(preview.error);
+        editEntity({ type: 'place', entity: preview.entity });
+      } catch (error) {
+        issues.hidden = false;
+        issues.textContent = error.message;
+        status.textContent = '放置被拒绝 · 地图未改变';
+      }
+      updateHover(event);
+      return;
+    }
+    if (tool !== 'select') return;
     if (hit.missed) {
       clearSelection();
       get('cell-info').textContent = `未命中可见地表 · 基准面参考 ${JSON.stringify(hit.grid)}`;
       return;
     }
     selectedGrid = hit.grid;
-    // A4 索引中同格候选按地图 entities 顺序排列；不根据图片画序猜选中项。
+    // 可见像素优先；旧平地装饰与平面编辑保留占用索引候选。
     const candidates = currentScene.occupancyIndex.get(selectedGrid.join(',')) || [];
     selectedEntityId = get('pick-mode').value === 'entity' ? hit.entityId || candidates[0] || null : null;
     updateSelection();
   });
+  function editEntity(command) {
+    const edited = requireSuccess(window.qtiledMaps.applyMapEdit(currentScene.map, command,
+      currentScene.elementsById, window.constructionRules.canCoexist));
+    const next = prepareScene({ ...currentScene, map: edited.definition, occupancyIndex: edited.index }, cameraAngle);
+    ++loadRequestId;
+    undoStack.push(currentScene.map);
+    redoStack.length = 0;
+    selectedEntityId = command.type === 'place' ? command.entity.id : null;
+    selectedGrid = command.type === 'place' ? command.entity.grid : null;
+    viewport.mode = 'work';
+    commitScene(next);
+    clearIssue();
+    status.textContent = command.type === 'place' ? '已放置民居 · 可继续放置 / Esc 返回查看' : '已删除整个实例 · 可撤销';
+  }
+
+  get('delete-entity').addEventListener('click', () => {
+    if (!currentScene || stroke || pan || !selectedEntityId) return;
+    try { editEntity({ type: 'remove', id: selectedEntityId }); } catch (error) { fail(error); }
+  });
+  function rotateBuilding() {
+    if (!currentScene || stroke || pan) return;
+    get('building-angle').value = String((Number(get('building-angle').value) + 90) % 360);
+    updateHover();
+  }
+  get('rotate-building').addEventListener('click', rotateBuilding);
+  get('building-angle').addEventListener('change', () => updateHover());
+  document.addEventListener('keydown', event => {
+    if (get('edit-tool').value !== 'building') return;
+    if (event.key.toLowerCase() === 'r' && !event.ctrlKey && !event.metaKey && !event.altKey
+      && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) {
+      event.preventDefault();
+      rotateBuilding();
+    } else if (event.key === 'Escape') {
+      get('edit-tool').value = 'select';
+      clearHover(true);
+      updateToolHelp();
+      clearIssue();
+    }
+  });
+
   function hitAt(event, scene = currentScene) {
     const pixel = getPointerPosition(event, container).map((value, axis) => (value - scene.viewportOrigin[axis]) / scene.viewportScale);
-    if (scene.map.version === 2 && !scene.flatEditing) {
+    if ((scene.map.version === 2 || scene.map.entities.some(entity => entity.element === window.constructionRules.buildingId)) && !scene.flatEditing) {
       for (let index = scene.drawables.length - 1; index >= 0; index--) {
         const item = scene.drawables[index];
         const frame = item.draw.sequence ? window.qtiledElementRendering.resolveElementFrame(item.definition, item.draw.imageAngle,
@@ -572,7 +677,7 @@
         }
       }
       // 未命中只在基准面反算参考格，不把它当作可落笔的地表。
-      pixel[1] += viewport.baseHeight * scene.map.elevationStep;
+      pixel[1] += viewport.baseHeight * (scene.map.elevationStep || 0);
       return { grid: window.qtiledView.pickGrid(pixel, scene.view), missed: true, referenceHeight: viewport.baseHeight };
     }
     return { grid: window.qtiledView.pickGrid(pixel, scene.view) };
@@ -739,9 +844,16 @@
     const from = stroke.last || grid;
     const steps = Math.max(Math.abs(grid[0] - from[0]), Math.abs(grid[1] - from[1]), 1);
     const previousSize = stroke.grids.size;
+    let previousGrid = from;
     // 补齐快速拖动跳过的格子；只在增加新格时预览，命令仍校验并去重外部输入。
     for (let i = 1; i <= steps; i++) {
       const nextGrid = [Math.round(from[0] + (grid[0] - from[0]) * i / steps), Math.round(from[1] + (grid[1] - from[1]) * i / steps)];
+      // 道路只能按四邻相接；对角跳格补一个转角，仍沿用同一整笔事务。
+      if (roadTools.includes(stroke.terrain) && nextGrid[0] !== previousGrid[0] && nextGrid[1] !== previousGrid[1]) {
+        const corner = [previousGrid[0], nextGrid[1]];
+        stroke.grids.set(corner.join(','), corner);
+      }
+      previousGrid = nextGrid;
       for (const grid of window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(nextGrid, stroke.offsets)) {
         stroke.grids.set(grid.join(','), grid);
       }
@@ -751,7 +863,9 @@
     try {
       const { base, grids, terrain, height } = stroke;
       const command = ['land', 'water'].includes(terrain) ? { terrain } : { type: terrain, height };
-      const result = requireSuccess(window.elevationRules.applyStroke(base.map, { ...command, grids: [...grids.values()] }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
+      const result = requireSuccess(roadTools.includes(terrain)
+        ? window.constructionRules.applyRoadStroke(base.map, [...grids.values()], terrain === 'erase-road')
+        : window.elevationRules.applyStroke(base.map, { ...command, grids: [...grids.values()] }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
       const occupancy = requireSuccess(window.qtiledMaps.buildMapOccupancy(result.definition, base.elementsById));
       const next = prepareScene({ ...base, map: result.definition, occupancyIndex: occupancy.index }, cameraAngle, result.tiles);
       const { Group, Polyline } = window.spritejs;
@@ -798,13 +912,13 @@
       status.textContent = '正在平移 · 松开结束 / Esc 取消';
       return;
     }
-    if (event.button !== 0 || !brushTools.includes(tool)) return;
+    if (event.button !== 0 || ![...brushTools, ...roadTools].includes(tool)) return;
     event.preventDefault();
     ++loadRequestId; // 新编辑不能被较早的异步读取覆盖。
     // 从全图开始编辑时保持当前缩放，避免新增岸线改变外框导致笔尖漂移。
     viewport.mode = 'work';
     stroke = { base: currentScene, terrain: tool, height: get('target-height').valueAsNumber,
-      offsets: getBrushOffsets(),
+      offsets: roadTools.includes(tool) ? [[0, 0]] : getBrushOffsets(),
       grids: new Map(), pointerId: event.pointerId };
     container.setPointerCapture?.(event.pointerId);
     previewStroke(event);
@@ -905,11 +1019,23 @@
     } catch (error) { if (requestId === loadRequestId) fail(error); }
     finally { event.target.value = ''; }
   });
+  function showMapJson() {
+    const { json } = requireSuccess(window.qtiledMaps.exportMapDefinition(currentScene.map, currentScene.elementsById));
+    get('map-json').value = json;
+    return json;
+  }
+  get('view-map-json').addEventListener('click', () => {
+    if (!currentScene || stroke || pan) return;
+    try {
+      showMapJson();
+      clearIssue();
+      status.textContent = '已显示当前地图 JSON · 未下载，地图未改变';
+    } catch (error) { fail(error); }
+  });
   get('save-map').addEventListener('click', () => {
     if (!currentScene || stroke || pan) return;
     try {
-      const { json } = requireSuccess(window.qtiledMaps.exportMapDefinition(currentScene.map, currentScene.elementsById));
-      get('map-json').value = json;
+      const json = showMapJson();
       const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
       const link = document.createElement('a');
       link.href = url;

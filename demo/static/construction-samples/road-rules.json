@@ -1,0 +1,369 @@
+{
+  "version": 1,
+  "roadBase": 782,
+  "qtiledCameraColumns": [
+    1,
+    0,
+    3,
+    2
+  ],
+  "neighborOffsets": [
+    [
+      0,
+      -1
+    ],
+    [
+      1,
+      -1
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      -1,
+      1
+    ],
+    [
+      -1,
+      0
+    ],
+    [
+      -1,
+      -1
+    ]
+  ],
+  "rows": [
+    {
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        17,
+        17,
+        17,
+        17
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        13,
+        16,
+        15,
+        14
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        14,
+        13,
+        16,
+        15
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        1,
+        2,
+        0,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        15,
+        14,
+        13,
+        16
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        16,
+        15,
+        14,
+        13
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        1,
+        2,
+        1,
+        2,
+        0,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        4,
+        7,
+        6,
+        5
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        1,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        5,
+        4,
+        7,
+        6
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        0,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        6,
+        5,
+        4,
+        7
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        1,
+        2,
+        0,
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        7,
+        6,
+        5,
+        4
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        1,
+        2,
+        0,
+        2,
+        1,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        1,
+        2,
+        0,
+        2,
+        0,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        8,
+        11,
+        10,
+        9
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        1,
+        2,
+        0,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        9,
+        8,
+        11,
+        10
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        0,
+        2,
+        1,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        10,
+        9,
+        8,
+        11
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        0,
+        2,
+        0,
+        2,
+        1,
+        2
+      ],
+      "viewOffsets": [
+        11,
+        10,
+        9,
+        8
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        0,
+        2,
+        0,
+        2,
+        0,
+        2,
+        0,
+        2
+      ],
+      "viewOffsets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "variants": 1
+    },
+    {
+      "conditions": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "viewOffsets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "variants": 1
+    }
+  ]
+}

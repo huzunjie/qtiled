@@ -417,7 +417,7 @@
     const atlas = elevation ? 'elevation-atlas.png' : 'atlas.png';
     const [response, loaded] = await Promise.all([
       fetch(`${directory}elements.json`, { cache: 'no-store' }),
-      loadElementSources({ [atlas]: `${directory}${atlas}` }),
+      loadElementSources({ [atlas]: `${directory}${atlas}`, ...(!elevation ? { 'bare-land-atlas.png': `${directory}bare-land-atlas.png` } : {}) }),
     ]);
     if (!response.ok) throw new Error(`地表素材定义加载失败（${response.status}）。`);
     if (loaded.issues.length) { fileIssues = loaded.issues; return; }
@@ -435,10 +435,10 @@
     // 定义与真实图片全部通过后再替换，失败时保留原配置和资源。
     terrainLibrary = { definitions, sources: loaded.sources, sourceInfo: loaded.sourceInfo };
     const ids = Object.keys(definitions);
-    const animationNames = { 'emperor-water-even': '普通水面 · 动画', 'emperor-water-odd': '过渡水面（另一组） · 动画', 'emperor-water-deep': '深处水面 · 动画' };
+    const animationNames = { 'emperor-bare-land': '陆地 · 黄土', 'emperor-water-even': '普通水面 · 动画', 'emperor-water-odd': '过渡水面（另一组） · 动画', 'emperor-water-deep': '深处水面 · 动画' };
     get('terrain-material').replaceChildren(new Option('选择原作地表素材', ''), ...ids.map(id => {
       const number = Number(id.split('-').pop());
-      return new Option(elevation ? `${number >= 221 ? '一级坡面' : number >= 213 ? '一二级过渡' : '两级坡面'} · ${number}` : animationNames[id] || `${number === 202 ? '陆地' : number >= 664 ? '水面单帧' : '岸线'} · ${number}`, id);
+      return new Option(elevation ? `${number >= 221 ? '一级坡面' : number >= 213 ? '一二级过渡' : '两级坡面'} · ${number}` : animationNames[id] || (id.startsWith('emperor-bare-land-') ? `陆地 · 黄土 ${number + 1}` : '') || `${number === 202 ? '陆地' : number >= 664 ? '水面单帧' : '岸线'} · ${number}`, id);
     }));
     get('terrain-material').disabled = false;
     useTerrainMaterial(definitions['emperor-water-deep'] ? 'emperor-water-deep' : ids[0]);

@@ -304,3 +304,18 @@ describe('普通水面、内部过渡与深处水面的派生选择', () => {
     expect(result.tiles.some(tile => ['transition', 'deep'].includes(tile.waterKind))).toBe(false);
   });
 });
+
+test('黄土变体均被使用，镜头、重算和JSON回读保持分布，显式外观可固定', () => {
+  const map = { cells: Array.from({ length: 12 }, () => Array.from({ length: 12 }, () => ({ terrain: 'land', elevation: 0 }))) };
+  const before = JSON.stringify(map);
+  const result = resolve(map, elements, rules);
+  expect(result.issues).toEqual([]);
+  expect(new Set(result.tiles.map(tile => tile.element))).toEqual(new Set(rules.landVariants));
+  for (const angle of angles) expect(resolve(JSON.parse(before), elements, rules, angle).tiles).toEqual(result.tiles);
+  expect(JSON.stringify(map)).toBe(before);
+  rules.landVariants.forEach((id, i) => {
+    map.cells[0][0].terrainVariant = i;
+    expect(resolve(map, elements, rules).tiles[0].element).toBe(id);
+  });
+  expect(resolve(map, elements, { ...rules, landVariants: [] }).issues[0].code).toBe('invalid-terrain-rules');
+});

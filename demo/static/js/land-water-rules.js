@@ -53,6 +53,8 @@
   function checkRules(rules) {
     if (!isObject(rules) || rules.version !== 1 || rules.boundary !== 'water'
       || !isString(rules.landElement) || !isObject(rules.animationElements)
+      || (owns(rules, 'landVariants') && (!Array.isArray(rules.landVariants)
+        || !rules.landVariants.length || !Array.from(rules.landVariants).every(isString)))
       || !['even', 'odd', 'deep'].every(key => isString(rules.animationElements[key]))
       || !isString(rules.elementPrefix) || !Number.isSafeInteger(rules.waterBaseRecord)
       || !Array.isArray(rules.neighborOffsets) || rules.neighborOffsets.length !== 8
@@ -132,6 +134,14 @@
         let variant = 0;
         let phase = 0;
         let waterKind = null;
+        if (cell.terrain === 'land' && rules.landVariants) {
+          // 混合坐标高低位，避免少量陆地变体按行列重复；显式外观字节仍优先。
+          let hash = Math.imul(x, 374761393) ^ Math.imul(y, 668265263);
+          hash = Math.imul(hash ^ (hash >>> 13), 1274126177);
+          const stable = owns(cell, 'terrainVariant') ? cell.terrainVariant : (hash ^ (hash >>> 16)) >>> 0;
+          variant = stable % rules.landVariants.length;
+          element = rules.landVariants[variant];
+        }
         if (cell.terrain === 'water') {
           // 固定整数运算属于 QTiled 工具设计，不声称复刻原作的随机种子。
           const stableByte = owns(cell, 'terrainVariant') ? cell.terrainVariant

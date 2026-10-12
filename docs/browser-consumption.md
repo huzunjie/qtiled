@@ -33,11 +33,12 @@ sed -e 's|./static/js/qtiled.dev.js|../dist/qtiled.browser.js|g' \
     -e 's|./static/js/qtiled-element-rendering.dev.js|../dist/qtiled-element-rendering.umd.js|g' \
     demo/map-editor.html > "$consumer_dir/demo/map-editor.html"
 cp dist/qtiled.browser.js dist/qtiled-view.umd.js dist/qtiled-maps.umd.js dist/qtiled-element-rendering.umd.js "$consumer_dir/dist/"
-cp demo/static/js/spritejs3.js demo/static/js/pointer.js demo/static/js/dog-element-sample.js demo/static/js/land-water-rules.js demo/static/js/elevation-rules.js demo/static/js/elevation-rendering.js demo/static/js/element-animation-player.js demo/static/js/navs.js demo/static/js/map-editor.js "$consumer_dir/demo/static/js/"
+cp demo/static/js/spritejs3.js demo/static/js/pointer.js demo/static/js/dog-element-sample.js demo/static/js/land-water-rules.js demo/static/js/construction-rules.js demo/static/js/elevation-rules.js demo/static/js/elevation-rendering.js demo/static/js/element-animation-player.js demo/static/js/navs.js demo/static/js/map-editor.js "$consumer_dir/demo/static/js/"
 cp demo/static/css/map-editor.css demo/static/css/index.css demo/static/css/preview-workspace.css "$consumer_dir/demo/static/css/"
-cp demo/static/map-samples/first-static-map.json demo/static/map-samples/rectangular-water-map.json demo/static/map-samples/elevation-map.json demo/static/map-samples/elevation-multilevel-map.json "$consumer_dir/demo/static/map-samples/"
+cp demo/static/map-samples/first-static-map.json demo/static/map-samples/rectangular-water-map.json demo/static/map-samples/elevation-map.json demo/static/map-samples/elevation-multilevel-map.json demo/static/map-samples/village-map.json "$consumer_dir/demo/static/map-samples/"
 cp demo/static/element-samples/dog/element.json "$consumer_dir/demo/static/element-samples/dog/"
 cp demo/static/element-samples/dog/images/*.png "$consumer_dir/demo/static/element-samples/dog/images/"
+cp -R demo/static/construction-samples "$consumer_dir/demo/static/"
 cp -R demo/static/terrain-samples/emperor-land-water demo/static/terrain-samples/emperor-elevation "$consumer_dir/demo/static/terrain-samples/"
 python3 -m http.server 8051 --bind 127.0.0.1 --directory "$consumer_dir"
 ```
@@ -67,3 +68,7 @@ python3 -m http.server 8051 --bind 127.0.0.1 --directory "$consumer_dir"
 独立Demo脚本或CSS修改后，即使不重建核心库，也需同步更新HTML中对应资源的版本号；只改变页面URL查询参数不会刷新子资源缓存。`npm run update-demo-version`可统一更新所有Demo，单页补修仅更新受影响的资源引用。
 
 验收必须包含已有浏览器会话的已打开页面：保留缓存，普通刷新，确认地图加载、相关控件与错误提示正常，并记录结果；仅用全新会话、无痕窗口或清缓存检查不能替代。刷新前保留用户未保存的编辑，视觉变化附截图。项目统一约定见 [AGENTS.md](../AGENTS.md#demo-资源与浏览器验收)。
+
+普通道路与建筑：加载 `construction-samples` 的18张道路图和2×2民居；`construction-rules.js` 按 `cell.road: "ordinary"` 派生连接图。道路为平地1格宽，擦除仅移除 road。民居采用两个静态外观、相反朝向共用；完整地基独占等高陆地，不能与道路或实体重叠。复用矩形放置、占用索引、整笔历史和地图 IO；含民居的地图按可见 alpha 选取。转向 R、Esc 退出放置，选中后可删除整个实例。环境、桥坡、道路等级、经营和费用不在本批。
+
+地图菜单内提供“保存地图”。“地图 JSON（查看 / 导入）”中的“查看当前地图 JSON”只显示当前数据，不下载也不修改地图或历史；“导入当前输入框地图数据”读取文本框内容，沿用校验与撤销。道路绘制保留原地表并叠加道路图，避免78px素材透明边缘露出画布背景。

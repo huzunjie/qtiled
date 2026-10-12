@@ -1,3 +1,4 @@
+import { resolveElementPlacement } from '../src/element-rendering/placement';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -127,7 +128,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const exportMap = jest.fn((map, library) => maps.exportMapDefinition(JSON.parse(JSON.stringify(map)), library));
   window.qtiledMaps = { ...maps, resolveMapEntities: resolve, importMapDefinition: importMap,
     buildMapOccupancy: occupancy, exportMapDefinition: exportMap };
-  window.qtiledElementRendering = { ...elements, renderElement, resolveElementDraw,
+  window.qtiledElementRendering = { ...elements, renderElement, resolveElementDraw, resolveElementPlacement,
     resolveElementFrame: resolveFrame, updateElementFrame: updateFrame, loadElementSources: async files => {
     imageRequests.push({ ...files });
     const sources = {};
@@ -148,7 +149,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
     if (isMap && faults.overlap) value.entities[1].grid = [1, 1];
     if (url.pathname.endsWith('/dog/element.json') && faults.definition) delete value.views[90];
     if (url.pathname.endsWith('/rules.json') && faults.rules) value.rows = [];
-    if (url.pathname.endsWith('/emperor-land-water/elements.json') && faults.terrain) delete value['emperor-terrain-202'];
+    if (url.pathname.endsWith('/emperor-land-water/elements.json') && faults.terrain) delete value['emperor-bare-land'];
     if (url.pathname.endsWith('/emperor-land-water/elements.json') && faults.animation) value['emperor-water-deep'].sequences.water.frames[0].rect[2] = 99999;
     if (isMap && faults.delay) await faults.delay;
     return { ok: !faults.http, status: 404, text: async () => {
@@ -169,6 +170,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/dog-element-sample.js'), context);
   vm.runInContext(read('static/js/land-water-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rules.js'), context);
+  vm.runInContext(read('static/js/construction-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rendering.js'), context);
   const terrainResolve = jest.fn(window.landWaterRules.resolve);
   window.landWaterRules.resolve = terrainResolve;
@@ -180,8 +182,8 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const result = () => resolve.mock.results[resolve.mock.results.length - 1].value.entities;
   const descendants = node => node.children.flatMap(child => [child, ...descendants(child)]);
   const contentLayer = () => contentLayers.find(item => item.canvas === layer.children[0]?.children[0].attrs.texture);
-  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
-  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && node.attrs.texture.file === 'atlas.png');
+  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['atlas.png', 'bare-land-atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
+  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['atlas.png', 'bare-land-atlas.png'].includes(node.attrs.texture.file));
   const pointAt = grid => {
     const [map, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
     const local = view.projectGrid(grid, { ...currentView, tileSize: map.tileSize, originPixel: [0, 0] });
@@ -414,7 +416,7 @@ test('独立加载部署样本，仅绘制 20 个有效格并显示两个独立�
   expect(p.get('controls').disabled).toBe(false);
   expect(p.get('map-summary').textContent).toBe('4 行 × 6 列 · 20 有效格 · 2 实体');
   expect(p.terrainSprites()).toHaveLength(20);
-  expect(p.terrainSprites().every(node => node.attrs.sourceRect[3] === 41)).toBe(true);
+  expect(p.terrainSprites().every(node => [40, 41].includes(node.attrs.sourceRect[3]))).toBe(true);
   expect(p.sprites()).toHaveLength(2);
   expect(p.sprites()[0].attrs.pos).not.toEqual(p.sprites()[1].attrs.pos);
   expect(p.fetch.mock.calls.every(([url]) => url.pathname.startsWith('/demo/static/'))).toBe(true);
@@ -808,7 +810,7 @@ test.each([
   ['http', 'HTTP 404'], ['json', 'JSON'], ['map', 'entities[0].element'],
   ['cells', 'cells'],
   ['definition', 'views.90'], ['image', 'images/sculpture_dog01.png'],
-  ['rules', '$rules'], ['terrain', 'emperor-terrain-202'],
+  ['rules', '$rules'], ['terrain', 'emperor-bare-land'],
 ])('%s 失败保留旧事实、选择和节点，修复后同页重载恢复', async (fault, message) => {
   const p = await page();
   p.clickGrid([1, 1]);
@@ -997,9 +999,9 @@ test('完整地表与实体共同按深度排列，前方地表不固定压在�
   const p = await page();
   const content = p.contentLayer().children[0];
   const rendered = content.children.map(holder => holder.children[0].children[0]);
-  const dog = rendered.findIndex(node => !['atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
+  const dog = rendered.findIndex(node => !['atlas.png', 'bare-land-atlas.png', 'elevation-atlas.png'].includes(node.attrs.texture.file));
   expect(dog).toBeGreaterThan(0);
-  expect(rendered.slice(dog + 1).some(node => node.attrs.texture.file === 'atlas.png')).toBe(true);
+  expect(rendered.slice(dog + 1).some(node => ['atlas.png', 'bare-land-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
 });
 
 test.each([true, false])('地图缓存恢复保留原播放状态（播放=%s）、累计时间和尺寸监听', async playing => {
@@ -1058,7 +1060,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(6);
+  expect(Object.keys(initial)).toHaveLength(9);
   expect(initial['atlas.png']).toBe('./static/terrain-samples/emperor-land-water/atlas.png');
   expect(Object.values(initial).every(url => !url.includes('?'))).toBe(true);
   const switchSample = async sample => {
@@ -1082,7 +1084,7 @@ test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部�
       return url.searchParams.get('reload');
     });
     expect(new Set(tokens).size).toBe(1);
-    expect(p.fetch).toHaveBeenCalledTimes(fetchCount + 6);
+    expect(p.fetch).toHaveBeenCalledTimes(fetchCount + 8);
     expect(p.get('map-id').textContent).toBe('rectangular-water-map');
   }
   await switchSample('first-static-map');
@@ -1495,7 +1497,7 @@ test('真实素材覆盖旧台地细缝，新增绘制部件的alpha命中与所
   p.get('read-map').click();
   p.mode('cell');
   const pixels = {};
-  for (const [source, directory] of [['atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
+  for (const [source, directory] of [['atlas.png', 'emperor-land-water'], ['bare-land-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
     pixels[source] = pngPixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
   }
   for (const angle of [0, 90, 180, 270]) {
@@ -1580,10 +1582,10 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
   p.window.close();
 });
 
-test('对外样本只保留四个入口，多级样本包含高程边缘、空角和沟谷', async () => {
+test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map',
+    'rectangular-water-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -1803,4 +1805,126 @@ test('高程地图未命中的焦点在四向缩放后仍包住指针，不产�
   expect(p.save()).toEqual(before);
   expect(p.errors).toEqual([]);
   p.window.close();
+});
+
+async function constructionPage() {
+  const p = await page();
+  const map = { version: 2, id: 'village', tileSize: [80, 40], elevationStep: 40,
+    cells: Array.from({ length: 12 }, () => Array.from({ length: 12 }, () => ({ terrain: 'land', elevation: 8 }))), entities: [] };
+  p.get('map-json').value = JSON.stringify(map);
+  p.get('read-map').click();
+  setDisplay(p, 'flat-edit', true);
+  return p;
+}
+
+test('道路快速对角拖动四邻连通，整笔撤销/重做、重复无效落笔、擦除和取消', async () => {
+  const p = await constructionPage();
+  const before = p.save();
+  p.tool('road');
+  p.pointer('pointerdown', [3, 3]);
+  p.pointer('pointermove', [7, 7]);
+  p.pointer('pointerup', [7, 7]);
+  const after = p.save();
+  expect(after.cells.flat().filter(cell => cell.road)).toHaveLength(9);
+  for (let i = 3; i < 7; i++) {
+    expect(after.cells[i + 1][i].road).toBe('ordinary');
+    expect(after.cells[i + 1][i + 1].road).toBe('ordinary');
+  }
+  p.pointer('pointerdown', [3, 3]);
+  p.pointer('pointerup', [3, 3]);
+  p.get('undo').click();
+  expect(p.save()).toEqual(before);
+  p.get('redo').click();
+  expect(p.save()).toEqual(after);
+  p.tool('erase-road');
+  p.pointer('pointerdown', [3, 3]);
+  p.pointer('pointerup', [3, 3]);
+  expect(p.save().cells[3][3]).toEqual(before.cells[3][3]);
+  p.get('undo').click();
+  p.tool('road');
+  p.pointer('pointerdown', [1, 1]);
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(p.save()).toEqual(after);
+  p.pointer('pointerdown', [0, 0]);
+  p.pointer('pointerup', [-1, 0]);
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(after);
+});
+
+test('建筑预览不写事实，转向/放置/重复拒绝后可恢复，地形破坏拒绝，整栋删除与历史/文件回读', async () => {
+  const p = await constructionPage();
+  const before = p.save();
+  p.tool('building');
+  p.pointer('pointermove', [4, 3]);
+  expect(p.get('hover-info').textContent).toContain('可放置');
+  expect(p.save()).toEqual(before);
+  p.get('rotate-building').click();
+  expect(p.get('building-angle').value).toBe('90');
+  p.clickGrid([4, 3]);
+  expect(p.get('issues').hidden).toBe(true);
+  const placed = p.save();
+  expect(placed.entities).toHaveLength(1);
+  expect(placed.entities[0].angle).toBe(90);
+  p.clickGrid([4, 3]);
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(placed);
+  p.clickGrid([7, 5]);
+  expect(p.save().entities).toHaveLength(2);
+  expect(p.get('issues').hidden).toBe(true);
+  p.get('undo').click();
+  expect(p.save()).toEqual(placed);
+  p.tool('water');
+  p.pointer('pointerdown', [4, 3]);
+  p.pointer('pointerup', [4, 3]);
+  expect(p.get('issues').hidden).toBe(false);
+  expect(p.save()).toEqual(placed);
+  p.tool('select');
+  p.clickGrid([4, 3]);
+  expect(p.get('entity-id').textContent).toBe('house-1');
+  p.get('delete-entity').click();
+  expect(p.save()).toEqual(before);
+  p.get('undo').click();
+  expect(p.save()).toEqual(placed);
+  p.get('map-json').value = JSON.stringify(placed);
+  p.get('read-map').click();
+  expect(p.save()).toEqual(placed);
+  p.tool('building');
+  p.get('building-angle').dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  expect(p.get('edit-tool').value).toBe('select');
+  expect(p.errors).toEqual([]);
+});
+
+test('查看当前JSON不下载或修改历史；文本仍可导入，保存位于地图菜单', async () => {
+  const p = await constructionPage();
+  const downloads = p.window.HTMLAnchorElement.prototype.click.mock.calls.length;
+  const undo = p.get('undo').disabled;
+  p.get('map-json').value = '{draft}';
+  p.get('view-map-json').click();
+  const map = JSON.parse(p.get('map-json').value);
+  expect(map.id).toBe('village');
+  expect(p.window.HTMLAnchorElement.prototype.click.mock.calls.length).toBe(downloads);
+  expect(p.get('undo').disabled).toBe(undo);
+  expect(p.get('save-map').closest('.menu')).not.toBeNull();
+  map.id = 'imported';
+  p.get('map-json').value = JSON.stringify(map);
+  p.get('read-map').click();
+  expect(p.get('map-id').textContent).toBe('imported');
+  p.get('undo').click();
+  p.get('view-map-json').click();
+  expect(JSON.parse(p.get('map-json').value).id).toBe('village');
+});
+
+test('道路透明边缘下保留原地表，四镜头下底图先于道路且每格只增加一份', async () => {
+  const p = await constructionPage();
+  p.tool('road');p.pointer('pointerdown', [4, 4]);p.pointer('pointerup', [4, 4]);
+  setDisplay(p, 'flat-edit', false);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    const images = p.descendants(p.contentLayer()).filter(node => node instanceof Sprite);
+    const road = images.findIndex(node => node.attrs.texture.file === 'road-atlas.png');
+    expect(road).toBeGreaterThan(0);
+    expect(images[road - 1].attrs.texture.file).toBe('bare-land-atlas.png');
+    expect(p.terrainSprites()).toHaveLength(144);
+    expect(images.filter(node => node.attrs.texture.file === 'road-atlas.png')).toHaveLength(1);
+  }
 });
