@@ -144,7 +144,7 @@
       select: get('pick-mode').value === 'cell'
         ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
         : '点击实体查看完整占地与属性；选中后可删除整个实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
-      road: '普通道路宽 1 格：拖动补齐连线；松开提交，Esc 取消。需要平坦陆地；不能经过实体、水面或高差。',
+      road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。需要平坦陆地；不能经过实体、水面或高差。',
       'erase-road': '拖动擦除道路，保留原地表；松开提交，Esc 取消。',
       building: '民居 2×2：移入画布预览，点击放置，R 转向，Esc 返回查看。两个外观用于四向，相反方向共用素材。',
       pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
@@ -358,7 +358,7 @@
     const animated = [];
     const elapsedMs = player.elapsed();
     // 完整岸线图片含上凸内容，按格心投影深度绘制，不截掉覆盖部分。
-    tiles.forEach((tile, tileIndex) => {
+    tiles.forEach(tile => {
       const holder = new Group();
       if (flatEditing) {
         const cell = map.cells[tile.grid[1]][tile.grid[0]];
@@ -371,9 +371,8 @@
         return;
       }
       const phase = tile.phase || 0;
-      // 道路图只有78px宽，透明边缘不能替代80px地表；保留原地表再叠加道路。
-      const layers = tile.road ? [groundTiles[tileIndex], tile] : [tile];
-      const draws = layers.flatMap(value => window.elevationRendering.resolveTileDraws(value, map, elementsById, view, { elapsedMs, phase }));
+      // 道路图自带完整土面，直接替换本格地表。
+      const draws = window.elevationRendering.resolveTileDraws(tile, map, elementsById, view, { elapsedMs, phase });
       draws.forEach((draw, index) => {
         const definition = elementsById[draw.id];
         const part = index ? new Group() : holder;
@@ -846,7 +845,8 @@
     const grid = hit.grid;
     if (hit.missed) {
       stroke.failed = true;
-      stroke.missed = true;
+      stroke.missed = stroke.terrain !== 'road' || !stroke.start;
+      stroke.last = null;
       stroke.candidate = null;
       commitScene(stroke.base);
       issues.hidden = false;
@@ -855,25 +855,39 @@
     }
     if (stroke.missed) return;
     if (stroke.last && grid.every((value, axis) => value === stroke.last[axis])) return;
-    const from = stroke.last || grid;
-    const steps = Math.max(Math.abs(grid[0] - from[0]), Math.abs(grid[1] - from[1]), 1);
-    const previousSize = stroke.grids.size;
-    let previousGrid = from;
-    // 补齐快速拖动跳过的格子；只在增加新格时预览，命令仍校验并去重外部输入。
-    for (let i = 1; i <= steps; i++) {
-      const nextGrid = [Math.round(from[0] + (grid[0] - from[0]) * i / steps), Math.round(from[1] + (grid[1] - from[1]) * i / steps)];
-      // 道路只能按四邻相接；对角跳格补一个转角，仍沿用同一整笔事务。
-      if (roadTools.includes(stroke.terrain) && nextGrid[0] !== previousGrid[0] && nextGrid[1] !== previousGrid[1]) {
-        const corner = [previousGrid[0], nextGrid[1]];
-        stroke.grids.set(corner.join(','), corner);
+    if (stroke.terrain === 'road') {
+      // 原作平地道路从终点回溯，等长方向按象限固定排序；选区只取本次起终点。
+      const start = stroke.start || grid;
+      stroke.start = start;
+      stroke.grids = new Map([[start.join(','), start]]);
+      const point = [...start];
+      const axes = (grid[0] - start[0]) * (grid[1] - start[1]) > 0 ? [1, 0] : [0, 1];
+      for (const axis of axes) while (point[axis] !== grid[axis]) {
+        point[axis] += Math.sign(grid[axis] - point[axis]);
+        stroke.grids.set(point.join(','), [...point]);
       }
-      previousGrid = nextGrid;
-      for (const grid of window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(nextGrid, stroke.offsets)) {
-        stroke.grids.set(grid.join(','), grid);
+      stroke.last = grid;
+    } else {
+      const from = stroke.last || grid;
+      const steps = Math.max(Math.abs(grid[0] - from[0]), Math.abs(grid[1] - from[1]), 1);
+      const previousSize = stroke.grids.size;
+      let previousGrid = from;
+      // 涂绘笔刷补齐快速拖动跳过的格子；只在增加新格时预览。
+      for (let i = 1; i <= steps; i++) {
+        const nextGrid = [Math.round(from[0] + (grid[0] - from[0]) * i / steps), Math.round(from[1] + (grid[1] - from[1]) * i / steps)];
+        // 擦路继续按经过格四邻补齐，不沿用铺路的起终点选区。
+        if (stroke.terrain === 'erase-road' && nextGrid[0] !== previousGrid[0] && nextGrid[1] !== previousGrid[1]) {
+          const corner = [previousGrid[0], nextGrid[1]];
+          stroke.grids.set(corner.join(','), corner);
+        }
+        previousGrid = nextGrid;
+        for (const grid of window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(nextGrid, stroke.offsets)) {
+          stroke.grids.set(grid.join(','), grid);
+        }
       }
+      stroke.last = grid;
+      if (stroke.grids.size === previousSize) return;
     }
-    stroke.last = grid;
-    if (stroke.grids.size === previousSize) return;
     try {
       const { base, grids, terrain, height } = stroke;
       const command = ['land', 'water'].includes(terrain) ? { terrain } : { type: terrain, height };

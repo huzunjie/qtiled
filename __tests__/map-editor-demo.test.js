@@ -1827,7 +1827,7 @@ async function constructionPage() {
   return p;
 }
 
-test('道路快速对角拖动四邻连通，整笔撤销/重做、重复无效落笔、擦除和取消', async () => {
+test('道路快速拖动形成一个直角弯，整笔撤销/重做、重复无效落笔、擦除和取消', async () => {
   const p = await constructionPage();
   const before = p.save();
   p.tool('road');
@@ -1837,8 +1837,8 @@ test('道路快速对角拖动四邻连通，整笔撤销/重做、重复无效�
   const after = p.save();
   expect(after.cells.flat().filter(cell => cell.road)).toHaveLength(9);
   for (let i = 3; i < 7; i++) {
-    expect(after.cells[i + 1][i].road).toBe('ordinary');
-    expect(after.cells[i + 1][i + 1].road).toBe('ordinary');
+    expect(after.cells[i + 1][3].road).toBe('ordinary');
+    expect(after.cells[7][i + 1].road).toBe('ordinary');
   }
   p.pointer('pointerdown', [3, 3]);
   p.pointer('pointerup', [3, 3]);
@@ -1924,7 +1924,7 @@ test('查看当前JSON不下载或修改历史；文本仍可导入，保存位�
   expect(JSON.parse(p.get('map-json').value).id).toBe('village');
 });
 
-test('道路透明边缘下保留原地表，四镜头下底图先于道路且每格只增加一份', async () => {
+test('道路四镜头只绘制自身一张图，替换原地表且邻近高差不复制补缝', async () => {
   const p = await constructionPage();
   p.tool('road');p.pointer('pointerdown', [4, 4]);p.pointer('pointerup', [4, 4]);
   setDisplay(p, 'flat-edit', false);
@@ -1933,8 +1933,12 @@ test('道路透明边缘下保留原地表，四镜头下底图先于道路且�
     const images = p.descendants(p.contentLayer()).filter(node => node instanceof Sprite);
     const road = images.findIndex(node => node.attrs.texture.file === 'road-atlas.png');
     expect(road).toBeGreaterThan(0);
-    expect(images[road - 1].attrs.texture.file).toBe('bare-land-atlas.png');
-    expect(p.terrainSprites()).toHaveLength(144);
+    expect(p.terrainSprites()).toHaveLength(143);
+    const map = p.save();
+    map.cells[3][4].elevation = 7;
+    const library = JSON.parse(read('static/construction-samples/elements.json'));
+    const tile = { grid: [4, 4], element: 'road-794', elevation: 8, road: 'ordinary' };
+    expect(p.window.elevationRendering.resolveTileDraws(tile, map, library, { angle, tileSize: map.tileSize })).toHaveLength(1);
     expect(images.filter(node => node.attrs.texture.file === 'road-atlas.png')).toHaveLength(1);
   }
 });
@@ -2090,5 +2094,96 @@ test('新图三档选项、画水取消/提交/擦除和文件回读统一重建
   expect(p.save()).toEqual(wet); expect(p.tiles()).toEqual(tiles);
   expect(p.get('issues').hidden).toBe(true);
   expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+
+test('真实道路单图与黄土草地拼接：旧锚点重现缺口，18张道路四镜头修正后无缺口', () => {
+  const roads = JSON.parse(read('static/construction-samples/elements.json'));
+  const land = JSON.parse(read('static/terrain-samples/emperor-land-water/elements.json'));
+  function points(v, directory) {
+    const image = pngPixels(fs.readFileSync(path.join(__dirname, '../demo/static', directory, v.source)));
+    const [sx, sy, width, height] = v.rect;
+    const result = [];
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      if (image.data[((sy + y) * image.width + sx + x) * 4 + 3]) result.push([x - v.anchor[0], y - v.anchor[1]]);
+    }
+    return result;
+  }
+  for (const angle of [0, 90, 180, 270]) {
+    const positions = Array.from({ length: 49 }, (_, i) => {
+      const x = i % 7, y = Math.floor(i / 7);
+      return { x, y, pos: view.projectGrid([x, y], { angle, tileSize: [80, 40] }),
+        interior: x > 0 && x < 6 && y > 0 && y < 6 };
+    });
+    // 独立的完整单格菱形覆盖区；只检查地图内部，排除外轮廓透明角。
+    const expected = new Set();
+    for (const { pos, interior } of positions) if (interior) {
+      for (let y = 0; y < 40; y++) {
+        const start = y < 20 ? 38 - 2 * y : 2 * y - 40;
+        for (let x = start; x < 78 - start; x++) expected.add(`${pos[0] + x - 39},${pos[1] + y - 20}`);
+      }
+    }
+    for (const ground of ['emperor-bare-land', 'emperor-grass-238']) {
+      const g = points(land[ground].views[angle], 'terrain-samples/emperor-land-water');
+      for (let id = 782; id <= 799; id++) {
+        const current = roads[`road-${id}`].views[angle];
+        for (const old of [true, false]) {
+          const r = points(old ? { ...current, anchor: [39, 19] } : current, 'construction-samples');
+          const covered = new Set();
+          for (const { x, y, pos, interior } of positions) {
+            for (const [dx, dy] of interior && (x === 3 || y === 3) ? r : g) covered.add(`${pos[0] + dx},${pos[1] + dy}`);
+          }
+          const gaps = [...expected].filter(point => !covered.has(point)).length;
+          if (old) expect(gaps).toBeGreaterThan(0);
+          else expect(gaps).toBe(0);
+        }
+      }
+    }
+  }
+});
+
+
+test('道路按最终两点重算：四象限选弯、回拖和无效终点恢复，四镜头结果一致', async () => {
+  const p = await constructionPage();
+  const before = p.save();
+  p.tool('road');
+  for (const angle of [0, 90, 180, 270]) for (const end of [[7, 7], [7, 3], [3, 7], [3, 3], [5, 7], [7, 5], [5, 5]]) {
+    p.camera(angle);
+    const start = [5, 5];
+    const corner = (end[0] - 5) * (end[1] - 5) > 0 ? [5, end[1]] : [end[0], 5];
+    const expected = [];
+    for (let y = 0; y < 12; y++) for (let x = 0; x < 12; x++) {
+      const onSegment = (a, b) => x >= Math.min(a[0], b[0]) && x <= Math.max(a[0], b[0])
+        && y >= Math.min(a[1], b[1]) && y <= Math.max(a[1], b[1]);
+      if (onSegment(start, corner) || onSegment(corner, end)) expected.push([x, y]);
+    }
+    p.pointer('pointerdown', start);
+    p.pointer('pointermove', [9, 9]);
+    p.pointer('pointermove', [-1, 5]);
+    p.pointer('pointermove', [2, 2]);
+    p.pointer('pointerup', end);
+    const map = p.save();
+    expect(p.get('issues').hidden).toBe(true);
+    expect(map.cells.flatMap((row, y) => row.flatMap((cell, x) => cell.road ? [[x, y]] : []))).toEqual(expected);
+    p.get('undo').click();
+    expect(p.save()).toEqual(before);
+  }
+  p.window.close();
+});
+
+test.each(['water', 'raise', 'lower', 'set-height'])('%s 保持扫刷选区：终点回到起点仍保留经过格', async tool => {
+  const p = await constructionPage();
+  p.tool(tool);
+  if (tool === 'set-height') p.get('target-height').value = '9';
+  p.pointer('pointerdown', [3, 3]);
+  p.pointer('pointermove', [7, 3]);
+  p.pointer('pointerup', [3, 3]);
+  const map = p.save();
+  expect(p.get('issues').hidden).toBe(true);
+  for (let x = 3; x <= 7; x++) {
+    if (tool === 'water') expect(map.cells[3][x].terrain).toBe('water');
+    else expect(map.cells[3][x].elevation).toBe(tool === 'lower' ? 7 : 9);
+  }
   p.window.close();
 });
