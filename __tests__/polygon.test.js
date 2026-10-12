@@ -11,7 +11,36 @@ import {
   getPosition,
   getPositions,
   getInfoByPos,
+  getSelectionOffsets,
 } from '../src/shapes/polygon';
+
+describe('getSelectionOffsets', () => {
+  test('默认单格，奇数居中、偶数向正方向锚定', () => {
+    expect(getSelectionOffsets()).toEqual([[0, 0]]);
+    expect(getSelectionOffsets(2)).toEqual([[0, 0], [0, 1], [1, 0], [1, 1]]);
+    expect(getSelectionOffsets(3)).toHaveLength(9);
+    expect(getBounds(getSelectionOffsets(4))).toMatchObject({ minX: -1, maxX: 2, minY: -1, maxY: 2 });
+  });
+  test('菱形包含完整对称行，不把偶数选区变成空集合', () => {
+    expect(getSelectionOffsets(1, 'diamond')).toEqual([[0, 0]]);
+    expect(getSelectionOffsets(2, 'diamond')).toEqual(getSelectionOffsets(2));
+    expect(getSelectionOffsets(3, 'diamond')).toEqual([[-1, 0], [0, -1], [0, 0], [0, 1], [1, 0]]);
+    expect(getSelectionOffsets(4, 'diamond')).toHaveLength(12);
+    expect(getSelectionOffsets(9, 'diamond')).toHaveLength(41);
+    for (const size of [4, 5, 8, 9]) {
+      const offsets = getSelectionOffsets(size, 'diamond');
+      const center = size % 2 ? 0 : 0.5;
+      offsets.forEach(([x, y]) => expect(offsets).toContainEqual([2 * center - x, 2 * center - y]));
+    }
+  });
+  test('基础库不限制为9格，每次返回独立数组；拒绝无效输入', () => {
+    expect(getSelectionOffsets(10)).toHaveLength(100);
+    const first = getSelectionOffsets(); first[0][0] = 9;
+    expect(getSelectionOffsets()).toEqual([[0, 0]]);
+    [0, -1, 2.5, NaN, Infinity, '3', null].forEach(size => expect(() => getSelectionOffsets(size)).toThrow(RangeError));
+    expect(() => getSelectionOffsets(1, 'circle')).toThrow(RangeError);
+  });
+});
 
 describe('polygon 常量', () => {
   test('HALF = 0.5', () => {

@@ -49,7 +49,7 @@
     "odd": "emperor-water-odd",
     "deep": "emperor-water-deep"
   },
-  "boundary": "non-water",
+  "boundary": "water",
   "rows": [
     {
       "row": 0,

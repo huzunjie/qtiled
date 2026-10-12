@@ -51,7 +51,7 @@
   }
 
   function checkRules(rules) {
-    if (!isObject(rules) || rules.version !== 1 || rules.boundary !== 'non-water'
+    if (!isObject(rules) || rules.version !== 1 || rules.boundary !== 'water'
       || !isString(rules.landElement) || !isObject(rules.animationElements)
       || !['even', 'odd', 'deep'].every(key => isString(rules.animationElements[key]))
       || !isString(rules.elementPrefix) || !Number.isSafeInteger(rules.waterBaseRecord)
@@ -73,15 +73,15 @@
   }
 
   // 原作 Editor 4c04f0/4c0670 与 Game 4fe100/4fe300：内部标记由水域形状派生。
-  // 不把它保存为作者选择的水深；null/矩阵外按本工具约定阻止形成内部标记。
+  // 不把它保存为作者选择的水深；null/矩阵外与岸线一致，按外接水域延续内部标记。
   function deriveWaterMarkers(cells) {
-    const isWater = (x, y) => cells[y] && cells[y][x] && cells[y][x].terrain === 'water';
-    const markers = cells.map((row, y) => row.map((cell, x) => isWater(x, y)
+    const isWater = (x, y) => !cells[y]?.[x] || cells[y][x].terrain === 'water';
+    const markers = cells.map((row, y) => row.map((cell, x) => cell?.terrain === 'water'
       && waterNeighbors.every(([dx, dy]) => isWater(x + dx, y + dy))));
-    const marked = (x, y) => !!(markers[y] && markers[y][x]);
+    const marked = (x, y) => !cells[y]?.[x] || !!markers[y][x];
     for (let y = 0; y < cells.length; y += 1) {
       for (let x = 0; x < cells[y].length; x += 1) {
-        if (!marked(x, y)) continue;
+        if (!markers[y][x]) continue;
         // 显式栈保留原作清除后立即递归、周围3×3按行访问的顺序，避免长河道递归溢出。
         const pending = [{ x, y, next: 0 }];
         while (pending.length) {
@@ -93,7 +93,8 @@
           const px = current.x + current.next % 3 - 1;
           const py = current.y + Math.floor(current.next / 3) - 1;
           current.next += 1;
-          if (!marked(px, py)) continue;
+          // 外接水域只供邻域查询；修整仍只访问地图内真实格，不能向界外递归。
+          if (!markers[py]?.[px]) continue;
           const ring = waterNeighbors.map(([dx, dy]) => marked(px + dx, py + dy));
           const isolatedAxis = (!ring[0] && !ring[4]) || (!ring[2] && !ring[6]);
           // 环上完整的 0,1,1,0 表示两端被空格夹住、恰长2的标记段；不是任意两个邻格。
@@ -112,7 +113,7 @@
   /** 输出整张地图的派生绘制选择，不写回 tile、帧或随机数。
    * 元素库中的定义须先通过 validateElementDefinition；地图实体由 maps 独立校验。
    * terrainVariant 可固定变体输入字节；省略时采用世界格哈希，与镜头和执行次数无关。
-   * null / 矩阵外按非水处理，是编辑器边界约定，不是原作边界行为的复刻。
+   * 岸线与深水推导将 null / 矩阵外视为外接水域；仅派生结果，不补写地图格。
    */
   function resolve(map, elementsById, rules, angle = 0) {
     const issues = [...checkCells(map), ...checkRules(rules)];
@@ -138,7 +139,7 @@
           const neighbors = rules.neighborOffsets.map(([dx, dy]) => {
             const neighborRow = map.cells[y + dy];
             const neighbor = neighborRow && neighborRow[x + dx];
-            return neighbor && neighbor.terrain === 'water' ? 0 : 1;
+            return !neighbor || neighbor.terrain === 'water' ? 0 : 1;
           });
           if (neighbors.some(Boolean)) {
             // 原作按顺序取首次匹配；已归档的普通水岸表对非零邻域均唯一命中。
@@ -151,7 +152,7 @@
             variant = stableByte % pattern.variants;
             element = `${rules.elementPrefix}${rules.waterBaseRecord + pattern.viewOffsets[column] + variant}`;
           } else if (markers[y][x]) {
-            const interior = waterNeighbors.every(([dx, dy]) => markers[y + dy] && markers[y + dy][x + dx]);
+            const interior = waterNeighbors.every(([dx, dy]) => !map.cells[y + dy]?.[x + dx] || markers[y + dy][x + dx]);
             waterKind = interior ? 'deep' : 'transition';
             element = rules.animationElements[interior ? 'deep' : stableByte % 2 ? 'odd' : 'even'];
             phase = interior ? stableByte % 24 : Math.floor((stableByte % 48) / 2);

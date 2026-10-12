@@ -2,7 +2,6 @@
 (function() {
   const get = id => document.getElementById(id);
   const container = get('map-canvas');
-  const controls = get('controls');
   const status = get('status');
   const issues = get('issues');
   const terrainDirectory = './static/terrain-samples/emperor-land-water/';
@@ -19,6 +18,12 @@
   let stroke = null;
   let pan = null;
   let suppressClick = false;
+  let hoverPointer = null;
+  let hoverOverlay = null;
+  let hoverKey = null;
+  let brushKey = null;
+  let brushOffsets = [];
+  const brushTools = ['land', 'water', 'raise', 'lower', 'set-height'];
   // 相机只属于当前页面，不写入地图事实或撤销记录；中心允许位于半格。
   const viewport = { width: container.clientWidth || 640, height: container.clientHeight || 440,
     center: null, baseHeight: 0, scale: 1, mode: 'work' };
@@ -123,8 +128,14 @@
   function updateToolHelp() {
     const tool = get('edit-tool').value;
     container.dataset.tool = tool;
+    document.querySelectorAll('[data-tool]').forEach(button => {
+      if (button === container) return;
+      button.setAttribute('aria-pressed', String(button.dataset.tool === tool));
+      if (button.dataset.tool === tool) get('current-tool').textContent = button.textContent;
+    });
     get('height-control').hidden = tool !== 'set-height';
-    get('brush-size-control').hidden = !['raise', 'lower', 'set-height'].includes(tool);
+    get('brush-size-control').hidden = !brushTools.includes(tool);
+    updateBrushParameters();
     get('click-help').textContent = {
       select: '点击地面格查看信息。画布内触控板双指上下、左右滚动，或鼠标中键拖动可平移。',
       pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
@@ -135,6 +146,72 @@
       'set-height': '设定高程 0～16：周边会按坡面规则整理，预览可能修订目标；连续台地请分级绘制。松开提交，Esc 取消。',
     }[tool];
     if (get('flat-edit').checked) get('click-help').textContent += ' 平面编辑按世界格选取，数字为真实高度，可编辑遮挡沟底。';
+  }
+
+  function getBrushOffsets() {
+    const size = Number(get('brush-size').value);
+    const shape = get('brush-shape').value;
+    if (!Number.isInteger(size) || size < 1 || size > 9) throw new Error('笔刷尺寸应为1～9的整数');
+    const key = `${shape}:${size}`;
+    if (brushKey !== key) {
+      brushOffsets = window.qtiled.shapes.polygon.getSelectionOffsets(size, shape);
+      brushKey = key;
+    }
+    return brushOffsets;
+  }
+
+  function updateBrushParameters() {
+    const offsets = getBrushOffsets();
+    const size = Number(get('brush-size').value);
+    get('brush-summary').textContent = `${offsets.length} 格${size % 2 ? '' : ' · 向 +x/+y 锚定'}`;
+    const selected = new Set(offsets.map(grid => grid.join(',')));
+    const swatch = get('brush-swatch');
+    swatch.replaceChildren();
+    for (let y = -4; y <= 4; y++) for (let x = -4; x <= 4; x++) {
+      const cell = document.createElement('i');
+      cell.dataset.filled = String(selected.has(`${x},${y}`));
+      swatch.append(cell);
+    }
+    updateHover();
+  }
+
+  function clearHover(forgetPointer = false) {
+    if (hoverOverlay) hoverOverlay.remove();
+    hoverOverlay = null;
+    hoverKey = null;
+    if (forgetPointer) hoverPointer = null;
+    get('hover-info').textContent = '移到画布查看坐标与笔刷占地';
+  }
+
+  // 悬停只计算占地，不运行地形整理、不建索引、不写入地图或历史。
+  function updateHover(event = hoverPointer) {
+    if (event) hoverPointer = { clientX: event.clientX, clientY: event.clientY };
+    if (!currentScene || !event || stroke || pan) { clearHover(); return; }
+    const hit = hitAt(event);
+    const tool = get('edit-tool').value;
+    const offsets = brushTools.includes(tool) ? getBrushOffsets() : [];
+    const key = `${hit.grid}:${Boolean(hit.missed)}:${tool}:${brushKey}`;
+    if (key === hoverKey) return;
+    clearHover();
+    hoverKey = key;
+    const cell = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]];
+    const grids = window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(hit.grid, offsets);
+    const invalid = hit.missed || grids.some(([x, y]) => !currentScene.map.cells[y]?.[x]);
+    get('hover-info').textContent = `世界 ${hit.grid.join(', ')} · ${hit.missed ? '未命中地表' : cell ? `高度 ${cell.elevation}` : '地图之外 / 空角'}${grids.length ? ` · 占地 ${grids.length} 格${invalid ? ' · 越界、空角或未命中，不能落笔' : ' · 地形规则在拖动时检查'}` : ''}`;
+    if (!grids.length) return;
+    const { Group, Polyline } = window.spritejs;
+    hoverOverlay = new Group({ id: 'map-brush-hover' });
+    grids.forEach(grid => {
+      const pos = hit.missed ? window.qtiledView.projectGrid(grid, currentScene.view) : projectCell(grid, currentScene);
+      // 未命中与空角沿用笔尖参考面；反算和绘制使用同一高度，避免红框偏离指针。
+      if (!currentScene.flatEditing && (hit.missed || !currentScene.map.cells[grid[1]]?.[grid[0]])) {
+        pos[1] -= (hit.referenceHeight ?? cell?.elevation ?? viewport.baseHeight) * (currentScene.map.elevationStep || 0);
+      }
+      hoverOverlay.append(new Polyline({ pos, points: currentScene.vertexes, close: true,
+        strokeColor: invalid ? '#bc3e30' : '#1976b5', fillColor: invalid ? 'rgba(188,62,48,.18)' : 'rgba(25,118,181,.15)',
+        lineWidth: 2 / viewport.scale }));
+    });
+    currentScene.root.append(hoverOverlay);
   }
 
   function requireSuccess(result) {
@@ -298,6 +375,7 @@
 
   function updateViewport() {
     if (!currentScene) return;
+    clearHover();
     const { bounds, view } = currentScene;
     const centerPixel = window.qtiledView.projectGrid(viewport.center, view);
     if (!currentScene.flatEditing) centerPixel[1] -= viewport.baseHeight * (currentScene.map.elevationStep || 0);
@@ -315,11 +393,14 @@
     updateGuides();
     get('viewport-info').textContent = `${viewport.mode === 'fit' ? '全图' : '工作视口'} · ${Math.round(viewport.scale * 100)}%`;
     get('zoom-percent').value = String(Math.round(viewport.scale * 1000) / 10);
+    get('zoom-value').textContent = `${Math.round(viewport.scale * 1000) / 10}%`;
     get('fit-map').setAttribute('aria-pressed', String(viewport.mode === 'fit'));
     get('native-size').setAttribute('aria-pressed', String(viewport.mode === 'work' && viewport.scale === 1));
+    updateHover();
   }
 
   function commitScene(next, resetViewport = false) {
+    clearHover(true);
     if (!layer) {
       spriteScene = new window.spritejs.Scene({ container, width: viewport.width, height: viewport.height, mode: 'static' });
       layer = spriteScene.layer('map', { handleEvent: false, contextType: '2d' });
@@ -343,21 +424,23 @@
     updateSelection();
     get('map-id').textContent = next.map.id;
     get('map-summary').textContent = `${next.map.cells.length} 行 × ${next.map.cells[0].length} 列 · ${next.map.cells.flat().filter(Boolean).length} 有效格 · ${next.entities.length} 实体`;
-    document.querySelectorAll('[data-angle]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.angle) === cameraAngle)));
+    get('camera-angle').value = String(cameraAngle);
     updateControls();
     updatePlaybackControls();
   }
 
   function updateControls() {
-    controls.disabled = !currentScene || Boolean(stroke || pan);
+    document.querySelectorAll('[data-editor-controls]').forEach(group => {
+      group.disabled = !currentScene || Boolean(stroke);
+    });
     get('undo').disabled = !undoStack.length || Boolean(stroke);
     get('redo').disabled = !redoStack.length || Boolean(stroke);
     get('cancel-stroke').disabled = !stroke;
-    for (const id of ['pick-mode', 'clear-selection']) get(id).disabled = !currentScene || Boolean(stroke || pan);
-    get('new-map').disabled = !currentScene || Boolean(stroke || pan);
-    get('base-height').disabled = Boolean(stroke || pan);
+    for (const id of ['pick-mode', 'clear-selection']) get(id).disabled = !currentScene || Boolean(stroke);
+    get('new-map').disabled = !currentScene || Boolean(stroke);
+    get('base-height').disabled = Boolean(stroke);
     for (const id of ['save-map', 'read-map', 'map-file', 'map-sample', 'reload', 'rebase-sample']) {
-      get(id).disabled = Boolean(stroke || pan) || (!currentScene && ['save-map', 'read-map'].includes(id));
+      get(id).disabled = Boolean(stroke) || (!currentScene && ['save-map', 'read-map'].includes(id));
     }
   }
 
@@ -444,11 +527,13 @@
     }
   }
 
-  document.querySelectorAll('[data-angle]').forEach(button => button.addEventListener('click', () => {
+  get('camera-angle').addEventListener('change', () => {
+    const angle = Number(get('camera-angle').value);
+    get('camera-angle').value = String(cameraAngle);
     if (!currentScene || stroke || pan) return;
-    try { commitScene(prepareScene(currentScene, Number(button.dataset.angle))); }
+    try { commitScene(prepareScene(currentScene, angle)); }
     catch (error) { fail(error); }
-  }));
+  });
   function clearSelection() {
     selectedGrid = null;
     selectedEntityId = null;
@@ -462,7 +547,7 @@
     const hit = hitAt(event);
     if (hit.missed) {
       clearSelection();
-      get('cell-info').textContent = `未命中可见地表 · 0 平面参考 ${JSON.stringify(hit.grid)}`;
+      get('cell-info').textContent = `未命中可见地表 · 基准面参考 ${JSON.stringify(hit.grid)}`;
       return;
     }
     selectedGrid = hit.grid;
@@ -486,8 +571,9 @@
           return { grid: item.grid, entityId: item.entityId };
         }
       }
-      // 不把高程下方的0平面反算格当作命中；仅保留位置用于显示未命中或整笔拒绝。
-      return { grid: window.qtiledView.pickGrid(pixel, scene.view), missed: true };
+      // 未命中只在基准面反算参考格，不把它当作可落笔的地表。
+      pixel[1] += viewport.baseHeight * scene.map.elevationStep;
+      return { grid: window.qtiledView.pickGrid(pixel, scene.view), missed: true, referenceHeight: viewport.baseHeight };
     }
     return { grid: window.qtiledView.pickGrid(pixel, scene.view) };
   }
@@ -545,11 +631,30 @@
     if (event?.pointerId !== undefined && active && event.pointerId !== active.pointerId) return;
     cancelPan();
     cancelStroke();
+    clearHover(true);
   }
 
   get('edit-tool').addEventListener('change', () => {
     cancelGesture();
     updateToolHelp();
+  });
+  for (const id of ['brush-size', 'brush-shape']) get(id).addEventListener('change', updateBrushParameters);
+  document.querySelectorAll('button[data-tool]').forEach(button => button.addEventListener('click', () => {
+    if (!currentScene || stroke || pan) return;
+    get('edit-tool').value = button.dataset.tool;
+    updateToolHelp();
+  }));
+  const menus = [...document.querySelectorAll('.menu')];
+  function closeMenus(except) {
+    menus.forEach(menu => { if (menu !== except) menu.open = false; });
+  }
+  menus.forEach(menu => menu.addEventListener('toggle', () => { if (menu.open) closeMenus(menu); }));
+  document.addEventListener('click', event => { if (!event.target.closest('.menu')) closeMenus(); });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const open = menus.find(menu => menu.open);
+    closeMenus();
+    open?.querySelector('summary').focus();
   });
   for (const id of ['show-grid', 'show-coordinates']) get(id).addEventListener('change', updateGuides);
   get('flat-edit').addEventListener('change', () => {
@@ -586,9 +691,7 @@
     status.textContent = `已缩放至 ${percent}% · 视口中心保持不变`;
   }
   get('zoom-percent').addEventListener('change', changeZoom);
-  get('zoom-percent').addEventListener('keydown', event => {
-    if (event.key === 'Enter') { event.preventDefault(); changeZoom(); }
-  });
+  get('zoom-percent').addEventListener('input', changeZoom);
 
   function resizeViewport() {
     const width = container.clientWidth;
@@ -639,9 +742,7 @@
     // 补齐快速拖动跳过的格子；只在增加新格时预览，命令仍校验并去重外部输入。
     for (let i = 1; i <= steps; i++) {
       const nextGrid = [Math.round(from[0] + (grid[0] - from[0]) * i / steps), Math.round(from[1] + (grid[1] - from[1]) * i / steps)];
-      const radius = (stroke.size - 1) / 2;
-      for (let dy = -radius; dy <= radius; dy += 1) for (let dx = -radius; dx <= radius; dx += 1) {
-        const grid = [nextGrid[0] + dx, nextGrid[1] + dy];
+      for (const grid of window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(nextGrid, stroke.offsets)) {
         stroke.grids.set(grid.join(','), grid);
       }
     }
@@ -682,6 +783,7 @@
   container.addEventListener('pointerdown', event => {
     suppressClick = false;
     if (!currentScene || stroke || pan) return;
+    clearHover(true);
     const tool = get('edit-tool').value;
     if (event.button === 1 || (event.button === 0 && tool === 'pan')) {
       event.preventDefault();
@@ -696,18 +798,19 @@
       status.textContent = '正在平移 · 松开结束 / Esc 取消';
       return;
     }
-    if (event.button !== 0 || !['land', 'water', 'raise', 'lower', 'set-height'].includes(tool)) return;
+    if (event.button !== 0 || !brushTools.includes(tool)) return;
     event.preventDefault();
     ++loadRequestId; // 新编辑不能被较早的异步读取覆盖。
     // 从全图开始编辑时保持当前缩放，避免新增岸线改变外框导致笔尖漂移。
     viewport.mode = 'work';
     stroke = { base: currentScene, terrain: tool, height: get('target-height').valueAsNumber,
-      size: ['raise', 'lower', 'set-height'].includes(tool) ? Number(get('brush-size').value) : 1,
+      offsets: getBrushOffsets(),
       grids: new Map(), pointerId: event.pointerId };
     container.setPointerCapture?.(event.pointerId);
     previewStroke(event);
   });
-  container.addEventListener('pointermove', event => { movePan(event); previewStroke(event); });
+  container.addEventListener('pointermove', event => { movePan(event); previewStroke(event); updateHover(event); });
+  container.addEventListener('pointerleave', () => clearHover(true));
   container.addEventListener('pointerup', event => {
     if (pan && event.pointerId === pan.pointerId) {
       movePan(event);

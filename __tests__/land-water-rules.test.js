@@ -40,8 +40,8 @@ describe('普通陆地/水域的真实样本规则', () => {
       const result = resolve(map, elements, rules, angle);
       expect(result.issues).toEqual([]);
       expect(center(result)).toEqual({ grid: [1, 1],
-        element: mask === 0 ? 'emperor-water-even' : `emperor-terrain-${records[index]}`,
-        variant: 0, rowIndex, phase: 0, waterKind: mask === 0 ? 'ordinary' : null });
+        element: mask === 0 ? 'emperor-water-deep' : `emperor-terrain-${records[index]}`,
+        variant: 0, rowIndex, phase: 0, waterKind: mask === 0 ? 'deep' : null });
     });
   });
 
@@ -77,15 +77,17 @@ describe('普通陆地/水域的真实样本规则', () => {
     }
   });
 
-  test('null 和矩阵外按工具约定视为非水，且不输出无效格', () => {
+  test('null 和矩阵外允许水面延伸，四向不封岸且不输出无效格', () => {
     const map = createMap();
     map.cells[0][1] = null;
     const result = resolve(map, elements, rules);
     expect(result.issues).toEqual([]);
     expect(result.tiles).toHaveLength(8);
-    expect(center(result).element).toBe('emperor-terrain-390');
+    expect(center(result).waterKind).toBe('deep');
     const single = { ...map, cells: [[{ terrain: 'water', elevation: 0 }]] };
-    expect(resolve(single, elements, rules).tiles[0].element).toBe('emperor-terrain-457');
+    for (const angle of angles) {
+      expect(resolve(single, elements, rules, angle).tiles[0]).toMatchObject({ element: rules.animationElements.deep, waterKind: 'deep', rowIndex: null });
+    }
   });
 
   test('固定字节按表取余；缺省变体在反复预览、切镜头和 JSON 重载后保持', () => {
@@ -131,7 +133,7 @@ describe('普通陆地/水域的真实样本规则', () => {
       [elements, { ...rules, animationElements: { ...rules.animationElements, odd: '' } }, 0, 'invalid-terrain-rules'],
       [elements, rules, 45, 'invalid-angle'],
     ]) {
-      const result = resolve(createMap(), library, config, angle);
+      const result = resolve(createMap(1), library, config, angle);
       expect(result.tiles).toBeNull();
       expect(result.issues).toContainEqual(expect.objectContaining({ code }));
     }
@@ -152,7 +154,7 @@ describe('地表整笔候选事务', () => {
     expect(result.definition.entities).toBe(map.entities);
     expect(result.definition.cells[0][1]).not.toBe(map.cells[0][1]);
     expect(center(previous).element).toBe('emperor-terrain-390');
-    expect(center(result).element).toBe('emperor-water-even');
+    expect(center(result).element).toBe('emperor-water-deep');
     expect(map.cells[0][1].terrain).toBe('land');
     expect(result.tiles).toEqual(resolve(result.definition, elements, rules).tiles);
     expect(resolve(map, elements, rules)).toEqual(previous);
@@ -182,7 +184,7 @@ describe('地表整笔候选事务', () => {
     const map = createMap(1);
     const command = { terrain: 'water', grids: [[1, 0]] };
     const library = { ...elements };
-    delete library['emperor-water-even'];
+    delete library['emperor-water-deep'];
     freezeDeep(map);
     const result = applyStroke(map, command, library, rules);
     expect(result.definition).toBeNull();
@@ -247,15 +249,35 @@ describe('普通水面、内部过渡与深处水面的派生选择', () => {
     expect(resolve(JSON.parse(JSON.stringify(map)), elements, rules)).toEqual(original);
   });
 
-  test('null 和外界阻止内部标记；细水道不会因八邻全水就产生深处帧族', () => {
+  test('真实陆格仍中断内部标记，外接水域不因矩阵或空角退化为浅水', () => {
     const map = createLake(5);
-    map.cells[1][1] = null;
-    const result = resolve(map, elements, rules);
-    expect(result.issues).toEqual([]);
-    expect(result.tiles.filter(tile => tile.waterKind === 'deep')).toHaveLength(0);
-    const edge = resolve(createMap(), elements, rules);
-    expect(center(edge)).toMatchObject({ waterKind: 'ordinary', element: 'emperor-water-even' });
-    expect(edge.tiles.filter(tile => tile.waterKind === 'deep')).toHaveLength(0);
+    map.cells[1][1].terrain = 'land';
+    expect(resolve(map, elements, rules).tiles.filter(tile => tile.waterKind === 'deep')).toHaveLength(0);
+    const open = createMap();
+    open.cells[0][0] = null;
+    const before = JSON.stringify(open);
+    for (const angle of angles) {
+      const result = resolve(open, elements, rules, angle);
+      expect(result.issues).toEqual([]);
+      expect(result.tiles).toHaveLength(8);
+      expect(result.tiles.every(tile => tile.waterKind === 'deep')).toBe(true);
+      expect(resolve(JSON.parse(before), elements, rules, angle)).toEqual(result);
+    }
+    expect(JSON.stringify(open)).toBe(before);
+  });
+
+  test.each([[5, 'deep'], [3, 'ordinary']])('%i格宽水道延伸到地图两端，深浅仍由真实两岸决定', (width, kind) => {
+    const map = createLake(width, 9);
+    map.cells = map.cells.slice(1, -1); // 只移除两端封岸，左右真实岸线保留。
+    const middle = (width + 1) / 2;
+    for (const angle of angles) {
+      const result = resolve(map, elements, rules, angle);
+      expect(result.issues).toEqual([]);
+      for (const y of [0, 4, 8]) {
+        expect(result.tiles.find(tile => tile.grid[0] === middle && tile.grid[1] === y).waterKind).toBe(kind);
+        expect(result.tiles.find(tile => tile.grid[0] === 1 && tile.grid[1] === y).rowIndex).not.toBeNull();
+      }
+    }
   });
 
   test('改一格会重算更远处的内部结果，撤销旧事实可恢复；缺深水帧族整笔失败', () => {

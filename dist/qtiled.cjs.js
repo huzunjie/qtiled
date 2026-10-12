@@ -120,6 +120,20 @@ const neighborTypes = {
   // 筛选中心点处于外轮廓四条边中心点连线（菱形）区域之内的瓦片
   diamond: (offsetX, offsetY, distance) => Math.abs(offsetX) + Math.abs(offsetY) <= distance ? [offsetX, offsetY] : false
 };
+/** 绕固定原点旋转逻辑坐标，不重新居中或锚定选区。
+ * @param {Array<number>} grid 有限数值坐标 [gridX, gridY]，默认 [0, 0]；不是错列行列下标。
+ * @param {number} quarterTurns 累计整数次数，默认 0；一次为 [-y, x]，负数反向，按 4 取模。
+ * @returns {Array<number>} 旋转后的坐标，返回新数组、不修改输入；四次恢复原坐标。
+ * 顺时针以逻辑 X 向右、Y 向下定义；允许小数坐标供连续位置计算。
+ */
+
+function rotateGridPoint([gridX, gridY] = [0, 0], quarterTurns = 0) {
+  const turns = (quarterTurns % 4 + 4) % 4;
+  const swapAxes = turns % 2;
+  const signX = turns === 1 || turns === 2 ? -1 : 1;
+  const signY = turns >= 2 ? -1 : 1;
+  return [signX * (swapAxes ? gridY : gridX) || 0, signY * (swapAxes ? gridX : gridY) || 0];
+}
 /** 旋转选区并将包围盒中心格锚定到逻辑原点，供各布局的 getNeighborsByOffsets 使用。
  * @param {Array<Array<number>>} offsets 原始选区的逻辑坐标对，有限整数，默认 []；允许未居中，不接受像素坐标或错列行列差。
  * @param {number} quarterTurns 相对原始选区的旋转次数，有限整数，默认 0；每次顺时针 90°，负数逆时针，按 4 取模。
@@ -154,6 +168,27 @@ function rotateSelectionOffsets(offsets = [], quarterTurns = 0) {
   const anchorY = roundY(signY * (swapAxes ? centerX : centerY)); // 原点旋转与中心旋转只差整体平移，锚定时抵消；直接输出最终偏移，避免中间数组。
 
   return offsets.map(offset => [signX * offset[swapAxes ? 1 : 0] - anchorX || 0, signY * offset[swapAxes ? 0 : 1] - anchorY || 0]);
+}
+/** 生成方形或菱形网格选区，相对中心格返回整数逻辑偏移。
+ * @param {number} size 正整数包围盒边长，默认 1；不限制工具的最大尺寸。
+ * @param {string} shape 'square'（默认）或 'diamond'。
+ * @returns {Array<Array<number>>} 按 RightDown 顺序排列的偏移，可传给各布局的 getNeighborsByOffsets。
+ * 奇数以原点居中；偶数以中心四格中较小的 x/y 格为原点，向正方向多一格。
+ * 菱形按格心至包围盒中心的曼哈顿距离 <= size/2 取格，2格时包含全部四格。
+ * 不处理像素、地图边界、高程或编辑规则；无效尺寸/形状抛出 RangeError。
+ */
+
+function getSelectionOffsets(size = 1, shape = 'square') {
+  if (!Number.isSafeInteger(size) || size < 1 || !['square', 'diamond'].includes(shape)) {
+    throw new RangeError('选区需要正整数尺寸及 square 或 diamond 形状。');
+  }
+
+  const center = (size - 1) * HALF;
+  const offsets = twoDimForEach([0, size - 1], [0, size - 1], 'RightDown', (x, y) => {
+    if (shape === 'diamond' && !neighborTypes.diamond(x - center, y - center, size * HALF)) return false;
+    return [x, y];
+  });
+  return rotateSelectionOffsets(offsets);
 }
 /* 得到一个多边形折线顶点坐标集合
  * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
@@ -346,7 +381,9 @@ var polygonFuns = /*#__PURE__*/Object.freeze({
   RAUQ: RAUQ,
   TQUA: TQUA$1,
   neighborTypes: neighborTypes,
+  rotateGridPoint: rotateGridPoint,
   rotateSelectionOffsets: rotateSelectionOffsets,
+  getSelectionOffsets: getSelectionOffsets,
   getVertexes: getVertexes$3,
   getBounds: getBounds,
   twoDimForEach: twoDimForEach,
@@ -831,15 +868,15 @@ var shapesObj = /*#__PURE__*/Object.freeze({
 *                                                      需要返回邻居坐标值、权重的 tile 二维数组：[[gridX1, gridY1, cost1], [gridX2, gridY2, cost2], ...]
 *                                                      搜索期间邻接关系和权重固定，cost || 1 后为有限正数，累计运算不溢出
 *                                                      每步累计成本保留三位小数，最优路径按此成本比较
-* @param {Number}                maximizable           最大成本更新次数（默认为1e6，用于防止死循环）
+* @param {Number}                maxCostUpdates           最大成本更新次数（默认为1e6，用于防止死循环）
 * @return {Array|null} 匹配的路径集合或 null
 */
-function aStar$1(startGrid = [0, 0], endGrid = [0, 0], getNeighbors = currentGrid => [], maximizable = 1e6) {
+function aStar$1(startGrid = [0, 0], endGrid = [0, 0], getNeighbors = currentGrid => [], maxCostUpdates = 1e6) {
   const path = [];
   const [startGridX, startGridY] = startGrid;
   const [endGridX, endGridY] = endGrid;
   const startPoint = [startGridX, startGridY, 0];
-  let n = 0; // 起止点相同直接返回当前点
+  let costUpdateCount = 0; // 起止点相同直接返回当前点
 
   if (startGridX === endGridX && startGridY === endGridY) {
     path.push(startPoint);
@@ -885,8 +922,8 @@ function aStar$1(startGrid = [0, 0], endGrid = [0, 0], getNeighbors = currentGri
         costs[neighborKey] = neiCost;
         parents[neighborKey] = currPoint; // 成本更新次数超过上限，抛出异常终止查找
 
-        n++;
-        if (n > maximizable) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maximizable);
+        costUpdateCount++;
+        if (costUpdateCount > maxCostUpdates) throw new Error('[pathFinding.aStar] The number of loops exceeds the maximum value:' + maxCostUpdates);
         const neiPoint = [gridX, gridY, neiCost]; // 将成本更新后的节点放入开放点列表，等待确认最低成本
 
         openlist.push(neiPoint);

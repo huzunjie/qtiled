@@ -5,84 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>地图地表编辑 · QTiled Demo</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="stylesheet" href="./static/css/preview-workspace.css">
-  <style>
-    .map-demo { max-width: 1100px; margin: 24px auto; }
-    .map-demo h1 { font-size: 24px; }
-    .map-demo p { opacity: 1; font-size: 12px; line-height: 1.7; }
-    .map-demo .intro, .map-demo .note { color: #687383; }
-    .map-demo button { cursor: pointer; padding: 4px 7px; margin: 0; font-size: 12px; }
-    .map-demo button[aria-pressed="true"] { background: #098d3b; }
-    .map-demo button:disabled { cursor: default; opacity: .45; }
-    .map-demo :is(button, select, input):focus-visible { outline: 2px solid #098d3b; outline-offset: 2px; }
-    .map-demo select { padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; background: white; color: inherit; }
-    .map-demo .preview-workspace > .viewport { overflow: hidden; }
-    .map-demo .preview-workspace > aside { flex-basis: 196px; position: relative; padding: 0; overflow: hidden; }
-    .map-demo .map-details { position: absolute; inset: 0; overflow: auto; scrollbar-gutter: stable; padding: 10px; }
-    .map-demo aside dt { margin-top: 6px; }
-    .map-demo aside h2 { margin-bottom: 8px; }
-    .map-demo .canvas-controls { padding: 8px; border-bottom: 1px solid #edf0f3; font-size: 12px; }
-    .map-demo fieldset { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; border: 0; margin: 0; padding: 0; min-width: 0; }
-    .map-demo fieldset > .toolbar-row { display: contents; }
-    .map-demo .toolbar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-    .map-demo #view-options { flex: 1 0 100%; }
-    .map-demo #view-options > summary { width: fit-content; }
-    .map-demo #view-options[open] > summary { margin-bottom: 6px; }
-    .map-demo details > summary { cursor: pointer; font-size: 12px; color: #526278; }
-    .map-demo .map-details > details { padding: 8px 0; border-bottom: 1px solid #edf0f3; }
-    .map-demo .control-group { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
-    .map-demo .group-label { color: #687383; min-width: 24px; margin-right: 3px; }
-    .map-demo #zoom-percent { width: 60px; padding: 5px; border: 1px solid #d7dce2; border-radius: 4px; font: inherit; }
-    .map-demo .display-toggle { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; padding: 2px 0; }
-    .map-demo .display-toggle input { margin: 0; accent-color: #098d3b; }
-    .map-demo .playback-row { margin-top: 8px; padding-top: 8px; border-top: 1px solid #edf0f3; }
-    .map-demo .view-status { display: none; }
-    .map-demo #coordinates-hint { color: #687383; }
-    .map-demo .selection-controls { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin: 8px 0; font-size: 12px; }
-    .map-demo textarea { width: 100%; box-sizing: border-box; min-height: 110px; font: 11px monospace; }
-    .map-demo .file-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; font-size: 12px; }
-    .map-demo #map-canvas { touch-action: none; }
-    .map-demo .click-help { margin: 0; padding: 6px 10px; color: #687383; border-bottom: 1px solid #edf0f3; }
-    .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
-    .map-demo #map-canvas { position: relative; width: 100%; height: clamp(360px, 60vh, 640px); overflow: hidden; border: 0; padding: 0; }
-    .map-demo #map-canvas[data-tool="pan"] { cursor: grab; }
-    .map-demo #map-canvas[data-panning="true"] { cursor: grabbing; }
-    .map-demo #cancel-stroke { position: absolute; right: 10px; bottom: 10px; z-index: 1; }
-    .map-demo #cancel-stroke:disabled { visibility: hidden; }
-    .map-demo #status { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 120px); margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,.95); pointer-events: none; }
-    .map-demo .issue-panel { height: 80px; overflow: hidden; border-top: 1px solid #edf0f3; }
-    .map-demo #issues { height: 100%; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; color: #9b3021; background: #fff0ec; padding: 10px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-    .map-demo aside dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; }
-    .map-demo aside dt, .map-demo aside dd { margin: 0; }
-    .map-demo .wide-detail { grid-column: 1 / -1; }
-    .map-demo #entity-details { margin: 10px 0; }
-    .map-demo #entity-details h2 { margin-bottom: 6px; }
-    .map-demo #entity-footprint { max-height: 100px; overflow: auto; }
-    .map-demo #cell-info, .map-demo #entity-source { white-space: pre-line; }
-    .map-demo aside h2:not(:first-child) { margin-top: 10px; padding-top: 8px; border-top: 1px solid #edf0f3; }
-    @media (max-width: 680px) {
-      .map-demo .preview-workspace { flex-direction: column; }
-      .map-demo .preview-workspace > aside { flex: auto; }
-      .map-demo .map-details { position: static; max-height: 360px; }
-    }
-  </style>
+  <link rel="stylesheet" href="./static/css/index.css?20261012113314">
+  <link rel="stylesheet" href="./static/css/preview-workspace.css?20261012113314">
+  <link rel="stylesheet" href="./static/css/map-editor.css?20261012135824">
 </head>
 <body>
-  <script src="./static/js/navs.js"></script>
-  <script src="./static/js/spritejs3.js"></script>
-  <script src="./static/js/qtiled-view.dev.js"></script>
-  <script src="./static/js/qtiled-element-rendering.dev.js"></script>
-  <script src="./static/js/qtiled-maps.dev.js"></script>
-  <script src="./static/js/pointer.js"></script>
-  <script src="./static/js/dog-element-sample.js"></script>
-  <script src="./static/js/land-water-rules.js"></script>
-  <script src="./static/js/elevation-rules.js"></script>
-  <script src="./static/js/elevation-rendering.js"></script>
-  <script src="./static/js/element-animation-player.js"></script>
+  <script src="./static/js/navs.js?20261012113314"></script>
+  <script src="./static/js/spritejs3.js?20261012113314"></script>
+  <script src="./static/js/qtiled.dev.js?20261012113314"></script>
+  <script src="./static/js/qtiled-view.dev.js?20261012113314"></script>
+  <script src="./static/js/qtiled-element-rendering.dev.js?20261012113314"></script>
+  <script src="./static/js/qtiled-maps.dev.js?20261012113314"></script>
+  <script src="./static/js/pointer.js?20261012113314"></script>
+  <script src="./static/js/dog-element-sample.js?20261012113314"></script>
+  <script src="./static/js/land-water-rules.js?20261012135824"></script>
+  <script src="./static/js/elevation-rules.js?20261012113314"></script>
+  <script src="./static/js/elevation-rendering.js?20261012113314"></script>
+  <script src="./static/js/element-animation-player.js?20261012113314"></script>
   <main class="map-demo">
-    <h1>地图地表编辑</h1>
-    <p class="intro">绘制陆地、水域与多级台地，预览周边高度联动后整笔提交。沟底被遮挡时切换“平面编辑”；切换镜头保留世界格与实体占地。</p>
+    <header class="workbench-header">
+      <h1>地图编辑工作台</h1>
+      <details class="menu"><summary>地图</summary><div class="menu-panel">
     <div class="file-controls">
       <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="elevation-map">台地、转角与湖泊</option><option value="elevation-multilevel-map">多级台地与凹角</option><option value="first-static-map">雕塑与陆地</option></select></label>
       <div class="control-group">
@@ -92,37 +35,15 @@
       <button id="reload" type="button">加载样本</button>
       <button id="new-map" type="button" disabled>新建平地</button>
       <label>打开地图 <input id="map-file" type="file" accept=".json,application/json"></label>
-      <button id="save-map" type="button" disabled>保存地图</button>
     </div>
-    <div class="preview-workspace">
-      <div class="viewport">
-        <div class="canvas-controls">
-          <fieldset id="controls" disabled aria-label="地图查看控制">
-            <div class="toolbar-row">
-              <div class="control-group" role="group" aria-label="编辑工具">
-                <label><span class="group-label">编辑</span> <select id="edit-tool" aria-label="编辑工具"><option value="select">查看</option><option value="pan">平移</option><option value="land">陆地笔刷</option><option value="water">水域笔刷</option><option value="raise">升高一级</option><option value="lower">降低一级</option><option value="set-height">设定高程</option></select></label>
-                <label id="height-control" hidden>高程 <input id="target-height" aria-label="目标高程" type="number" min="0" max="16" step="1" value="1" style="width:48px"></label>
-                <label id="brush-size-control" hidden>笔刷 <select id="brush-size" aria-label="高程笔刷大小"><option value="1">1 × 1</option><option value="3">3 × 3</option><option value="5">5 × 5</option></select></label>
-                <button id="undo" type="button" disabled>撤销</button>
-                <button id="redo" type="button" disabled>重做</button>
-              </div>
-              <div class="control-group" role="group" aria-label="镜头方向">
-                <span class="group-label">镜头</span>
-                <button type="button" data-angle="0" aria-pressed="true">0°</button>
-                <button type="button" data-angle="90" aria-pressed="false">90°</button>
-                <button type="button" data-angle="180" aria-pressed="false">180°</button>
-                <button type="button" data-angle="270" aria-pressed="false">270°</button>
-              </div>
-            </div>
-            <div class="toolbar-row">
-              <div class="control-group" role="group" aria-label="地图缩放">
-                <label><span class="group-label">缩放</span> <input id="zoom-percent" type="number" min="10" max="400" step="any" value="100" aria-label="缩放比例" title="10%～400%，按 Enter 或离开输入框应用"> %</label>
-                <button id="fit-map" type="button">查看全图</button>
-                <button id="native-size" type="button">原尺寸</button>
-              </div>
-              <output id="viewport-info" class="view-status">工作视口 · 100%</output>
-            </div>
-            <details id="view-options"><summary>显示与动画</summary>
+          <details><summary>查看 / 粘贴 JSON</summary>
+            <p class="note">与“打开地图”读取同一种地图数据；这里可直接粘贴文本。保存地图时会同步显示导出的 JSON。</p>
+            <textarea id="map-json" aria-label="地图 JSON" placeholder="粘贴地图 JSON，或保存时查看导出内容"></textarea>
+            <button id="read-map" type="button" disabled>读取 JSON</button>
+          </details>
+      </div></details>
+      <details class="menu" id="view-options"><summary>显示</summary><div class="menu-panel">
+            <fieldset id="view-controls" data-editor-controls disabled aria-label="显示与动画">
             <div class="toolbar-row">
               <div class="control-group" role="group" aria-label="辅助显示">
                 <span class="group-label">显示</span>
@@ -140,10 +61,37 @@
               <output id="animation-state" aria-live="polite">水面动画准备中</output>
             </div>
           </div>
-            </details>
-          </fieldset>
+            </fieldset>
+      </div></details>
+      <details class="menu"><summary>帮助</summary><div class="menu-panel">
+          <div>
+          <p class="note">方形与菱形按世界网格定义。偶数尺寸向世界 +x/+y 多覆盖一格；镜头旋转不改变占地。蓝框仅表示悬停范围，红框提示越界或空角；完整地形规则在拖动时检查。</p>
+          <p class="note" id="base-height-help">新建沿用当前范围与空角，按预设基准高度填充陆地、清空实体，可撤销。勾选“按基准高度加载”时，将样本最低地表移到此高度，保留高差；打开文件保持原高度。</p>
+          <p class="note">高程为 0～16 级，建议逐级塑形。可在地图边缘和空角旁编辑，空角本身不可绘制。蓝框为选格，橙框为联动格；下挖会按坡面需要联动扩展范围，保留目标高度。平面编辑显示真实高度并选取被遮挡格。临水高差及无法稳定整理的组合整笔拒绝。坡道通行与半坡尚未接入。</p>
+          <p class="note">水域与岸线支持 0～16 级的等高平台；水域直接衔接高差或坡面仍受限制。水域可延伸到地图边缘，岸线与深水推导均将无地图数据的邻格视为外接水域，地图边界不会使水面变浅，真实陆岸仍决定深浅过渡。动画默认每帧 100ms，为预览设置；洪水事件尚未接入。</p>
+          <p class="note">画布随容器调整；平移、缩放和镜头只改变查看位置，不改变地图。靠近真实边界或查看小地图时允许留白，可随时“查看全图”找回地图。</p>
+          <p class="note">网格和坐标仅覆盖有效格，坐标为世界 x,y，不随镜头重新编号。坐标在缩放小于 50% 时暂时隐藏，放大至 50% 以上恢复；显示开关不写入地图文件。</p>
+          <p class="note">平地地图按地面占地选择实体；高程地图按可见地表或实体像素选择，透明处不会挡住后方格子。高程笔刷遇实体占地整笔拒绝，避免改变建筑地基。</p>
+          </div>
+          <p class="note"><a href="./static/terrain-samples/emperor-land-water/elements.json">共用地表素材定义</a> · <a href="./static/terrain-samples/emperor-elevation/elements.json">共用高程素材定义</a> · <a href="./element-editor.html">元素工具</a> · <a href="./static/map-samples/elevation-map.json">高程地图 JSON</a></p>
+      </div></details>
+    </header>
+    <div class="canvas-controls">
+      <fieldset id="controls" data-editor-controls disabled aria-label="地图查看控制">
+        <div class="control-group"><button id="save-map" type="button" disabled>保存地图</button><button id="undo" type="button" disabled>撤销</button><button id="redo" type="button" disabled>重做</button></div>
+        <div class="control-group" id="brush-size-control" hidden>
+          <label>形状 <select id="brush-shape" aria-label="笔刷形状"><option value="square">方形</option><option value="diamond">菱形</option></select></label>
+          <label>尺寸 <select id="brush-size" aria-label="笔刷大小"><option value="1">1 × 1</option><option value="2">2 × 2</option><option value="3">3 × 3</option><option value="4">4 × 4</option><option value="5">5 × 5</option><option value="6">6 × 6</option><option value="7">7 × 7</option><option value="8">8 × 8</option><option value="9">9 × 9</option></select></label>
+          <span id="brush-swatch" class="brush-swatch" aria-hidden="true"></span><output id="brush-summary"></output>
         </div>
-        <p id="click-help" class="click-help">平移：画布内触控板双指滚动、鼠标中键拖动，或选“平移”左键拖动。笔刷：拖动预览，松开提交；Esc 取消。查看：按地面格选择。</p>
+        <div class="control-group"><label>镜头 <select id="camera-angle" aria-label="镜头角度"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></label></div>
+        <div class="control-group" role="group" aria-label="地图缩放"><label>缩放 <input id="zoom-percent" type="range" min="10" max="400" step="0.1" value="100" aria-label="缩放比例" title="10%～400%"><output id="zoom-value" for="zoom-percent">100%</output></label><button id="fit-map" type="button">查看全图</button><button id="native-size" type="button">原尺寸</button></div>
+        <output id="viewport-info" class="view-status">工作视口 · 100%</output>
+      </fieldset>
+    </div>
+    <div class="preview-workspace">
+      <div class="viewport">
+        <output id="hover-info">移到画布查看坐标与笔刷占地</output>
         <div class="canvas-stage">
           <div id="map-canvas" role="img" aria-label="地图画布：平移、绘制地表或查看格子和实体"></div>
           <button id="cancel-stroke" type="button" disabled>取消整笔</button>
@@ -151,8 +99,22 @@
         </div>
         <div class="issue-panel" aria-label="操作提示"><p id="issues" role="alert" tabindex="0" hidden></p></div>
       </div>
-      <aside>
-        <div class="map-details">
+      <aside aria-label="工具与属性"><div class="map-details">
+        <fieldset id="tool-controls" data-editor-controls disabled aria-label="编辑工具">
+          <h2>编辑工具</h2>
+          <input id="edit-tool" type="hidden" value="select">
+          <div class="tool-grid">
+              <button type="button" data-tool="select" aria-pressed="true">查看</button>
+              <button type="button" data-tool="pan" aria-pressed="false">平移</button>
+              <button type="button" data-tool="land" aria-pressed="false">陆地</button>
+              <button type="button" data-tool="water" aria-pressed="false">水域</button>
+              <button type="button" data-tool="raise" aria-pressed="false">升高一级</button>
+              <button type="button" data-tool="lower" aria-pressed="false">降低一级</button>
+              <button type="button" data-tool="set-height" aria-pressed="false">设定高程</button>
+          </div>
+          <div class="tool-parameters"><strong id="current-tool">查看</strong> <label id="height-control" hidden>高程 <input id="target-height" aria-label="目标高程" type="number" min="0" max="16" step="1" value="1"></label></div>
+        </fieldset>
+        <p id="click-help" class="click-help"></p>
           <details><summary>地图信息</summary>
           <dl>
             <dt>地图 ID</dt><dd class="wide-detail" id="map-id">—</dd>
@@ -179,24 +141,9 @@
             <dt class="wide-detail">完整世界占地</dt><dd class="wide-detail" id="entity-footprint">—</dd>
           </dl>
           </section>
-          <details><summary>查看 / 粘贴 JSON</summary>
-            <p class="note">与“打开地图”读取同一种地图数据；这里可直接粘贴文本。保存地图时会同步显示导出的 JSON。</p>
-            <textarea id="map-json" aria-label="地图 JSON" placeholder="粘贴地图 JSON，或保存时查看导出内容"></textarea>
-            <button id="read-map" type="button" disabled>读取 JSON</button>
-          </details>
-          <details><summary>操作说明与适用范围</summary>
-          <p class="note" id="base-height-help">新建沿用当前范围与空角，按预设基准高度填充陆地、清空实体，可撤销。勾选“按基准高度加载”时，将样本最低地表移到此高度，保留高差；打开文件保持原高度。</p>
-          <p class="note">高程为 0～16 级，建议逐级塑形。可在地图边缘和空角旁编辑，空角本身不可绘制。蓝框为选格，橙框为联动格；下挖会按坡面需要联动扩展范围，保留目标高度。平面编辑显示真实高度并选取被遮挡格。临水高差及无法稳定整理的组合整笔拒绝。坡道通行与半坡尚未接入。</p>
-          <p class="note">水域与岸线支持 0～16 级的等高平台；水域直接衔接高差或坡面仍受限制。边界与空角按非水处理，深处由邻域派生。动画默认每帧 100ms，为预览设置；洪水事件尚未接入。</p>
-          <p class="note">画布随容器调整；平移、缩放和镜头只改变查看位置，不改变地图。靠近真实边界或查看小地图时允许留白，可随时“查看全图”找回地图。</p>
-          <p class="note">网格和坐标仅覆盖有效格，坐标为世界 x,y，不随镜头重新编号。坐标在缩放小于 50% 时暂时隐藏，放大至 50% 以上恢复；显示开关不写入地图文件。</p>
-          <p class="note">平地地图按地面占地选择实体；高程地图按可见地表或实体像素选择，透明处不会挡住后方格子。高程笔刷遇实体占地整笔拒绝，避免改变建筑地基。</p>
-          </details>
-          <p class="note"><a href="./static/terrain-samples/emperor-land-water/elements.json">共用地表素材定义</a> · <a href="./static/terrain-samples/emperor-elevation/elements.json">共用高程素材定义</a> · <a href="./element-editor.html">元素工具</a> · <a href="./static/map-samples/elevation-map.json">高程地图 JSON</a></p>
-        </div>
-      </aside>
+      </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js"></script>
+  <script src="./static/js/map-editor.js?20261012135824"></script>
 </body>
 </html>

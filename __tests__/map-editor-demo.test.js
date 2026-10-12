@@ -6,6 +6,7 @@ import { JSDOM } from 'jsdom';
 import * as elements from '../src/elements';
 import * as view from '../src/isometric-view';
 import * as maps from '../src/maps';
+import * as shapes from '../src/shapes';
 import { resolveElementDraw } from '../src/element-rendering/draw';
 import { resolveElementFrame } from '../src/element-rendering/frame';
 import { renderElement, updateElementFrame } from '../src/element-rendering/spritejs-element-renderer';
@@ -121,6 +122,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   Sprite.prototype.forceUpdate = jest.fn();
   window.ResizeObserver = ResizeObserver;
   window.qtiledView = view;
+  window.qtiled = { shapes };
   // 计算模块来自 Jest realm，工具脚本来自 VM；JSON 文件在实际浏览器属于同一 realm。
   const exportMap = jest.fn((map, library) => maps.exportMapDefinition(JSON.parse(JSON.stringify(map)), library));
   window.qtiledMaps = { ...maps, resolveMapEntities: resolve, importMapDefinition: importMap,
@@ -200,7 +202,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const screenPointer = (type, point, button = 0) => sendPointer(type, { clientX: point[0] - 100, clientY: point[1] + 73 }, button);
   const tool = value => { get('edit-tool').value = value; get('edit-tool').dispatchEvent(new window.Event('change')); };
   const save = () => { get('save-map').click(); return JSON.parse(get('map-json').value); };
-  const camera = angle => window.document.querySelector(`[data-angle="${angle}"]`).click();
+  const camera = angle => { get('camera-angle').value = String(angle); get('camera-angle').dispatchEvent(new window.Event('change')); };
   const mode = value => { get('pick-mode').value = value; get('pick-mode').dispatchEvent(new window.Event('change')); };
   const reload = async () => { get('reload').click(); await settle(); };
   const tiles = () => {
@@ -241,10 +243,9 @@ function guide(p, id) {
   return p.layer.children[0].children.find(node => node.attrs.id === id);
 }
 
-function zoom(p, value, enter = false) {
+function zoom(p, value, live = false) {
   p.get('zoom-percent').value = String(value);
-  p.get('zoom-percent').dispatchEvent(enter
-    ? new p.window.KeyboardEvent('keydown', { key: 'Enter' }) : new p.window.Event('change'));
+  p.get('zoom-percent').dispatchEvent(new p.window.Event(live ? 'input' : 'change'));
 }
 
 test('奇数画布首次显示先完成整数原尺寸合成；平移缩放不重绘合成图，换帧才更新', async () => {
@@ -306,19 +307,19 @@ test('自定义缩放保留中心、四向选择和笔刷；全图与原尺寸�
   expect(p.save()).toEqual(before);
 });
 
-test('自定义比例边界与非法输入保留原有效视图，坐标显示随比例恢复', async () => {
+test('滑块实时缩放及范围边界，坐标显示随比例恢复', async () => {
   const p = await page({}, 'rectangular-water-map');
   setDisplay(p, 'show-coordinates', true);
   for (const percent of [10, 49.9, 50, 400]) {
-    zoom(p, percent);
+    zoom(p, percent, true);
     expect(p.layer.children[0].attrs.scale).toEqual([percent / 100, percent / 100]);
     expect(guide(p, 'map-coordinate-overlay').attrs.display).toBe(percent < 50 ? 'none' : '');
   }
-  for (const value of ['', 0, -1, 9.9, 400.1, 'NaN']) {
-    zoom(p, value);
-    expect(p.layer.children[0].attrs.scale).toEqual([4, 4]);
-    expect(p.get('zoom-percent').value).toBe('400');
-    expect(p.get('status').textContent).toContain('已保留原比例');
+  expect(p.get('zoom-percent').type).toBe('range');
+  for (const [value, expected] of [[0, 10], [500, 400]]) {
+    zoom(p, value, true);
+    expect(p.layer.children[0].attrs.scale).toEqual([expected / 100, expected / 100]);
+    expect(p.get('zoom-value').textContent).toBe(`${expected}%`);
   }
 });
 
@@ -1703,6 +1704,103 @@ test('滚动单位、浏览器缩放、画布外滚动及活动手势保护', as
     expect(active.attrs.pos).toEqual(position);
     p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
   }
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('悬停复用纯几何，奇偶尺寸与两形状均不重建地形；参数与离开清理一致', async () => {
+  const p = await page({}, 'rectangular-water-map');
+  p.get('new-map').click();
+  p.get('flat-edit').click();
+  const before = p.save();
+  const calls = [p.resolve.mock.calls.length, p.occupancy.mock.calls.length, p.terrainResolve.mock.calls.length];
+  p.window.document.querySelector('[data-tool="water"]').click();
+  expect(p.get('current-tool').textContent).toBe('水域');
+  for (const shape of ['square', 'diamond']) for (let size = 1; size <= 9; size++) {
+    p.get('brush-shape').value = shape;
+    p.get('brush-size').value = String(size);
+    p.get('brush-size').dispatchEvent(new p.window.Event('change'));
+    p.pointer('pointermove', [16, 16]);
+    const expected = shape === 'square' ? size * size : Math.ceil(size * size / 2) + (size % 2 ? 0 : size);
+    expect(guide(p, 'map-brush-hover').children).toHaveLength(expected);
+    expect(p.get('brush-summary').textContent).toContain(`${expected} 格`);
+  }
+  expect([p.resolve.mock.calls.length, p.occupancy.mock.calls.length, p.terrainResolve.mock.calls.length]).toEqual(calls);
+  expect(p.save()).toEqual(before);
+  p.tool('land'); expect(p.get('brush-size').value).toBe('9');
+  p.pointer('pointermove', [0, 0]);
+  expect(p.get('hover-info').textContent).toContain('不能落笔');
+  expect(guide(p, 'map-brush-hover').children[0].attrs.strokeColor).toBe('#bc3e30');
+  p.pointer('pointerleave', [0, 0]);
+  expect(guide(p, 'map-brush-hover')).toBeUndefined();
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('偶数笔刷在四向缩放后与悬停一致，陆水及设高共享占地且整笔可恢复', async () => {
+  const p = await page({}, 'rectangular-water-map');
+  p.get('new-map').click(); p.get('flat-edit').click();
+  const before = p.save();
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); zoom(p, 75);
+    p.get('brush-size').value = '2';
+    p.get('brush-shape').value = 'square';
+    p.tool('water'); p.pointer('pointermove', [16, 16]);
+    const preview = guide(p, 'map-brush-hover').children.map(node => node.attrs.pos);
+    const expected = [[16, 16], [16, 17], [17, 16], [17, 17]];
+    expect(preview).toEqual(expected.map(grid => view.projectGrid(grid, { angle, tileSize: [80, 40] })));
+    p.pointer('pointerdown', [16, 16]); p.pointer('pointerup', [16, 16]);
+    expect(p.get('status').textContent).toContain('已提交整笔');
+    const water = p.save();
+    expect(water.cells.flat().filter(cell => cell?.terrain === 'water')).toHaveLength(4);
+    expected.forEach(([x, y]) => expect(water.cells[y][x]).toMatchObject({ terrain: 'water', elevation: 8 }));
+    p.tool('land'); p.pointer('pointerdown', [16, 16]); p.pointer('pointerup', [16, 16]);
+    expect(p.save()).toEqual(before);
+    p.get('undo').click(); expect(p.save()).toEqual(water);
+    p.get('undo').click(); expect(p.save()).toEqual(before);
+  }
+  p.get('brush-size').value = '4'; p.get('brush-shape').value = 'diamond';
+  p.get('target-height').value = '9'; p.tool('set-height');
+  p.pointer('pointerdown', [16, 16]);
+  expect(p.get('status').textContent).toContain('选中 12 格');
+  p.get('cancel-stroke').click(); expect(p.save()).toEqual(before);
+  p.pointer('pointerdown', [16, 16]); p.pointer('pointerup', [16, 16]);
+  expect(p.get('status').textContent).toContain('已提交整笔');
+  const raised = p.save(); expect(raised).not.toEqual(before);
+  p.get('undo').click(); expect(p.save()).toEqual(before);
+  p.get('redo').click(); expect(p.save()).toEqual(raised);
+  p.pointer('pointerdown', [0, 0]); p.pointer('pointerup', [0, 0]);
+  expect(p.save()).toEqual(raised);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+
+test('高程地图未命中的焦点在四向缩放后仍包住指针，不产生落笔或历史', async () => {
+  const p = await page({}, 'elevation-map');
+  p.get('rebase-sample').checked = true;
+  await p.reload();
+  const before = p.save();
+  p.tool('water');
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    expect(p.get('camera-angle').value).toBe(String(angle));
+    for (const percent of [50, 100, 200]) {
+      zoom(p, percent, true);
+      // 向地图外移动，覆盖0平面反算后又错误减去地表高度的旧问题。
+      const point = [p.size.width / 2 + 7, 4000];
+      p.screenPointer('pointermove', point);
+      expect(p.get('hover-info').textContent).toContain('未命中地表');
+      const root = p.layer.children[0];
+      const focus = guide(p, 'map-brush-hover').children[0];
+      const center = focus.attrs.pos.map((value, axis) => root.attrs.pos[axis] + value * percent / 100);
+      expect(Math.abs(center[0] - point[0]) / (40 * percent / 100)
+        + Math.abs(center[1] - point[1]) / (20 * percent / 100)).toBeLessThanOrEqual(1.001);
+      p.screenPointer('pointerdown', point); p.screenPointer('pointerup', point);
+      expect(p.get('undo').disabled).toBe(true);
+    }
+  }
+  expect(p.save()).toEqual(before);
   expect(p.errors).toEqual([]);
   p.window.close();
 });

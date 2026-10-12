@@ -171,6 +171,27 @@
 
     return offsets.map(offset => [signX * offset[swapAxes ? 1 : 0] - anchorX || 0, signY * offset[swapAxes ? 0 : 1] - anchorY || 0]);
   }
+  /** 生成方形或菱形网格选区，相对中心格返回整数逻辑偏移。
+   * @param {number} size 正整数包围盒边长，默认 1；不限制工具的最大尺寸。
+   * @param {string} shape 'square'（默认）或 'diamond'。
+   * @returns {Array<Array<number>>} 按 RightDown 顺序排列的偏移，可传给各布局的 getNeighborsByOffsets。
+   * 奇数以原点居中；偶数以中心四格中较小的 x/y 格为原点，向正方向多一格。
+   * 菱形按格心至包围盒中心的曼哈顿距离 <= size/2 取格，2格时包含全部四格。
+   * 不处理像素、地图边界、高程或编辑规则；无效尺寸/形状抛出 RangeError。
+   */
+
+  function getSelectionOffsets(size = 1, shape = 'square') {
+    if (!Number.isSafeInteger(size) || size < 1 || !['square', 'diamond'].includes(shape)) {
+      throw new RangeError('选区需要正整数尺寸及 square 或 diamond 形状。');
+    }
+
+    const center = (size - 1) * HALF;
+    const offsets = twoDimForEach([0, size - 1], [0, size - 1], 'RightDown', (x, y) => {
+      if (shape === 'diamond' && !neighborTypes.diamond(x - center, y - center, size * HALF)) return false;
+      return [x, y];
+    });
+    return rotateSelectionOffsets(offsets);
+  }
   /* 得到一个多边形折线顶点坐标集合
    * @param  {Array}     baseVertexes    多边形顶点配置，如上文的: rectVertexes
    * @param  {Number}    width         渲染时的宽度值
@@ -364,6 +385,7 @@
     neighborTypes: neighborTypes,
     rotateGridPoint: rotateGridPoint,
     rotateSelectionOffsets: rotateSelectionOffsets,
+    getSelectionOffsets: getSelectionOffsets,
     getVertexes: getVertexes$3,
     getBounds: getBounds,
     twoDimForEach: twoDimForEach,
