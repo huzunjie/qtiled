@@ -7,11 +7,6 @@
     option.value = value; option.textContent = tree.label;
     return option;
   }));
-  get('rock-kind').replaceChildren(...Object.entries(rocks).map(([value, rock]) => {
-    const option = document.createElement('option');
-    option.value = value; option.textContent = rock.label;
-    return option;
-  }));
   const container = get('map-canvas');
   const status = get('status');
   const issues = get('issues');
@@ -20,6 +15,7 @@
   const featureTools = ['ramp', 'half-slope'];
   const roadTools = ['road'];
   const treeTools = ['tree'];
+  const rockTools = Object.keys(rocks);
   const elevationDirectory = './static/terrain-samples/emperor-elevation/';
   const navigation = document.querySelector('.navs');
   if (navigation) navigation.classList.add('closed');
@@ -38,7 +34,7 @@
   let hoverKey = null;
   let brushKey = null;
   let brushOffsets = [];
-  const brushTools = ['land', 'water', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', 'rock', ...treeTools];
+  const brushTools = ['land', 'water', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', ...rockTools, ...treeTools];
   // 相机只属于当前页面，不写入地图事实或撤销记录；中心允许位于半格。
   const viewport = { width: container.clientWidth || 640, height: container.clientHeight || 440,
     center: null, baseHeight: 0, scale: 1, mode: 'work' };
@@ -151,7 +147,6 @@
     });
     get('building-control').hidden = tool !== 'building';
     get('tree-control').hidden = tool !== 'tree';
-    get('rock-control').hidden = tool !== 'rock';
     get('brush-size-control').hidden = !brushTools.includes(tool);
     updateBrushParameters();
     get('click-help').textContent = {
@@ -172,7 +167,7 @@
       lower: '降低一级：最低 0 级；需要坡面空间时会联动扩大下挖范围。蓝框为选区，橙框为联动格。',
       'raise-two': '抬高两级：同一格每笔目标只增加两级，超出 16 级整笔拒绝；周边沿用现有坡面整理，目标可能修订。松开提交，Esc 取消。',
       'lower-two': '降低两级：同一格每笔目标只减少两级，低于 0 级整笔拒绝；沿用现有下挖联动。松开提交，Esc 取消。',
-    }[tool];
+    }[rockTools.includes(tool) ? 'rock' : tool];
     if (get('flat-edit').checked) get('click-help').textContent += ' 平面编辑按世界格选取，数字为真实高度，可编辑遮挡沟底。';
   }
 
@@ -240,7 +235,7 @@
     const hit = hitAt(event);
     const tool = get('edit-tool').value;
     const offsets = brushTools.includes(tool) ? getBrushOffsets() : [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : [];
-    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}:${get('tree-kind').value}:${get('rock-kind').value}`;
+    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}:${get('tree-kind').value}`;
     if (key === hoverKey) return;
     clearHover();
     hoverKey = key;
@@ -274,8 +269,8 @@
         rockPreview = window.rockRules.resolve(clearPreview.definition, currentScene.groundTiles,
           currentScene.elementsById, currentScene.occupancyIndex);
       } catch (reason) { error = reason.message; }
-    } else if (!hit.missed && tool === 'rock') {
-      const candidate = window.rockRules.applyStroke(currentScene.map, grids, false, get('rock-kind').value);
+    } else if (!hit.missed && rockTools.includes(tool)) {
+      const candidate = window.rockRules.applyStroke(currentScene.map, grids, false, tool);
       if (!candidate.issues.length) rockPreview = window.rockRules.resolve(candidate.definition,
         currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex);
       error = candidate.issues[0]?.message || rockPreview?.issues[0]?.message || '';
@@ -831,7 +826,6 @@
     updateToolHelp();
   });
   get('tree-kind').addEventListener('change', () => { cancelGesture(); updateToolHelp(); });
-  get('rock-kind').addEventListener('change', () => { cancelGesture(); updateToolHelp(); });
   for (const id of ['brush-size', 'brush-shape']) get(id).addEventListener('change', updateBrushParameters);
   document.querySelectorAll('button[data-tool]').forEach(button => button.addEventListener('click', () => {
     if (!currentScene || stroke || pan) return;
@@ -1014,8 +1008,8 @@
         ? clearContents(base, [...grids.values()], stroke.entityIds)
         : featureTools.includes(terrain)
         ? window.elevationRules.applyFeature(base.map, { type: terrain, grid }, base.elementsById, base.rules, base.elevationRules, cameraAngle)
-        : terrain === 'rock'
-        ? window.rockRules.applyStroke(base.map, [...grids.values()], false, stroke.rockKind)
+        : rockTools.includes(terrain)
+        ? window.rockRules.applyStroke(base.map, [...grids.values()], false, terrain)
         : treeTools.includes(terrain)
         ? window.treeRules.applyStroke(base.map, [...grids.values()], false, base.groundTiles, stroke.treeKind)
         : roadTools.includes(terrain)
@@ -1080,7 +1074,7 @@
     ++loadRequestId; // 新编辑不能被较早的异步读取覆盖。
     // 从全图开始编辑时保持当前缩放，避免新增岸线改变外框导致笔尖漂移。
     viewport.mode = 'work';
-    stroke = { base: currentScene, terrain: tool, treeKind: get('tree-kind').value, rockKind: get('rock-kind').value, entityIds: new Set(),
+    stroke = { base: currentScene, terrain: tool, treeKind: get('tree-kind').value, entityIds: new Set(),
       offsets: [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : getBrushOffsets(),
       grids: new Map(), pointerId: event.pointerId };
     container.setPointerCapture?.(event.pointerId);

@@ -142,7 +142,9 @@
               <button type="button" data-tool="ramp" aria-pressed="false">坡道</button>
               <button type="button" data-tool="half-slope" aria-pressed="false">半坡</button>
               <button type="button" data-tool="road" aria-pressed="false">道路</button>
-              <button type="button" data-tool="rock" aria-pressed="false">岩石与矿物</button>
+              <button type="button" data-tool="ordinary" aria-pressed="false">普通石</button>
+              <button type="button" data-tool="copper" aria-pressed="false">铜矿</button>
+              <button type="button" data-tool="iron" aria-pressed="false">铁矿</button>
               <button type="button" data-tool="tree" aria-pressed="false">树木</button>
               <button type="button" data-tool="clear" aria-pressed="false">清除</button>
               <button type="button" data-tool="building" aria-pressed="false">建筑</button>
@@ -151,9 +153,6 @@
             <button id="clear-selection" type="button">取消选择</button>
           </div>
           <div class="tool-parameters"><strong id="current-tool">查看实体</strong></div>
-          <div id="rock-control" hidden>
-            <label>岩石类别 <select id="rock-kind"></select></label>
-          </div>
           <div id="tree-control" hidden>
             <label>树木类别 <select id="tree-kind"></select></label>
           </div>
@@ -189,6 +188,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261014030000"></script>
+  <script src="./static/js/map-editor.js?20261014040000"></script>
 </body>
 </html>

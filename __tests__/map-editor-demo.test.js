@@ -2358,11 +2358,18 @@ test('清除视觉区分橙色有效、灰色空地与红色无效，拖动提�
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('岩石三类改画、冲突拒绝、取消与一次历史，四向导入保持事实', async () => {
+test('三个岩石按钮直接绘制对应类别，冲突拒绝、取消与历史、四向导入保持事实', async () => {
   const p = await constructionPage(); const before = p.save();
-  p.tool('rock');
+  expect(p.get('rock-kind')).toBeNull();
   for (const kind of ['ordinary', 'copper', 'iron']) {
-    p.get('rock-kind').value = kind;
+    const button = p.window.document.querySelector(`[data-tool="${kind}"]`);
+    button.click();
+    expect(button.getAttribute('aria-pressed')).toBe('true');
+    expect(p.window.document.querySelectorAll('button[data-tool][aria-pressed="true"]')).toHaveLength(1);
+    expect(p.get('current-tool').textContent).toBe(button.textContent);
+    expect(p.get('brush-size-control').hidden).toBe(false);
+    p.pointer('pointermove', [4, 4]);
+    expect(guide(p, 'map-brush-hover').children).toHaveLength(1);
     p.pointer('pointerdown', [4, 4]); p.pointer('pointermove', [7, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(before);
     p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [7, 4]);
     const painted = p.save(); expect(painted.cells[4].slice(4, 8).map(c => c.rock)).toEqual(Array(4).fill(kind));
@@ -2373,10 +2380,10 @@ test('岩石三类改画、冲突拒绝、取消与一次历史，四向导入�
     for (const angle of [0, 90, 180, 270]) { p.camera(angle); expect(p.save()).toEqual(painted); }
     p.get('undo').click(); expect(p.save()).toEqual(before);
     p.get('redo').click(); expect(p.save()).toEqual(painted);
-    p.get('undo').click(); p.camera(0); p.tool('rock');
+    p.get('undo').click(); p.camera(0);
   }
-  p.get('rock-kind').value = 'ordinary'; p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
-  p.get('rock-kind').value = 'copper'; p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+  p.window.document.querySelector('[data-tool="ordinary"]').click(); p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+  p.window.document.querySelector('[data-tool="copper"]').click(); p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
   expect(p.save().cells[4][4].rock).toBe('copper'); p.get('undo').click(); expect(p.save().cells[4][4].rock).toBe('ordinary');
   const valid = p.save(); const invalid = JSON.parse(JSON.stringify(valid)); invalid.cells[4][4].rock = 'gold';
   p.get('map-json').value = JSON.stringify(invalid); p.get('read-map').click(); expect(p.save()).toEqual(valid);
@@ -2423,7 +2430,7 @@ test.each([2, 3])('%s格方块四镜头可逐格命中清除，青框只提示�
       p.get('undo').click();
     }
   }
-  p.tool('rock'); p.get('rock-kind').value = 'iron';
+  p.window.document.querySelector('[data-tool="iron"]').click();
   p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
   expect(p.save().cells[4][4].rock).toBe('iron');
   expect(p.save().cells.flat().filter(cell => cell.rock === 'copper')).toHaveLength(size * size - 1);
