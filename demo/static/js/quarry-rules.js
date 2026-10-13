@@ -2,7 +2,8 @@
 (function () {
   const { getStableGridValue } = window.terrainSample;
   const neighbors = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
-  const offsets = Array.from({ length: 36 }, (_, i) => [i % 6 - 3, Math.floor(i / 6) - 2]);
+  const brushSize = 6;
+  const offsets = Array.from({ length: brushSize ** 2 }, (_, i) => [i % brushSize - 3, Math.floor(i / brushSize) - 2]);
   // 原表0x837e70 / 0x8380f0；每行依次为八邻条件、四镜头偏移、变体数。
   // 0不存在、1存在、2任意；输入是取反的内部邻域。内表最后零行被前行遮蔽，保留原值。
   const outer = [
@@ -169,5 +170,5 @@
     return { definition: { ...map, cells }, issues: [] };
   }
 
-  window.quarryRules = { offsets, resolve, applyStroke };
+  window.quarryRules = { brushSize, offsets, resolve, applyStroke };
 })();

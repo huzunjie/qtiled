@@ -28,6 +28,9 @@
   let loadRequestId = 0;
   let stroke = null;
   let pan = null;
+  let pinch = null;
+  const touchPointers = new Map();
+  const brush = { shape: get('brush-shape').value, size: get('brush-size').value };
   let suppressClick = false;
   let hoverPointer = null;
   let hoverOverlay = null;
@@ -147,8 +150,6 @@
     });
     get('building-control').hidden = tool !== 'building';
     get('tree-control').hidden = tool !== 'tree';
-    get('brush-size-control').hidden = !brushTools.includes(tool) || tool === 'quarry';
-    updateBrushParameters();
     get('click-help').textContent = {
       select: get('pick-mode').value === 'cell'
         ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
@@ -172,6 +173,23 @@
     if (get('flat-edit').checked) get('click-help').textContent += ' 平面编辑按世界格选取，数字为真实高度，可编辑遮挡沟底。';
   }
 
+  // 可调笔刷参数属于作者选择；固定工具只改变显示，不覆盖这份选择。
+  function updateBrushControls() {
+    const tool = get('edit-tool').value;
+    const fixed = !brushTools.includes(tool) || tool === 'quarry';
+    const settings = fixed ? { shape: 'square', size: tool === 'quarry' ? window.quarryRules.brushSize : 1 } : brush;
+    get('brush-shape').value = settings.shape;
+    get('brush-size').value = String(settings.size);
+    for (const id of ['brush-shape', 'brush-size']) get(id).disabled = fixed;
+    get('brush-size-control').setAttribute('aria-disabled', String(fixed));
+    updateBrushParameters();
+  }
+
+  function updateTool() {
+    updateToolHelp();
+    updateBrushControls();
+  }
+
   function getBrushOffsets() {
     if (get('edit-tool').value === 'quarry') return window.quarryRules.offsets;
     const size = Number(get('brush-size').value);
@@ -188,7 +206,9 @@
   function updateBrushParameters() {
     const offsets = getBrushOffsets();
     const size = Number(get('brush-size').value);
-    get('brush-summary').textContent = `${offsets.length} 格${size % 2 ? '' : ' · 向 +x/+y 锚定'}`;
+    const tool = get('edit-tool').value;
+    get('brush-summary').textContent = tool === 'quarry' ? `固定 ${offsets.length} 格`
+      : !brushTools.includes(tool) ? '无需笔刷' : `${offsets.length} 格${size % 2 ? '' : ' · 向 +x/+y 锚定'}`;
     const selected = new Set(offsets.map(grid => grid.join(',')));
     const swatch = get('brush-swatch');
     swatch.replaceChildren();
@@ -284,7 +304,7 @@
         currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex);
       error = candidate.issues[0]?.message || rockPreview?.issues[0]?.message || '';
     } else if (!hit.missed && treeTools.includes(tool)) {
-      const candidate = window.treeRules.applyStroke(currentScene.map, grids, false, currentScene.groundTiles, get('tree-kind').value);
+      const candidate = window.treeRules.applyStroke(currentScene.map, grids, false, currentScene.moisture, get('tree-kind').value);
       error = candidate.issues[0]?.message || window.treeRules.resolve(candidate.definition,
         currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message || '';
     } else if (feature && !feature.issues.length) {
@@ -381,7 +401,7 @@
     if (cell?.quarry) get('cell-info').textContent += '\n采石地：静态范围，局部清除后重新拼接';
     if (cell?.rock) get('cell-info').textContent += `\n岩石: ${getRock(cell.rock).label} · 当前组合${tile.rockSize}×${tile.rockSize}（逐格编辑）`;
     if (cell?.tree) get('cell-info').textContent += `\n树木: ${getTree(cell.tree).detail} · 占地1格`;
-    if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n环境强度: ${tile.moisture} / 100（水域/树木派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
+    if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n环境强度: ${currentScene.moisture[selectedGrid[1]][selectedGrid[0]]} / 100（水域/岩石/采石地/树木派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
     if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.halfSlope ? `半坡${tile.ramp ? '坡道' : ''}（主格 ${tile.slopeOwner}，部件 ${tile.slopePart + 1}/2）` : tile?.ramp ? '坡道' : tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
     updateWaterFrame();
     get('selection-actions').hidden = !selectedGrid && !entity;
@@ -393,14 +413,14 @@
     get('view-info').textContent = `${map.tileSize.join(' × ')} px / ${view.angle}°`;
   }
 
-  function prepareScene(mapState, nextAngle, resolvedTiles) {
+  function prepareScene(mapState, nextAngle, resolvedGround) {
     const { Group, Label, Layer, Sprite, Polyline } = window.spritejs;
     const { projectGrid } = window.qtiledView;
     const { map, elementsById, sources, rules, elevationRules } = mapState;
     if (map.tileSize[0] !== 80 || map.tileSize[1] !== 40) {
       throw new Error('tileSize：当前原作地表素材需要 80 × 40 格距。');
     }
-    const groundTiles = resolvedTiles ?? requireSuccess(window.elevationRules.resolve(map, elementsById, rules, elevationRules, nextAngle)).tiles;
+    const { tiles: groundTiles, moisture } = resolvedGround ?? requireSuccess(window.elevationRules.resolve(map, elementsById, rules, elevationRules, nextAngle));
     const construction = requireSuccess(window.constructionRules.resolve(map, groundTiles, elementsById, mapState.roadRules, nextAngle));
     const quarryTiles = requireSuccess(window.quarryRules.resolve(map, construction.tiles, elementsById, construction.index, nextAngle)).tiles;
     const rockTiles = requireSuccess(window.rockRules.resolve(map, quarryTiles, elementsById, construction.index)).tiles;
@@ -503,7 +523,7 @@
     const contentImage = new Sprite({ texture: canvas, pos: rasterOrigin, size: rasterSize, anchor: [0, 0] });
     root.append(contentImage, labels, gridOverlay, coordinateOverlay);
     const sourcePixels = mapState.sourcePixels || readSourcePixels(sources);
-    return { ...mapState, occupancyIndex: construction.index, groundTiles, root, entities, tiles, animated, view, vertexes, bounds, mapCenter, flatEditing,
+    return { ...mapState, occupancyIndex: construction.index, groundTiles, moisture, root, entities, tiles, animated, view, vertexes, bounds, mapCenter, flatEditing,
       sourcePixels, drawables, contentLayer, contentImage, gridOverlay, coordinateOverlay, guideScale: null, selection: null };
   }
 
@@ -564,19 +584,29 @@
     updatePlaybackControls();
   }
 
+  function interactionMode() {
+    return pinch ? 'pinch' : stroke ? 'stroke' : pan ? 'pan' : 'idle';
+  }
+
+  function canInteract() {
+    return Boolean(currentScene) && interactionMode() === 'idle';
+  }
+
   function updateControls() {
+    // 平移沿用既有控件显示；实际操作统一等待手势结束，取消整笔单独可用。
+    const locked = ['stroke', 'pinch'].includes(interactionMode());
     document.querySelectorAll('[data-editor-controls]').forEach(group => {
-      group.disabled = !currentScene || Boolean(stroke);
+      group.disabled = !currentScene || locked;
     });
-    get('undo').disabled = !undoStack.length || Boolean(stroke);
-    get('redo').disabled = !redoStack.length || Boolean(stroke);
+    get('undo').disabled = !undoStack.length || locked;
+    get('redo').disabled = !redoStack.length || locked;
     get('cancel-stroke').disabled = !stroke;
-    for (const id of ['pick-mode', 'clear-selection']) get(id).disabled = !currentScene || Boolean(stroke);
-    get('new-map').disabled = !currentScene || Boolean(stroke);
-    get('base-height').disabled = Boolean(stroke);
-    get('map-climate').disabled = !currentScene || Boolean(stroke);
+    for (const id of ['pick-mode', 'clear-selection']) get(id).disabled = !currentScene || locked;
+    get('new-map').disabled = !currentScene || locked;
+    get('base-height').disabled = locked;
+    get('map-climate').disabled = !currentScene || locked;
     for (const id of ['save-map', 'view-map-json', 'read-map', 'map-file', 'map-sample', 'reload', 'rebase-sample']) {
-      get(id).disabled = Boolean(stroke) || (!currentScene && ['save-map', 'view-map-json', 'read-map'].includes(id));
+      get(id).disabled = locked || (!currentScene && ['save-map', 'view-map-json', 'read-map'].includes(id));
     }
   }
 
@@ -673,7 +703,7 @@
   get('camera-angle').addEventListener('change', () => {
     const angle = Number(get('camera-angle').value);
     get('camera-angle').value = String(cameraAngle);
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     try { commitScene(prepareScene(currentScene, angle)); }
     catch (error) { fail(error); }
   });
@@ -683,10 +713,10 @@
     if (currentScene) updateSelection();
   }
   get('clear-selection').addEventListener('click', clearSelection);
-  get('pick-mode').addEventListener('change', () => { clearSelection(); updateToolHelp(); });
+  get('pick-mode').addEventListener('change', () => { clearSelection(); updateTool(); });
   container.addEventListener('click', event => {
     if (suppressClick) { suppressClick = false; return; }
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     const tool = get('edit-tool').value;
     const hit = hitAt(event);
     if (tool === 'building') {
@@ -730,7 +760,7 @@
   }
 
   function rotateBuilding() {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     get('building-angle').value = String((Number(get('building-angle').value) + 90) % 360);
     updateHover();
   }
@@ -745,7 +775,7 @@
     } else if (event.key === 'Escape') {
       get('edit-tool').value = 'select';
       clearHover(true);
-      updateToolHelp();
+      updateTool();
       clearIssue();
     }
   });
@@ -797,11 +827,87 @@
     updateViewport();
   }
 
+  // 保持手势锚点下的世界位置，复用相机的连续投影反解与工具栏同步。
+  function setViewportScale(scale, anchor = [viewport.width / 2, viewport.height / 2], target = anchor) {
+    if (!Number.isFinite(scale) || scale <= 0) return;
+    const previous = viewport.scale;
+    viewport.scale = Math.min(4, Math.max(0.1, scale));
+    viewport.mode = 'work';
+    translateViewport((target[0] - viewport.width / 2) / viewport.scale - (anchor[0] - viewport.width / 2) / previous,
+      (target[1] - viewport.height / 2) / viewport.scale - (anchor[1] - viewport.height / 2) / previous);
+  }
+
+  function touchSpan() {
+    const [a, b] = [...touchPointers.values()];
+    return { center: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], distance: Math.hypot(b[0] - a[0], b[1] - a[1]) };
+  }
+
+  function beginPinch(event) {
+    if (event.pointerType === 'touch') {
+      touchPointers.set(event.pointerId, getPointerPosition(event, container));
+      container.setPointerCapture?.(event.pointerId);
+      if (touchPointers.size >= 2) {
+        event.preventDefault();
+        // 第二指接管：撤回尚未提交的一笔，保留平移后的当前视口与两指capture。
+        cancelStroke(true);
+        pan = null;
+        container.dataset.panning = 'false';
+        pinch = touchSpan();
+        ++loadRequestId;
+        viewport.mode = 'work';
+        suppressClick = true;
+        clearHover(true);
+        updateControls();
+        return true;
+      }
+    }
+    return Boolean(pinch);
+  }
+
+  function movePinch(event) {
+    if (touchPointers.has(event.pointerId)) touchPointers.set(event.pointerId, getPointerPosition(event, container));
+    if (pinch) {
+      event.preventDefault();
+      if (touchPointers.size >= 2) {
+        const next = touchSpan();
+        if (pinch.distance > 0 && next.distance > 0) setViewportScale(viewport.scale * next.distance / pinch.distance, pinch.center, next.center);
+        pinch = next;
+        status.textContent = `已缩放至 ${get('zoom-value').textContent} · 地图未改变`;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function endPinch(event) {
+    touchPointers.delete(event.pointerId);
+    if (pinch) {
+      event.preventDefault();
+      if (touchPointers.size >= 2) pinch = touchSpan();
+      // 只剩一指时等待全部抬起，不重新落笔；换指时重新定标。
+      if (!touchPointers.size) pinch = null;
+      suppressClick = true;
+      releasePointer(event.pointerId);
+      updateControls();
+      return true;
+    }
+    return false;
+  }
+
   container.addEventListener('wheel', event => {
-    // 捏合产生的 Ctrl+wheel 及浏览器缩放快捷操作保留默认行为。
-    if (!currentScene || event.ctrlKey || event.metaKey) return;
+    if (!currentScene || event.metaKey) return;
     event.preventDefault();
-    if (stroke || pan || (!event.deltaX && !event.deltaY)) return;
+    if (pinch || (!event.deltaX && !event.deltaY)) return;
+    if (event.ctrlKey) {
+      // 触控板捏合以Ctrl+wheel上报；只拦截画布上的缩放，不影响页面其他区域。
+      cancelGesture();
+      ++loadRequestId;
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? viewport.height : 1;
+      setViewportScale(viewport.scale * Math.exp(Math.max(-4, Math.min(4, -event.deltaY * unit * 0.01))), getPointerPosition(event, container));
+      status.textContent = `已缩放至 ${get('zoom-value').textContent} · 地图未改变`;
+      return;
+    }
+    if (stroke || pan) return;
     // 触控板通常提供像素；按行滚动按16px换算，按页滚动使用当前视口尺寸。
     const unit = event.deltaMode === 1 ? [16, 16]
       : event.deltaMode === 2 ? [viewport.width, viewport.height] : [1, 1];
@@ -826,27 +932,39 @@
   }
 
   function cancelGesture(event) {
+    // 已结束的指针释放capture可能晚到，不能取消仍在进行的另两指手势。
+    if (event?.pointerId !== undefined && pinch && !touchPointers.has(event.pointerId)) return;
     const active = pan || stroke;
     if (event?.pointerId !== undefined && active && event.pointerId !== active.pointerId) return;
+    const ids = [...touchPointers.keys()];
+    touchPointers.clear();
+    if (pinch) suppressClick = true;
+    pinch = null;
     cancelPan();
     cancelStroke();
+    ids.forEach(releasePointer);
+    updateControls();
     clearHover(true);
   }
 
   get('edit-tool').addEventListener('change', () => {
     cancelGesture();
-    updateToolHelp();
+    updateTool();
   });
-  get('tree-kind').addEventListener('change', () => { cancelGesture(); updateToolHelp(); });
-  for (const id of ['brush-size', 'brush-shape']) get(id).addEventListener('change', updateBrushParameters);
+  get('tree-kind').addEventListener('change', () => { cancelGesture(); updateTool(); });
+  for (const id of ['brush-size', 'brush-shape']) get(id).addEventListener('change', () => {
+    brush.shape = get('brush-shape').value;
+    brush.size = get('brush-size').value;
+    updateBrushParameters();
+  });
   document.querySelectorAll('button[data-tool]').forEach(button => button.addEventListener('click', () => {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     get('edit-tool').value = button.dataset.tool;
     if (button.dataset.pickMode) {
       if (get('pick-mode').value !== button.dataset.pickMode) clearSelection();
       get('pick-mode').value = button.dataset.pickMode;
     }
-    updateToolHelp();
+    updateTool();
   }));
   const menus = [...document.querySelectorAll('.menu')];
   function closeMenus(except) {
@@ -862,36 +980,32 @@
   });
   for (const id of ['show-grid', 'show-coordinates']) get(id).addEventListener('change', updateGuides);
   get('flat-edit').addEventListener('change', () => {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     try {
       commitScene(prepareScene(currentScene, cameraAngle));
-      updateToolHelp();
+      updateTool();
       status.textContent = currentScene.flatEditing ? '平面编辑 · 每格数字为真实高度，地图事实未改变' : '地形外观 · 按可见像素选择';
     } catch (error) { get('flat-edit').checked = currentScene.flatEditing; fail(error); }
   });
   get('fit-map').addEventListener('click', () => {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     viewport.center = [...currentScene.mapCenter];
     viewport.mode = 'fit';
     updateViewport();
   });
   get('native-size').addEventListener('click', () => {
-    if (!currentScene || stroke || pan) return;
-    viewport.mode = 'work';
-    viewport.scale = 1;
-    updateViewport();
+    if (!canInteract()) return;
+    setViewportScale(1);
   });
   function changeZoom() {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     const percent = Number(get('zoom-percent').value);
     if (!Number.isFinite(percent) || percent < 10 || percent > 400) {
       get('zoom-percent').value = String(Math.round(viewport.scale * 1000) / 10);
       status.textContent = '缩放比例需在 10%～400% 之间 · 已保留原比例';
       return;
     }
-    viewport.mode = 'work';
-    viewport.scale = percent / 100;
-    updateViewport();
+    setViewportScale(percent / 100);
     status.textContent = `已缩放至 ${percent}% · 视口中心保持不变`;
   }
   get('zoom-percent').addEventListener('change', changeZoom);
@@ -924,7 +1038,7 @@
   }
 
   function clearContents(scene, grids, ids) {
-    let result = requireSuccess(window.treeRules.applyStroke(scene.map, grids, true, scene.groundTiles));
+    let result = requireSuccess(window.treeRules.applyStroke(scene.map, grids, true, scene.moisture));
     result = requireSuccess(window.rockRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.quarryRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.constructionRules.applyRoadStroke(result.definition, grids, true, scene.groundTiles));
@@ -940,11 +1054,11 @@
     return { ...result, selectedGrids: [...selected.values()], hasContent };
   }
 
-  function cancelStroke() {
+  function cancelStroke(keepPointer = false) {
     if (!stroke) return;
     const { base, pointerId } = stroke;
     stroke = null;
-    releasePointer(pointerId);
+    if (keepPointer !== true) releasePointer(pointerId);
     commitScene(base);
     clearIssue();
     status.textContent = '已取消整笔 · 地图未改变';
@@ -1026,7 +1140,7 @@
         : rockTools.includes(terrain)
         ? window.rockRules.applyStroke(base.map, [...grids.values()], false, terrain)
         : treeTools.includes(terrain)
-        ? window.treeRules.applyStroke(base.map, [...grids.values()], false, base.groundTiles, stroke.treeKind)
+        ? window.treeRules.applyStroke(base.map, [...grids.values()], false, base.moisture, stroke.treeKind)
         : roadTools.includes(terrain)
         ? window.constructionRules.applyRoadStroke(base.map, [...grids.values()], false, base.groundTiles)
         : window.elevationRules.applyStroke(base.map, { ...command, grids: [...grids.values()] }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
@@ -1036,7 +1150,7 @@
         throw new Error('高程联动会改变已有树木、岩石或采石地所在格，请先清除。');
       }
       const occupancy = requireSuccess(window.qtiledMaps.buildMapOccupancy(result.definition, base.elementsById));
-      const next = prepareScene({ ...base, map: result.definition, occupancyIndex: occupancy.index }, cameraAngle, result.tiles);
+      const next = prepareScene({ ...base, map: result.definition, occupancyIndex: occupancy.index }, cameraAngle, result.tiles ? result : undefined);
       const { Group, Polyline } = window.spritejs;
       const preview = new Group();
       const changes = result.changes || [];
@@ -1067,8 +1181,10 @@
   }
 
   container.addEventListener('pointerdown', event => {
+    if (!currentScene) return;
+    if (beginPinch(event)) return;
     suppressClick = false;
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     clearHover(true);
     const tool = get('edit-tool').value;
     if (event.button === 1 || (event.button === 0 && tool === 'pan')) {
@@ -1095,9 +1211,13 @@
     container.setPointerCapture?.(event.pointerId);
     previewStroke(event);
   });
-  container.addEventListener('pointermove', event => { movePan(event); previewStroke(event); updateHover(event); });
+  container.addEventListener('pointermove', event => {
+    if (movePinch(event)) return;
+    movePan(event); previewStroke(event); updateHover(event);
+  });
   container.addEventListener('pointerleave', () => clearHover(true));
   container.addEventListener('pointerup', event => {
+    if (endPinch(event)) return;
     if (pan && event.pointerId === pan.pointerId) {
       movePan(event);
       pan = null;
@@ -1133,7 +1253,7 @@
   get('cancel-stroke').addEventListener('click', cancelStroke);
 
   function restoreHistory(from, to) {
-    if (!currentScene || stroke || pan || !from.length) return;
+    if (!canInteract() || !from.length) return;
     try {
       const map = from[from.length - 1];
       const occupancy = requireSuccess(window.qtiledMaps.buildMapOccupancy(map, currentScene.elementsById));
@@ -1152,7 +1272,7 @@
   get('map-climate').addEventListener('change', () => {
     const climate = get('map-climate').value;
     get('map-climate').value = currentScene?.map.climate || '';
-    if (!currentScene || stroke || pan || climate === (currentScene.map.climate || '')) return;
+    if (!canInteract() || climate === (currentScene.map.climate || '')) return;
     try {
       const map = { ...currentScene.map };
       if (climate) map.climate = climate;
@@ -1168,7 +1288,7 @@
   });
 
   function readMap(json) {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     const imported = requireSuccess(window.qtiledMaps.importMapDefinition(json, currentScene.elementsById));
     const next = prepareScene({ ...currentScene, map: imported.definition, occupancyIndex: imported.index }, cameraAngle);
     undoStack.push(currentScene.map);
@@ -1182,7 +1302,7 @@
     get('new-map').setAttribute('aria-expanded', String(show));
   }
   get('new-map').addEventListener('click', () => {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     const show = get('new-map-options').hidden;
     if (show) {
       get('new-map-width').value = Math.min(64, currentScene.map.cells[0].length);
@@ -1192,7 +1312,7 @@
   });
   get('cancel-new-map').addEventListener('click', () => showNewMapOptions(false));
   get('create-map').addEventListener('click', () => {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     try {
       const elevation = presetHeight();
       const [width, height] = ['new-map-width', 'new-map-height'].map(id => Number(get(id).value));
@@ -1239,7 +1359,7 @@
   });
   get('map-file').addEventListener('change', async event => {
     const file = event.target.files[0];
-    if (!file || !currentScene || stroke || pan) return;
+    if (!file || !canInteract()) return;
     const requestId = ++loadRequestId;
     try {
       const json = await file.text();
@@ -1253,7 +1373,7 @@
     return json;
   }
   get('view-map-json').addEventListener('click', () => {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     try {
       showMapJson();
       clearIssue();
@@ -1261,7 +1381,7 @@
     } catch (error) { fail(error); }
   });
   get('save-map').addEventListener('click', () => {
-    if (!currentScene || stroke || pan) return;
+    if (!canInteract()) return;
     try {
       const json = showMapJson();
       const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
@@ -1300,6 +1420,6 @@
   });
   get('map-sample').addEventListener('change', () => reload());
   get('reload').addEventListener('click', () => reload(true));
-  updateToolHelp();
+  updateTool();
   reload();
 })();

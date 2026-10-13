@@ -35,7 +35,7 @@ async function preview(mutate = () => {}) {
   const drawImage = jest.fn();
   window.HTMLCanvasElement.prototype.getContext = () => ({ drawImage, beginPath() {}, moveTo() {}, lineTo() {}, closePath() {}, stroke() {} });
   const context = vm.createContext({ window, document: window.document, URL, Option: window.Option, fetch: window.fetch });
-  for (const file of ['terrain-sample', 'land-water-rules', 'elevation-rules', 'elevation-rendering', 'elevation-context-preview']) {
+  for (const file of ['terrain-sample', 'environment-rules', 'land-water-rules', 'elevation-rules', 'elevation-rendering', 'elevation-context-preview']) {
     vm.runInContext(read(`static/js/${file}.js`), context);
   }
   get('context-reload').click();

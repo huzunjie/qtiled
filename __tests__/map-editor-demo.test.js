@@ -170,6 +170,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/pointer.js'), context);
   vm.runInContext(read('static/js/dog-element-sample.js'), context);
   vm.runInContext(read('static/js/terrain-sample.js'), context);
+  vm.runInContext(read('static/js/environment-rules.js'), context);
   vm.runInContext(read('static/js/land-water-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rules.js'), context);
   vm.runInContext(read('static/js/construction-rules.js'), context);
@@ -1739,7 +1740,7 @@ test('滚动单位、浏览器缩放、画布外滚动及活动手势保护', as
     expectNearPoint(root.attrs.pos, [pos[0] - distance[0], pos[1] + distance[1]]);
   }
   const pos = [...root.attrs.pos];
-  for (const modifier of ['ctrlKey', 'metaKey']) expect(wheel({ deltaY: 20, [modifier]: true }).defaultPrevented).toBe(false);
+  for (const modifier of ['metaKey']) expect(wheel({ deltaY: 20, [modifier]: true }).defaultPrevented).toBe(false);
   expect(wheel({ deltaY: 20 }, p.window.document.body).defaultPrevented).toBe(false);
   expect(root.attrs.pos).toEqual(pos);
   p.get('fit-map').click();
@@ -1792,9 +1793,10 @@ test('偶数笔刷在四向缩放后与悬停一致，陆水及升高共享占�
   const before = p.save();
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle); zoom(p, 75);
-    p.get('brush-size').value = '2';
+    p.tool('water');
+    p.get('brush-size').value = '2'; p.get('brush-size').dispatchEvent(new p.window.Event('change'));
     p.get('brush-shape').value = 'square';
-    p.tool('water'); p.pointer('pointermove', [16, 16]);
+    p.pointer('pointermove', [16, 16]);
     const preview = guide(p, 'map-brush-hover').children.map(node => node.attrs.pos);
     const expected = [[16, 16], [16, 17], [17, 16], [17, 17]];
     expect(preview).toEqual(expected.map(grid => view.projectGrid(grid, { angle, tileSize: [80, 40] })));
@@ -1809,6 +1811,7 @@ test('偶数笔刷在四向缩放后与悬停一致，陆水及升高共享占�
     p.get('undo').click(); expect(p.save()).toEqual(before);
   }
   p.get('brush-size').value = '4'; p.get('brush-shape').value = 'diamond';
+  p.get('brush-size').dispatchEvent(new p.window.Event('change'));
   p.tool('raise');
   p.pointer('pointerdown', [16, 16]);
   expect(p.get('status').textContent).toContain('选中 12 格');
@@ -2304,7 +2307,7 @@ test('范围清除一次移除树道路完整民居，保留地形，取消与�
   map.cells[4][4].tree = 'ordinary-mature'; map.cells[4][5].road = 'ordinary';
   map.entities = [{ id: 'house', element: 'courtyard-house', grid: [6, 4], angle: 0 }];
   p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
-  p.get('brush-size').value = '5'; p.tool('clear');
+  p.tool('clear'); p.get('brush-size').value = '5';
   p.pointer('pointerdown', [5, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
   p.pointer('pointerdown', [5, 4]); p.pointer('pointerup', [5, 4]);
   const cleared = p.save(); expect(cleared.entities).toEqual([]);
@@ -2323,7 +2326,7 @@ test.each([[9, 4], [9, 9]])('范围清除跳采样到[%i,%i]补齐中途实体�
     { id: 'outside', element: 'courtyard-house', grid: [0, 9], angle: 0 }];
   p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
   setDisplay(p, 'flat-edit', true);
-  p.get('brush-size').value = '3'; p.tool('clear');
+  p.tool('clear'); p.get('brush-size').value = '3';
   const sweep = () => { p.pointer('pointerdown', start); p.pointer('pointermove', [x, y]); };
   sweep();
   const preview = p.layer.children[0].children.find(node => node.children.some(child => child.attrs.strokeColor === '#a56308'));
@@ -2446,7 +2449,9 @@ test('采石地独立按钮固定6×6，扩展、Ctrl局部清除、取消、历
   p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
   p.window.document.querySelector('[data-tool="quarry"]').click();
   expect(p.get('edit-tool').value).toBe('quarry');
-  expect(p.get('brush-size-control').hidden).toBe(true);
+  expect(p.get('brush-size-control').hidden).toBe(false);
+  expect(p.get('brush-size').disabled).toBe(true);
+  expect(p.get('brush-size').value).toBe('6');
   p.pointer('pointermove', [8, 8]); expect(p.get('hover-info').textContent).toContain('36');
   p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
   const first = p.save(); expect(first.cells.flat().filter(c => c.quarry)).toHaveLength(36);
@@ -2472,4 +2477,100 @@ test('采石地独立按钮固定6×6，扩展、Ctrl局部清除、取消、历
   p.tool('quarry'); p.pointer('pointerdown', [1, 1]); p.pointer('pointerup', [1, 1]);
   expect(p.get('issues').textContent).toMatch(/越界|空角/); expect(p.save()).toEqual(cleared);
   expect(p.errors).toEqual([]);
+});
+
+
+test('笔刷参数常显禁用，采石地固定6×6，切回恢复作者的菱形尺寸', async () => {
+  const p = await constructionPage();
+  p.tool('ordinary'); p.get('brush-shape').value = 'diamond'; p.get('brush-size').value = '3';
+  p.get('brush-size').dispatchEvent(new p.window.Event('change'));
+  p.tool('quarry');
+  expect(p.get('brush-size-control').hidden).toBe(false);
+  expect(p.get('brush-size').disabled).toBe(true);
+  expect(p.get('brush-shape').disabled).toBe(true);
+  expect(p.get('brush-size').value).toBe('6');
+  expect(p.get('brush-summary').textContent).toBe('固定 36 格');
+  p.tool('select'); expect(p.get('brush-summary').textContent).toBe('无需笔刷');
+  p.tool('iron'); expect(p.get('brush-size').disabled).toBe(false);
+  expect(p.get('brush-size').value).toBe('3'); expect(p.get('brush-shape').value).toBe('diamond');
+  p.window.close();
+});
+
+test('画布Ctrl滚轮锚点四向稳定，限值与滑杆同步，容器外保留默认', async () => {
+  const p = await page(); const before = p.save();
+  const wheel = (deltaY, target = p.get('map-canvas')) => {
+    const e = new p.window.WheelEvent('wheel', { ctrlKey: true, deltaY, clientX: 100, clientY: 233, bubbles: true, cancelable: true });
+    target.dispatchEvent(e); return e;
+  };
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); zoom(p, 100);
+    const root = p.layer.children[0]; const anchor = [200, 160];
+    const local = anchor.map((v, i) => (v - root.attrs.pos[i]) / root.attrs.scale[i]);
+    const calls = p.terrainResolve.mock.calls.length;
+    expect(wheel(-Math.log(2) * 100).defaultPrevented).toBe(true);
+    expectNearPoint(root.attrs.scale, [2, 2]);
+    expectNearPoint(local.map((v, i) => root.attrs.pos[i] + v * 2), anchor);
+    expect(p.get('zoom-percent').value).toBe('200'); expect(p.get('zoom-value').textContent).toBe('200%');
+    expect(p.terrainResolve).toHaveBeenCalledTimes(calls);
+  }
+  wheel(-10000); expect(p.get('zoom-percent').value).toBe('400');
+  wheel(10000); wheel(10000); expect(p.get('zoom-percent').value).toBe('10');
+  expect(wheel(-100, p.window.document.body).defaultPrevented).toBe(false);
+  expect(p.get('zoom-percent').value).toBe('10');
+  expect(p.save()).toEqual(before); expect(p.get('undo').disabled).toBe(true);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['pointerup', 'pointercancel', 'blur'])('触屏两指接管取消绘制、跟手中心，%s后不留误画或锁定', async end => {
+  const p = await constructionPage(); p.tool('water'); const before = p.save();
+  const touch = (type, id, point) => {
+    const e = new p.window.MouseEvent(type, { clientX: point[0] - 100, clientY: point[1] + 73, button: 0, bubbles: true, cancelable: true });
+    Object.defineProperties(e, { pointerId: { value: id }, pointerType: { value: 'touch' } });
+    p.get('map-canvas').dispatchEvent(e);
+  };
+  const point = p.pointAt([4, 4]); const a = [point.clientX + 100, point.clientY - 73];
+  touch('pointerdown', 11, a);
+  expect(p.get('cancel-stroke').disabled).toBe(false);
+  touch('pointerdown', 12, [a[0] + 100, a[1]]);
+  expect(p.get('cancel-stroke').disabled).toBe(true);
+  const root = p.layer.children[0], scale = root.attrs.scale[0];
+  const center = [a[0] + 50, a[1]];
+  const local = center.map((v, i) => (v - root.attrs.pos[i]) / scale);
+  touch('pointermove', 12, [a[0] + 200, a[1]]);
+  expectNearPoint(root.attrs.scale, [scale * 2, scale * 2]);
+  expectNearPoint(local.map((v, i) => root.attrs.pos[i] + v * scale * 2), [a[0] + 100, a[1]]);
+  if (end === 'blur') p.window.dispatchEvent(new p.window.Event('blur'));
+  else touch(end, 12, [a[0] + 200, a[1]]);
+  touch('pointermove', 11, [a[0] + 40, a[1]]); touch('pointerup', 11, a);
+  expect(p.save()).toEqual(before); expect(p.captured.size).toBe(0);
+  expect(p.get('controls').disabled).toBe(false);
+  p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+  expect(p.save().cells[4][4].terrain).toBe('water');
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['ordinary', 'copper', 'iron', 'quarry'])('%s修改后的干湿随取消/历史/清除/JSON和四向重建', async kind => {
+  const p = await constructionPage(); const map = p.save();
+  map.climate = 'temperate';
+  map.cells = Array.from({ length: 20 }, () => Array.from({ length: 24 }, () => ({ terrain: 'land', elevation: 8 })));
+  map.cells[8][0].terrain = 'water';
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  // 读取当前场景的格详情；取消会恢复旧场景，不会重新调用地表派生器。
+  const value = () => {
+    const previousTool = p.get('edit-tool').value;
+    p.tool('select'); p.mode('cell'); p.clickGrid([12, 8]);
+    const value = Number(p.get('cell-info').textContent.match(/环境强度: (\d+)/)[1]);
+    p.tool(previousTool);
+    return value;
+  };
+  expect(value()).toBe(100); p.tool(kind);
+  p.pointer('pointerdown', [12, 8]); p.get('cancel-stroke').click(); expect(value()).toBe(100);
+  p.pointer('pointerdown', [12, 8]); p.pointer('pointerup', [12, 8]); expect(value()).toBe(0);
+  const painted = p.save();
+  p.get('undo').click(); expect(value()).toBe(100); p.get('redo').click(); expect(value()).toBe(0);
+  for (const angle of [0, 90, 180, 270]) { p.camera(angle); expect(value()).toBe(0); }
+  p.get('map-json').value = JSON.stringify(painted); p.get('read-map').click(); expect(value()).toBe(0);
+  p.tool('clear'); p.get('brush-size').value = '9';
+  p.pointer('pointerdown', [12, 8]); p.pointer('pointerup', [12, 8]); expect(value()).toBe(100);
+  expect(p.errors).toEqual([]); p.window.close();
 });

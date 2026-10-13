@@ -37,6 +37,7 @@
 .map-demo .click-help { margin: 8px 0 0; padding: 0; color: #687383; border: 0; min-height: 82px; }
 .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
 .map-demo #map-canvas[data-tool="pan"] { cursor: grab; }
+.map-demo #map-canvas[data-tool="clear"] { cursor: url('../cursors/shovel.svg?20261014070002') 5 25, crosshair; }
 .map-demo #map-canvas[data-panning="true"] { cursor: grabbing; }
 .map-demo #cancel-stroke { position: absolute; right: 10px; bottom: 10px; z-index: 1; }
 .map-demo #cancel-stroke:disabled { visibility: hidden; }
@@ -52,8 +53,9 @@
 .map-demo #cell-info, .map-demo #entity-source { white-space: pre-line; }
 .map-demo aside h2:not(:first-child) { margin-top: 10px; padding-top: 8px; border-top: 1px solid #edf0f3; }
 .map-demo [hidden] { display: none !important; }
-/* 笔刷参数隐藏时保留占位，避免切换工具改变工具栏高度或换行。 */
-.map-demo #brush-size-control[hidden] { display: flex !important; visibility: hidden; }
+/* 笔刷参数保持可见，以禁用表达当前不可调，切换工具不改变工具栏占位。 */
+.map-demo #brush-size-control[aria-disabled="true"] { opacity: .55; }
+.map-demo #brush-size-control select:disabled { cursor: not-allowed; }
 .map-demo .workbench-header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 8px 0 12px; }
 .map-demo .menu { position: relative; }
 .map-demo .menu > summary { padding: 6px 10px; border-radius: 4px; background: white; color: #334b43; font-size: 13px; }

@@ -10,8 +10,9 @@ const elements = { ...json('terrain-samples/emperor-land-water/elements.json'),
 const rules = json('terrain-samples/emperor-land-water/rules.json');
 const heights = json('terrain-samples/emperor-elevation/rules.json');
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
-['terrain-sample', 'land-water-rules', 'elevation-rules', 'tree-rules'].forEach(name => vm.runInContext(read(`demo/static/js/${name}.js`), context));
+['terrain-sample', 'environment-rules', 'land-water-rules', 'elevation-rules', 'tree-rules'].forEach(name => vm.runInContext(read(`demo/static/js/${name}.js`), context));
 const { landWaterRules: ground, elevationRules: elevation, treeRules: trees } = context.window;
+const environment = map => context.window.environmentRules.deriveMoisture(map.cells, map.climate);
 const kind = 'ordinary-mature';
 const makeMap = (size = 13) => ({ version: 2, id: 'trees', tileSize: [80, 40], elevationStep: 40, climate: 'arid',
   cells: Array.from({ length: size }, () => Array.from({ length: size }, () => ({ terrain: 'land', elevation: 8 }))), entities: [] });
@@ -32,7 +33,7 @@ test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump']
     expect(resolve(restored, angle).issues).toEqual([]);
     expect(resolve(restored, angle).tiles).toEqual(resolve(map).tiles);
   });
-  const erased = trees.applyStroke(map, [[6, 6]], true, expected).definition;
+  const erased = trees.applyStroke(map, [[6, 6]], true, environment(map)).definition;
   expect(tiles(erased)).toEqual(before);
   expect(erased.cells[6][6]).toEqual({ terrain: 'land', elevation: 8 });
   expect(map.cells[6][6].tree).toBe(kind);
@@ -94,7 +95,7 @@ test('树类别不接受数组或对象隐式转成名称，原型键也不能�
   for (const kind of [['ordinary-mature'], {}, null, 'toString', '__proto__']) {
     const map = makeMap();
     const original = JSON.stringify(map);
-    expect(trees.applyStroke(map, [[6, 6]], false, tiles(map), kind).issues[0].code).toBe('unsupported-tree');
+    expect(trees.applyStroke(map, [[6, 6]], false, environment(map), kind).issues[0].code).toBe('unsupported-tree');
     expect(JSON.stringify(map)).toBe(original);
     map.cells[6][6].tree = kind;
     expect(elevation.resolve(map, elements, rules, heights, 0).issues[0].code).toBe('invalid-tree');
@@ -104,13 +105,13 @@ test('树类别不接受数组或对象隐式转成名称，原型键也不能�
 test('整笔冻结已有草地资格；无效尾格不部分修改；重复与擦空格无变化', () => {
   const map = makeMap(); map.cells[6][0].terrain = 'water';
   const original = JSON.stringify(map);
-  expect(trees.applyStroke(map, [[10, 6], [11, 6]], false, tiles(map)).issues[0].code).toBe('tree-grass');
-  expect(trees.applyStroke(map, [[2, 6], [-1, 6]], false, tiles(map)).issues[0].code).toBe('tree-outside');
+  expect(trees.applyStroke(map, [[10, 6], [11, 6]], false, environment(map)).issues[0].code).toBe('tree-grass');
+  expect(trees.applyStroke(map, [[2, 6], [-1, 6]], false, environment(map)).issues[0].code).toBe('tree-outside');
   expect(JSON.stringify(map)).toBe(original);
-  const placed = trees.applyStroke(map, [[10, 6], [10, 6]], false, tiles(map)).definition;
+  const placed = trees.applyStroke(map, [[10, 6], [10, 6]], false, environment(map)).definition;
   expect(placed.cells[6][10].tree).toBe(kind);
-  expect(trees.applyStroke(placed, [[10, 6]], false, tiles(placed)).definition).toEqual(placed);
-  expect(trees.applyStroke(map, [[3, 3]], true, tiles(map)).definition).toEqual(map);
+  expect(trees.applyStroke(placed, [[10, 6]], false, environment(placed)).definition).toEqual(placed);
+  expect(trees.applyStroke(map, [[3, 3]], true, environment(map)).definition).toEqual(map);
 });
 
 test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'])('%s水路实体冲突和非法事实拒绝；未明气候不能自选', kind => {
@@ -157,8 +158,8 @@ test.each([['ordinary-mature', 927], ['bamboo-mature', 945]])('%s十八外观组
   const expected = resolve(map).tiles;
   const restored = maps.importMapDefinition(maps.exportMapDefinition(map, elements).json, elements).definition;
   [0, 90, 180, 270].forEach(angle => expect(resolve(restored, angle).tiles).toEqual(expected));
-  const erased = trees.applyStroke(map, [[2, 2]], true, tiles(map)).definition;
-  const repainted = trees.applyStroke(erased, [[2, 2]], false, tiles(erased), kind).definition;
+  const erased = trees.applyStroke(map, [[2, 2]], true, environment(map)).definition;
+  const repainted = trees.applyStroke(erased, [[2, 2]], false, environment(erased), kind).definition;
   expect(resolve(repainted).tiles).toEqual(expected);
   expect(new Set(expected.map(tile => tile.variant)).size).toBeGreaterThan(1);
 });
@@ -175,10 +176,10 @@ test('混种八邻按共同树标志包围；类别切换不改环境；异类�
   delete map.cells[1][2].tree;
   expect(at(resolve(map).tiles, 2, 2).element).toBe('emperor-tree-945');
   const before = JSON.stringify(map);
-  expect(trees.applyStroke(map, [[2, 1], [2, 2]], false, tiles(map)).issues[0].code).toBe('tree-occupied');
-  expect(trees.applyStroke(map, [[2, 1], [3, 3]], false, tiles(map), 'bamboo-mature').issues[0].code).toBe('tree-occupied');
-  expect(trees.applyStroke(map, [[2, 2]], false, tiles(map), 'bamboo-mature').definition).toEqual(map);
-  expect(trees.applyStroke(map, [[2, 1]], false, tiles(map), 'unknown').issues[0].code).toBe('unsupported-tree');
+  expect(trees.applyStroke(map, [[2, 1], [2, 2]], false, environment(map)).issues[0].code).toBe('tree-occupied');
+  expect(trees.applyStroke(map, [[2, 1], [3, 3]], false, environment(map), 'bamboo-mature').issues[0].code).toBe('tree-occupied');
+  expect(trees.applyStroke(map, [[2, 2]], false, environment(map), 'bamboo-mature').definition).toEqual(map);
+  expect(trees.applyStroke(map, [[2, 1]], false, environment(map), 'unknown').issues[0].code).toBe('unsupported-tree');
   expect(JSON.stringify(map)).toBe(before);
 });
 
@@ -201,14 +202,14 @@ test.each(['ordinary-stump', 'bamboo-stump'])('%s全部九图稳定，不按邻�
     expect(at(resolve(map).tiles, 2, 2).element).toBe(`emperor-tree-${base}`);
     map.cells[1][1].tree = kind;
     const before = JSON.stringify(map);
-    expect(trees.applyStroke(map, [[0, 0], [2, 2]], false, tiles(map), kind).issues[0].code).toBe('tree-occupied');
+    expect(trees.applyStroke(map, [[0, 0], [2, 2]], false, environment(map), kind).issues[0].code).toBe('tree-occupied');
     expect(JSON.stringify(map)).toBe(before);
   }
   map.cells[2][2].tree = kind; delete map.cells[2][2].terrainVariant;
   const expected = resolve(map).tiles;
   const restored = maps.importMapDefinition(maps.exportMapDefinition(map, elements).json, elements).definition;
   for (const angle of [0, 90, 180, 270]) expect(resolve(restored, angle).tiles).toEqual(expected);
-  const erased = trees.applyStroke(map, [[2, 2]], true, tiles(map)).definition;
-  const repainted = trees.applyStroke(erased, [[2, 2]], false, tiles(erased), kind).definition;
+  const erased = trees.applyStroke(map, [[2, 2]], true, environment(map)).definition;
+  const repainted = trees.applyStroke(erased, [[2, 2]], false, environment(erased), kind).definition;
   expect(resolve(repainted).tiles).toEqual(expected);
 });

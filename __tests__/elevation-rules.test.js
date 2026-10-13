@@ -15,6 +15,7 @@ const elements = {
 };
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
 vm.runInContext(read('demo/static/js/terrain-sample.js'), context);
+vm.runInContext(read('demo/static/js/environment-rules.js'), context);
 vm.runInContext(read('demo/static/js/land-water-rules.js'), context);
 vm.runInContext(read('demo/static/js/elevation-rules.js'), context);
 const resolve = (map, angle = 0, library = elements, rules = heightRules) => context.window.elevationRules.resolve(map, library, landRules, rules, angle);

@@ -9,6 +9,7 @@ const rules = JSON.parse(read(`${samplePath}rules.json`));
 const elements = JSON.parse(read(`${samplePath}elements.json`));
 const context = vm.createContext({ window: { qtiled: { pathFinding } } });
 vm.runInContext(read('demo/static/js/terrain-sample.js'), context);
+vm.runInContext(read('demo/static/js/environment-rules.js'), context);
 vm.runInContext(read('demo/static/js/land-water-rules.js'), context);
 const { resolve, applyStroke } = context.window.landWaterRules;
 const angles = [0, 90, 180, 270];
@@ -416,4 +417,77 @@ test('气候规则实际调用基础距离场，仅传真实水源；旧图不�
     delete map.climate;
     expect(resolve(map, elements, rules).issues).toEqual([]);
   } finally { context.window.qtiled = base; }
+});
+
+
+describe('原作岩石与采石地环境修正', () => {
+  const make = (climate = 'temperate') => {
+    const map = { version: 1, id: 'rock-moisture', tileSize: [80, 40], climate,
+      cells: Array.from({ length: 17 }, () => Array.from({ length: 23 }, () => ({ terrain: 'land', elevation: 0 }))), entities: [] };
+    map.cells[8][0].terrain = 'water';
+    return map;
+  };
+  const setRock = (map, x, y, kind) => Object.assign(map.cells[y][x], kind === 'quarry' ? { quarry: true } : { rock: kind });
+  const field = map => resolve(map, elements, rules).tiles;
+  const at = (tiles, x, y) => tiles.find(tile => tile.grid[0] === x && tile.grid[1] === y);
+
+  test.each(['ordinary', 'copper', 'iron', 'quarry'])('%s在水距5格跳过、6格启动，距离按八邻而非曼哈顿', kind => {
+    for (const [x, y, expected] of [[5, 8, 100], [6, 8, 0], [5, 13, 100], [6, 14, 0]]) {
+      const map = make(); setRock(map, x, y, kind);
+      expect(at(field(map), x, y).moisture).toBe(expected);
+    }
+  });
+
+  test.each(['ordinary', 'copper', 'iron', 'quarry'])('%s四邻上限0/10/30/50/70/90，非累加且外观/存读不改结果', kind => {
+    const map = make(); setRock(map, 10, 8, kind);
+    const saved = JSON.stringify(map);
+    const result = field(map);
+    [0, 10, 30, 50, 70, 90, 100].forEach((value, d) => expect(at(result, 10 + d, 8).moisture).toBe(value));
+    expect(at(result, 11, 9).moisture).toBe(30);
+    expect(at(result, 10, 8).grassGrade).toBeNull();
+    expect(at(result, 11, 8).grassGrade).toBe(0);
+    [0, 90, 180, 270].forEach(angle => {
+      const rotated = resolve(JSON.parse(saved), elements, rules, angle).tiles;
+      expect(rotated.map(tile => [tile.grid, tile.moisture, tile.grassGrade])).toEqual(result.map(tile => [tile.grid, tile.moisture, tile.grassGrade]));
+      const landOnly = tiles => tiles.filter(tile => map.cells[tile.grid[1]][tile.grid[0]].terrain === 'land');
+      expect(landOnly(rotated)).toEqual(landOnly(result));
+    });
+    expect(JSON.stringify(map)).toBe(saved);
+    expect(saved).not.toMatch(/"(?:moisture|grassGrade)":/);
+    delete map.cells[8][10].rock; delete map.cells[8][10].quarry;
+    expect(at(field(map), 10, 8).moisture).toBe(100);
+  });
+
+  test('低值保留且等值继续；干旱/温带/湿润按各自基础强度修正', () => {
+    for (const climate of ['arid', 'temperate', 'humid']) {
+      const map = make(climate); setRock(map, 9, 8, 'ordinary');
+      const result = field(map);
+      expect(at(result, 9, 8).moisture).toBe(0);
+      expect(at(result, 10, 8).moisture).toBe(10);
+      expect(at(result, 11, 8).moisture).toBe(climate === 'arid' ? 0 : 30);
+      expect(at(result, 7, 8).moisture).toBe(30);
+    }
+  });
+
+  test('相邻异类岩石与采石格逐格限制；null可传播但不作来源，边界不跨行', () => {
+    const map = make(); setRock(map, 10, 8, 'ordinary'); setRock(map, 12, 8, 'quarry');
+    expect(at(field(map), 11, 8).moisture).toBe(10);
+    map.cells[8][11] = null;
+    expect(at(field(map), 13, 8).moisture).toBe(10);
+    const edge = make(); setRock(edge, 22, 0, 'iron');
+    expect(at(field(edge), 0, 1).moisture).toBe(100);
+  });
+
+  test('岩石在树源之前；树补回岩石区，原本干地不能因后加树而倒推干燥源', () => {
+    const map = make(); setRock(map, 10, 8, 'copper'); map.cells[8][12].tree = 'bamboo-stump';
+    expect(at(field(map), 10, 8).moisture).toBe(30);
+    expect(at(field(map), 12, 8).moisture).toBe(50);
+    const dry = make('arid'); setRock(dry, 17, 8, 'iron'); dry.cells[8][18].tree = 'ordinary-mature';
+    expect(at(field(dry), 17, 8).moisture).toBe(40);
+    dry.cells[8][0].terrain = 'land';
+    delete dry.cells[8][18].tree;
+    expect(field(dry).every(tile => tile.moisture === 0)).toBe(true);
+    delete dry.climate;
+    expect(field(dry).every(tile => tile.moisture === undefined)).toBe(true);
+  });
 });

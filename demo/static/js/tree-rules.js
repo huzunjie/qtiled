@@ -43,9 +43,8 @@
     return { tiles: issues.length ? null : result, issues };
   }
 
-  function applyStroke(map, grids, erase, baseTiles, kind = 'ordinary-mature') {
+  function applyStroke(map, grids, erase, moisture, kind = 'ordinary-mature') {
     if (!erase && !getTree(kind)) return { definition: null, issues: [issue('$treeKind', 'unsupported-tree', '请选择普通树、竹类或其残株。')] };
-    const tiles = new Map(baseTiles.map(tile => [tile.grid.join(','), tile]));
     const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
     for (const [x, y] of grids) {
       const cell = cells[y]?.[x];
@@ -55,7 +54,7 @@
       else if (cell.tree !== kind) {
         if (cell.tree !== undefined) return { definition: null, issues: [issue(path, 'tree-occupied', '已有其他类别树木，请先清除再绘制。')] };
         // 整笔基图的草地资格固定，不能靠候选树自身增湿批准下一落点。
-        if (!map.climate || !(tiles.get(`${x},${y}`)?.moisture > 0)) {
+        if (!map.climate || !(moisture?.[y]?.[x] > 0)) {
           return { definition: null, issues: [issue(path, 'tree-grass', '新增树需要已有草地；请先选择气候并在有草的平地落笔。')] };
         }
         cell.tree = kind;

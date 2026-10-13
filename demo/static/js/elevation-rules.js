@@ -199,7 +199,7 @@
         });
       }
     }
-    return issues.length ? failed(issues) : { tiles, issues };
+    return issues.length ? failed(issues) : { tiles, moisture: flat.moisture, issues };
   }
 
   // 原表71～74对应67～70坡道；0x476290按世界方向检查左右半坡，
