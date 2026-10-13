@@ -174,6 +174,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/elevation-rules.js'), context);
   vm.runInContext(read('static/js/construction-rules.js'), context);
   vm.runInContext(read('static/js/tree-rules.js'), context);
+  vm.runInContext(read('static/js/rock-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rendering.js'), context);
   const terrainResolve = jest.fn(window.landWaterRules.resolve);
   window.landWaterRules.resolve = terrainResolve;
@@ -185,8 +186,8 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const result = () => resolve.mock.results[resolve.mock.results.length - 1].value.entities;
   const descendants = node => node.children.flatMap(child => [child, ...descendants(child)]);
   const contentLayer = () => contentLayers.find(item => item.canvas === layer.children[0]?.children[0].attrs.texture);
-  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
-  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file));
+  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
+  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file));
   const pointAt = grid => {
     const [map, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
     const local = view.projectGrid(grid, { ...currentView, tileSize: map.tileSize, originPixel: [0, 0] });
@@ -1040,9 +1041,9 @@ test('完整地表与实体共同按深度排列，前方地表不固定压在�
   const p = await page();
   const content = p.contentLayer().children[0];
   const rendered = content.children.map(holder => holder.children[0].children[0]);
-  const dog = rendered.findIndex(node => !['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
+  const dog = rendered.findIndex(node => !['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
   expect(dog).toBeGreaterThan(0);
-  expect(rendered.slice(dog + 1).some(node => ['atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
+  expect(rendered.slice(dog + 1).some(node => ['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
 });
 
 test.each([true, false])('地图缓存恢复保留原播放状态（播放=%s）、累计时间和尺寸监听', async playing => {
@@ -1101,8 +1102,8 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(14);
-  expect(initial['atlas.png']).toBe('./static/terrain-samples/emperor-land-water/atlas.png');
+  expect(Object.keys(initial)).toHaveLength(15);
+  expect(initial['water-shore-atlas.png']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.png');
   expect(new URL(initial['trees-atlas.png'], 'http://localhost/').searchParams.get('v')).toBe('20261014001000');
   expect(Object.values(initial).every(url => !url.includes('reload='))).toBe(true);
   const switchSample = async sample => {
@@ -1539,7 +1540,7 @@ test('真实素材覆盖旧台地细缝，新增绘制部件的alpha命中与所
   p.get('read-map').click();
   p.mode('cell');
   const pixels = {};
-  for (const [source, directory] of [['atlas.png', 'emperor-land-water'], ['bare-land-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
+  for (const [source, directory] of [['water-shore-atlas.png', 'emperor-land-water'], ['bare-land-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
     pixels[source] = pngPixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
   }
   for (const angle of [0, 90, 180, 270]) {
@@ -1627,7 +1628,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -2354,5 +2355,77 @@ test('清除视觉区分橙色有效、灰色空地与红色无效，拖动提�
   p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
   p.pointer('pointerdown', [8, 8]); expect(p.get('status').textContent).toContain('无可清除内容');
   p.pointer('pointerup', [8, 8]); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('岩石三类改画、冲突拒绝、取消与一次历史，四向导入保持事实', async () => {
+  const p = await constructionPage(); const before = p.save();
+  p.tool('rock');
+  for (const kind of ['ordinary', 'copper', 'iron']) {
+    p.get('rock-kind').value = kind;
+    p.pointer('pointerdown', [4, 4]); p.pointer('pointermove', [7, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(before);
+    p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [7, 4]);
+    const painted = p.save(); expect(painted.cells[4].slice(4, 8).map(c => c.rock)).toEqual(Array(4).fill(kind));
+    for (const tool of ['water', 'road', 'raise', 'raise-two', 'lower', 'lower-two', 'tree']) {
+      p.tool(tool); p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]); expect(p.save()).toEqual(painted);
+    }
+    p.tool('building'); p.clickGrid([4, 4]); expect(p.save()).toEqual(painted);
+    for (const angle of [0, 90, 180, 270]) { p.camera(angle); expect(p.save()).toEqual(painted); }
+    p.get('undo').click(); expect(p.save()).toEqual(before);
+    p.get('redo').click(); expect(p.save()).toEqual(painted);
+    p.get('undo').click(); p.camera(0); p.tool('rock');
+  }
+  p.get('rock-kind').value = 'ordinary'; p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+  p.get('rock-kind').value = 'copper'; p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+  expect(p.save().cells[4][4].rock).toBe('copper'); p.get('undo').click(); expect(p.save().cells[4][4].rock).toBe('ordinary');
+  const valid = p.save(); const invalid = JSON.parse(JSON.stringify(valid)); invalid.cells[4][4].rock = 'gold';
+  p.get('map-json').value = JSON.stringify(invalid); p.get('read-map').click(); expect(p.save()).toEqual(valid);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('岩石混合清除包含补间格，橙灰提示及撤销重做保持完整候选', async () => {
+  const p = await constructionPage(); const map = p.save(); map.climate = 'arid';
+  map.cells[4][3].rock = 'ordinary'; map.cells[4][4].rock = 'copper'; map.cells[4][5].rock = 'iron';
+  map.cells[4][6].tree = 'bamboo-mature'; map.cells[4][7].road = 'ordinary';
+  map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); setDisplay(p, 'flat-edit', true);
+  p.tool('clear'); p.pointer('pointermove', [4, 4]); expect(p.get('hover-info').textContent).toContain('待清除');
+  p.get('brush-size').value = '3';
+  p.pointer('pointerdown', [2, 4]); p.pointer('pointerup', [9, 4]);
+  const cleared = p.save(); expect(cleared.entities).toEqual([]);
+  expect(cleared.cells.flat().some(c => c.rock || c.tree || c.road)).toBe(false);
+  p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(cleared);
+  p.pointer('pointermove', [4, 4]); expect(p.get('hover-info').textContent).toContain('无可清除内容');
+  p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]); p.get('undo').click(); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each([2, 3])('%s格方块四镜头可逐格命中清除，青框只提示重新分块，取消和历史保持', async size => {
+  const p = await constructionPage(); const map = p.save();
+  setDisplay(p, 'flat-edit', false);
+  for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) Object.assign(map.cells[y][x], { rock: 'copper', terrainVariant: 0 });
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  const rocks = () => p.sprites().filter(node => node.attrs.texture.file === 'rocks-atlas.png');
+  expect(rocks()).toHaveLength(1);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); p.tool('clear');
+    for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) {
+      p.pointer('pointermove', [x, y]);
+      const hover = guide(p, 'map-brush-hover');
+      expect(hover.children.filter(node => node.attrs.strokeColor === '#a56308')).toHaveLength(1);
+      expect(hover.children.filter(node => node.attrs.strokeColor === '#168b92')).toHaveLength(size * size - 1);
+      p.pointer('pointerdown', [x, y]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+      p.pointer('pointerdown', [x, y]); p.pointer('pointerup', [x, y]);
+      const erased = p.save(); expect(erased.cells[y][x].rock).toBeUndefined();
+      expect(erased.cells.flat().filter(cell => cell.rock)).toHaveLength(size * size - 1);
+      p.get('undo').click(); expect(p.save()).toEqual(map); expect(rocks()).toHaveLength(1);
+      p.get('redo').click(); expect(p.save()).toEqual(erased);
+      p.get('undo').click();
+    }
+  }
+  p.tool('rock'); p.get('rock-kind').value = 'iron';
+  p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+  expect(p.save().cells[4][4].rock).toBe('iron');
+  expect(p.save().cells.flat().filter(cell => cell.rock === 'copper')).toHaveLength(size * size - 1);
   expect(p.errors).toEqual([]); p.window.close();
 });

@@ -11,7 +11,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           0,
@@ -24,7 +24,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           0,
@@ -37,7 +37,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           0,
@@ -50,7 +50,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           0,
@@ -76,7 +76,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           0,
@@ -89,7 +89,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           0,
@@ -102,7 +102,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           0,
@@ -115,7 +115,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           0,
@@ -141,7 +141,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           0,
@@ -154,7 +154,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           0,
@@ -167,7 +167,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           0,
@@ -180,7 +180,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           0,
@@ -206,7 +206,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           0,
@@ -219,7 +219,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           0,
@@ -232,7 +232,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           0,
@@ -245,7 +245,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           0,
@@ -271,7 +271,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           0,
@@ -284,7 +284,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           0,
@@ -297,7 +297,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           0,
@@ -310,7 +310,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           0,
@@ -336,7 +336,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           0,
@@ -349,7 +349,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           0,
@@ -362,7 +362,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           0,
@@ -375,7 +375,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           0,
@@ -401,7 +401,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           0,
@@ -414,7 +414,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           0,
@@ -427,7 +427,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           0,
@@ -440,7 +440,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           0,
@@ -466,7 +466,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           0,
@@ -479,7 +479,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           0,
@@ -492,7 +492,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           0,
@@ -505,7 +505,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           0,
@@ -531,7 +531,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           60,
@@ -544,7 +544,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           60,
@@ -557,7 +557,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           60,
@@ -570,7 +570,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           60,
@@ -596,7 +596,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           60,
@@ -609,7 +609,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           60,
@@ -622,7 +622,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           60,
@@ -635,7 +635,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           60,
@@ -661,7 +661,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           60,
@@ -674,7 +674,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           60,
@@ -687,7 +687,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           60,
@@ -700,7 +700,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           60,
@@ -726,7 +726,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           60,
@@ -739,7 +739,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           60,
@@ -752,7 +752,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           60,
@@ -765,7 +765,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           60,
@@ -791,7 +791,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           60,
@@ -804,7 +804,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           60,
@@ -817,7 +817,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           60,
@@ -830,7 +830,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           60,
@@ -856,7 +856,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           60,
@@ -869,7 +869,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           60,
@@ -882,7 +882,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           60,
@@ -895,7 +895,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           60,
@@ -921,7 +921,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           60,
@@ -934,7 +934,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           60,
@@ -947,7 +947,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           60,
@@ -960,7 +960,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           60,
@@ -986,7 +986,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           60,
@@ -999,7 +999,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           60,
@@ -1012,7 +1012,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           60,
@@ -1025,7 +1025,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           60,
@@ -1051,7 +1051,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           120,
@@ -1064,7 +1064,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           120,
@@ -1077,7 +1077,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           120,
@@ -1090,7 +1090,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           120,
@@ -1116,7 +1116,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           120,
@@ -1129,7 +1129,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           120,
@@ -1142,7 +1142,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           120,
@@ -1155,7 +1155,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           120,
@@ -1181,7 +1181,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           120,
@@ -1194,7 +1194,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           120,
@@ -1207,7 +1207,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           120,
@@ -1220,7 +1220,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           120,
@@ -1246,7 +1246,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           120,
@@ -1259,7 +1259,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           120,
@@ -1272,7 +1272,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           120,
@@ -1285,7 +1285,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           120,
@@ -1311,7 +1311,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           120,
@@ -1324,7 +1324,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           120,
@@ -1337,7 +1337,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           120,
@@ -1350,7 +1350,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           120,
@@ -1376,7 +1376,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           120,
@@ -1389,7 +1389,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           120,
@@ -1402,7 +1402,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           120,
@@ -1415,7 +1415,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           120,
@@ -1441,7 +1441,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           120,
@@ -1454,7 +1454,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           120,
@@ -1467,7 +1467,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           120,
@@ -1480,7 +1480,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           120,
@@ -1506,7 +1506,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           120,
@@ -1519,7 +1519,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           120,
@@ -1532,7 +1532,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           120,
@@ -1545,7 +1545,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           120,
@@ -1571,7 +1571,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           180,
@@ -1584,7 +1584,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           180,
@@ -1597,7 +1597,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           180,
@@ -1610,7 +1610,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           180,
@@ -1636,7 +1636,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           180,
@@ -1649,7 +1649,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           180,
@@ -1662,7 +1662,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           180,
@@ -1675,7 +1675,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           180,
@@ -1701,7 +1701,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           180,
@@ -1714,7 +1714,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           180,
@@ -1727,7 +1727,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           180,
@@ -1740,7 +1740,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           180,
@@ -1766,7 +1766,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           180,
@@ -1779,7 +1779,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           180,
@@ -1792,7 +1792,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           180,
@@ -1805,7 +1805,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           180,
@@ -1831,7 +1831,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           180,
@@ -1844,7 +1844,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           180,
@@ -1857,7 +1857,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           180,
@@ -1870,7 +1870,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           180,
@@ -1896,7 +1896,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           180,
@@ -1909,7 +1909,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           180,
@@ -1922,7 +1922,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           180,
@@ -1935,7 +1935,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           180,
@@ -1961,7 +1961,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           180,
@@ -1974,7 +1974,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           180,
@@ -1987,7 +1987,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           180,
@@ -2000,7 +2000,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           180,
@@ -2026,7 +2026,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           180,
@@ -2039,7 +2039,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           180,
@@ -2052,7 +2052,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           180,
@@ -2065,7 +2065,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           180,
@@ -2091,7 +2091,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           240,
@@ -2104,7 +2104,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           240,
@@ -2117,7 +2117,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           240,
@@ -2130,7 +2130,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           240,
@@ -2156,7 +2156,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           240,
@@ -2169,7 +2169,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           240,
@@ -2182,7 +2182,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           240,
@@ -2195,7 +2195,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           240,
@@ -2221,7 +2221,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           240,
@@ -2234,7 +2234,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           240,
@@ -2247,7 +2247,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           240,
@@ -2260,7 +2260,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           240,
@@ -2286,7 +2286,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           240,
@@ -2299,7 +2299,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           240,
@@ -2312,7 +2312,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           240,
@@ -2325,7 +2325,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           240,
@@ -2351,7 +2351,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           240,
@@ -2364,7 +2364,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           240,
@@ -2377,7 +2377,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           240,
@@ -2390,7 +2390,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           240,
@@ -2416,7 +2416,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           240,
@@ -2429,7 +2429,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           240,
@@ -2442,7 +2442,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           240,
@@ -2455,7 +2455,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           240,
@@ -2481,7 +2481,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           240,
@@ -2494,7 +2494,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           240,
@@ -2507,7 +2507,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           240,
@@ -2520,7 +2520,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           240,
@@ -2546,7 +2546,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           240,
@@ -2559,7 +2559,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           240,
@@ -2572,7 +2572,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           240,
@@ -2585,7 +2585,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           240,
@@ -2611,7 +2611,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           300,
@@ -2624,7 +2624,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           300,
@@ -2637,7 +2637,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           300,
@@ -2650,7 +2650,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           300,
@@ -2676,7 +2676,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           300,
@@ -2689,7 +2689,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           300,
@@ -2702,7 +2702,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           300,
@@ -2715,7 +2715,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           300,
@@ -2741,7 +2741,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           300,
@@ -2754,7 +2754,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           300,
@@ -2767,7 +2767,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           300,
@@ -2780,7 +2780,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           300,
@@ -2806,7 +2806,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           300,
@@ -2819,7 +2819,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           300,
@@ -2832,7 +2832,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           300,
@@ -2845,7 +2845,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           300,
@@ -2871,7 +2871,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           300,
@@ -2884,7 +2884,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           300,
@@ -2897,7 +2897,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           300,
@@ -2910,7 +2910,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           300,
@@ -2936,7 +2936,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           300,
@@ -2949,7 +2949,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           300,
@@ -2962,7 +2962,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           300,
@@ -2975,7 +2975,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           300,
@@ -3001,7 +3001,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           300,
@@ -3014,7 +3014,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           300,
@@ -3027,7 +3027,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           300,
@@ -3040,7 +3040,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           300,
@@ -3066,7 +3066,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           300,
@@ -3079,7 +3079,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           300,
@@ -3092,7 +3092,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           300,
@@ -3105,7 +3105,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           300,
@@ -3131,7 +3131,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           360,
@@ -3144,7 +3144,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           360,
@@ -3157,7 +3157,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           360,
@@ -3170,7 +3170,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           360,
@@ -3196,7 +3196,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           360,
@@ -3209,7 +3209,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           360,
@@ -3222,7 +3222,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           360,
@@ -3235,7 +3235,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           360,
@@ -3261,7 +3261,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           360,
@@ -3274,7 +3274,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           360,
@@ -3287,7 +3287,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           360,
@@ -3300,7 +3300,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           360,
@@ -3326,7 +3326,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           360,
@@ -3339,7 +3339,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           360,
@@ -3352,7 +3352,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           360,
@@ -3365,7 +3365,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           360,
@@ -3391,7 +3391,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           360,
@@ -3404,7 +3404,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           360,
@@ -3417,7 +3417,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           360,
@@ -3430,7 +3430,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           360,
@@ -3456,7 +3456,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           360,
@@ -3469,7 +3469,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           360,
@@ -3482,7 +3482,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           360,
@@ -3495,7 +3495,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           360,
@@ -3521,7 +3521,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           360,
@@ -3534,7 +3534,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           360,
@@ -3547,7 +3547,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           360,
@@ -3560,7 +3560,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           360,
@@ -3586,7 +3586,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           360,
@@ -3599,7 +3599,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           360,
@@ -3612,7 +3612,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           360,
@@ -3625,7 +3625,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           360,
@@ -3651,7 +3651,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           420,
@@ -3664,7 +3664,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           420,
@@ -3677,7 +3677,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           420,
@@ -3690,7 +3690,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           420,
@@ -3716,7 +3716,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           420,
@@ -3729,7 +3729,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           420,
@@ -3742,7 +3742,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           420,
@@ -3755,7 +3755,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           420,
@@ -3781,7 +3781,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           420,
@@ -3794,7 +3794,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           420,
@@ -3807,7 +3807,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           420,
@@ -3820,7 +3820,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           420,
@@ -3846,7 +3846,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           420,
@@ -3859,7 +3859,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           420,
@@ -3872,7 +3872,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           420,
@@ -3885,7 +3885,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           420,
@@ -3911,7 +3911,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           420,
@@ -3924,7 +3924,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           420,
@@ -3937,7 +3937,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           420,
@@ -3950,7 +3950,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           420,
@@ -3976,7 +3976,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           420,
@@ -3989,7 +3989,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           420,
@@ -4002,7 +4002,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           420,
@@ -4015,7 +4015,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           420,
@@ -4041,7 +4041,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           420,
@@ -4054,7 +4054,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           420,
@@ -4067,7 +4067,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           420,
@@ -4080,7 +4080,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           420,
@@ -4106,7 +4106,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           420,
@@ -4119,7 +4119,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           420,
@@ -4132,7 +4132,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           420,
@@ -4145,7 +4145,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           420,
@@ -4171,7 +4171,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           480,
@@ -4184,7 +4184,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           480,
@@ -4197,7 +4197,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           480,
@@ -4210,7 +4210,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           480,
@@ -4236,7 +4236,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           480,
@@ -4249,7 +4249,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           480,
@@ -4262,7 +4262,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           480,
@@ -4275,7 +4275,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           480,
@@ -4301,7 +4301,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           480,
@@ -4314,7 +4314,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           480,
@@ -4327,7 +4327,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           480,
@@ -4340,7 +4340,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           480,
@@ -4366,7 +4366,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           480,
@@ -4379,7 +4379,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           480,
@@ -4392,7 +4392,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           480,
@@ -4405,7 +4405,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           480,
@@ -4431,7 +4431,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           480,
@@ -4444,7 +4444,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           480,
@@ -4457,7 +4457,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           480,
@@ -4470,7 +4470,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           480,
@@ -4496,7 +4496,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           480,
@@ -4509,7 +4509,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           480,
@@ -4522,7 +4522,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           480,
@@ -4535,7 +4535,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           480,
@@ -4561,7 +4561,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           480,
@@ -4574,7 +4574,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           480,
@@ -4587,7 +4587,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           480,
@@ -4600,7 +4600,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           480,
@@ -4626,7 +4626,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           480,
@@ -4639,7 +4639,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           480,
@@ -4652,7 +4652,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           480,
@@ -4665,7 +4665,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           480,
@@ -4691,7 +4691,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           540,
@@ -4704,7 +4704,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           540,
@@ -4717,7 +4717,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           540,
@@ -4730,7 +4730,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           540,
@@ -4756,7 +4756,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           540,
@@ -4769,7 +4769,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           540,
@@ -4782,7 +4782,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           540,
@@ -4795,7 +4795,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           540,
@@ -4821,7 +4821,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           540,
@@ -4834,7 +4834,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           540,
@@ -4847,7 +4847,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           540,
@@ -4860,7 +4860,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           540,
@@ -4886,7 +4886,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           540,
@@ -4899,7 +4899,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           540,
@@ -4912,7 +4912,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           540,
@@ -4925,7 +4925,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           540,
@@ -4951,7 +4951,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           540,
@@ -4964,7 +4964,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           540,
@@ -4977,7 +4977,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           540,
@@ -4990,7 +4990,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           540,
@@ -5016,7 +5016,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           540,
@@ -5029,7 +5029,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           540,
@@ -5042,7 +5042,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           540,
@@ -5055,7 +5055,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           540,
@@ -5081,7 +5081,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           540,
@@ -5094,7 +5094,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           540,
@@ -5107,7 +5107,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           540,
@@ -5120,7 +5120,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           540,
@@ -5146,7 +5146,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           540,
@@ -5159,7 +5159,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           540,
@@ -5172,7 +5172,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           540,
@@ -5185,7 +5185,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           540,
@@ -5211,7 +5211,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           600,
@@ -5224,7 +5224,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           600,
@@ -5237,7 +5237,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           600,
@@ -5250,7 +5250,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           600,
@@ -5276,7 +5276,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           600,
@@ -5289,7 +5289,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           600,
@@ -5302,7 +5302,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           600,
@@ -5315,7 +5315,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           600,
@@ -5341,7 +5341,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           600,
@@ -5354,7 +5354,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           600,
@@ -5367,7 +5367,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           600,
@@ -5380,7 +5380,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           600,
@@ -5406,7 +5406,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           600,
@@ -5419,7 +5419,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           600,
@@ -5432,7 +5432,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           600,
@@ -5445,7 +5445,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           600,
@@ -5471,7 +5471,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           600,
@@ -5484,7 +5484,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           600,
@@ -5497,7 +5497,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           600,
@@ -5510,7 +5510,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           600,
@@ -5536,7 +5536,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           600,
@@ -5549,7 +5549,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           600,
@@ -5562,7 +5562,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           600,
@@ -5575,7 +5575,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           600,
@@ -5601,7 +5601,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           600,
@@ -5614,7 +5614,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           600,
@@ -5627,7 +5627,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           600,
@@ -5640,7 +5640,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           600,
@@ -5666,7 +5666,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           600,
@@ -5679,7 +5679,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           600,
@@ -5692,7 +5692,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           600,
@@ -5705,7 +5705,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           600,
@@ -5731,7 +5731,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           660,
@@ -5744,7 +5744,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           660,
@@ -5757,7 +5757,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           660,
@@ -5770,7 +5770,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           660,
@@ -5796,7 +5796,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           660,
@@ -5809,7 +5809,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           660,
@@ -5822,7 +5822,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           660,
@@ -5835,7 +5835,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           660,
@@ -5861,7 +5861,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           660,
@@ -5874,7 +5874,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           660,
@@ -5887,7 +5887,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           660,
@@ -5900,7 +5900,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           660,
@@ -5926,7 +5926,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           660,
@@ -5939,7 +5939,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           660,
@@ -5952,7 +5952,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           660,
@@ -5965,7 +5965,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           660,
@@ -5991,7 +5991,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           660,
@@ -6004,7 +6004,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           660,
@@ -6017,7 +6017,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           660,
@@ -6030,7 +6030,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           660,
@@ -6056,7 +6056,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           660,
@@ -6069,7 +6069,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           660,
@@ -6082,7 +6082,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           660,
@@ -6095,7 +6095,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           660,
@@ -6121,7 +6121,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           660,
@@ -6134,7 +6134,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           660,
@@ -6147,7 +6147,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           660,
@@ -6160,7 +6160,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           660,
@@ -6186,7 +6186,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           660,
@@ -6199,7 +6199,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           660,
@@ -6212,7 +6212,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           660,
@@ -6225,7 +6225,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           660,
@@ -6251,7 +6251,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           720,
@@ -6264,7 +6264,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           720,
@@ -6277,7 +6277,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           720,
@@ -6290,7 +6290,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           720,
@@ -6316,7 +6316,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           720,
@@ -6329,7 +6329,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           720,
@@ -6342,7 +6342,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           720,
@@ -6355,7 +6355,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           720,
@@ -6381,7 +6381,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           720,
@@ -6394,7 +6394,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           720,
@@ -6407,7 +6407,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           720,
@@ -6420,7 +6420,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           720,
@@ -6446,7 +6446,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           720,
@@ -6459,7 +6459,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           720,
@@ -6472,7 +6472,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           720,
@@ -6485,7 +6485,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           720,
@@ -6511,7 +6511,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           720,
@@ -6524,7 +6524,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           720,
@@ -6537,7 +6537,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           720,
@@ -6550,7 +6550,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           720,
@@ -6576,7 +6576,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           720,
@@ -6589,7 +6589,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           720,
@@ -6602,7 +6602,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           720,
@@ -6615,7 +6615,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           720,
@@ -6641,7 +6641,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           720,
@@ -6654,7 +6654,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           720,
@@ -6667,7 +6667,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           720,
@@ -6680,7 +6680,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           720,
@@ -6706,7 +6706,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           720,
@@ -6719,7 +6719,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           720,
@@ -6732,7 +6732,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           720,
@@ -6745,7 +6745,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           720,
@@ -6771,7 +6771,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           780,
@@ -6784,7 +6784,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           780,
@@ -6797,7 +6797,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           780,
@@ -6810,7 +6810,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           780,
@@ -6836,7 +6836,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           780,
@@ -6849,7 +6849,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           780,
@@ -6862,7 +6862,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           780,
@@ -6875,7 +6875,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           780,
@@ -6901,7 +6901,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           780,
@@ -6914,7 +6914,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           780,
@@ -6927,7 +6927,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           780,
@@ -6940,7 +6940,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           780,
@@ -6966,7 +6966,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           780,
@@ -6979,7 +6979,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           780,
@@ -6992,7 +6992,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           780,
@@ -7005,7 +7005,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           780,
@@ -7031,7 +7031,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           780,
@@ -7044,7 +7044,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           780,
@@ -7057,7 +7057,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           780,
@@ -7070,7 +7070,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           780,
@@ -7096,7 +7096,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           780,
@@ -7109,7 +7109,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           780,
@@ -7122,7 +7122,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           780,
@@ -7135,7 +7135,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           780,
@@ -7161,7 +7161,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           780,
@@ -7174,7 +7174,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           780,
@@ -7187,7 +7187,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           780,
@@ -7200,7 +7200,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           780,
@@ -7226,7 +7226,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           780,
@@ -7239,7 +7239,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           780,
@@ -7252,7 +7252,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           780,
@@ -7265,7 +7265,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           780,
@@ -7291,7 +7291,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           840,
@@ -7304,7 +7304,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           840,
@@ -7317,7 +7317,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           840,
@@ -7330,7 +7330,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           840,
@@ -7356,7 +7356,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           840,
@@ -7369,7 +7369,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           840,
@@ -7382,7 +7382,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           840,
@@ -7395,7 +7395,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           840,
@@ -7421,7 +7421,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           840,
@@ -7434,7 +7434,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           840,
@@ -7447,7 +7447,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           840,
@@ -7460,7 +7460,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           840,
@@ -7486,7 +7486,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           840,
@@ -7499,7 +7499,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           840,
@@ -7512,7 +7512,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           840,
@@ -7525,7 +7525,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           840,
@@ -7551,7 +7551,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           840,
@@ -7564,7 +7564,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           840,
@@ -7577,7 +7577,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           840,
@@ -7590,7 +7590,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           840,
@@ -7616,7 +7616,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           840,
@@ -7629,7 +7629,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           840,
@@ -7642,7 +7642,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           840,
@@ -7655,7 +7655,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           840,
@@ -7681,7 +7681,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           840,
@@ -7694,7 +7694,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           840,
@@ -7707,7 +7707,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           840,
@@ -7720,7 +7720,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           840,
@@ -7746,7 +7746,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           840,
@@ -7759,7 +7759,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           840,
@@ -7772,7 +7772,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           840,
@@ -7785,7 +7785,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           840,
@@ -7811,7 +7811,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           900,
@@ -7824,7 +7824,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           900,
@@ -7837,7 +7837,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           900,
@@ -7850,7 +7850,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           900,
@@ -7876,7 +7876,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           900,
@@ -7889,7 +7889,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           900,
@@ -7902,7 +7902,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           900,
@@ -7915,7 +7915,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           900,
@@ -7941,7 +7941,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           900,
@@ -7954,7 +7954,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           900,
@@ -7967,7 +7967,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           900,
@@ -7980,7 +7980,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           900,
@@ -8006,7 +8006,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           900,
@@ -8019,7 +8019,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           900,
@@ -8032,7 +8032,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           900,
@@ -8045,7 +8045,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           900,
@@ -8071,7 +8071,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           900,
@@ -8084,7 +8084,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           900,
@@ -8097,7 +8097,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           900,
@@ -8110,7 +8110,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           900,
@@ -8136,7 +8136,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           900,
@@ -8149,7 +8149,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           900,
@@ -8162,7 +8162,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           900,
@@ -8175,7 +8175,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           900,
@@ -8201,7 +8201,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           900,
@@ -8214,7 +8214,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           900,
@@ -8227,7 +8227,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           900,
@@ -8240,7 +8240,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           900,
@@ -8266,7 +8266,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           900,
@@ -8279,7 +8279,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           900,
@@ -8292,7 +8292,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           900,
@@ -8305,7 +8305,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           900,
@@ -8331,7 +8331,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           960,
@@ -8344,7 +8344,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           960,
@@ -8357,7 +8357,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           960,
@@ -8370,7 +8370,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           960,
@@ -8396,7 +8396,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           960,
@@ -8409,7 +8409,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           960,
@@ -8422,7 +8422,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           960,
@@ -8435,7 +8435,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           960,
@@ -8461,7 +8461,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           960,
@@ -8474,7 +8474,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           960,
@@ -8487,7 +8487,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           960,
@@ -8500,7 +8500,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           960,
@@ -8526,7 +8526,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           960,
@@ -8539,7 +8539,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           960,
@@ -8552,7 +8552,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           960,
@@ -8565,7 +8565,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           960,
@@ -8591,7 +8591,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           960,
@@ -8604,7 +8604,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           960,
@@ -8617,7 +8617,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           960,
@@ -8630,7 +8630,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           960,
@@ -8656,7 +8656,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           960,
@@ -8669,7 +8669,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           960,
@@ -8682,7 +8682,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           960,
@@ -8695,7 +8695,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           960,
@@ -8721,7 +8721,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           960,
@@ -8734,7 +8734,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           960,
@@ -8747,7 +8747,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           960,
@@ -8760,7 +8760,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           960,
@@ -8786,7 +8786,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           960,
@@ -8799,7 +8799,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           960,
@@ -8812,7 +8812,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           960,
@@ -8825,7 +8825,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           960,
@@ -8851,7 +8851,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1020,
@@ -8864,7 +8864,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1020,
@@ -8877,7 +8877,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1020,
@@ -8890,7 +8890,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1020,
@@ -8916,7 +8916,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           1020,
@@ -8929,7 +8929,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           1020,
@@ -8942,7 +8942,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           1020,
@@ -8955,7 +8955,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           78,
           1020,
@@ -8981,7 +8981,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           1020,
@@ -8994,7 +8994,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           1020,
@@ -9007,7 +9007,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           1020,
@@ -9020,7 +9020,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           156,
           1020,
@@ -9046,7 +9046,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           1020,
@@ -9059,7 +9059,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           1020,
@@ -9072,7 +9072,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           1020,
@@ -9085,7 +9085,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           234,
           1020,
@@ -9111,7 +9111,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           1020,
@@ -9124,7 +9124,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           1020,
@@ -9137,7 +9137,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           1020,
@@ -9150,7 +9150,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           312,
           1020,
@@ -9176,7 +9176,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           1020,
@@ -9189,7 +9189,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           1020,
@@ -9202,7 +9202,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           1020,
@@ -9215,7 +9215,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           390,
           1020,
@@ -9241,7 +9241,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           1020,
@@ -9254,7 +9254,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           1020,
@@ -9267,7 +9267,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           1020,
@@ -9280,7 +9280,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           468,
           1020,
@@ -9306,7 +9306,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           1020,
@@ -9319,7 +9319,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           1020,
@@ -9332,7 +9332,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           1020,
@@ -9345,7 +9345,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           546,
           1020,
@@ -9371,7 +9371,7 @@
     ],
     "views": {
       "0": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1080,
@@ -9384,7 +9384,7 @@
         ]
       },
       "90": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1080,
@@ -9397,7 +9397,7 @@
         ]
       },
       "180": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1080,
@@ -9410,7 +9410,7 @@
         ]
       },
       "270": {
-        "source": "atlas.png",
+        "source": "water-shore-atlas.png",
         "rect": [
           0,
           1080,
@@ -9438,7 +9438,7 @@
       "water": {
         "frames": [
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               540,
@@ -9447,7 +9447,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               540,
@@ -9456,7 +9456,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               540,
@@ -9465,7 +9465,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               540,
@@ -9474,7 +9474,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               600,
@@ -9483,7 +9483,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               600,
@@ -9492,7 +9492,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               600,
@@ -9501,7 +9501,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               600,
@@ -9510,7 +9510,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               660,
@@ -9519,7 +9519,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               660,
@@ -9528,7 +9528,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               660,
@@ -9537,7 +9537,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               660,
@@ -9546,7 +9546,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               720,
@@ -9555,7 +9555,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               720,
@@ -9564,7 +9564,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               720,
@@ -9573,7 +9573,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               720,
@@ -9582,7 +9582,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               780,
@@ -9591,7 +9591,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               780,
@@ -9600,7 +9600,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               780,
@@ -9609,7 +9609,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               780,
@@ -9618,7 +9618,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               840,
@@ -9627,7 +9627,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               840,
@@ -9636,7 +9636,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               840,
@@ -9645,7 +9645,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               840,
@@ -9703,7 +9703,7 @@
       "water": {
         "frames": [
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               540,
@@ -9712,7 +9712,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               540,
@@ -9721,7 +9721,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               540,
@@ -9730,7 +9730,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               600,
@@ -9739,7 +9739,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               600,
@@ -9748,7 +9748,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               600,
@@ -9757,7 +9757,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               600,
@@ -9766,7 +9766,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               660,
@@ -9775,7 +9775,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               660,
@@ -9784,7 +9784,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               660,
@@ -9793,7 +9793,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               660,
@@ -9802,7 +9802,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               720,
@@ -9811,7 +9811,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               720,
@@ -9820,7 +9820,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               720,
@@ -9829,7 +9829,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               720,
@@ -9838,7 +9838,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               780,
@@ -9847,7 +9847,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               780,
@@ -9856,7 +9856,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               780,
@@ -9865,7 +9865,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               780,
@@ -9874,7 +9874,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               840,
@@ -9883,7 +9883,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               840,
@@ -9892,7 +9892,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               840,
@@ -9901,7 +9901,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               840,
@@ -9910,7 +9910,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               900,
@@ -9968,7 +9968,7 @@
       "water": {
         "frames": [
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               900,
@@ -9977,7 +9977,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               900,
@@ -9986,7 +9986,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               900,
@@ -9995,7 +9995,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               900,
@@ -10004,7 +10004,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               900,
@@ -10013,7 +10013,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               900,
@@ -10022,7 +10022,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               900,
@@ -10031,7 +10031,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               960,
@@ -10040,7 +10040,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               960,
@@ -10049,7 +10049,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               960,
@@ -10058,7 +10058,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               960,
@@ -10067,7 +10067,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               960,
@@ -10076,7 +10076,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               960,
@@ -10085,7 +10085,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               960,
@@ -10094,7 +10094,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               960,
@@ -10103,7 +10103,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               1020,
@@ -10112,7 +10112,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               78,
               1020,
@@ -10121,7 +10121,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               156,
               1020,
@@ -10130,7 +10130,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               234,
               1020,
@@ -10139,7 +10139,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               312,
               1020,
@@ -10148,7 +10148,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               390,
               1020,
@@ -10157,7 +10157,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               468,
               1020,
@@ -10166,7 +10166,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               546,
               1020,
@@ -10175,7 +10175,7 @@
             ]
           },
           {
-            "source": "atlas.png",
+            "source": "water-shore-atlas.png",
             "rect": [
               0,
               1080,
@@ -16325,6 +16325,3072 @@
         "anchor": [
           39,
           31
+        ]
+      }
+    }
+  },
+  "emperor-rock-458": {
+    "version": 1,
+    "id": "emperor-rock-458",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-rock-459": {
+    "version": 1,
+    "id": "emperor-rock-459",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-rock-460": {
+    "version": 1,
+    "id": "emperor-rock-460",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-rock-461": {
+    "version": 1,
+    "id": "emperor-rock-461",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-rock-462": {
+    "version": 1,
+    "id": "emperor-rock-462",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      }
+    }
+  },
+  "emperor-rock-463": {
+    "version": 1,
+    "id": "emperor-rock-463",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-rock-464": {
+    "version": 1,
+    "id": "emperor-rock-464",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      }
+    }
+  },
+  "emperor-rock-465": {
+    "version": 1,
+    "id": "emperor-rock-465",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-rock-472": {
+    "version": 1,
+    "id": "emperor-rock-472",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-rock-473": {
+    "version": 1,
+    "id": "emperor-rock-473",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          213,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          213,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          213,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          213,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      }
+    }
+  },
+  "emperor-rock-474": {
+    "version": 1,
+    "id": "emperor-rock-474",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-rock-475": {
+    "version": 1,
+    "id": "emperor-rock-475",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-rock-476": {
+    "version": 1,
+    "id": "emperor-rock-476",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          213,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          213,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          213,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          213,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-rock-477": {
+    "version": 1,
+    "id": "emperor-rock-477",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          213,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-rock-478": {
+    "version": 1,
+    "id": "emperor-rock-478",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          213,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-rock-479": {
+    "version": 1,
+    "id": "emperor-rock-479",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          213,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          213,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          213,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          213,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-rock-486": {
+    "version": 1,
+    "id": "emperor-rock-486",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          425,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          425,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          425,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          425,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      }
+    }
+  },
+  "emperor-rock-487": {
+    "version": 1,
+    "id": "emperor-rock-487",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          425,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          425,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          425,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          81,
+          425,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      }
+    }
+  },
+  "emperor-rock-488": {
+    "version": 1,
+    "id": "emperor-rock-488",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          425,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          425,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          425,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          425,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-rock-489": {
+    "version": 1,
+    "id": "emperor-rock-489",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          425,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          425,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          425,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          241,
+          425,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-rock-490": {
+    "version": 1,
+    "id": "emperor-rock-490",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          425,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          425,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          425,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          425,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-rock-491": {
+    "version": 1,
+    "id": "emperor-rock-491",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          401,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-rock-492": {
+    "version": 1,
+    "id": "emperor-rock-492",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          425,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-rock-493": {
+    "version": 1,
+    "id": "emperor-rock-493",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          425,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          425,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          425,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          561,
+          425,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-rock-466": {
+    "version": 1,
+    "id": "emperor-rock-466",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          79,
+          40
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          119,
+          60
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          79,
+          80
+        ]
+      }
+    }
+  },
+  "emperor-rock-467": {
+    "version": 1,
+    "id": "emperor-rock-467",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          57,
+          158,
+          95
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          57,
+          158,
+          95
+        ],
+        "anchor": [
+          79,
+          35
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          57,
+          158,
+          95
+        ],
+        "anchor": [
+          119,
+          55
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          57,
+          158,
+          95
+        ],
+        "anchor": [
+          79,
+          75
+        ]
+      }
+    }
+  },
+  "emperor-rock-468": {
+    "version": 1,
+    "id": "emperor-rock-468",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          79,
+          40
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          119,
+          60
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          79,
+          80
+        ]
+      }
+    }
+  },
+  "emperor-rock-469": {
+    "version": 1,
+    "id": "emperor-rock-469",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          79,
+          40
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          119,
+          60
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          57,
+          158,
+          100
+        ],
+        "anchor": [
+          79,
+          80
+        ]
+      }
+    }
+  },
+  "emperor-rock-470": {
+    "version": 1,
+    "id": "emperor-rock-470",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          57,
+          238,
+          136
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          57,
+          238,
+          136
+        ],
+        "anchor": [
+          119,
+          36
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          57,
+          238,
+          136
+        ],
+        "anchor": [
+          199,
+          76
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          57,
+          238,
+          136
+        ],
+        "anchor": [
+          119,
+          116
+        ]
+      }
+    }
+  },
+  "emperor-rock-471": {
+    "version": 1,
+    "id": "emperor-rock-471",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          57,
+          238,
+          151
+        ],
+        "anchor": [
+          39,
+          91
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          57,
+          238,
+          151
+        ],
+        "anchor": [
+          119,
+          51
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          57,
+          238,
+          151
+        ],
+        "anchor": [
+          199,
+          91
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          57,
+          238,
+          151
+        ],
+        "anchor": [
+          119,
+          131
+        ]
+      }
+    }
+  },
+  "emperor-rock-480": {
+    "version": 1,
+    "id": "emperor-rock-480",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          269,
+          158,
+          95
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          269,
+          158,
+          95
+        ],
+        "anchor": [
+          79,
+          35
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          269,
+          158,
+          95
+        ],
+        "anchor": [
+          119,
+          55
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          269,
+          158,
+          95
+        ],
+        "anchor": [
+          79,
+          75
+        ]
+      }
+    }
+  },
+  "emperor-rock-481": {
+    "version": 1,
+    "id": "emperor-rock-481",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          269,
+          158,
+          104
+        ],
+        "anchor": [
+          39,
+          64
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          269,
+          158,
+          104
+        ],
+        "anchor": [
+          79,
+          44
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          269,
+          158,
+          104
+        ],
+        "anchor": [
+          119,
+          64
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          269,
+          158,
+          104
+        ],
+        "anchor": [
+          79,
+          84
+        ]
+      }
+    }
+  },
+  "emperor-rock-482": {
+    "version": 1,
+    "id": "emperor-rock-482",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          269,
+          158,
+          96
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          269,
+          158,
+          96
+        ],
+        "anchor": [
+          79,
+          36
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          269,
+          158,
+          96
+        ],
+        "anchor": [
+          119,
+          56
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          269,
+          158,
+          96
+        ],
+        "anchor": [
+          79,
+          76
+        ]
+      }
+    }
+  },
+  "emperor-rock-483": {
+    "version": 1,
+    "id": "emperor-rock-483",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          269,
+          158,
+          93
+        ],
+        "anchor": [
+          39,
+          53
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          269,
+          158,
+          93
+        ],
+        "anchor": [
+          79,
+          33
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          269,
+          158,
+          93
+        ],
+        "anchor": [
+          119,
+          53
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          269,
+          158,
+          93
+        ],
+        "anchor": [
+          79,
+          73
+        ]
+      }
+    }
+  },
+  "emperor-rock-484": {
+    "version": 1,
+    "id": "emperor-rock-484",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          269,
+          238,
+          139
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          269,
+          238,
+          139
+        ],
+        "anchor": [
+          119,
+          39
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          269,
+          238,
+          139
+        ],
+        "anchor": [
+          199,
+          79
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          269,
+          238,
+          139
+        ],
+        "anchor": [
+          119,
+          119
+        ]
+      }
+    }
+  },
+  "emperor-rock-485": {
+    "version": 1,
+    "id": "emperor-rock-485",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          269,
+          238,
+          134
+        ],
+        "anchor": [
+          39,
+          74
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          269,
+          238,
+          134
+        ],
+        "anchor": [
+          119,
+          34
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          269,
+          238,
+          134
+        ],
+        "anchor": [
+          199,
+          74
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          269,
+          238,
+          134
+        ],
+        "anchor": [
+          119,
+          114
+        ]
+      }
+    }
+  },
+  "emperor-rock-494": {
+    "version": 1,
+    "id": "emperor-rock-494",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          481,
+          158,
+          102
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          481,
+          158,
+          102
+        ],
+        "anchor": [
+          79,
+          42
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          481,
+          158,
+          102
+        ],
+        "anchor": [
+          119,
+          62
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          1,
+          481,
+          158,
+          102
+        ],
+        "anchor": [
+          79,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-rock-495": {
+    "version": 1,
+    "id": "emperor-rock-495",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          481,
+          158,
+          99
+        ],
+        "anchor": [
+          39,
+          59
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          481,
+          158,
+          99
+        ],
+        "anchor": [
+          79,
+          39
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          481,
+          158,
+          99
+        ],
+        "anchor": [
+          119,
+          59
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          161,
+          481,
+          158,
+          99
+        ],
+        "anchor": [
+          79,
+          79
+        ]
+      }
+    }
+  },
+  "emperor-rock-496": {
+    "version": 1,
+    "id": "emperor-rock-496",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          481,
+          158,
+          85
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          481,
+          158,
+          85
+        ],
+        "anchor": [
+          79,
+          25
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          481,
+          158,
+          85
+        ],
+        "anchor": [
+          119,
+          45
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          321,
+          481,
+          158,
+          85
+        ],
+        "anchor": [
+          79,
+          65
+        ]
+      }
+    }
+  },
+  "emperor-rock-497": {
+    "version": 1,
+    "id": "emperor-rock-497",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          481,
+          158,
+          94
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          481,
+          158,
+          94
+        ],
+        "anchor": [
+          79,
+          34
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          481,
+          158,
+          94
+        ],
+        "anchor": [
+          119,
+          54
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          481,
+          481,
+          158,
+          94
+        ],
+        "anchor": [
+          79,
+          74
+        ]
+      }
+    }
+  },
+  "emperor-rock-498": {
+    "version": 1,
+    "id": "emperor-rock-498",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          481,
+          238,
+          142
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          481,
+          238,
+          142
+        ],
+        "anchor": [
+          119,
+          42
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          481,
+          238,
+          142
+        ],
+        "anchor": [
+          199,
+          82
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          641,
+          481,
+          238,
+          142
+        ],
+        "anchor": [
+          119,
+          122
+        ]
+      }
+    }
+  },
+  "emperor-rock-499": {
+    "version": 1,
+    "id": "emperor-rock-499",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          481,
+          238,
+          150
+        ],
+        "anchor": [
+          39,
+          90
+        ]
+      },
+      "90": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          481,
+          238,
+          150
+        ],
+        "anchor": [
+          119,
+          50
+        ]
+      },
+      "180": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          481,
+          238,
+          150
+        ],
+        "anchor": [
+          199,
+          90
+        ]
+      },
+      "270": {
+        "source": "rocks-atlas.png",
+        "rect": [
+          881,
+          481,
+          238,
+          150
+        ],
+        "anchor": [
+          119,
+          130
         ]
       }
     }

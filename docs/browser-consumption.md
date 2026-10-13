@@ -33,7 +33,7 @@ sed -e 's|./static/js/qtiled.dev.js|../dist/qtiled.browser.js|g' \
     -e 's|./static/js/qtiled-element-rendering.dev.js|../dist/qtiled-element-rendering.umd.js|g' \
     demo/map-editor.html > "$consumer_dir/demo/map-editor.html"
 cp dist/qtiled.browser.js dist/qtiled-view.umd.js dist/qtiled-maps.umd.js dist/qtiled-element-rendering.umd.js "$consumer_dir/dist/"
-cp demo/static/js/spritejs3.js demo/static/js/pointer.js demo/static/js/dog-element-sample.js demo/static/js/terrain-sample.js demo/static/js/land-water-rules.js demo/static/js/tree-rules.js demo/static/js/construction-rules.js demo/static/js/elevation-rules.js demo/static/js/elevation-rendering.js demo/static/js/element-animation-player.js demo/static/js/navs.js demo/static/js/map-editor.js "$consumer_dir/demo/static/js/"
+cp demo/static/js/spritejs3.js demo/static/js/pointer.js demo/static/js/dog-element-sample.js demo/static/js/terrain-sample.js demo/static/js/land-water-rules.js demo/static/js/tree-rules.js demo/static/js/rock-rules.js demo/static/js/construction-rules.js demo/static/js/elevation-rules.js demo/static/js/elevation-rendering.js demo/static/js/element-animation-player.js demo/static/js/navs.js demo/static/js/map-editor.js "$consumer_dir/demo/static/js/"
 cp demo/static/css/map-editor.css demo/static/css/index.css demo/static/css/preview-workspace.css "$consumer_dir/demo/static/css/"
 cp demo/static/map-samples/first-static-map.json demo/static/map-samples/rectangular-water-map.json demo/static/map-samples/elevation-map.json demo/static/map-samples/elevation-multilevel-map.json demo/static/map-samples/village-map.json "$consumer_dir/demo/static/map-samples/"
 cp demo/static/element-samples/dog/element.json "$consumer_dir/demo/static/element-samples/dog/"

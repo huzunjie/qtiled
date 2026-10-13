@@ -6,8 +6,14 @@
     'ordinary-stump': { label: '普通树桩', detail: '普通树桩', shortLabel: '桩', base: 963, variants: 9, surroundedOffset: 0 },
     'bamboo-stump': { label: '竹残株', detail: '竹残株', shortLabel: '竹残', base: 963, variants: 9, surroundedOffset: 0 },
   };
-  const atlases = { 'atlas.png': '', 'bare-land-atlas.png': '', 'grass-atlas.png': '', 'trees-atlas.png': '20261014001000' };
+  const rocks = {
+    ordinary: { label: '普通石', base: 458 },
+    copper: { label: '铜矿', base: 472 },
+    iron: { label: '铁矿', base: 486 },
+  };
+  const atlases = { 'water-shore-atlas.png': '', 'bare-land-atlas.png': '', 'grass-atlas.png': '', 'trees-atlas.png': '20261014001000', 'rocks-atlas.png': '20261014030000' };
   const getTree = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(trees, kind) ? trees[kind] : null;
+  const getRock = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(rocks, kind) ? rocks[kind] : null;
 
   // 保留既有陆地/植被的32位结果；水域使用另一套既有公式，不在此处统一。
   function getStableGridValue(x, y) {
@@ -30,5 +36,11 @@
       : `树桩 / 竹残株 · ${number}`;
   }
 
-  window.terrainSample = { trees, getTree, getStableGridValue, getSources, getTreeMaterialLabel };
+  function getRockMaterialLabel(number) {
+    const rock = Object.values(rocks).find(item => number >= item.base && number < item.base + 14);
+    const offset = rock ? number - rock.base : 0;
+    return rock ? `${rock.label} · ${offset < 8 ? '1×1' : offset < 12 ? '2×2' : '3×3'} · ${number}` : '';
+  }
+
+  window.terrainSample = { trees, rocks, getTree, getRock, getStableGridValue, getSources, getTreeMaterialLabel, getRockMaterialLabel };
 })();

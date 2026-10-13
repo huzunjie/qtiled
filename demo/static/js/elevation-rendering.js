@@ -1,11 +1,12 @@
 /* 地图与只读上下文共用的高程绘制部件；不修改素材、地图事实或公共元素契约。 */
 (function () {
   function resolveTileDraws(tile, map, elements, view, options = {}) {
+    if (tile.rockOwner && tile.rockOwner.some((value, axis) => value !== tile.grid[axis])) return [];
     const draw = window.qtiledElementRendering.resolveElementDraw(elements[tile.element], tile.grid,
       { ...view, originPixel: [0, -(tile.elevation || 0) * (map.elevationStep || 0)] }, 0, options);
     const draws = [];
     // 道路通过准确的底面锚点拼接，不生成移位副本补缝。
-    if (tile.tree || tile.road || tile.slopeOwner || draw.rect[2] !== map.tileSize[0] - 2 || map.cells[tile.grid[1]][tile.grid[0]].terrain !== 'land') return [draw];
+    if (tile.tree || tile.rock || tile.road || tile.slopeOwner || draw.rect[2] !== map.tileSize[0] - 2 || map.cells[tile.grid[1]][tile.grid[0]].terrain !== 'land') return [draw];
     const [x, y] = tile.grid;
     const adjacentSlope = [-1, 0, 1].some(dy => [-1, 0, 1].some(dx => {
       const cell = map.cells[y + dy]?.[x + dx];

@@ -370,7 +370,7 @@ test('元素工具读取地图同一份原作地表定义与图集，换材和�
   await new Promise(resolve => setImmediate(resolve));
   for (const angle of [0, 90, 180, 270]) {
     editor.angle(angle);
-    expect(editor.draw().source).toBe('atlas.png');
+    expect(editor.draw().source).toBe('water-shore-atlas.png');
     expect(editor.draw().rect).toEqual(definitions[id].views[angle].rect);
     expect(editor.draw().anchor).toEqual(definitions[id].views[angle].anchor);
   }
@@ -838,7 +838,7 @@ test.each(['http', 'definition', 'missing-source'])('狗样本加载失败（%s�
   failing = false;
   editor.get('sample').click();
   await new Promise(resolve => setImmediate(resolve));
-  expect(editor.draw().source).not.toBe('atlas.png');
+  expect(editor.draw().source).not.toBe('water-shore-atlas.png');
   expect(editor.get('export').disabled).toBe(false);
   expect(editor.errors).toEqual([]);
   editor.window.close();

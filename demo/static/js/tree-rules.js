@@ -1,6 +1,6 @@
 /* 普通树、竹类及静态残株的 Demo 作者规则；树属于格事实，不创建装饰实体或经营状态。 */
 (function () {
-  const { getTree, getStableGridValue } = window.terrainSample;
+  const { getTree, getRock, getStableGridValue } = window.terrainSample;
   // 原作 4b3cd0 生成半径1正方形外环；4be290 检查这些位置的树/石标志。
   // 普通树和竹类共用树标志，混种也参与包围；null/界外不虚构树或石，不能形成包围外观。
   const neighbors = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
@@ -19,10 +19,13 @@
       if (cell.terrain !== 'land' || tile.slope || cell.ramp || cell.halfSlope) {
         issues.push(issue(path, 'tree-ground', '树木需要平坦陆地，不能占用水域、坡面、坡道或半坡部件。'));
       }
-      if (cell.road || occupancy.has(`${x},${y}`)) {
-        issues.push(issue(path, 'tree-occupied', '树木不能与道路、建筑或其他实体重叠，请先擦除冲突内容。'));
+      if (cell.road || cell.rock !== undefined || occupancy.has(`${x},${y}`)) {
+        issues.push(issue(path, 'tree-occupied', '树木不能与岩石、铜矿、铁矿、道路、建筑或其他实体重叠，请先擦除冲突内容。'));
       }
-      const surrounded = neighbors.every(([dx, dy]) => getTree(map.cells[y + dy]?.[x + dx]?.tree));
+      const surrounded = neighbors.every(([dx, dy]) => {
+        const neighbor = map.cells[y + dy]?.[x + dx];
+        return getTree(neighbor?.tree) || getRock(neighbor?.rock);
+      });
       // 与已有地表相同的世界格稳定字节；只在当前语义类别的9个外观中选择。
       // terrainVariant已有作者覆盖语义，复用它，不新增随机种子。
       const variant = ((cell.terrainVariant ?? getStableGridValue(x, y)) & 255) % (tree?.variants || 9);
