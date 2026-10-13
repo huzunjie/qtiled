@@ -19394,5 +19394,8715 @@
         ]
       }
     }
+  },
+  "emperor-quarry-247": {
+    "version": 1,
+    "id": "emperor-quarry-247",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-quarry-248": {
+    "version": 1,
+    "id": "emperor-quarry-248",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-249": {
+    "version": 1,
+    "id": "emperor-quarry-249",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-250": {
+    "version": 1,
+    "id": "emperor-quarry-250",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-251": {
+    "version": 1,
+    "id": "emperor-quarry-251",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-252": {
+    "version": 1,
+    "id": "emperor-quarry-252",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-253": {
+    "version": 1,
+    "id": "emperor-quarry-253",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-quarry-254": {
+    "version": 1,
+    "id": "emperor-quarry-254",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-972": {
+    "version": 1,
+    "id": "emperor-quarry-972",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-973": {
+    "version": 1,
+    "id": "emperor-quarry-973",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          1,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-974": {
+    "version": 1,
+    "id": "emperor-quarry-974",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-975": {
+    "version": 1,
+    "id": "emperor-quarry-975",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-976": {
+    "version": 1,
+    "id": "emperor-quarry-976",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-977": {
+    "version": 1,
+    "id": "emperor-quarry-977",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1006": {
+    "version": 1,
+    "id": "emperor-quarry-1006",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1007": {
+    "version": 1,
+    "id": "emperor-quarry-1007",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1008": {
+    "version": 1,
+    "id": "emperor-quarry-1008",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1009": {
+    "version": 1,
+    "id": "emperor-quarry-1009",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1010": {
+    "version": 1,
+    "id": "emperor-quarry-1010",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1011": {
+    "version": 1,
+    "id": "emperor-quarry-1011",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          49,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1012": {
+    "version": 1,
+    "id": "emperor-quarry-1012",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1013": {
+    "version": 1,
+    "id": "emperor-quarry-1013",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1014": {
+    "version": 1,
+    "id": "emperor-quarry-1014",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1015": {
+    "version": 1,
+    "id": "emperor-quarry-1015",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1016": {
+    "version": 1,
+    "id": "emperor-quarry-1016",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1017": {
+    "version": 1,
+    "id": "emperor-quarry-1017",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1018": {
+    "version": 1,
+    "id": "emperor-quarry-1018",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1019": {
+    "version": 1,
+    "id": "emperor-quarry-1019",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1020": {
+    "version": 1,
+    "id": "emperor-quarry-1020",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1021": {
+    "version": 1,
+    "id": "emperor-quarry-1021",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          97,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1022": {
+    "version": 1,
+    "id": "emperor-quarry-1022",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1023": {
+    "version": 1,
+    "id": "emperor-quarry-1023",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1024": {
+    "version": 1,
+    "id": "emperor-quarry-1024",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1025": {
+    "version": 1,
+    "id": "emperor-quarry-1025",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1026": {
+    "version": 1,
+    "id": "emperor-quarry-1026",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1027": {
+    "version": 1,
+    "id": "emperor-quarry-1027",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1028": {
+    "version": 1,
+    "id": "emperor-quarry-1028",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1029": {
+    "version": 1,
+    "id": "emperor-quarry-1029",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1030": {
+    "version": 1,
+    "id": "emperor-quarry-1030",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1031": {
+    "version": 1,
+    "id": "emperor-quarry-1031",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          145,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1032": {
+    "version": 1,
+    "id": "emperor-quarry-1032",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1033": {
+    "version": 1,
+    "id": "emperor-quarry-1033",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1034": {
+    "version": 1,
+    "id": "emperor-quarry-1034",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1035": {
+    "version": 1,
+    "id": "emperor-quarry-1035",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1036": {
+    "version": 1,
+    "id": "emperor-quarry-1036",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1037": {
+    "version": 1,
+    "id": "emperor-quarry-1037",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1038": {
+    "version": 1,
+    "id": "emperor-quarry-1038",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1039": {
+    "version": 1,
+    "id": "emperor-quarry-1039",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1040": {
+    "version": 1,
+    "id": "emperor-quarry-1040",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1041": {
+    "version": 1,
+    "id": "emperor-quarry-1041",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          193,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1042": {
+    "version": 1,
+    "id": "emperor-quarry-1042",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1043": {
+    "version": 1,
+    "id": "emperor-quarry-1043",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1044": {
+    "version": 1,
+    "id": "emperor-quarry-1044",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1045": {
+    "version": 1,
+    "id": "emperor-quarry-1045",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1046": {
+    "version": 1,
+    "id": "emperor-quarry-1046",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1047": {
+    "version": 1,
+    "id": "emperor-quarry-1047",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1048": {
+    "version": 1,
+    "id": "emperor-quarry-1048",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1049": {
+    "version": 1,
+    "id": "emperor-quarry-1049",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1050": {
+    "version": 1,
+    "id": "emperor-quarry-1050",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1051": {
+    "version": 1,
+    "id": "emperor-quarry-1051",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          241,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1052": {
+    "version": 1,
+    "id": "emperor-quarry-1052",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1053": {
+    "version": 1,
+    "id": "emperor-quarry-1053",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1054": {
+    "version": 1,
+    "id": "emperor-quarry-1054",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1055": {
+    "version": 1,
+    "id": "emperor-quarry-1055",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1056": {
+    "version": 1,
+    "id": "emperor-quarry-1056",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1057": {
+    "version": 1,
+    "id": "emperor-quarry-1057",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1058": {
+    "version": 1,
+    "id": "emperor-quarry-1058",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1059": {
+    "version": 1,
+    "id": "emperor-quarry-1059",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1060": {
+    "version": 1,
+    "id": "emperor-quarry-1060",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1061": {
+    "version": 1,
+    "id": "emperor-quarry-1061",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          289,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1062": {
+    "version": 1,
+    "id": "emperor-quarry-1062",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1063": {
+    "version": 1,
+    "id": "emperor-quarry-1063",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1064": {
+    "version": 1,
+    "id": "emperor-quarry-1064",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1065": {
+    "version": 1,
+    "id": "emperor-quarry-1065",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1066": {
+    "version": 1,
+    "id": "emperor-quarry-1066",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1067": {
+    "version": 1,
+    "id": "emperor-quarry-1067",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1068": {
+    "version": 1,
+    "id": "emperor-quarry-1068",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1069": {
+    "version": 1,
+    "id": "emperor-quarry-1069",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1070": {
+    "version": 1,
+    "id": "emperor-quarry-1070",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1071": {
+    "version": 1,
+    "id": "emperor-quarry-1071",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          337,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1072": {
+    "version": 1,
+    "id": "emperor-quarry-1072",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1073": {
+    "version": 1,
+    "id": "emperor-quarry-1073",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1074": {
+    "version": 1,
+    "id": "emperor-quarry-1074",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1075": {
+    "version": 1,
+    "id": "emperor-quarry-1075",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1076": {
+    "version": 1,
+    "id": "emperor-quarry-1076",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1077": {
+    "version": 1,
+    "id": "emperor-quarry-1077",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1078": {
+    "version": 1,
+    "id": "emperor-quarry-1078",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1079": {
+    "version": 1,
+    "id": "emperor-quarry-1079",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1080": {
+    "version": 1,
+    "id": "emperor-quarry-1080",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1081": {
+    "version": 1,
+    "id": "emperor-quarry-1081",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          385,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1082": {
+    "version": 1,
+    "id": "emperor-quarry-1082",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1083": {
+    "version": 1,
+    "id": "emperor-quarry-1083",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1084": {
+    "version": 1,
+    "id": "emperor-quarry-1084",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1085": {
+    "version": 1,
+    "id": "emperor-quarry-1085",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1086": {
+    "version": 1,
+    "id": "emperor-quarry-1086",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1087": {
+    "version": 1,
+    "id": "emperor-quarry-1087",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1088": {
+    "version": 1,
+    "id": "emperor-quarry-1088",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1089": {
+    "version": 1,
+    "id": "emperor-quarry-1089",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1090": {
+    "version": 1,
+    "id": "emperor-quarry-1090",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1091": {
+    "version": 1,
+    "id": "emperor-quarry-1091",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          433,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1092": {
+    "version": 1,
+    "id": "emperor-quarry-1092",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1093": {
+    "version": 1,
+    "id": "emperor-quarry-1093",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1094": {
+    "version": 1,
+    "id": "emperor-quarry-1094",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1095": {
+    "version": 1,
+    "id": "emperor-quarry-1095",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1096": {
+    "version": 1,
+    "id": "emperor-quarry-1096",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1097": {
+    "version": 1,
+    "id": "emperor-quarry-1097",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1098": {
+    "version": 1,
+    "id": "emperor-quarry-1098",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1099": {
+    "version": 1,
+    "id": "emperor-quarry-1099",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1100": {
+    "version": 1,
+    "id": "emperor-quarry-1100",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1101": {
+    "version": 1,
+    "id": "emperor-quarry-1101",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          481,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1102": {
+    "version": 1,
+    "id": "emperor-quarry-1102",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1103": {
+    "version": 1,
+    "id": "emperor-quarry-1103",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1104": {
+    "version": 1,
+    "id": "emperor-quarry-1104",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1105": {
+    "version": 1,
+    "id": "emperor-quarry-1105",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1106": {
+    "version": 1,
+    "id": "emperor-quarry-1106",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1107": {
+    "version": 1,
+    "id": "emperor-quarry-1107",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1108": {
+    "version": 1,
+    "id": "emperor-quarry-1108",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1109": {
+    "version": 1,
+    "id": "emperor-quarry-1109",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1110": {
+    "version": 1,
+    "id": "emperor-quarry-1110",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1111": {
+    "version": 1,
+    "id": "emperor-quarry-1111",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          529,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1112": {
+    "version": 1,
+    "id": "emperor-quarry-1112",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1113": {
+    "version": 1,
+    "id": "emperor-quarry-1113",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1114": {
+    "version": 1,
+    "id": "emperor-quarry-1114",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1115": {
+    "version": 1,
+    "id": "emperor-quarry-1115",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1116": {
+    "version": 1,
+    "id": "emperor-quarry-1116",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          321,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1117": {
+    "version": 1,
+    "id": "emperor-quarry-1117",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          401,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1118": {
+    "version": 1,
+    "id": "emperor-quarry-1118",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          481,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1119": {
+    "version": 1,
+    "id": "emperor-quarry-1119",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          561,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1120": {
+    "version": 1,
+    "id": "emperor-quarry-1120",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          641,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1121": {
+    "version": 1,
+    "id": "emperor-quarry-1121",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          721,
+          577,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1122": {
+    "version": 1,
+    "id": "emperor-quarry-1122",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          1,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1123": {
+    "version": 1,
+    "id": "emperor-quarry-1123",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          81,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1124": {
+    "version": 1,
+    "id": "emperor-quarry-1124",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          161,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-quarry-1125": {
+    "version": 1,
+    "id": "emperor-quarry-1125",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "quarry-atlas.png",
+        "rect": [
+          241,
+          625,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
   }
 }

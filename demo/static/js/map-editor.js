@@ -34,7 +34,7 @@
   let hoverKey = null;
   let brushKey = null;
   let brushOffsets = [];
-  const brushTools = ['land', 'water', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', ...rockTools, ...treeTools];
+  const brushTools = ['land', 'water', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', 'quarry', ...rockTools, ...treeTools];
   // 相机只属于当前页面，不写入地图事实或撤销记录；中心允许位于半格。
   const viewport = { width: container.clientWidth || 640, height: container.clientHeight || 440,
     center: null, baseHeight: 0, scale: 1, mode: 'work' };
@@ -147,15 +147,16 @@
     });
     get('building-control').hidden = tool !== 'building';
     get('tree-control').hidden = tool !== 'tree';
-    get('brush-size-control').hidden = !brushTools.includes(tool);
+    get('brush-size-control').hidden = !brushTools.includes(tool) || tool === 'quarry';
     updateBrushParameters();
     get('click-help').textContent = {
       select: get('pick-mode').value === 'cell'
         ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
         : '点击实体查看完整占地与属性；使用“清除”移除实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
-      clear: '清除植被、岩石、铜矿、铁矿、道路和实体，保留地形与高度。单格只清实际命中的实体；范围笔刷清除占地内实体，橙框表示待清除，灰框表示无可清除内容，红框表示不能落笔。松开提交，Esc 取消。',
+      clear: '清除植被、岩石、铜矿、铁矿、采石地、道路和实体，保留地形与高度。单格只清实际命中的实体；范围笔刷清除占地内实体，橙框表示待清除，灰框表示无可清除内容，红框表示不能落笔。松开提交，Esc 取消。',
       tree: '普通树、竹类及静态残株：在已有草地的平地绘制，不能与水、道路、实体或坡面重叠。整笔松开提交，Esc 取消；树木与残株都会影响周围草地，不会自动生长。',
+      quarry: '采石地：固定 6×6，在等高平坦陆地放置，可重叠或相邻扩展。按住 Ctrl 落笔清除该范围；也可使用清除工具。坑边与坑内按周围采石格自动拼接。松开提交，Esc 取消；不记录可采数量或开采进度。',
       rock: '普通石、铜矿与铁矿：在平坦陆地逐格绘制或互换类别，同类自动组合为1×1、2×2或3×3大块。不能覆盖水、植被、道路、实体或坡面。青框表示周围重新分块，类别保留；清除只删笔刷内的岩石格。含矿格分布表示含矿范围，不记录可采数量。松开提交，Esc 取消。',
       ramp: '一级直边坡道：按下预览，松开切换；Esc 取消。可放在普通坡面或半坡上，再沿高低两端铺路。移除前请先擦路。',
       'half-slope': '一级直边半坡：将坡面延伸到低侧两格，高程数值不变。点击任一部分切换整体；可相邻放置。改变占地前请先擦路。',
@@ -172,6 +173,7 @@
   }
 
   function getBrushOffsets() {
+    if (get('edit-tool').value === 'quarry') return window.quarryRules.offsets;
     const size = Number(get('brush-size').value);
     const shape = get('brush-shape').value;
     if (!Number.isInteger(size) || size < 1 || size > 9) throw new Error('笔刷尺寸应为1～9的整数');
@@ -224,18 +226,19 @@
       const checked = requireSuccess(window.constructionRules.validate(candidate, currentScene.groundTiles, currentScene.elementsById));
       requireSuccess(window.rockRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
       requireSuccess(window.treeRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
+      requireSuccess(window.quarryRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index, cameraAngle));
     } catch (reason) { error = reason.message; }
     return { entity, draw, error };
   }
 
   // 地形悬停只计算占地；建筑用同一兼容检查预览，不写入地图或历史。
   function updateHover(event = hoverPointer) {
-    if (event) hoverPointer = { clientX: event.clientX, clientY: event.clientY };
+    if (event) hoverPointer = { clientX: event.clientX, clientY: event.clientY, ctrlKey: event.ctrlKey };
     if (!currentScene || !event || stroke || pan) { clearHover(); return; }
     const hit = hitAt(event);
     const tool = get('edit-tool').value;
     const offsets = brushTools.includes(tool) ? getBrushOffsets() : [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : [];
-    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}:${get('tree-kind').value}`;
+    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${Boolean(event.ctrlKey)}:${brushKey}:${get('building-angle').value}:${get('tree-kind').value}`;
     if (key === hoverKey) return;
     clearHover();
     hoverKey = key;
@@ -266,9 +269,15 @@
       try {
         clearPreview = clearContents(currentScene, grids, clearEntityIds(currentScene, hit, grids, offsets.length > 1));
         grids = clearPreview.selectedGrids;
+        requireSuccess(window.quarryRules.resolve(clearPreview.definition, currentScene.groundTiles,
+          currentScene.elementsById, currentScene.occupancyIndex, cameraAngle));
         rockPreview = window.rockRules.resolve(clearPreview.definition, currentScene.groundTiles,
           currentScene.elementsById, currentScene.occupancyIndex);
       } catch (reason) { error = reason.message; }
+    } else if (!hit.missed && tool === 'quarry') {
+      const candidate = window.quarryRules.applyStroke(currentScene.map, grids, Boolean(event.ctrlKey));
+      error = candidate.issues[0]?.message || window.quarryRules.resolve(candidate.definition,
+        currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex, cameraAngle).issues[0]?.message || '';
     } else if (!hit.missed && rockTools.includes(tool)) {
       const candidate = window.rockRules.applyStroke(currentScene.map, grids, false, tool);
       if (!candidate.issues.length) rockPreview = window.rockRules.resolve(candidate.definition,
@@ -279,7 +288,8 @@
       error = candidate.issues[0]?.message || window.treeRules.resolve(candidate.definition,
         currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message || '';
     } else if (feature && !feature.issues.length) {
-      error = window.rockRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message
+      error = window.quarryRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex, cameraAngle).issues[0]?.message
+        || window.rockRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message
         || window.treeRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message || '';
     }
     const invalid = hit.missed || error || feature?.issues.length || grids.some(([x, y]) => !currentScene.map.cells[y]?.[x]);
@@ -368,6 +378,7 @@
     get('cell-info').textContent = !selectedGrid ? '点击画布查看' : cell === null ? 'null · 无效空角'
       : cell ? `terrain: ${cell.terrain}${cell.road ? '\n道路: 普通' : ''}\nelevation: ${cell.elevation}\n素材: ${tile?.element || '无'}\n变体: ${tile?.variant ?? '无'}` : '地图矩阵之外';
     if (cell && tile?.waterKind) get('cell-info').textContent += `\n水面: ${{ ordinary: '普通', transition: '过渡', deep: '深处' }[tile.waterKind]}`;
+    if (cell?.quarry) get('cell-info').textContent += '\n采石地：静态范围，局部清除后重新拼接';
     if (cell?.rock) get('cell-info').textContent += `\n岩石: ${getRock(cell.rock).label} · 当前组合${tile.rockSize}×${tile.rockSize}（逐格编辑）`;
     if (cell?.tree) get('cell-info').textContent += `\n树木: ${getTree(cell.tree).detail} · 占地1格`;
     if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n环境强度: ${tile.moisture} / 100（水域/树木派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
@@ -391,7 +402,8 @@
     }
     const groundTiles = resolvedTiles ?? requireSuccess(window.elevationRules.resolve(map, elementsById, rules, elevationRules, nextAngle)).tiles;
     const construction = requireSuccess(window.constructionRules.resolve(map, groundTiles, elementsById, mapState.roadRules, nextAngle));
-    const rockTiles = requireSuccess(window.rockRules.resolve(map, construction.tiles, elementsById, construction.index)).tiles;
+    const quarryTiles = requireSuccess(window.quarryRules.resolve(map, construction.tiles, elementsById, construction.index, nextAngle)).tiles;
+    const rockTiles = requireSuccess(window.rockRules.resolve(map, quarryTiles, elementsById, construction.index)).tiles;
     const tiles = requireSuccess(window.treeRules.resolve(map, rockTiles, elementsById, construction.index)).tiles;
     const view = { angle: nextAngle, tileSize: map.tileSize, originPixel: [0, 0] };
     const flatEditing = get('flat-edit').checked;
@@ -435,7 +447,7 @@
         holder.append(new Polyline({ pos, points: vertexes, close: true, lineWidth: 1,
           strokeColor: '#788c86', fillColor: cell.terrain === 'water' ? '#9acbdc'
             : `hsl(95, 24%, ${88 - cell.elevation * 3}%)` }));
-        holder.append(new Label({ text: `${cell.elevation}${cell.road ? ' 路' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
+        holder.append(new Label({ text: `${cell.elevation}${cell.road ? ' 路' : ''}${cell.quarry ? ' 采石' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
         content.append(holder);
         return;
       }
@@ -605,7 +617,7 @@
     try {
       const baseHeight = get('rebase-sample').checked ? presetHeight() : null;
       if (window.location.protocol === 'file:') throw new Error('本页需要 HTTP 服务');
-      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.landWaterRules || !window.elevationRules || !window.constructionRules || !window.treeRules || !window.rockRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
+      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.landWaterRules || !window.elevationRules || !window.constructionRules || !window.treeRules || !window.rockRules || !window.quarryRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
         throw new Error('运行包缺失或过期；仓库 Demo 请先执行 npm run debug，独立目录请按 docs/browser-consumption.md 重新准备');
       }
       const { loadElementSources, importElementDefinition } = window.qtiledElementRendering;
@@ -740,7 +752,7 @@
 
   function hitAt(event, scene = currentScene) {
     const pixel = getPointerPosition(event, container).map((value, axis) => (value - scene.viewportOrigin[axis]) / scene.viewportScale);
-    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock) || scene.map.entities.some(entity => entity.element === window.constructionRules.buildingId)) && !scene.flatEditing) {
+    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.quarry) || scene.map.entities.some(entity => entity.element === window.constructionRules.buildingId)) && !scene.flatEditing) {
       for (let index = scene.drawables.length - 1; index >= 0; index--) {
         const item = scene.drawables[index];
         const frame = item.draw.sequence ? window.qtiledElementRendering.resolveElementFrame(item.definition, item.draw.imageAngle,
@@ -914,6 +926,7 @@
   function clearContents(scene, grids, ids) {
     let result = requireSuccess(window.treeRules.applyStroke(scene.map, grids, true, scene.groundTiles));
     result = requireSuccess(window.rockRules.applyStroke(result.definition, grids, true));
+    result = requireSuccess(window.quarryRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.constructionRules.applyRoadStroke(result.definition, grids, true, scene.groundTiles));
     const selected = new Map(result.selectedGrids.map(grid => [grid.join(','), grid]));
     for (const [key, occupants] of scene.occupancyIndex) {
@@ -922,7 +935,7 @@
     // 同一候选内完成各类事实删除；prepareScene与历史只提交一次。
     for (const id of ids) result.definition = requireSuccess(window.qtiledMaps.applyMapEdit(result.definition,
       { type: 'remove', id }, scene.elementsById, window.constructionRules.canCoexist)).definition;
-    const hasContent = ids.size > 0 || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.tree || scene.map.cells[y]?.[x]?.rock)
+    const hasContent = ids.size > 0 || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.tree || scene.map.cells[y]?.[x]?.rock || scene.map.cells[y]?.[x]?.quarry)
       || result.selectedGrids.some(([x, y]) => scene.map.cells[y]?.[x]?.road);
     return { ...result, selectedGrids: [...selected.values()], hasContent };
   }
@@ -1008,6 +1021,8 @@
         ? clearContents(base, [...grids.values()], stroke.entityIds)
         : featureTools.includes(terrain)
         ? window.elevationRules.applyFeature(base.map, { type: terrain, grid }, base.elementsById, base.rules, base.elevationRules, cameraAngle)
+        : terrain === 'quarry'
+        ? window.quarryRules.applyStroke(base.map, [...grids.values()], stroke.erase)
         : rockTools.includes(terrain)
         ? window.rockRules.applyStroke(base.map, [...grids.values()], false, terrain)
         : treeTools.includes(terrain)
@@ -1016,9 +1031,9 @@
         ? window.constructionRules.applyRoadStroke(base.map, [...grids.values()], false, base.groundTiles)
         : window.elevationRules.applyStroke(base.map, { ...command, grids: [...grids.values()] }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
       // 只保护已有树与岩石的实际高度变化，不改高程联动算法；最终坡面冲突由prepareScene拒绝。
-      if (base.map.cells.some((row, y) => row.some((cell, x) => (cell?.tree || cell?.rock)
+      if (base.map.cells.some((row, y) => row.some((cell, x) => (cell?.tree || cell?.rock || cell?.quarry)
         && result.definition.cells[y]?.[x]?.elevation !== cell.elevation))) {
-        throw new Error('高程联动会改变已有树木或岩石所在格，请先清除。');
+        throw new Error('高程联动会改变已有树木、岩石或采石地所在格，请先清除。');
       }
       const occupancy = requireSuccess(window.qtiledMaps.buildMapOccupancy(result.definition, base.elementsById));
       const next = prepareScene({ ...base, map: result.definition, occupancyIndex: occupancy.index }, cameraAngle, result.tiles);
@@ -1074,7 +1089,7 @@
     ++loadRequestId; // 新编辑不能被较早的异步读取覆盖。
     // 从全图开始编辑时保持当前缩放，避免新增岸线改变外框导致笔尖漂移。
     viewport.mode = 'work';
-    stroke = { base: currentScene, terrain: tool, treeKind: get('tree-kind').value, entityIds: new Set(),
+    stroke = { base: currentScene, terrain: tool, erase: tool === 'quarry' && event.ctrlKey, treeKind: get('tree-kind').value, entityIds: new Set(),
       offsets: [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : getBrushOffsets(),
       grids: new Map(), pointerId: event.pointerId };
     container.setPointerCapture?.(event.pointerId);

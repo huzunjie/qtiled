@@ -175,6 +175,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/construction-rules.js'), context);
   vm.runInContext(read('static/js/tree-rules.js'), context);
   vm.runInContext(read('static/js/rock-rules.js'), context);
+  vm.runInContext(read('static/js/quarry-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rendering.js'), context);
   const terrainResolve = jest.fn(window.landWaterRules.resolve);
   window.landWaterRules.resolve = terrainResolve;
@@ -204,7 +205,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
     get('map-canvas').dispatchEvent(event);
     return event;
   };
-  const pointer = (type, grid, button = 0) => sendPointer(type, pointAt(grid), button);
+  const pointer = (type, grid, button = 0, modifiers = {}) => sendPointer(type, { ...pointAt(grid), ...modifiers }, button);
   const screenPointer = (type, point, button = 0) => sendPointer(type, { clientX: point[0] - 100, clientY: point[1] + 73 }, button);
   const tool = value => { get('edit-tool').value = value; get('edit-tool').dispatchEvent(new window.Event('change')); };
   const save = () => { get('save-map').click(); return JSON.parse(get('map-json').value); };
@@ -1102,7 +1103,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(15);
+  expect(Object.keys(initial)).toHaveLength(16);
   expect(initial['water-shore-atlas.png']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.png');
   expect(new URL(initial['trees-atlas.png'], 'http://localhost/').searchParams.get('v')).toBe('20261014001000');
   expect(Object.values(initial).every(url => !url.includes('reload='))).toBe(true);
@@ -2435,4 +2436,40 @@ test.each([2, 3])('%s格方块四镜头可逐格命中清除，青框只提示�
   expect(p.save().cells[4][4].rock).toBe('iron');
   expect(p.save().cells.flat().filter(cell => cell.rock === 'copper')).toHaveLength(size * size - 1);
   expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test('采石地独立按钮固定6×6，扩展、Ctrl局部清除、取消、历史及JSON四向回读', async () => {
+  const p = await page({}, 'mineral-map');
+  const original = p.save();
+  const map = { ...original, cells: Array.from({ length: 20 }, () => Array.from({ length: 24 }, () => ({ terrain: 'land', elevation: 8 }))), entities: [] };
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  p.window.document.querySelector('[data-tool="quarry"]').click();
+  expect(p.get('edit-tool').value).toBe('quarry');
+  expect(p.get('brush-size-control').hidden).toBe(true);
+  p.pointer('pointermove', [8, 8]); expect(p.get('hover-info').textContent).toContain('36');
+  p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
+  const first = p.save(); expect(first.cells.flat().filter(c => c.quarry)).toHaveLength(36);
+  expect(first.cells[6][5].quarry).toBe(true); expect(first.cells[11][10].quarry).toBe(true);
+  p.pointer('pointerdown', [11, 10]); p.pointer('pointerup', [11, 10]);
+  const expanded = p.save(); expect(expanded.cells.flat().filter(c => c.quarry)).toHaveLength(60);
+  p.pointer('pointerdown', [8, 8], 0, { ctrlKey: true });
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(p.save()).toEqual(expanded);
+  p.pointer('pointerdown', [8, 8], 0, { ctrlKey: true }); p.pointer('pointerup', [8, 8], 0, { ctrlKey: true });
+  const cleared = p.save(); expect(cleared.cells.flat().filter(c => c.quarry)).toHaveLength(24);
+  p.get('undo').click(); expect(p.save()).toEqual(expanded);
+  p.get('redo').click(); expect(p.save()).toEqual(cleared);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); expect(p.get('issues').hidden).toBe(true); expect(p.save()).toEqual(cleared);
+  }
+  p.get('map-json').value = JSON.stringify(cleared); p.get('read-map').click(); expect(p.save()).toEqual(cleared);
+  p.camera(0); p.tool('clear'); p.pointer('pointerdown', [13, 13]); p.pointer('pointerup', [13, 13]);
+  expect(p.save().cells.flat().filter(c => c.quarry)).toHaveLength(23);
+  p.get('undo').click(); expect(p.save()).toEqual(cleared);
+  p.tool('water'); p.pointer('pointerdown', [12, 11]); p.pointer('pointerup', [12, 11]);
+  expect(p.get('issues').hidden).toBe(false); expect(p.save()).toEqual(cleared);
+  p.tool('quarry'); p.pointer('pointerdown', [1, 1]); p.pointer('pointerup', [1, 1]);
+  expect(p.get('issues').textContent).toMatch(/越界|空角/); expect(p.save()).toEqual(cleared);
+  expect(p.errors).toEqual([]);
 });

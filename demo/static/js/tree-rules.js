@@ -19,8 +19,8 @@
       if (cell.terrain !== 'land' || tile.slope || cell.ramp || cell.halfSlope) {
         issues.push(issue(path, 'tree-ground', '树木需要平坦陆地，不能占用水域、坡面、坡道或半坡部件。'));
       }
-      if (cell.road || cell.rock !== undefined || occupancy.has(`${x},${y}`)) {
-        issues.push(issue(path, 'tree-occupied', '树木不能与岩石、铜矿、铁矿、道路、建筑或其他实体重叠，请先擦除冲突内容。'));
+      if (cell.quarry !== undefined || cell.road || cell.rock !== undefined || occupancy.has(`${x},${y}`)) {
+        issues.push(issue(path, 'tree-occupied', '树木不能与岩石、铜矿、铁矿、采石地、道路、建筑或其他实体重叠，请先擦除冲突内容。'));
       }
       const surrounded = neighbors.every(([dx, dy]) => {
         const neighbor = map.cells[y + dy]?.[x + dx];

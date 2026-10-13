@@ -18,8 +18,8 @@
       if (cell.terrain !== 'land' || tile.slope || tile.slopeOwner || cell.ramp || cell.halfSlope) {
         issues.push(issue(path, 'rock-ground', '岩石与矿物需要平坦陆地，不能占用水域、坡面、坡道或半坡部件。'));
       }
-      if (cell.road || cell.tree !== undefined || occupancy.has(`${x},${y}`)) {
-        issues.push(issue(path, 'rock-occupied', '岩石与矿物不能与植被、道路、建筑或其他实体重叠，请先清除冲突内容。'));
+      if (cell.quarry !== undefined || cell.road || cell.tree !== undefined || occupancy.has(`${x},${y}`)) {
+        issues.push(issue(path, 'rock-occupied', '岩石与矿物不能与植被、采石地、道路、建筑或其他实体重叠，请先清除冲突内容。'));
       }
       return { ...tile, groundElement: tile.element, rock: cell.rock };
     });
