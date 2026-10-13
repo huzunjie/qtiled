@@ -2,6 +2,7 @@
  * 原作表决定水岸形状和变体数量；边界、稳定变体和整笔事务是本工具的约定。
  */
 (function () {
+  const { getTree, getStableGridValue } = window.terrainSample;
   const angles = [0, 90, 180, 270];
   const climates = { arid: [10, 10], temperate: [40, 20], humid: [60, 20] };
   const waterNeighbors = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
@@ -35,6 +36,9 @@
           continue;
         }
         count += 1;
+        if (owns(cell, 'tree') && (!getTree(cell.tree) || map.climate === undefined)) {
+          issues.push(issue(`${path}.tree`, 'invalid-tree', '树木必须为普通树、竹类或其残株，且地图需要明确气候。'));
+        }
         if (!['land', 'water'].includes(cell.terrain)) {
           issues.push(issue(`${path}.terrain`, 'unsupported-terrain', '本规则仅支持普通 land / water。'));
         }
@@ -125,8 +129,25 @@
       if (cell?.terrain === 'water') sources.push([x, y]);
     }));
     const distances = window.qtiled.pathFinding.getChebyshevDistanceField(cells[0].length, cells.length, sources);
-    return distances.map(row => row.map(distance => distance > radius ? 0
+    const moisture = distances.map(row => row.map(distance => distance > radius ? 0
       : Math.min(100, Math.trunc(100 * (radius + 1 - distance) / divisor))));
+    // 原作 4c02fc/4bff60：水源重建后，树源50，四邻每步减10。
+    // 较强现值截断该路径；等值仍继续，不能以八邻距离或强度相加代替。
+    // null只作矩阵内临时传播位置，不作来源/不持久化；界外不跨行传播。
+    cells.forEach((row, y) => row.forEach((cell, x) => {
+      if (!getTree(cell?.tree) || moisture[y][x] >= 50) return;
+      const pending = [[x, y, 50]];
+      while (pending.length) {
+        const [px, py, value] = pending.pop();
+        if (value <= 0 || py < 0 || py >= cells.length || px < 0 || px >= cells[0].length
+          || moisture[py][px] > value) continue;
+        moisture[py][px] = value;
+        // 反向入栈，消费顺序与原作N/E/S/W一致。
+        pending.push([px - 1, py, value - 10], [px, py + 1, value - 10],
+          [px + 1, py, value - 10], [px, py - 1, value - 10]);
+      }
+    }));
+    return moisture;
   }
 
   /** 输出整张地图的派生绘制选择，不写回 tile、帧或随机数。
@@ -162,9 +183,7 @@
         let grassGrade = null;
         if (cell.terrain === 'land') {
           // 混合坐标高低位，避免少量陆地变体按行列重复；显式外观字节仍优先。
-          let hash = Math.imul(x, 374761393) ^ Math.imul(y, 668265263);
-          hash = Math.imul(hash ^ (hash >>> 13), 1274126177);
-          let stable = owns(cell, 'terrainVariant') ? cell.terrainVariant : (hash ^ (hash >>> 16)) >>> 0;
+          let stable = owns(cell, 'terrainVariant') ? cell.terrainVariant : getStableGridValue(x, y);
           let pool = rules.landVariants;
           if (moisture?.[y][x] > 0) {
             stable &= 255;

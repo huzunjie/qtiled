@@ -169,9 +169,11 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   });
   vm.runInContext(read('static/js/pointer.js'), context);
   vm.runInContext(read('static/js/dog-element-sample.js'), context);
+  vm.runInContext(read('static/js/terrain-sample.js'), context);
   vm.runInContext(read('static/js/land-water-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rules.js'), context);
   vm.runInContext(read('static/js/construction-rules.js'), context);
+  vm.runInContext(read('static/js/tree-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rendering.js'), context);
   const terrainResolve = jest.fn(window.landWaterRules.resolve);
   window.landWaterRules.resolve = terrainResolve;
@@ -241,6 +243,44 @@ function setDisplay(p, id, checked) {
   p.get(id).checked = checked;
   p.get(id).dispatchEvent(new p.window.Event('change'));
 }
+
+test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'])('%s整笔、取消、历史、冲突及IO复用原事务', async kind => {
+  const p = await page({}, 'tree-map');
+  expect(p.get('issues').hidden).toBe(true);
+  setDisplay(p, 'flat-edit', true);
+  const before = p.save();
+  p.get('tree-kind').value = kind;
+  p.tool('tree');
+  expect(p.get('tree-control').hidden).toBe(false);
+  p.pointer('pointerdown', [26, 9]);
+  p.get('tree-kind').dispatchEvent(new p.window.Event('change'));
+  expect(p.save()).toEqual(before);
+  p.pointer('pointerdown', [26, 9]);
+  p.pointer('pointerup', [26, 9]);
+  const painted = p.save();
+  expect(painted.cells[9][26].tree).toBe(kind);
+  p.get('undo').click(); expect(p.save()).toEqual(before);
+  p.get('redo').click(); expect(p.save()).toEqual(painted);
+  for (const tool of ['road', 'water', 'raise', 'raise-two', 'lower', 'lower-two']) {
+    p.tool(tool); p.pointer('pointerdown', [26, 9]); p.pointer('pointerup', [26, 9]);
+    expect({ tool, hidden: p.get('issues').hidden }).toEqual({ tool, hidden: false });
+    expect(p.save()).toEqual(painted);
+  }
+  // 气候缺省/坏树事实与整栋建筑后放到树上都不能通过导入门禁。
+  for (const change of [map => { delete map.climate; }, map => { map.cells[9][26].tree = 'bamboo'; },
+    map => { map.entities.push({ id: 'overlap', element: 'courtyard-house', grid: [25, 8], angle: 0 }); }]) {
+    const bad = JSON.parse(JSON.stringify(painted)); change(bad);
+    p.get('map-json').value = JSON.stringify(bad); p.get('read-map').click();
+    expect(p.get('issues').hidden).toBe(false); expect(p.save()).toEqual(painted);
+  }
+  p.tool('clear'); p.pointer('pointerdown', [26, 9]); p.pointer('pointerup', [26, 9]);
+  expect(p.save()).toEqual(before);
+  p.get('undo').click(); expect(p.save()).toEqual(painted);
+  p.get('map-json').value = JSON.stringify(painted); p.get('read-map').click();
+  for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.save()).toEqual(painted); }
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
 
 function guide(p, id) {
   return p.layer.children[0].children.find(node => node.attrs.id === id);
@@ -1061,9 +1101,10 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(13);
+  expect(Object.keys(initial)).toHaveLength(14);
   expect(initial['atlas.png']).toBe('./static/terrain-samples/emperor-land-water/atlas.png');
-  expect(Object.values(initial).every(url => !url.includes('?'))).toBe(true);
+  expect(new URL(initial['trees-atlas.png'], 'http://localhost/').searchParams.get('v')).toBe('20261014001000');
+  expect(Object.values(initial).every(url => !url.includes('reload='))).toBe(true);
   const switchSample = async sample => {
     p.get('map-sample').value = sample;
     p.get('map-sample').dispatchEvent(new p.window.Event('change'));
@@ -1079,7 +1120,8 @@ test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部�
     const refreshed = p.imageRequests[p.imageRequests.length - 1];
     const tokens = Object.keys(initial).map(key => {
       const url = new URL(refreshed[key], 'http://localhost/demo/');
-      expect(refreshed[key].split('?')[0]).toBe(initial[key]);
+      expect(refreshed[key].split('?')[0]).toBe(initial[key].split('?')[0]);
+      expect(url.searchParams.get('v')).toBe(new URL(initial[key], 'http://localhost/').searchParams.get('v'));
       expect(refreshed[key]).not.toBe(previous[key]);
       expect(url.searchParams.get('reload')).toMatch(/^\d+-\d+$/);
       return url.searchParams.get('reload');
@@ -1585,7 +1627,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -1839,7 +1881,7 @@ test('道路快速拖动形成一个直角弯，整笔撤销/重做、重复无�
   expect(p.save()).toEqual(before);
   p.get('redo').click();
   expect(p.save()).toEqual(after);
-  p.tool('erase-road');
+  p.tool('clear');
   p.pointer('pointerdown', [3, 3]);
   p.pointer('pointerup', [3, 3]);
   expect(p.save().cells[3][3]).toEqual(before.cells[3][3]);
@@ -1884,7 +1926,7 @@ test('建筑预览不写事实，转向/放置/重复拒绝后可恢复，地形
   p.tool('select');
   p.clickGrid([4, 3]);
   expect(p.get('entity-id').textContent).toBe('house-1');
-  p.get('delete-entity').click();
+  p.tool('clear'); p.pointer('pointerdown', [4, 3]); p.pointer('pointerup', [4, 3]);
   expect(p.save()).toEqual(before);
   p.get('undo').click();
   expect(p.save()).toEqual(placed);
@@ -2007,16 +2049,16 @@ test('上方格子和实体工具分别选取，操作随选择显示，实体�
   expect(p.get('cell-grid').textContent).toBe('[2,2]');
   expect(p.get('entity-details').hidden).toBe(true);
   expect(p.get('selection-actions').hidden).toBe(false);
-  expect(p.get('delete-entity').hidden).toBe(true);
+  expect(p.get('delete-entity')).toBeNull();
   button('entity').click();
   expect(p.get('selection-actions').hidden).toBe(true);
   p.clickGrid([2, 2]);
   expect(p.get('entity-id').textContent).toBe('dog-a');
-  expect(p.get('delete-entity').hidden).toBe(false);
-  p.get('delete-entity').click();
+  setDisplay(p, 'flat-edit', true);
+  p.tool('clear'); p.pointer('pointerdown', [2, 2]); p.pointer('pointerup', [2, 2]);
   expect(p.save().entities).toEqual(before.entities.filter(entity => entity.id !== 'dog-a'));
   expect(p.save().cells).toEqual(before.cells);
-  expect(p.get('delete-entity').hidden).toBe(true);
+  expect(p.get('delete-entity')).toBeNull();
   p.get('undo').click();
   expect(p.save()).toEqual(before);
   p.get('clear-selection').click();
@@ -2077,7 +2119,7 @@ test('新图三档选项、画水取消/提交/擦除和文件回读统一重建
   expect(tiles.some(tile => tile.grassGrade === 4)).toBe(true);
   expect(JSON.stringify(wet)).not.toMatch(/moisture|grassGrade|"tile"/);
   p.tool('select'); p.mode('cell'); p.clickGrid([7, 8]);
-  expect(p.get('cell-info').textContent).toContain('近水湿润强度: 100');
+  expect(p.get('cell-info').textContent).toContain('环境强度: 100');
   expect(p.get('cell-info').textContent).toContain('气候: 干旱');
   p.tool('land'); p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
   expect(p.tiles().every(tile => tile.moisture === 0)).toBe(true);
@@ -2209,7 +2251,7 @@ test('坡道半坡工具：双格归属、整笔取消、铺擦路、撤销重�
   p.tool('half-slope'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
   expect(p.get('issues').textContent).toContain('先擦除道路');
   expect(p.save()).toEqual(painted);
-  p.tool('erase-road'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
+  p.tool('clear'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
   expect(p.save()).toEqual(ramp);
   p.tool('half-slope'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
   expect(p.save().cells[5][11].halfSlope).toBeUndefined();
@@ -2222,4 +2264,95 @@ test('坡道半坡工具：双格归属、整笔取消、铺擦路、撤销重�
     expect(p.save()).toEqual(painted);
   }
   expect(p.errors).toEqual([]);
+});
+
+
+test('清除单点按真实alpha仅删重叠上层；全占地预览、取消和一次历史，四镜头一致', async () => {
+  const p = await page();
+  const map = p.save();
+  map.entities[1].grid = [...map.entities[0].grid];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); p.tool('clear');
+    const draw = p.result().find(item => item.id === 'dog-b').draw;
+    const image = p.sprites().find(sprite => sprite.attrs.texture.file === draw.source).attrs.texture.pixels;
+    let pixel;
+    for (let y = 0; y < draw.rect[3] && !pixel; y++) for (let x = 0; x < draw.rect[2]; x++) {
+      if (image.data[((y + draw.rect[1]) * image.width + x + draw.rect[0]) * 4 + 3]) { pixel = [x, y]; break; }
+    }
+    const root = p.layer.children[0];
+    const point = pixel.map((v, axis) => root.attrs.pos[axis] + (draw.position[axis] + v + 0.5) * root.attrs.scale[axis]);
+    p.screenPointer('pointermove', point);
+    expect(guide(p, 'map-brush-hover').children).toHaveLength(draw.footprint.length);
+    p.screenPointer('pointerdown', point);
+    p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.screenPointer('pointerdown', point); p.screenPointer('pointermove', point); p.screenPointer('pointerup', point);
+    expect(p.save().entities.map(e => e.id)).toEqual(['dog-a']);
+    expect(p.save().cells).toEqual(map.cells);
+    p.get('undo').click(); expect(p.save()).toEqual(map);
+    p.get('redo').click(); expect(p.save().entities.map(e => e.id)).toEqual(['dog-a']);
+    p.get('undo').click();
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('范围清除一次移除树道路完整民居，保留地形，取消与越界失败不部分落笔', async () => {
+  const p = await constructionPage();
+  const map = p.save(); map.climate = 'arid';
+  map.cells[4][4].tree = 'ordinary-mature'; map.cells[4][5].road = 'ordinary';
+  map.entities = [{ id: 'house', element: 'courtyard-house', grid: [6, 4], angle: 0 }];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  p.get('brush-size').value = '5'; p.tool('clear');
+  p.pointer('pointerdown', [5, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [5, 4]); p.pointer('pointerup', [5, 4]);
+  const cleared = p.save(); expect(cleared.entities).toEqual([]);
+  expect(cleared.cells.flat().some(c => c.tree || c.road)).toBe(false);
+  expect(cleared.cells.flat().every(c => c.elevation === 8 && c.terrain === 'land')).toBe(true);
+  p.get('undo').click(); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [5, 4]); p.pointer('pointerup', [0, 0]); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each([[9, 4], [9, 9]])('范围清除跳采样到[%i,%i]补齐中途实体、完整占地及整笔历史', async (x, y) => {
+  const p = await constructionPage();
+  const map = p.save();
+  const start = y === 4 ? [2, 4] : [2, 2];
+  map.entities = [{ id: 'middle', element: 'courtyard-house', grid: [5, 5], angle: 0 },
+    { id: 'outside', element: 'courtyard-house', grid: [0, 9], angle: 0 }];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  setDisplay(p, 'flat-edit', true);
+  p.get('brush-size').value = '3'; p.tool('clear');
+  const sweep = () => { p.pointer('pointerdown', start); p.pointer('pointermove', [x, y]); };
+  sweep();
+  const preview = p.layer.children[0].children.find(node => node.children.some(child => child.attrs.strokeColor === '#a56308'));
+  for (const grid of [[5, 5], [6, 5], [5, 6], [6, 6]]) {
+    expect(preview.children.some(node => node.attrs.pos.every((value, axis) => value === view.projectGrid(grid, { tileSize: [80, 40], angle: 0 })[axis]))).toBe(true);
+  }
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(p.save()).toEqual(map);
+  sweep(); p.pointer('pointerup', [x, y]);
+  const cleared = p.save();
+  expect(cleared.entities.map(entity => entity.id)).toEqual(['outside']);
+  expect(cleared.cells).toEqual(map.cells);
+  p.get('undo').click(); expect(p.save()).toEqual(map);
+  p.get('redo').click(); expect(p.save()).toEqual(cleared);
+  p.get('undo').click();
+  sweep(); p.pointer('pointerup', [0, 0]); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('清除视觉区分橙色有效、灰色空地与红色无效，拖动提示保持一致', async () => {
+  const p = await constructionPage();
+  const map = p.save(); map.cells[4][4].road = 'ordinary';
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); p.tool('clear');
+  for (const [grid, color, text] of [[[4, 4], '#a56308', '待清除'], [[8, 8], '#77818a', '无可清除内容'], [[-1, 0], '#bc3e30', '不能落笔']]) {
+    p.pointer('pointermove', grid);
+    expect(guide(p, 'map-brush-hover').children[0].attrs.strokeColor).toBe(color);
+    expect(p.get('hover-info').textContent).toContain(text);
+  }
+  p.pointer('pointerdown', [4, 4]); expect(p.get('status').textContent).toContain('待清除');
+  p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [8, 8]); expect(p.get('status').textContent).toContain('无可清除内容');
+  p.pointer('pointerup', [8, 8]); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
 });

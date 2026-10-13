@@ -55,7 +55,7 @@ async function loadPage(name, overrides = {}, fetchOverride) {
           if (files[key].width) sourceInfo[key] = { width: files[key].width, height: files[key].height };
           else {
             const png = fs.readFileSync(typeof files[key] === 'string'
-              ? path.join(__dirname, '../demo', files[key])
+              ? path.join(__dirname, '../demo', files[key].split('?')[0])
               : path.join(__dirname, '../demo/static/element-samples/dog/images', path.basename(key)));
             sourceInfo[key] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
           }
@@ -73,7 +73,7 @@ async function loadPage(name, overrides = {}, fetchOverride) {
     cancelAnimationFrame: id => callbacks.delete(id),
   });
   for (const [, attrs, script] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
-    const helper = attrs.match(/static\/js\/(pointer|element-files|element-snap|element-editor|dog-element-sample|element-animation-player)\.js/);
+    const helper = attrs.match(/static\/js\/(pointer|element-files|element-snap|element-editor|dog-element-sample|element-animation-player|terrain-sample)\.js/);
     if (helper) await vm.runInContext(read(`static/js/${helper[1]}.js`), context);
     else if (!attrs.includes('src=')) await vm.runInContext(script, context);
   }

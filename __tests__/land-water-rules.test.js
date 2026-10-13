@@ -8,6 +8,7 @@ const samplePath = 'demo/static/terrain-samples/emperor-land-water/';
 const rules = JSON.parse(read(`${samplePath}rules.json`));
 const elements = JSON.parse(read(`${samplePath}elements.json`));
 const context = vm.createContext({ window: { qtiled: { pathFinding } } });
+vm.runInContext(read('demo/static/js/terrain-sample.js'), context);
 vm.runInContext(read('demo/static/js/land-water-rules.js'), context);
 const { resolve, applyStroke } = context.window.landWaterRules;
 const angles = [0, 90, 180, 270];

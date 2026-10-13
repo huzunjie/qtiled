@@ -14,6 +14,7 @@ const elements = {
   dog: { version: 1, id: 'dog', kind: 'sprite', footprint: [[0, 0]], views: {} },
 };
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
+vm.runInContext(read('demo/static/js/terrain-sample.js'), context);
 vm.runInContext(read('demo/static/js/land-water-rules.js'), context);
 vm.runInContext(read('demo/static/js/elevation-rules.js'), context);
 const resolve = (map, angle = 0, library = elements, rules = heightRules) => context.window.elevationRules.resolve(map, library, landRules, rules, angle);

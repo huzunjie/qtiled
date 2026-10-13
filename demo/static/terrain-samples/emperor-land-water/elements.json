@@ -13403,5 +13403,2930 @@
         ]
       }
     }
+  },
+  "emperor-tree-927": {
+    "version": 1,
+    "id": "emperor-tree-927",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          72
+        ],
+        "anchor": [
+          39,
+          52
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          72
+        ],
+        "anchor": [
+          39,
+          52
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          72
+        ],
+        "anchor": [
+          39,
+          52
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          1,
+          78,
+          72
+        ],
+        "anchor": [
+          39,
+          52
+        ]
+      }
+    }
+  },
+  "emperor-tree-936": {
+    "version": 1,
+    "id": "emperor-tree-936",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      }
+    }
+  },
+  "emperor-tree-928": {
+    "version": 1,
+    "id": "emperor-tree-928",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      }
+    }
+  },
+  "emperor-tree-929": {
+    "version": 1,
+    "id": "emperor-tree-929",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          1,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      }
+    }
+  },
+  "emperor-tree-930": {
+    "version": 1,
+    "id": "emperor-tree-930",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          1,
+          78,
+          74
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      }
+    }
+  },
+  "emperor-tree-931": {
+    "version": 1,
+    "id": "emperor-tree-931",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          1,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      }
+    }
+  },
+  "emperor-tree-932": {
+    "version": 1,
+    "id": "emperor-tree-932",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      }
+    }
+  },
+  "emperor-tree-933": {
+    "version": 1,
+    "id": "emperor-tree-933",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          1,
+          78,
+          67
+        ],
+        "anchor": [
+          39,
+          47
+        ]
+      }
+    }
+  },
+  "emperor-tree-934": {
+    "version": 1,
+    "id": "emperor-tree-934",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          1,
+          78,
+          68
+        ],
+        "anchor": [
+          39,
+          48
+        ]
+      }
+    }
+  },
+  "emperor-tree-935": {
+    "version": 1,
+    "id": "emperor-tree-935",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          1,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      }
+    }
+  },
+  "emperor-tree-937": {
+    "version": 1,
+    "id": "emperor-tree-937",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          111,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          111,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          111,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          111,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      }
+    }
+  },
+  "emperor-tree-938": {
+    "version": 1,
+    "id": "emperor-tree-938",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          111,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          111,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          111,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          111,
+          78,
+          88
+        ],
+        "anchor": [
+          39,
+          68
+        ]
+      }
+    }
+  },
+  "emperor-tree-939": {
+    "version": 1,
+    "id": "emperor-tree-939",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          111,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      }
+    }
+  },
+  "emperor-tree-940": {
+    "version": 1,
+    "id": "emperor-tree-940",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          111,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          111,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          111,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          111,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "emperor-tree-941": {
+    "version": 1,
+    "id": "emperor-tree-941",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          111,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          111,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          111,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          111,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      }
+    }
+  },
+  "emperor-tree-942": {
+    "version": 1,
+    "id": "emperor-tree-942",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          111,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          111,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          111,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          111,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "emperor-tree-943": {
+    "version": 1,
+    "id": "emperor-tree-943",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          111,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          111,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          111,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          111,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      }
+    }
+  },
+  "emperor-tree-944": {
+    "version": 1,
+    "id": "emperor-tree-944",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          111,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          111,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          111,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          111,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-tree-945": {
+    "version": 1,
+    "id": "emperor-tree-945",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      }
+    }
+  },
+  "emperor-tree-946": {
+    "version": 1,
+    "id": "emperor-tree-946",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          221,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          221,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          221,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          221,
+          78,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      }
+    }
+  },
+  "emperor-tree-947": {
+    "version": 1,
+    "id": "emperor-tree-947",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      }
+    }
+  },
+  "emperor-tree-948": {
+    "version": 1,
+    "id": "emperor-tree-948",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          221,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          221,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          221,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          221,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      }
+    }
+  },
+  "emperor-tree-949": {
+    "version": 1,
+    "id": "emperor-tree-949",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          221,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          221,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          221,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          221,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      }
+    }
+  },
+  "emperor-tree-950": {
+    "version": 1,
+    "id": "emperor-tree-950",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          221,
+          78,
+          83
+        ],
+        "anchor": [
+          39,
+          63
+        ]
+      }
+    }
+  },
+  "emperor-tree-951": {
+    "version": 1,
+    "id": "emperor-tree-951",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          221,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          221,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          221,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          221,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      }
+    }
+  },
+  "emperor-tree-952": {
+    "version": 1,
+    "id": "emperor-tree-952",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          221,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          221,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          221,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          221,
+          78,
+          80
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      }
+    }
+  },
+  "emperor-tree-953": {
+    "version": 1,
+    "id": "emperor-tree-953",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          221,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          221,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          221,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          221,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      }
+    }
+  },
+  "emperor-tree-954": {
+    "version": 1,
+    "id": "emperor-tree-954",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "emperor-tree-955": {
+    "version": 1,
+    "id": "emperor-tree-955",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-tree-956": {
+    "version": 1,
+    "id": "emperor-tree-956",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "emperor-tree-957": {
+    "version": 1,
+    "id": "emperor-tree-957",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-tree-958": {
+    "version": 1,
+    "id": "emperor-tree-958",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          325,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "emperor-tree-959": {
+    "version": 1,
+    "id": "emperor-tree-959",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-tree-960": {
+    "version": 1,
+    "id": "emperor-tree-960",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          325,
+          78,
+          102
+        ],
+        "anchor": [
+          39,
+          82
+        ]
+      }
+    }
+  },
+  "emperor-tree-961": {
+    "version": 1,
+    "id": "emperor-tree-961",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      }
+    }
+  },
+  "emperor-tree-962": {
+    "version": 1,
+    "id": "emperor-tree-962",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          325,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      }
+    }
+  },
+  "emperor-tree-963": {
+    "version": 1,
+    "id": "emperor-tree-963",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          429,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          429,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          429,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          1,
+          429,
+          78,
+          50
+        ],
+        "anchor": [
+          39,
+          30
+        ]
+      }
+    }
+  },
+  "emperor-tree-964": {
+    "version": 1,
+    "id": "emperor-tree-964",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          81,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-tree-965": {
+    "version": 1,
+    "id": "emperor-tree-965",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          429,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          429,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          429,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          161,
+          429,
+          78,
+          56
+        ],
+        "anchor": [
+          39,
+          36
+        ]
+      }
+    }
+  },
+  "emperor-tree-966": {
+    "version": 1,
+    "id": "emperor-tree-966",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          241,
+          429,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-tree-967": {
+    "version": 1,
+    "id": "emperor-tree-967",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          429,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          429,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          429,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          321,
+          429,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      }
+    }
+  },
+  "emperor-tree-968": {
+    "version": 1,
+    "id": "emperor-tree-968",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          429,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          429,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          429,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          401,
+          429,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "emperor-tree-969": {
+    "version": 1,
+    "id": "emperor-tree-969",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          429,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          429,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          429,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          481,
+          429,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-tree-970": {
+    "version": 1,
+    "id": "emperor-tree-970",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          429,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          429,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          429,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          561,
+          429,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-tree-971": {
+    "version": 1,
+    "id": "emperor-tree-971",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          429,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          429,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          429,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "trees-atlas.png",
+        "rect": [
+          641,
+          429,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
   }
 }

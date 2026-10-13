@@ -417,10 +417,10 @@
     const atlas = elevation ? 'elevation-atlas.png' : 'atlas.png';
     const [response, loaded] = await Promise.all([
       fetch(`${directory}elements.json`, { cache: 'no-store' }),
-      loadElementSources({ [atlas]: `${directory}${atlas}`, ...(elevation
-        ? { 'slope-features-atlas.png': `${directory}slope-features-atlas.png`,
-          'slope-features-dirt-atlas.png': `${directory}slope-features-dirt-atlas.png`, 'elevation-dirt-atlas.png': `${directory}elevation-dirt-atlas.png` }
-        : { 'bare-land-atlas.png': `${directory}bare-land-atlas.png`, 'grass-atlas.png': `${directory}grass-atlas.png` }) }),
+      loadElementSources(elevation ? { [atlas]: `${directory}${atlas}`,
+        'slope-features-atlas.png': `${directory}slope-features-atlas.png`,
+        'slope-features-dirt-atlas.png': `${directory}slope-features-dirt-atlas.png`, 'elevation-dirt-atlas.png': `${directory}elevation-dirt-atlas.png` }
+        : window.terrainSample.getSources(directory)),
     ]);
     if (!response.ok) throw new Error(`地表素材定义加载失败（${response.status}）。`);
     if (loaded.issues.length) { fileIssues = loaded.issues; return; }
@@ -442,6 +442,7 @@
     get('terrain-material').replaceChildren(new Option('选择原作地表素材', ''), ...ids.map(id => {
       const number = Number(id.split('-').pop());
       return new Option(elevation ? `${id.startsWith('emperor-elevation-dirt-') ? '干旱' : '温带/湿润'} · ${number >= 269 ? '半坡部件' : number >= 233 ? '坡道' : number >= 221 ? '一级坡面' : number >= 213 ? '一二级过渡' : '两级坡面'} · ${number}` : animationNames[id]
+        || (id.startsWith('emperor-tree-') ? window.terrainSample.getTreeMaterialLabel(number) : '')
         || (id.startsWith('emperor-grass-') ? `草地 · 第${Math.floor((number - 202) / 9) + 1}档 · ${number}` : '')
         || (id.startsWith('emperor-bare-land-') ? `陆地 · 黄土 ${number + 1}` : '') || `${number === 202 ? '陆地' : number >= 664 ? '水面单帧' : '岸线'} · ${number}`, id);
     }));

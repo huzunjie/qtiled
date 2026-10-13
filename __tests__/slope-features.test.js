@@ -11,7 +11,7 @@ const height = json('static/terrain-samples/emperor-elevation/rules.json');
 const roads = json('static/construction-samples/road-rules.json');
 const elements = Object.assign({}, ...['emperor-land-water', 'emperor-elevation'].map(name => json(`static/terrain-samples/${name}/elements.json`)), json('static/construction-samples/elements.json'));
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
-for (const name of ['land-water-rules', 'elevation-rules', 'construction-rules']) vm.runInContext(read(`static/js/${name}.js`), context);
+for (const name of ['terrain-sample', 'land-water-rules', 'elevation-rules', 'construction-rules']) vm.runInContext(read(`static/js/${name}.js`), context);
 const elevation = context.window.elevationRules;
 const construction = context.window.constructionRules;
 const resolve = (map, angle = 0) => elevation.resolve(map, elements, land, height, angle);
