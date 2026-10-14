@@ -188,7 +188,7 @@ const grids = shapes.rect.getNeighborsByOffsets([2, -1], selectedOffsets);
 * [x] 地图辅助显示与分组控制：独立网格/世界坐标开关、按工具显示操作提示，文件与 JSON 文本共用读取；使用像素采样修复小数平移/缩放时的瓦片白缝。
 * [ ] 连续缩放、边缘自动滚动、通用画序与遮挡、实体动作状态机
 
-[水域动画 Demo](demo/water-animation.html) 使用 SpriteJS 绘制原作 24 帧小样，支持单格/3×3、播放暂停、逐帧、速度与网格显示，以及各格同步/错开起始帧对照。帧序有原程序静态依据，时长、起始帧差异和锚点为演示设置。本页保留为早期研究小样；统一动画格式与地图消费见上面的共享水面动画。
+[水域动画 Demo](demo/water-animation.html) 使用 SpriteJS 读取公共 `emperor-water-deep` 定义与 `water-shore-atlas.png`，绘制原作24帧小样，支持单格/3×3、播放暂停、逐帧、速度与网格显示，以及各格同步/错开起始帧对照。帧序有原程序静态依据，时长、起始帧差异和锚点为演示设置。本页保留独立观察功能，图片与帧序统一复用公共素材；统一动画格式与地图消费见上面的共享水面动画。
 
 ### Tile Editor - 瓦片编辑器
 * [x] [静态元素编辑](docs/element-editor.md)：四向独立选图、裁切、锚点、占地编辑与自动放置基准、JSON 导出及独立预览回读。[编辑 Demo](demo/element-editor.html) 显示网格坐标并实时反馈当前方向的配置。

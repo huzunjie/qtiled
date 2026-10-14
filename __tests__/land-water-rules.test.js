@@ -112,7 +112,7 @@ describe('普通陆地/水域的真实样本规则', () => {
   test.each([
     ['terrain', 'beach', 'unsupported-terrain'],
     ['elevation', 1, 'unsupported-elevation'],
-    ['tile', 'emperor-terrain-202', 'derived-tile-conflict'],
+    ['tile', 'emperor-grass-202', 'derived-tile-conflict'],
     ['terrainVariant', -1, 'invalid-terrain-variant'],
     ['terrainVariant', 256, 'invalid-terrain-variant'],
     ['terrainVariant', 1.5, 'invalid-terrain-variant'],

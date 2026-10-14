@@ -1,69 +1,4 @@
 {
-  "emperor-terrain-202": {
-    "version": 1,
-    "id": "emperor-terrain-202",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "water-shore-atlas.png",
-        "rect": [
-          0,
-          0,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      },
-      "90": {
-        "source": "water-shore-atlas.png",
-        "rect": [
-          0,
-          0,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      },
-      "180": {
-        "source": "water-shore-atlas.png",
-        "rect": [
-          0,
-          0,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      },
-      "270": {
-        "source": "water-shore-atlas.png",
-        "rect": [
-          0,
-          0,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      }
-    }
-  },
   "emperor-terrain-386": {
     "version": 1,
     "id": "emperor-terrain-386",
@@ -10231,10 +10166,10 @@
     ],
     "views": {
       "0": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          0,
-          0,
+          1,
+          291,
           78,
           41
         ],
@@ -10244,10 +10179,10 @@
         ]
       },
       "90": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          0,
-          0,
+          1,
+          291,
           78,
           41
         ],
@@ -10257,10 +10192,10 @@
         ]
       },
       "180": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          0,
-          0,
+          1,
+          291,
           78,
           41
         ],
@@ -10270,10 +10205,10 @@
         ]
       },
       "270": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          0,
-          0,
+          1,
+          291,
           78,
           41
         ],
@@ -10296,10 +10231,10 @@
     ],
     "views": {
       "0": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          78,
-          0,
+          81,
+          291,
           78,
           40
         ],
@@ -10309,10 +10244,10 @@
         ]
       },
       "90": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          78,
-          0,
+          81,
+          291,
           78,
           40
         ],
@@ -10322,10 +10257,10 @@
         ]
       },
       "180": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          78,
-          0,
+          81,
+          291,
           78,
           40
         ],
@@ -10335,10 +10270,10 @@
         ]
       },
       "270": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          78,
-          0,
+          81,
+          291,
           78,
           40
         ],
@@ -10361,10 +10296,10 @@
     ],
     "views": {
       "0": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          156,
-          0,
+          161,
+          291,
           78,
           40
         ],
@@ -10374,10 +10309,10 @@
         ]
       },
       "90": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          156,
-          0,
+          161,
+          291,
           78,
           40
         ],
@@ -10387,10 +10322,10 @@
         ]
       },
       "180": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          156,
-          0,
+          161,
+          291,
           78,
           40
         ],
@@ -10400,10 +10335,10 @@
         ]
       },
       "270": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          156,
-          0,
+          161,
+          291,
           78,
           40
         ],
@@ -10426,10 +10361,10 @@
     ],
     "views": {
       "0": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          234,
-          0,
+          241,
+          291,
           78,
           40
         ],
@@ -10439,10 +10374,10 @@
         ]
       },
       "90": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          234,
-          0,
+          241,
+          291,
           78,
           40
         ],
@@ -10452,10 +10387,10 @@
         ]
       },
       "180": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          234,
-          0,
+          241,
+          291,
           78,
           40
         ],
@@ -10465,10 +10400,10 @@
         ]
       },
       "270": {
-        "source": "bare-land-atlas.png",
+        "source": "grass-atlas.png",
         "rect": [
-          234,
-          0,
+          241,
+          291,
           78,
           40
         ],
@@ -19395,526 +19330,6 @@
       }
     }
   },
-  "emperor-quarry-247": {
-    "version": 1,
-    "id": "emperor-quarry-247",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          1,
-          1,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          1,
-          1,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          1,
-          1,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          1,
-          1,
-          78,
-          41
-        ],
-        "anchor": [
-          39,
-          21
-        ]
-      }
-    }
-  },
-  "emperor-quarry-248": {
-    "version": 1,
-    "id": "emperor-quarry-248",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          81,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          81,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          81,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          81,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      }
-    }
-  },
-  "emperor-quarry-249": {
-    "version": 1,
-    "id": "emperor-quarry-249",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          161,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          161,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          161,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          161,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      }
-    }
-  },
-  "emperor-quarry-250": {
-    "version": 1,
-    "id": "emperor-quarry-250",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          241,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          241,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          241,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          241,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      }
-    }
-  },
-  "emperor-quarry-251": {
-    "version": 1,
-    "id": "emperor-quarry-251",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          321,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          321,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          321,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          321,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      }
-    }
-  },
-  "emperor-quarry-252": {
-    "version": 1,
-    "id": "emperor-quarry-252",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          401,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          401,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          401,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          401,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      }
-    }
-  },
-  "emperor-quarry-253": {
-    "version": 1,
-    "id": "emperor-quarry-253",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          481,
-          1,
-          78,
-          46
-        ],
-        "anchor": [
-          39,
-          26
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          481,
-          1,
-          78,
-          46
-        ],
-        "anchor": [
-          39,
-          26
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          481,
-          1,
-          78,
-          46
-        ],
-        "anchor": [
-          39,
-          26
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          481,
-          1,
-          78,
-          46
-        ],
-        "anchor": [
-          39,
-          26
-        ]
-      }
-    }
-  },
-  "emperor-quarry-254": {
-    "version": 1,
-    "id": "emperor-quarry-254",
-    "kind": "tile",
-    "footprint": [
-      [
-        0,
-        0
-      ]
-    ],
-    "views": {
-      "0": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          561,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "90": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          561,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "180": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          561,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      },
-      "270": {
-        "source": "quarry-atlas.png",
-        "rect": [
-          561,
-          1,
-          78,
-          40
-        ],
-        "anchor": [
-          39,
-          20
-        ]
-      }
-    }
-  },
   "emperor-quarry-972": {
     "version": 1,
     "id": "emperor-quarry-972",
@@ -19929,7 +19344,7 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
+          1,
           1,
           78,
           40
@@ -19942,7 +19357,7 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
+          1,
           1,
           78,
           40
@@ -19955,7 +19370,7 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
+          1,
           1,
           78,
           40
@@ -19968,7 +19383,7 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
+          1,
           1,
           78,
           40
@@ -19994,7 +19409,7 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
+          81,
           1,
           78,
           40
@@ -20007,7 +19422,7 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
+          81,
           1,
           78,
           40
@@ -20020,7 +19435,7 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
+          81,
           1,
           78,
           40
@@ -20033,7 +19448,7 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
+          81,
           1,
           78,
           40
@@ -20059,8 +19474,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
+          161,
           1,
-          49,
           78,
           40
         ],
@@ -20072,8 +19487,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
+          161,
           1,
-          49,
           78,
           40
         ],
@@ -20085,8 +19500,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
+          161,
           1,
-          49,
           78,
           40
         ],
@@ -20098,8 +19513,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
+          161,
           1,
-          49,
           78,
           40
         ],
@@ -20124,8 +19539,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          49,
+          241,
+          1,
           78,
           40
         ],
@@ -20137,8 +19552,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          49,
+          241,
+          1,
           78,
           40
         ],
@@ -20150,8 +19565,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          49,
+          241,
+          1,
           78,
           40
         ],
@@ -20163,8 +19578,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          49,
+          241,
+          1,
           78,
           40
         ],
@@ -20189,8 +19604,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          49,
+          321,
+          1,
           78,
           40
         ],
@@ -20202,8 +19617,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          49,
+          321,
+          1,
           78,
           40
         ],
@@ -20215,8 +19630,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          49,
+          321,
+          1,
           78,
           40
         ],
@@ -20228,8 +19643,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          49,
+          321,
+          1,
           78,
           40
         ],
@@ -20254,8 +19669,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          49,
+          401,
+          1,
           78,
           40
         ],
@@ -20267,8 +19682,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          49,
+          401,
+          1,
           78,
           40
         ],
@@ -20280,8 +19695,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          49,
+          401,
+          1,
           78,
           40
         ],
@@ -20293,8 +19708,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          49,
+          401,
+          1,
           78,
           40
         ],
@@ -20319,8 +19734,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          49,
+          481,
+          1,
           78,
           40
         ],
@@ -20332,8 +19747,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          49,
+          481,
+          1,
           78,
           40
         ],
@@ -20345,8 +19760,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          49,
+          481,
+          1,
           78,
           40
         ],
@@ -20358,8 +19773,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          49,
+          481,
+          1,
           78,
           40
         ],
@@ -20384,8 +19799,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          49,
+          561,
+          1,
           78,
           40
         ],
@@ -20397,8 +19812,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          49,
+          561,
+          1,
           78,
           40
         ],
@@ -20410,8 +19825,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          49,
+          561,
+          1,
           78,
           40
         ],
@@ -20423,8 +19838,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          49,
+          561,
+          1,
           78,
           40
         ],
@@ -20449,8 +19864,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          49,
+          641,
+          1,
           78,
           40
         ],
@@ -20462,8 +19877,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          49,
+          641,
+          1,
           78,
           40
         ],
@@ -20475,8 +19890,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          49,
+          641,
+          1,
           78,
           40
         ],
@@ -20488,8 +19903,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          49,
+          641,
+          1,
           78,
           40
         ],
@@ -20514,8 +19929,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          49,
+          721,
+          1,
           78,
           40
         ],
@@ -20527,8 +19942,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          49,
+          721,
+          1,
           78,
           40
         ],
@@ -20540,8 +19955,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          49,
+          721,
+          1,
           78,
           40
         ],
@@ -20553,8 +19968,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          49,
+          721,
+          1,
           78,
           40
         ],
@@ -20579,8 +19994,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          49,
+          1,
+          43,
           78,
           40
         ],
@@ -20592,8 +20007,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          49,
+          1,
+          43,
           78,
           40
         ],
@@ -20605,8 +20020,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          49,
+          1,
+          43,
           78,
           40
         ],
@@ -20618,8 +20033,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          49,
+          1,
+          43,
           78,
           40
         ],
@@ -20644,8 +20059,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          49,
+          81,
+          43,
           78,
           40
         ],
@@ -20657,8 +20072,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          49,
+          81,
+          43,
           78,
           40
         ],
@@ -20670,8 +20085,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          49,
+          81,
+          43,
           78,
           40
         ],
@@ -20683,8 +20098,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          49,
+          81,
+          43,
           78,
           40
         ],
@@ -20709,8 +20124,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          97,
+          161,
+          43,
           78,
           40
         ],
@@ -20722,8 +20137,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          97,
+          161,
+          43,
           78,
           40
         ],
@@ -20735,8 +20150,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          97,
+          161,
+          43,
           78,
           40
         ],
@@ -20748,8 +20163,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          97,
+          161,
+          43,
           78,
           40
         ],
@@ -20774,8 +20189,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          97,
+          241,
+          43,
           78,
           40
         ],
@@ -20787,8 +20202,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          97,
+          241,
+          43,
           78,
           40
         ],
@@ -20800,8 +20215,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          97,
+          241,
+          43,
           78,
           40
         ],
@@ -20813,8 +20228,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          97,
+          241,
+          43,
           78,
           40
         ],
@@ -20839,8 +20254,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          97,
+          321,
+          43,
           78,
           40
         ],
@@ -20852,8 +20267,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          97,
+          321,
+          43,
           78,
           40
         ],
@@ -20865,8 +20280,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          97,
+          321,
+          43,
           78,
           40
         ],
@@ -20878,8 +20293,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          97,
+          321,
+          43,
           78,
           40
         ],
@@ -20904,8 +20319,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          97,
+          401,
+          43,
           78,
           40
         ],
@@ -20917,8 +20332,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          97,
+          401,
+          43,
           78,
           40
         ],
@@ -20930,8 +20345,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          97,
+          401,
+          43,
           78,
           40
         ],
@@ -20943,8 +20358,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          97,
+          401,
+          43,
           78,
           40
         ],
@@ -20969,8 +20384,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          97,
+          481,
+          43,
           78,
           40
         ],
@@ -20982,8 +20397,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          97,
+          481,
+          43,
           78,
           40
         ],
@@ -20995,8 +20410,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          97,
+          481,
+          43,
           78,
           40
         ],
@@ -21008,8 +20423,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          97,
+          481,
+          43,
           78,
           40
         ],
@@ -21034,8 +20449,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          97,
+          561,
+          43,
           78,
           40
         ],
@@ -21047,8 +20462,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          97,
+          561,
+          43,
           78,
           40
         ],
@@ -21060,8 +20475,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          97,
+          561,
+          43,
           78,
           40
         ],
@@ -21073,8 +20488,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          97,
+          561,
+          43,
           78,
           40
         ],
@@ -21099,8 +20514,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          97,
+          641,
+          43,
           78,
           40
         ],
@@ -21112,8 +20527,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          97,
+          641,
+          43,
           78,
           40
         ],
@@ -21125,8 +20540,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          97,
+          641,
+          43,
           78,
           40
         ],
@@ -21138,8 +20553,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          97,
+          641,
+          43,
           78,
           40
         ],
@@ -21164,8 +20579,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          97,
+          721,
+          43,
           78,
           40
         ],
@@ -21177,8 +20592,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          97,
+          721,
+          43,
           78,
           40
         ],
@@ -21190,8 +20605,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          97,
+          721,
+          43,
           78,
           40
         ],
@@ -21203,8 +20618,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          97,
+          721,
+          43,
           78,
           40
         ],
@@ -21229,8 +20644,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          97,
+          1,
+          85,
           78,
           40
         ],
@@ -21242,8 +20657,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          97,
+          1,
+          85,
           78,
           40
         ],
@@ -21255,8 +20670,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          97,
+          1,
+          85,
           78,
           40
         ],
@@ -21268,8 +20683,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          97,
+          1,
+          85,
           78,
           40
         ],
@@ -21294,8 +20709,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          97,
+          81,
+          85,
           78,
           40
         ],
@@ -21307,8 +20722,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          97,
+          81,
+          85,
           78,
           40
         ],
@@ -21320,8 +20735,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          97,
+          81,
+          85,
           78,
           40
         ],
@@ -21333,8 +20748,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          97,
+          81,
+          85,
           78,
           40
         ],
@@ -21359,8 +20774,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          145,
+          161,
+          85,
           78,
           40
         ],
@@ -21372,8 +20787,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          145,
+          161,
+          85,
           78,
           40
         ],
@@ -21385,8 +20800,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          145,
+          161,
+          85,
           78,
           40
         ],
@@ -21398,8 +20813,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          145,
+          161,
+          85,
           78,
           40
         ],
@@ -21424,8 +20839,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          145,
+          241,
+          85,
           78,
           40
         ],
@@ -21437,8 +20852,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          145,
+          241,
+          85,
           78,
           40
         ],
@@ -21450,8 +20865,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          145,
+          241,
+          85,
           78,
           40
         ],
@@ -21463,8 +20878,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          145,
+          241,
+          85,
           78,
           40
         ],
@@ -21489,8 +20904,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          145,
+          321,
+          85,
           78,
           40
         ],
@@ -21502,8 +20917,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          145,
+          321,
+          85,
           78,
           40
         ],
@@ -21515,8 +20930,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          145,
+          321,
+          85,
           78,
           40
         ],
@@ -21528,8 +20943,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          145,
+          321,
+          85,
           78,
           40
         ],
@@ -21554,8 +20969,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          145,
+          401,
+          85,
           78,
           40
         ],
@@ -21567,8 +20982,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          145,
+          401,
+          85,
           78,
           40
         ],
@@ -21580,8 +20995,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          145,
+          401,
+          85,
           78,
           40
         ],
@@ -21593,8 +21008,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          145,
+          401,
+          85,
           78,
           40
         ],
@@ -21619,8 +21034,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          145,
+          481,
+          85,
           78,
           40
         ],
@@ -21632,8 +21047,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          145,
+          481,
+          85,
           78,
           40
         ],
@@ -21645,8 +21060,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          145,
+          481,
+          85,
           78,
           40
         ],
@@ -21658,8 +21073,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          145,
+          481,
+          85,
           78,
           40
         ],
@@ -21684,8 +21099,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          145,
+          561,
+          85,
           78,
           40
         ],
@@ -21697,8 +21112,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          145,
+          561,
+          85,
           78,
           40
         ],
@@ -21710,8 +21125,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          145,
+          561,
+          85,
           78,
           40
         ],
@@ -21723,8 +21138,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          145,
+          561,
+          85,
           78,
           40
         ],
@@ -21749,8 +21164,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          145,
+          641,
+          85,
           78,
           40
         ],
@@ -21762,8 +21177,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          145,
+          641,
+          85,
           78,
           40
         ],
@@ -21775,8 +21190,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          145,
+          641,
+          85,
           78,
           40
         ],
@@ -21788,8 +21203,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          145,
+          641,
+          85,
           78,
           40
         ],
@@ -21814,8 +21229,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          145,
+          721,
+          85,
           78,
           40
         ],
@@ -21827,8 +21242,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          145,
+          721,
+          85,
           78,
           40
         ],
@@ -21840,8 +21255,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          145,
+          721,
+          85,
           78,
           40
         ],
@@ -21853,8 +21268,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          145,
+          721,
+          85,
           78,
           40
         ],
@@ -21879,8 +21294,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          145,
+          1,
+          127,
           78,
           40
         ],
@@ -21892,8 +21307,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          145,
+          1,
+          127,
           78,
           40
         ],
@@ -21905,8 +21320,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          145,
+          1,
+          127,
           78,
           40
         ],
@@ -21918,8 +21333,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          145,
+          1,
+          127,
           78,
           40
         ],
@@ -21944,8 +21359,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          145,
+          81,
+          127,
           78,
           40
         ],
@@ -21957,8 +21372,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          145,
+          81,
+          127,
           78,
           40
         ],
@@ -21970,8 +21385,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          145,
+          81,
+          127,
           78,
           40
         ],
@@ -21983,8 +21398,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          145,
+          81,
+          127,
           78,
           40
         ],
@@ -22009,8 +21424,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          193,
+          161,
+          127,
           78,
           40
         ],
@@ -22022,8 +21437,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          193,
+          161,
+          127,
           78,
           40
         ],
@@ -22035,8 +21450,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          193,
+          161,
+          127,
           78,
           40
         ],
@@ -22048,8 +21463,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          193,
+          161,
+          127,
           78,
           40
         ],
@@ -22074,8 +21489,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          193,
+          241,
+          127,
           78,
           40
         ],
@@ -22087,8 +21502,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          193,
+          241,
+          127,
           78,
           40
         ],
@@ -22100,8 +21515,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          193,
+          241,
+          127,
           78,
           40
         ],
@@ -22113,8 +21528,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          193,
+          241,
+          127,
           78,
           40
         ],
@@ -22139,8 +21554,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          193,
+          321,
+          127,
           78,
           40
         ],
@@ -22152,8 +21567,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          193,
+          321,
+          127,
           78,
           40
         ],
@@ -22165,8 +21580,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          193,
+          321,
+          127,
           78,
           40
         ],
@@ -22178,8 +21593,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          193,
+          321,
+          127,
           78,
           40
         ],
@@ -22204,8 +21619,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          193,
+          401,
+          127,
           78,
           40
         ],
@@ -22217,8 +21632,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          193,
+          401,
+          127,
           78,
           40
         ],
@@ -22230,8 +21645,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          193,
+          401,
+          127,
           78,
           40
         ],
@@ -22243,8 +21658,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          193,
+          401,
+          127,
           78,
           40
         ],
@@ -22269,8 +21684,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          193,
+          481,
+          127,
           78,
           40
         ],
@@ -22282,8 +21697,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          193,
+          481,
+          127,
           78,
           40
         ],
@@ -22295,8 +21710,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          193,
+          481,
+          127,
           78,
           40
         ],
@@ -22308,8 +21723,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          193,
+          481,
+          127,
           78,
           40
         ],
@@ -22334,8 +21749,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          193,
+          561,
+          127,
           78,
           40
         ],
@@ -22347,8 +21762,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          193,
+          561,
+          127,
           78,
           40
         ],
@@ -22360,8 +21775,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          193,
+          561,
+          127,
           78,
           40
         ],
@@ -22373,8 +21788,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          193,
+          561,
+          127,
           78,
           40
         ],
@@ -22399,8 +21814,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          193,
+          641,
+          127,
           78,
           40
         ],
@@ -22412,8 +21827,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          193,
+          641,
+          127,
           78,
           40
         ],
@@ -22425,8 +21840,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          193,
+          641,
+          127,
           78,
           40
         ],
@@ -22438,8 +21853,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          193,
+          641,
+          127,
           78,
           40
         ],
@@ -22464,8 +21879,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          193,
+          721,
+          127,
           78,
           40
         ],
@@ -22477,8 +21892,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          193,
+          721,
+          127,
           78,
           40
         ],
@@ -22490,8 +21905,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          193,
+          721,
+          127,
           78,
           40
         ],
@@ -22503,8 +21918,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          193,
+          721,
+          127,
           78,
           40
         ],
@@ -22529,8 +21944,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          193,
+          1,
+          169,
           78,
           40
         ],
@@ -22542,8 +21957,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          193,
+          1,
+          169,
           78,
           40
         ],
@@ -22555,8 +21970,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          193,
+          1,
+          169,
           78,
           40
         ],
@@ -22568,8 +21983,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          193,
+          1,
+          169,
           78,
           40
         ],
@@ -22594,8 +22009,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          193,
+          81,
+          169,
           78,
           40
         ],
@@ -22607,8 +22022,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          193,
+          81,
+          169,
           78,
           40
         ],
@@ -22620,8 +22035,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          193,
+          81,
+          169,
           78,
           40
         ],
@@ -22633,8 +22048,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          193,
+          81,
+          169,
           78,
           40
         ],
@@ -22659,8 +22074,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          241,
+          161,
+          169,
           78,
           40
         ],
@@ -22672,8 +22087,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          241,
+          161,
+          169,
           78,
           40
         ],
@@ -22685,8 +22100,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          241,
+          161,
+          169,
           78,
           40
         ],
@@ -22698,8 +22113,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          241,
+          161,
+          169,
           78,
           40
         ],
@@ -22724,8 +22139,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
           241,
+          169,
           78,
           40
         ],
@@ -22737,8 +22152,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
           241,
+          169,
           78,
           40
         ],
@@ -22750,8 +22165,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
           241,
+          169,
           78,
           40
         ],
@@ -22763,8 +22178,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
           241,
+          169,
           78,
           40
         ],
@@ -22789,8 +22204,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          241,
+          321,
+          169,
           78,
           40
         ],
@@ -22802,8 +22217,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          241,
+          321,
+          169,
           78,
           40
         ],
@@ -22815,8 +22230,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          241,
+          321,
+          169,
           78,
           40
         ],
@@ -22828,8 +22243,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          241,
+          321,
+          169,
           78,
           40
         ],
@@ -22854,8 +22269,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          241,
+          401,
+          169,
           78,
           40
         ],
@@ -22867,8 +22282,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          241,
+          401,
+          169,
           78,
           40
         ],
@@ -22880,8 +22295,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          241,
+          401,
+          169,
           78,
           40
         ],
@@ -22893,8 +22308,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          241,
+          401,
+          169,
           78,
           40
         ],
@@ -22919,8 +22334,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          241,
+          481,
+          169,
           78,
           40
         ],
@@ -22932,8 +22347,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          241,
+          481,
+          169,
           78,
           40
         ],
@@ -22945,8 +22360,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          241,
+          481,
+          169,
           78,
           40
         ],
@@ -22958,8 +22373,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          241,
+          481,
+          169,
           78,
           40
         ],
@@ -22984,8 +22399,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          241,
+          561,
+          169,
           78,
           40
         ],
@@ -22997,8 +22412,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          241,
+          561,
+          169,
           78,
           40
         ],
@@ -23010,8 +22425,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          241,
+          561,
+          169,
           78,
           40
         ],
@@ -23023,8 +22438,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          241,
+          561,
+          169,
           78,
           40
         ],
@@ -23049,8 +22464,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          241,
+          641,
+          169,
           78,
           40
         ],
@@ -23062,8 +22477,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          241,
+          641,
+          169,
           78,
           40
         ],
@@ -23075,8 +22490,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          241,
+          641,
+          169,
           78,
           40
         ],
@@ -23088,8 +22503,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          241,
+          641,
+          169,
           78,
           40
         ],
@@ -23114,8 +22529,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          241,
+          721,
+          169,
           78,
           40
         ],
@@ -23127,8 +22542,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          241,
+          721,
+          169,
           78,
           40
         ],
@@ -23140,8 +22555,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          241,
+          721,
+          169,
           78,
           40
         ],
@@ -23153,8 +22568,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          241,
+          721,
+          169,
           78,
           40
         ],
@@ -23179,8 +22594,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          241,
+          1,
+          211,
           78,
           40
         ],
@@ -23192,8 +22607,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          241,
+          1,
+          211,
           78,
           40
         ],
@@ -23205,8 +22620,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          241,
+          1,
+          211,
           78,
           40
         ],
@@ -23218,8 +22633,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          241,
+          1,
+          211,
           78,
           40
         ],
@@ -23244,8 +22659,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          241,
+          81,
+          211,
           78,
           40
         ],
@@ -23257,8 +22672,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          241,
+          81,
+          211,
           78,
           40
         ],
@@ -23270,8 +22685,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          241,
+          81,
+          211,
           78,
           40
         ],
@@ -23283,8 +22698,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          241,
+          81,
+          211,
           78,
           40
         ],
@@ -23309,8 +22724,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          289,
+          161,
+          211,
           78,
           40
         ],
@@ -23322,8 +22737,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          289,
+          161,
+          211,
           78,
           40
         ],
@@ -23335,8 +22750,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          289,
+          161,
+          211,
           78,
           40
         ],
@@ -23348,8 +22763,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          289,
+          161,
+          211,
           78,
           40
         ],
@@ -23374,8 +22789,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          289,
+          241,
+          211,
           78,
           40
         ],
@@ -23387,8 +22802,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          289,
+          241,
+          211,
           78,
           40
         ],
@@ -23400,8 +22815,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          289,
+          241,
+          211,
           78,
           40
         ],
@@ -23413,8 +22828,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          289,
+          241,
+          211,
           78,
           40
         ],
@@ -23439,8 +22854,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          289,
+          321,
+          211,
           78,
           40
         ],
@@ -23452,8 +22867,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          289,
+          321,
+          211,
           78,
           40
         ],
@@ -23465,8 +22880,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          289,
+          321,
+          211,
           78,
           40
         ],
@@ -23478,8 +22893,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          289,
+          321,
+          211,
           78,
           40
         ],
@@ -23504,8 +22919,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          289,
+          401,
+          211,
           78,
           40
         ],
@@ -23517,8 +22932,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          289,
+          401,
+          211,
           78,
           40
         ],
@@ -23530,8 +22945,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          289,
+          401,
+          211,
           78,
           40
         ],
@@ -23543,8 +22958,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          289,
+          401,
+          211,
           78,
           40
         ],
@@ -23569,8 +22984,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          289,
+          481,
+          211,
           78,
           40
         ],
@@ -23582,8 +22997,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          289,
+          481,
+          211,
           78,
           40
         ],
@@ -23595,8 +23010,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          289,
+          481,
+          211,
           78,
           40
         ],
@@ -23608,8 +23023,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          289,
+          481,
+          211,
           78,
           40
         ],
@@ -23634,8 +23049,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          289,
+          561,
+          211,
           78,
           40
         ],
@@ -23647,8 +23062,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          289,
+          561,
+          211,
           78,
           40
         ],
@@ -23660,8 +23075,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          289,
+          561,
+          211,
           78,
           40
         ],
@@ -23673,8 +23088,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          289,
+          561,
+          211,
           78,
           40
         ],
@@ -23699,8 +23114,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          289,
+          641,
+          211,
           78,
           40
         ],
@@ -23712,8 +23127,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          289,
+          641,
+          211,
           78,
           40
         ],
@@ -23725,8 +23140,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          289,
+          641,
+          211,
           78,
           40
         ],
@@ -23738,8 +23153,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          289,
+          641,
+          211,
           78,
           40
         ],
@@ -23764,8 +23179,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          289,
+          721,
+          211,
           78,
           40
         ],
@@ -23777,8 +23192,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          289,
+          721,
+          211,
           78,
           40
         ],
@@ -23790,8 +23205,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          289,
+          721,
+          211,
           78,
           40
         ],
@@ -23803,8 +23218,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          289,
+          721,
+          211,
           78,
           40
         ],
@@ -23829,8 +23244,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          289,
+          1,
+          253,
           78,
           40
         ],
@@ -23842,8 +23257,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          289,
+          1,
+          253,
           78,
           40
         ],
@@ -23855,8 +23270,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          289,
+          1,
+          253,
           78,
           40
         ],
@@ -23868,8 +23283,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          289,
+          1,
+          253,
           78,
           40
         ],
@@ -23894,8 +23309,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          289,
+          81,
+          253,
           78,
           40
         ],
@@ -23907,8 +23322,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          289,
+          81,
+          253,
           78,
           40
         ],
@@ -23920,8 +23335,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          289,
+          81,
+          253,
           78,
           40
         ],
@@ -23933,8 +23348,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          289,
+          81,
+          253,
           78,
           40
         ],
@@ -23959,8 +23374,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          337,
+          161,
+          253,
           78,
           40
         ],
@@ -23972,8 +23387,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          337,
+          161,
+          253,
           78,
           40
         ],
@@ -23985,8 +23400,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          337,
+          161,
+          253,
           78,
           40
         ],
@@ -23998,8 +23413,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          337,
+          161,
+          253,
           78,
           40
         ],
@@ -24024,8 +23439,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          337,
+          241,
+          253,
           78,
           40
         ],
@@ -24037,8 +23452,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          337,
+          241,
+          253,
           78,
           40
         ],
@@ -24050,8 +23465,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          337,
+          241,
+          253,
           78,
           40
         ],
@@ -24063,8 +23478,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          337,
+          241,
+          253,
           78,
           40
         ],
@@ -24089,8 +23504,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          337,
+          321,
+          253,
           78,
           40
         ],
@@ -24102,8 +23517,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          337,
+          321,
+          253,
           78,
           40
         ],
@@ -24115,8 +23530,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          337,
+          321,
+          253,
           78,
           40
         ],
@@ -24128,8 +23543,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          337,
+          321,
+          253,
           78,
           40
         ],
@@ -24154,8 +23569,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          337,
+          401,
+          253,
           78,
           40
         ],
@@ -24167,8 +23582,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          337,
+          401,
+          253,
           78,
           40
         ],
@@ -24180,8 +23595,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          337,
+          401,
+          253,
           78,
           40
         ],
@@ -24193,8 +23608,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          337,
+          401,
+          253,
           78,
           40
         ],
@@ -24219,8 +23634,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          337,
+          481,
+          253,
           78,
           40
         ],
@@ -24232,8 +23647,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          337,
+          481,
+          253,
           78,
           40
         ],
@@ -24245,8 +23660,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          337,
+          481,
+          253,
           78,
           40
         ],
@@ -24258,8 +23673,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          337,
+          481,
+          253,
           78,
           40
         ],
@@ -24284,8 +23699,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          337,
+          561,
+          253,
           78,
           40
         ],
@@ -24297,8 +23712,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          337,
+          561,
+          253,
           78,
           40
         ],
@@ -24310,8 +23725,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          337,
+          561,
+          253,
           78,
           40
         ],
@@ -24323,8 +23738,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          337,
+          561,
+          253,
           78,
           40
         ],
@@ -24349,8 +23764,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          337,
+          641,
+          253,
           78,
           40
         ],
@@ -24362,8 +23777,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          337,
+          641,
+          253,
           78,
           40
         ],
@@ -24375,8 +23790,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          337,
+          641,
+          253,
           78,
           40
         ],
@@ -24388,8 +23803,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          337,
+          641,
+          253,
           78,
           40
         ],
@@ -24414,8 +23829,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          337,
+          721,
+          253,
           78,
           40
         ],
@@ -24427,8 +23842,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          337,
+          721,
+          253,
           78,
           40
         ],
@@ -24440,8 +23855,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          337,
+          721,
+          253,
           78,
           40
         ],
@@ -24453,8 +23868,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          337,
+          721,
+          253,
           78,
           40
         ],
@@ -24479,8 +23894,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          337,
+          1,
+          295,
           78,
           40
         ],
@@ -24492,8 +23907,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          337,
+          1,
+          295,
           78,
           40
         ],
@@ -24505,8 +23920,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          337,
+          1,
+          295,
           78,
           40
         ],
@@ -24518,8 +23933,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          337,
+          1,
+          295,
           78,
           40
         ],
@@ -24544,8 +23959,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          337,
+          81,
+          295,
           78,
           40
         ],
@@ -24557,8 +23972,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          337,
+          81,
+          295,
           78,
           40
         ],
@@ -24570,8 +23985,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          337,
+          81,
+          295,
           78,
           40
         ],
@@ -24583,8 +23998,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          337,
+          81,
+          295,
           78,
           40
         ],
@@ -24609,8 +24024,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          385,
+          161,
+          295,
           78,
           40
         ],
@@ -24622,8 +24037,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          385,
+          161,
+          295,
           78,
           40
         ],
@@ -24635,8 +24050,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          385,
+          161,
+          295,
           78,
           40
         ],
@@ -24648,8 +24063,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          385,
+          161,
+          295,
           78,
           40
         ],
@@ -24674,8 +24089,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          385,
+          241,
+          295,
           78,
           40
         ],
@@ -24687,8 +24102,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          385,
+          241,
+          295,
           78,
           40
         ],
@@ -24700,8 +24115,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          385,
+          241,
+          295,
           78,
           40
         ],
@@ -24713,8 +24128,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          385,
+          241,
+          295,
           78,
           40
         ],
@@ -24739,8 +24154,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          385,
+          321,
+          295,
           78,
           40
         ],
@@ -24752,8 +24167,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          385,
+          321,
+          295,
           78,
           40
         ],
@@ -24765,8 +24180,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          385,
+          321,
+          295,
           78,
           40
         ],
@@ -24778,8 +24193,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          385,
+          321,
+          295,
           78,
           40
         ],
@@ -24804,8 +24219,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          385,
+          401,
+          295,
           78,
           40
         ],
@@ -24817,8 +24232,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          385,
+          401,
+          295,
           78,
           40
         ],
@@ -24830,8 +24245,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          385,
+          401,
+          295,
           78,
           40
         ],
@@ -24843,8 +24258,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          385,
+          401,
+          295,
           78,
           40
         ],
@@ -24869,8 +24284,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          385,
+          481,
+          295,
           78,
           40
         ],
@@ -24882,8 +24297,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          385,
+          481,
+          295,
           78,
           40
         ],
@@ -24895,8 +24310,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          385,
+          481,
+          295,
           78,
           40
         ],
@@ -24908,8 +24323,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          385,
+          481,
+          295,
           78,
           40
         ],
@@ -24934,8 +24349,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          385,
+          561,
+          295,
           78,
           40
         ],
@@ -24947,8 +24362,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          385,
+          561,
+          295,
           78,
           40
         ],
@@ -24960,8 +24375,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          385,
+          561,
+          295,
           78,
           40
         ],
@@ -24973,8 +24388,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          385,
+          561,
+          295,
           78,
           40
         ],
@@ -24999,8 +24414,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          385,
+          641,
+          295,
           78,
           40
         ],
@@ -25012,8 +24427,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          385,
+          641,
+          295,
           78,
           40
         ],
@@ -25025,8 +24440,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          385,
+          641,
+          295,
           78,
           40
         ],
@@ -25038,8 +24453,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          385,
+          641,
+          295,
           78,
           40
         ],
@@ -25064,8 +24479,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          385,
+          721,
+          295,
           78,
           40
         ],
@@ -25077,8 +24492,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          385,
+          721,
+          295,
           78,
           40
         ],
@@ -25090,8 +24505,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          385,
+          721,
+          295,
           78,
           40
         ],
@@ -25103,8 +24518,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          385,
+          721,
+          295,
           78,
           40
         ],
@@ -25129,8 +24544,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          385,
+          1,
+          337,
           78,
           40
         ],
@@ -25142,8 +24557,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          385,
+          1,
+          337,
           78,
           40
         ],
@@ -25155,8 +24570,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          385,
+          1,
+          337,
           78,
           40
         ],
@@ -25168,8 +24583,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          385,
+          1,
+          337,
           78,
           40
         ],
@@ -25194,8 +24609,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          385,
+          81,
+          337,
           78,
           40
         ],
@@ -25207,8 +24622,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          385,
+          81,
+          337,
           78,
           40
         ],
@@ -25220,8 +24635,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          385,
+          81,
+          337,
           78,
           40
         ],
@@ -25233,8 +24648,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          385,
+          81,
+          337,
           78,
           40
         ],
@@ -25259,8 +24674,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          433,
+          161,
+          337,
           78,
           40
         ],
@@ -25272,8 +24687,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          433,
+          161,
+          337,
           78,
           40
         ],
@@ -25285,8 +24700,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          433,
+          161,
+          337,
           78,
           40
         ],
@@ -25298,8 +24713,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          433,
+          161,
+          337,
           78,
           40
         ],
@@ -25324,8 +24739,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          433,
+          241,
+          337,
           78,
           40
         ],
@@ -25337,8 +24752,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          433,
+          241,
+          337,
           78,
           40
         ],
@@ -25350,8 +24765,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          433,
+          241,
+          337,
           78,
           40
         ],
@@ -25363,8 +24778,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          433,
+          241,
+          337,
           78,
           40
         ],
@@ -25389,8 +24804,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          433,
+          321,
+          337,
           78,
           40
         ],
@@ -25402,8 +24817,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          433,
+          321,
+          337,
           78,
           40
         ],
@@ -25415,8 +24830,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          433,
+          321,
+          337,
           78,
           40
         ],
@@ -25428,8 +24843,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          433,
+          321,
+          337,
           78,
           40
         ],
@@ -25454,8 +24869,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          433,
+          401,
+          337,
           78,
           40
         ],
@@ -25467,8 +24882,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          433,
+          401,
+          337,
           78,
           40
         ],
@@ -25480,8 +24895,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          433,
+          401,
+          337,
           78,
           40
         ],
@@ -25493,8 +24908,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          433,
+          401,
+          337,
           78,
           40
         ],
@@ -25519,8 +24934,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          433,
+          481,
+          337,
           78,
           40
         ],
@@ -25532,8 +24947,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          433,
+          481,
+          337,
           78,
           40
         ],
@@ -25545,8 +24960,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          433,
+          481,
+          337,
           78,
           40
         ],
@@ -25558,8 +24973,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          433,
+          481,
+          337,
           78,
           40
         ],
@@ -25584,8 +24999,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          433,
+          561,
+          337,
           78,
           40
         ],
@@ -25597,8 +25012,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          433,
+          561,
+          337,
           78,
           40
         ],
@@ -25610,8 +25025,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          433,
+          561,
+          337,
           78,
           40
         ],
@@ -25623,8 +25038,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          433,
+          561,
+          337,
           78,
           40
         ],
@@ -25649,8 +25064,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          433,
+          641,
+          337,
           78,
           40
         ],
@@ -25662,8 +25077,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          433,
+          641,
+          337,
           78,
           40
         ],
@@ -25675,8 +25090,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          433,
+          641,
+          337,
           78,
           40
         ],
@@ -25688,8 +25103,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          433,
+          641,
+          337,
           78,
           40
         ],
@@ -25714,8 +25129,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          433,
+          721,
+          337,
           78,
           40
         ],
@@ -25727,8 +25142,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          433,
+          721,
+          337,
           78,
           40
         ],
@@ -25740,8 +25155,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          433,
+          721,
+          337,
           78,
           40
         ],
@@ -25753,8 +25168,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          433,
+          721,
+          337,
           78,
           40
         ],
@@ -25779,8 +25194,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          433,
+          1,
+          379,
           78,
           40
         ],
@@ -25792,8 +25207,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          433,
+          1,
+          379,
           78,
           40
         ],
@@ -25805,8 +25220,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          433,
+          1,
+          379,
           78,
           40
         ],
@@ -25818,8 +25233,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          433,
+          1,
+          379,
           78,
           40
         ],
@@ -25844,8 +25259,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          433,
+          81,
+          379,
           78,
           40
         ],
@@ -25857,8 +25272,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          433,
+          81,
+          379,
           78,
           40
         ],
@@ -25870,8 +25285,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          433,
+          81,
+          379,
           78,
           40
         ],
@@ -25883,8 +25298,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          433,
+          81,
+          379,
           78,
           40
         ],
@@ -25909,8 +25324,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          481,
+          161,
+          379,
           78,
           40
         ],
@@ -25922,8 +25337,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          481,
+          161,
+          379,
           78,
           40
         ],
@@ -25935,8 +25350,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          481,
+          161,
+          379,
           78,
           40
         ],
@@ -25948,8 +25363,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          481,
+          161,
+          379,
           78,
           40
         ],
@@ -25974,8 +25389,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          481,
+          241,
+          379,
           78,
           40
         ],
@@ -25987,8 +25402,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          481,
+          241,
+          379,
           78,
           40
         ],
@@ -26000,8 +25415,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          481,
+          241,
+          379,
           78,
           40
         ],
@@ -26013,8 +25428,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          481,
+          241,
+          379,
           78,
           40
         ],
@@ -26039,8 +25454,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          481,
+          321,
+          379,
           78,
           40
         ],
@@ -26052,8 +25467,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          481,
+          321,
+          379,
           78,
           40
         ],
@@ -26065,8 +25480,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          481,
+          321,
+          379,
           78,
           40
         ],
@@ -26078,8 +25493,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          481,
+          321,
+          379,
           78,
           40
         ],
@@ -26104,8 +25519,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          481,
+          401,
+          379,
           78,
           40
         ],
@@ -26117,8 +25532,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          481,
+          401,
+          379,
           78,
           40
         ],
@@ -26130,8 +25545,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          481,
+          401,
+          379,
           78,
           40
         ],
@@ -26143,8 +25558,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          481,
+          401,
+          379,
           78,
           40
         ],
@@ -26169,8 +25584,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
           481,
+          379,
           78,
           40
         ],
@@ -26182,8 +25597,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
           481,
+          379,
           78,
           40
         ],
@@ -26195,8 +25610,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
           481,
+          379,
           78,
           40
         ],
@@ -26208,8 +25623,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
           481,
+          379,
           78,
           40
         ],
@@ -26234,8 +25649,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          481,
+          561,
+          379,
           78,
           40
         ],
@@ -26247,8 +25662,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          481,
+          561,
+          379,
           78,
           40
         ],
@@ -26260,8 +25675,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          481,
+          561,
+          379,
           78,
           40
         ],
@@ -26273,8 +25688,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          481,
+          561,
+          379,
           78,
           40
         ],
@@ -26299,8 +25714,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          481,
+          641,
+          379,
           78,
           40
         ],
@@ -26312,8 +25727,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          481,
+          641,
+          379,
           78,
           40
         ],
@@ -26325,8 +25740,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          481,
+          641,
+          379,
           78,
           40
         ],
@@ -26338,8 +25753,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          481,
+          641,
+          379,
           78,
           40
         ],
@@ -26364,8 +25779,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          481,
+          721,
+          379,
           78,
           40
         ],
@@ -26377,8 +25792,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          481,
+          721,
+          379,
           78,
           40
         ],
@@ -26390,8 +25805,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          481,
+          721,
+          379,
           78,
           40
         ],
@@ -26403,8 +25818,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          481,
+          721,
+          379,
           78,
           40
         ],
@@ -26429,8 +25844,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          481,
+          1,
+          421,
           78,
           40
         ],
@@ -26442,8 +25857,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          481,
+          1,
+          421,
           78,
           40
         ],
@@ -26455,8 +25870,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          481,
+          1,
+          421,
           78,
           40
         ],
@@ -26468,8 +25883,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          481,
+          1,
+          421,
           78,
           40
         ],
@@ -26494,8 +25909,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          481,
+          81,
+          421,
           78,
           40
         ],
@@ -26507,8 +25922,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          481,
+          81,
+          421,
           78,
           40
         ],
@@ -26520,8 +25935,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          481,
+          81,
+          421,
           78,
           40
         ],
@@ -26533,8 +25948,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          481,
+          81,
+          421,
           78,
           40
         ],
@@ -26559,8 +25974,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          529,
+          161,
+          421,
           78,
           40
         ],
@@ -26572,8 +25987,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          529,
+          161,
+          421,
           78,
           40
         ],
@@ -26585,8 +26000,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          529,
+          161,
+          421,
           78,
           40
         ],
@@ -26598,8 +26013,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          529,
+          161,
+          421,
           78,
           40
         ],
@@ -26624,8 +26039,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          529,
+          241,
+          421,
           78,
           40
         ],
@@ -26637,8 +26052,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          529,
+          241,
+          421,
           78,
           40
         ],
@@ -26650,8 +26065,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          529,
+          241,
+          421,
           78,
           40
         ],
@@ -26663,8 +26078,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          529,
+          241,
+          421,
           78,
           40
         ],
@@ -26689,8 +26104,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          529,
+          321,
+          421,
           78,
           40
         ],
@@ -26702,8 +26117,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          529,
+          321,
+          421,
           78,
           40
         ],
@@ -26715,8 +26130,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          529,
+          321,
+          421,
           78,
           40
         ],
@@ -26728,8 +26143,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          529,
+          321,
+          421,
           78,
           40
         ],
@@ -26754,8 +26169,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          529,
+          401,
+          421,
           78,
           40
         ],
@@ -26767,8 +26182,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          529,
+          401,
+          421,
           78,
           40
         ],
@@ -26780,8 +26195,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          529,
+          401,
+          421,
           78,
           40
         ],
@@ -26793,8 +26208,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          529,
+          401,
+          421,
           78,
           40
         ],
@@ -26819,8 +26234,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          529,
+          481,
+          421,
           78,
           40
         ],
@@ -26832,8 +26247,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          529,
+          481,
+          421,
           78,
           40
         ],
@@ -26845,8 +26260,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          529,
+          481,
+          421,
           78,
           40
         ],
@@ -26858,8 +26273,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          529,
+          481,
+          421,
           78,
           40
         ],
@@ -26884,8 +26299,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          529,
+          561,
+          421,
           78,
           40
         ],
@@ -26897,8 +26312,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          529,
+          561,
+          421,
           78,
           40
         ],
@@ -26910,8 +26325,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          529,
+          561,
+          421,
           78,
           40
         ],
@@ -26923,8 +26338,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          529,
+          561,
+          421,
           78,
           40
         ],
@@ -26949,8 +26364,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          529,
+          641,
+          421,
           78,
           40
         ],
@@ -26962,8 +26377,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          529,
+          641,
+          421,
           78,
           40
         ],
@@ -26975,8 +26390,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          529,
+          641,
+          421,
           78,
           40
         ],
@@ -26988,8 +26403,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          529,
+          641,
+          421,
           78,
           40
         ],
@@ -27014,8 +26429,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          529,
+          721,
+          421,
           78,
           40
         ],
@@ -27027,8 +26442,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          529,
+          721,
+          421,
           78,
           40
         ],
@@ -27040,8 +26455,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          529,
+          721,
+          421,
           78,
           40
         ],
@@ -27053,8 +26468,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          529,
+          721,
+          421,
           78,
           40
         ],
@@ -27079,8 +26494,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          529,
+          1,
+          463,
           78,
           40
         ],
@@ -27092,8 +26507,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          529,
+          1,
+          463,
           78,
           40
         ],
@@ -27105,8 +26520,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          529,
+          1,
+          463,
           78,
           40
         ],
@@ -27118,8 +26533,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          529,
+          1,
+          463,
           78,
           40
         ],
@@ -27144,8 +26559,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          529,
+          81,
+          463,
           78,
           40
         ],
@@ -27157,8 +26572,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          529,
+          81,
+          463,
           78,
           40
         ],
@@ -27170,8 +26585,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          529,
+          81,
+          463,
           78,
           40
         ],
@@ -27183,8 +26598,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          529,
+          81,
+          463,
           78,
           40
         ],
@@ -27209,8 +26624,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          577,
+          161,
+          463,
           78,
           40
         ],
@@ -27222,8 +26637,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          577,
+          161,
+          463,
           78,
           40
         ],
@@ -27235,8 +26650,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          577,
+          161,
+          463,
           78,
           40
         ],
@@ -27248,8 +26663,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          577,
+          161,
+          463,
           78,
           40
         ],
@@ -27274,8 +26689,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          577,
+          241,
+          463,
           78,
           40
         ],
@@ -27287,8 +26702,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          577,
+          241,
+          463,
           78,
           40
         ],
@@ -27300,8 +26715,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          577,
+          241,
+          463,
           78,
           40
         ],
@@ -27313,8 +26728,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          577,
+          241,
+          463,
           78,
           40
         ],
@@ -27339,8 +26754,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          577,
+          321,
+          463,
           78,
           40
         ],
@@ -27352,8 +26767,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          577,
+          321,
+          463,
           78,
           40
         ],
@@ -27365,8 +26780,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          577,
+          321,
+          463,
           78,
           40
         ],
@@ -27378,8 +26793,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          577,
+          321,
+          463,
           78,
           40
         ],
@@ -27404,8 +26819,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          577,
+          401,
+          463,
           78,
           40
         ],
@@ -27417,8 +26832,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          577,
+          401,
+          463,
           78,
           40
         ],
@@ -27430,8 +26845,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          577,
+          401,
+          463,
           78,
           40
         ],
@@ -27443,8 +26858,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          577,
+          401,
+          463,
           78,
           40
         ],
@@ -27469,8 +26884,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          577,
+          481,
+          463,
           78,
           40
         ],
@@ -27482,8 +26897,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          577,
+          481,
+          463,
           78,
           40
         ],
@@ -27495,8 +26910,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          577,
+          481,
+          463,
           78,
           40
         ],
@@ -27508,8 +26923,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          321,
-          577,
+          481,
+          463,
           78,
           40
         ],
@@ -27534,8 +26949,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          577,
+          561,
+          463,
           78,
           40
         ],
@@ -27547,8 +26962,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          577,
+          561,
+          463,
           78,
           40
         ],
@@ -27560,8 +26975,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          577,
+          561,
+          463,
           78,
           40
         ],
@@ -27573,8 +26988,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          401,
-          577,
+          561,
+          463,
           78,
           40
         ],
@@ -27599,8 +27014,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          577,
+          641,
+          463,
           78,
           40
         ],
@@ -27612,8 +27027,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          577,
+          641,
+          463,
           78,
           40
         ],
@@ -27625,8 +27040,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          577,
+          641,
+          463,
           78,
           40
         ],
@@ -27638,8 +27053,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          481,
-          577,
+          641,
+          463,
           78,
           40
         ],
@@ -27664,8 +27079,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          577,
+          721,
+          463,
           78,
           40
         ],
@@ -27677,8 +27092,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          577,
+          721,
+          463,
           78,
           40
         ],
@@ -27690,8 +27105,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          577,
+          721,
+          463,
           78,
           40
         ],
@@ -27703,8 +27118,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          561,
-          577,
+          721,
+          463,
           78,
           40
         ],
@@ -27729,8 +27144,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          577,
+          1,
+          505,
           78,
           40
         ],
@@ -27742,8 +27157,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          577,
+          1,
+          505,
           78,
           40
         ],
@@ -27755,8 +27170,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          577,
+          1,
+          505,
           78,
           40
         ],
@@ -27768,8 +27183,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          641,
-          577,
+          1,
+          505,
           78,
           40
         ],
@@ -27794,8 +27209,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          577,
+          81,
+          505,
           78,
           40
         ],
@@ -27807,8 +27222,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          577,
+          81,
+          505,
           78,
           40
         ],
@@ -27820,8 +27235,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          577,
+          81,
+          505,
           78,
           40
         ],
@@ -27833,8 +27248,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          721,
-          577,
+          81,
+          505,
           78,
           40
         ],
@@ -27859,8 +27274,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          625,
+          161,
+          505,
           78,
           40
         ],
@@ -27872,8 +27287,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          625,
+          161,
+          505,
           78,
           40
         ],
@@ -27885,8 +27300,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          625,
+          161,
+          505,
           78,
           40
         ],
@@ -27898,8 +27313,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          1,
-          625,
+          161,
+          505,
           78,
           40
         ],
@@ -27924,8 +27339,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          625,
+          241,
+          505,
           78,
           40
         ],
@@ -27937,8 +27352,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          625,
+          241,
+          505,
           78,
           40
         ],
@@ -27950,8 +27365,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          625,
+          241,
+          505,
           78,
           40
         ],
@@ -27963,8 +27378,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          81,
-          625,
+          241,
+          505,
           78,
           40
         ],
@@ -27989,8 +27404,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          625,
+          321,
+          505,
           78,
           40
         ],
@@ -28002,8 +27417,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          625,
+          321,
+          505,
           78,
           40
         ],
@@ -28015,8 +27430,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          625,
+          321,
+          505,
           78,
           40
         ],
@@ -28028,8 +27443,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          161,
-          625,
+          321,
+          505,
           78,
           40
         ],
@@ -28054,8 +27469,8 @@
       "0": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          625,
+          401,
+          505,
           78,
           40
         ],
@@ -28067,8 +27482,8 @@
       "90": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          625,
+          401,
+          505,
           78,
           40
         ],
@@ -28080,8 +27495,8 @@
       "180": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          625,
+          401,
+          505,
           78,
           40
         ],
@@ -28093,8 +27508,8 @@
       "270": {
         "source": "quarry-atlas.png",
         "rect": [
-          241,
-          625,
+          401,
+          505,
           78,
           40
         ],
@@ -35505,6 +34920,266 @@
         "rect": [
           80,
           840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-bare-land-4": {
+    "version": 1,
+    "id": "emperor-bare-land-4",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          321,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          321,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          321,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          321,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-bare-land-5": {
+    "version": 1,
+    "id": "emperor-bare-land-5",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          401,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          401,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          401,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          401,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-bare-land-6": {
+    "version": 1,
+    "id": "emperor-bare-land-6",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          481,
+          291,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          481,
+          291,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          481,
+          291,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          481,
+          291,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-bare-land-7": {
+    "version": 1,
+    "id": "emperor-bare-land-7",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "grass-atlas.png",
+        "rect": [
+          561,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "grass-atlas.png",
+        "rect": [
+          561,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "grass-atlas.png",
+        "rect": [
+          561,
+          291,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "grass-atlas.png",
+        "rect": [
+          561,
+          291,
           78,
           40
         ],

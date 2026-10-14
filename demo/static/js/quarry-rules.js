@@ -136,7 +136,9 @@
           const variant = stableByte % row[12];
           const record = depth === 0 && offset + variant >= 6 && offset + variant <= 33
             ? 247 + (stableByte & 7) : [972, 1006, 1066][depth] + offset + variant;
-          const id = `emperor-quarry-${record}`;
+          // 外圈沿用原作公共黄土，和普通陆地引用同一份元素定义。
+          const id = record >= 247 && record <= 254
+            ? `emperor-bare-land${record === 247 ? '' : `-${record - 247}`}` : `emperor-quarry-${record}`;
           const definition = elements[id];
           if (!definition || definition.kind !== 'tile' || definition.id !== id
             || definition.footprint?.length !== 1 || definition.footprint[0].join(',') !== '0,0') {

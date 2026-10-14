@@ -26,7 +26,7 @@ async function preview(mutate = () => {}) {
   window.qtiledMaps = maps;
   window.qtiledView = view;
   const sourceInfo = {};
-  for (const [file, folder] of [['beach-atlas.png', 'emperor-land-water'], ['quarry-atlas.png', 'emperor-land-water'], ['water-shore-atlas.png', 'emperor-land-water'], ['bare-land-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation'], ['grass-atlas.png', 'emperor-land-water'], ['trees-atlas.png', 'emperor-land-water'], ['rocks-atlas.png', 'emperor-land-water'], ['elevation-dirt-atlas.png', 'emperor-elevation'], ['slope-features-atlas.png', 'emperor-elevation'], ['slope-features-dirt-atlas.png', 'emperor-elevation']]) {
+  for (const [file, folder] of [['beach-atlas.png', 'emperor-land-water'], ['quarry-atlas.png', 'emperor-land-water'], ['water-shore-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation'], ['grass-atlas.png', 'emperor-land-water'], ['trees-atlas.png', 'emperor-land-water'], ['rocks-atlas.png', 'emperor-land-water'], ['elevation-dirt-atlas.png', 'emperor-elevation'], ['slope-features-atlas.png', 'emperor-elevation'], ['slope-features-dirt-atlas.png', 'emperor-elevation']]) {
     const png = fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${folder}/${file}`));
     sourceInfo[file] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
   }

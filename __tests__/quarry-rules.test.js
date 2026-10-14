@@ -37,7 +37,8 @@ test('四向、稳定外观和真实JSON序列化不改变范围或选图', () =
     expect(resolve(restored.definition, angle)).toEqual(resolve(map, angle));
     const picked = resolve(map, angle).tiles.filter(t => t.quarry);
     expect(picked).toHaveLength(36);
-    expect(picked.every(t => elements[t.element].views[angle].source === 'quarry-atlas.png')).toBe(true);
+    expect(picked.every(t => elements[t.element].views[angle].source
+      === (t.element.startsWith('emperor-bare-land') ? 'grass-atlas.png' : 'quarry-atlas.png'))).toBe(true);
   }
 });
 
@@ -75,5 +76,18 @@ test.each([[0, 1084, 1072], [90, 1072, 1076], [180, 1076, 1080], [270, 1080, 108
   const at = (x, y) => picked.find(tile => tile.grid[0] === x && tile.grid[1] === y).element;
   expect(at(7, 8)).toBe(`emperor-quarry-${left}`);
   expect(at(8, 8)).toBe(`emperor-quarry-${center}`);
-  expect(at(5, 6)).toBe('emperor-quarry-247');
+  expect(at(5, 6)).toBe('emperor-bare-land');
+});
+
+test('采石地外圈与普通地表共享全部八种黄土定义，无重复采石黄土', () => {
+  const rules = JSON.parse(read('terrain-samples/emperor-land-water/rules.json'));
+  expect(rules.landVariants).toHaveLength(8);
+  for (let i = 0; i < 8; i++) {
+    const map = paint(makeMap(), 8, 8);
+    map.cells[6][5].terrainVariant = i;
+    const tile = resolve(map).tiles.find(t => t.grid[0] === 5 && t.grid[1] === 6);
+    expect(tile.element).toBe(rules.landVariants[i]);
+    expect(elements[tile.element].views[0].source).toBe('grass-atlas.png');
+    expect(elements).not.toHaveProperty(`emperor-quarry-${247 + i}`);
+  }
 });

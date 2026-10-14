@@ -414,13 +414,9 @@
 
   function loadTerrainLibrary(elevation = false) { return loadFiles(async () => {
     const directory = `./static/terrain-samples/${elevation ? 'emperor-elevation' : 'emperor-land-water'}/`;
-    const atlas = elevation ? 'elevation-atlas.png' : 'water-shore-atlas.png';
     const [response, loaded] = await Promise.all([
       fetch(`${directory}elements.json`, { cache: 'no-store' }),
-      loadElementSources(elevation ? { [atlas]: `${directory}${atlas}`,
-        'slope-features-atlas.png': `${directory}slope-features-atlas.png`,
-        'slope-features-dirt-atlas.png': `${directory}slope-features-dirt-atlas.png`, 'elevation-dirt-atlas.png': `${directory}elevation-dirt-atlas.png` }
-        : window.terrainSample.getSources(directory)),
+      loadElementSources(window.terrainSample.getSources(directory, '', elevation ? 'elevation' : 'land')),
     ]);
     if (!response.ok) throw new Error(`地表素材定义加载失败（${response.status}）。`);
     if (loaded.issues.length) { fileIssues = loaded.issues; return; }

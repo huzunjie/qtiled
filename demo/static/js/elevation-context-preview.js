@@ -72,11 +72,8 @@
         json(new URL('emperor-elevation/elements.json', directory)), json(new URL('emperor-land-water/rules.json', directory)),
         json(new URL('emperor-elevation/rules.json', directory)),
         window.qtiledElementRendering.loadElementSources({
-          'slope-features-atlas.png': new URL('emperor-elevation/slope-features-atlas.png', directory).href,
-          'slope-features-dirt-atlas.png': new URL('emperor-elevation/slope-features-dirt-atlas.png', directory).href,
-          'elevation-dirt-atlas.png': new URL('emperor-elevation/elevation-dirt-atlas.png', directory).href,
           ...window.terrainSample.getSources(new URL('emperor-land-water/', directory).href),
-          'elevation-atlas.png': new URL('emperor-elevation/elevation-atlas.png', directory).href,
+          ...window.terrainSample.getSources(new URL('emperor-elevation/', directory).href, '', 'elevation'),
         }),
       ]);
       if (loaded.issues.length) throw new Error(loaded.issues[0].message);

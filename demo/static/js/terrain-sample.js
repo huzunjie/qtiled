@@ -11,7 +11,11 @@
     copper: { label: '铜矿', base: 472 },
     iron: { label: '铁矿', base: 486 },
   };
-  const atlases = { 'beach-atlas.png': '20261015010000', 'quarry-atlas.png': '20261014050001', 'water-shore-atlas.png': '', 'bare-land-atlas.png': '', 'grass-atlas.png': '', 'trees-atlas.png': '20261014001000', 'rocks-atlas.png': '20261014030000' };
+  const atlases = {
+    land: { 'beach-atlas.png': '20261015010000', 'quarry-atlas.png': '20261014010000', 'water-shore-atlas.png': '20261015020000', 'grass-atlas.png': '20261014010000', 'trees-atlas.png': '20261014001000', 'rocks-atlas.png': '20261014030000' },
+    elevation: { 'elevation-atlas.png': '', 'elevation-dirt-atlas.png': '', 'slope-features-atlas.png': '', 'slope-features-dirt-atlas.png': '' },
+    construction: { 'road-atlas.png': '', 'house-atlas.png': '' },
+  };
   const getTree = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(trees, kind) ? trees[kind] : null;
   const getRock = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(rocks, kind) ? rocks[kind] : null;
 
@@ -22,8 +26,8 @@
     return (hash ^ (hash >>> 16)) >>> 0;
   }
 
-  function getSources(directory, reloadToken = '') {
-    return Object.fromEntries(Object.entries(atlases).map(([name, version]) => {
+  function getSources(directory, reloadToken = '', group = 'land') {
+    return Object.fromEntries(Object.entries(atlases[group]).map(([name, version]) => {
       const query = [version && `v=${version}`, reloadToken && `reload=${encodeURIComponent(reloadToken)}`].filter(Boolean).join('&');
       return [name, `${directory}${name}${query ? `?${query}` : ''}`];
     }));

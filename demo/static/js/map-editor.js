@@ -672,12 +672,8 @@
         readText(new URL(`${constructionDirectory}elements.json`, document.baseURI)),
         readText(new URL(`${constructionDirectory}road-rules.json`, document.baseURI)),
         loadElementSources({ ...sourceFiles, ...getSources(terrainDirectory, reloadToken),
-          'slope-features-atlas.png': `${elevationDirectory}slope-features-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
-          'slope-features-dirt-atlas.png': `${elevationDirectory}slope-features-dirt-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
-          'elevation-dirt-atlas.png': `${elevationDirectory}elevation-dirt-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
-          'road-atlas.png': `${constructionDirectory}road-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
-          'house-atlas.png': `${constructionDirectory}house-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}`,
-          'elevation-atlas.png': `${elevationDirectory}elevation-atlas.png${reloadToken ? `?reload=${reloadToken}` : ''}` }),
+          ...getSources(elevationDirectory, reloadToken, 'elevation'),
+          ...getSources(constructionDirectory, reloadToken, 'construction') }),
       ]);
       if (requestId !== loadRequestId) return;
       requireSuccess(images);

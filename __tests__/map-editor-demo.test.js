@@ -189,8 +189,8 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const result = () => resolve.mock.results[resolve.mock.results.length - 1].value.entities;
   const descendants = node => node.children.flatMap(child => [child, ...descendants(child)]);
   const contentLayer = () => contentLayers.find(item => item.canvas === layer.children[0]?.children[0].attrs.texture);
-  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
-  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file));
+  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['water-shore-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
+  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['water-shore-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file));
   const pointAt = grid => {
     const [map, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
     const local = view.projectGrid(grid, { ...currentView, tileSize: map.tileSize, originPixel: [0, 0] });
@@ -461,7 +461,7 @@ test('独立加载部署样本，仅绘制 20 个有效格并显示两个独立�
   expect(p.get('controls').disabled).toBe(false);
   expect(p.get('map-summary').textContent).toBe('4 行 × 6 列 · 20 有效格 · 2 实体');
   expect(p.terrainSprites()).toHaveLength(20);
-  expect(p.terrainSprites().every(node => [40, 41].includes(node.attrs.sourceRect[3]))).toBe(true);
+  expect(p.terrainSprites().every(node => [40, 41, 46].includes(node.attrs.sourceRect[3]))).toBe(true);
   expect(p.sprites()).toHaveLength(2);
   expect(p.sprites()[0].attrs.pos).not.toEqual(p.sprites()[1].attrs.pos);
   expect(p.fetch.mock.calls.every(([url]) => url.pathname.startsWith('/demo/static/'))).toBe(true);
@@ -1044,9 +1044,9 @@ test('完整地表与实体共同按深度排列，前方地表不固定压在�
   const p = await page();
   const content = p.contentLayer().children[0];
   const rendered = content.children.map(holder => holder.children[0].children[0]);
-  const dog = rendered.findIndex(node => !['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
+  const dog = rendered.findIndex(node => !['water-shore-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
   expect(dog).toBeGreaterThan(0);
-  expect(rendered.slice(dog + 1).some(node => ['water-shore-atlas.png', 'bare-land-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
+  expect(rendered.slice(dog + 1).some(node => ['water-shore-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
 });
 
 test.each([true, false])('地图缓存恢复保留原播放状态（播放=%s）、累计时间和尺寸监听', async playing => {
@@ -1105,8 +1105,9 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(17);
-  expect(initial['water-shore-atlas.png']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.png');
+  expect(Object.keys(initial)).toHaveLength(16);
+  expect(initial).not.toHaveProperty('bare-land-atlas.png');
+  expect(initial['water-shore-atlas.png']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.png?v=20261015020000');
   expect(new URL(initial['trees-atlas.png'], 'http://localhost/').searchParams.get('v')).toBe('20261014001000');
   expect(Object.values(initial).every(url => !url.includes('reload='))).toBe(true);
   const switchSample = async sample => {
@@ -1543,7 +1544,7 @@ test('真实素材覆盖旧台地细缝，新增绘制部件的alpha命中与所
   p.get('read-map').click();
   p.mode('cell');
   const pixels = {};
-  for (const [source, directory] of [['water-shore-atlas.png', 'emperor-land-water'], ['bare-land-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
+  for (const [source, directory] of [['water-shore-atlas.png', 'emperor-land-water'], ['grass-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
     pixels[source] = pngPixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
   }
   for (const angle of [0, 90, 180, 270]) {
@@ -2118,7 +2119,7 @@ test('新图三档选项、画水取消/提交/擦除和文件回读统一重建
   expect(p.get('map-climate').disabled).toBe(true);
   p.get('cancel-stroke').click();
   expect(p.save().cells.flat().every(cell => cell.terrain === 'land')).toBe(true);
-  expect(p.terrainSprites().every(node => node.attrs.texture.file === 'bare-land-atlas.png')).toBe(true);
+  expect(p.terrainSprites().every(node => node.attrs.texture.file === 'grass-atlas.png')).toBe(true);
   p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
   const wet = p.save();
   const tiles = p.tiles();
