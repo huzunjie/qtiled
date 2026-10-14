@@ -12,7 +12,7 @@
     iron: { label: '铁矿', base: 486 },
   };
   const atlases = {
-    land: { 'beach-atlas.webp': '20261015030000', 'quarry-atlas.webp': '20261015030000', 'water-shore-atlas.webp': '20261015030000', 'grass-atlas.webp': '20261015030000', 'trees-atlas.webp': '20261015030000', 'rocks-atlas.webp': '20261015030000', 'dunes-atlas.webp': '20261015030003', 'salt-marsh-atlas.webp': '20261015040000' },
+    land: { 'beach-atlas.webp': '20261015030000', 'quarry-atlas.webp': '20261015030000', 'water-shore-atlas.webp': '20261015030000', 'grass-atlas.webp': '20261015030000', 'trees-atlas.webp': '20261015030000', 'rocks-atlas.webp': '20261015030000', 'dunes-atlas.webp': '20261015030003', 'salt-marsh-atlas.webp': '20261015040000', 'pinnacles-atlas.webp': '20261015050000' },
     elevation: { 'elevation-atlas.webp': '20261015030000', 'elevation-dirt-atlas.webp': '20261015030000', 'slope-features-atlas.webp': '20261015030000', 'slope-features-dirt-atlas.webp': '20261015030000' },
     construction: { 'road-atlas.webp': '20261015030000', 'house-atlas.webp': '20261015030000' },
   };

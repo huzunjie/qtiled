@@ -140,7 +140,7 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 [地图编辑页](../demo/map-editor.html)读取同一份素材库和图集：地表规则按地图事实、邻域及镜头选择元素，再交给通用元素绘制模块。每张岸线图片的四向共用表示该图片本身的绑定；岸线随镜头变化时应选哪一张图片，由地表规则决定。元素工具展示和编辑所选元素副本，修改可导出 JSON，不会写回样本库或地图当前场景。
 
-这批素材采用 `[80,40]` 逻辑瓦片尺寸，保留原始图片上凸部分及对应锚点。当前覆盖普通陆地、水岸和按水域邻接规则选取的内部水面动画；海滩、高程组合及灾害流程仍在范围外。水面样本统一采用作者预览设置 `frameDurationMs:100, timingSource:'author'`。资源和初版邻域证据见[必要证据核对](../output/emperor/s1-terrain-implementation-2026-10-10/evidence-gate.md)，新帧序及其来源见[水面序列资料](../output/emperor/water-animation-implementation-2026-10-10/assets/water-sequences.json)。
+这批素材采用 `[80,40]` 逻辑瓦片尺寸，保留原始图片上凸部分及对应锚点。当前覆盖普通陆地、水岸和按水域邻接规则选取的内部水面动画；海滩和高程组合由地图 Demo 的对应规则处理，灾害流程尚未接入。水面样本统一采用作者预览设置 `frameDurationMs:100, timingSource:'author'`。素材、帧序及邻域规则见[地表素材说明](../demo/static/terrain-samples/emperor-land-water/README.md)。
 
 `npm run debug` 生成 Demo 运行文件；`npm run dev` 同时监听核心、视图、元素绘制和地图四个 Demo 入口。独立项目使用 `npm run optional` 生成的正式 UMD 文件，路径、SpriteJS 加载顺序和完整调用例见[正式产物消费](browser-consumption.md)。
 

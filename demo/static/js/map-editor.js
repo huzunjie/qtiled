@@ -150,6 +150,7 @@
       if (active) get('current-tool').textContent = button.textContent;
     });
     get('building-control').hidden = tool !== 'building';
+    get('pinnacle-control').hidden = tool !== 'pinnacle';
     get('tree-control').hidden = tool !== 'tree';
     get('click-help').textContent = {
       select: get('pick-mode').value === 'cell'
@@ -166,6 +167,7 @@
       ramp: '一级直边坡道：按下预览，松开切换；Esc 取消。可放在普通坡面或半坡上，再沿高低两端铺路。移除前请先擦路。',
       'half-slope': '一级直边半坡：将坡面延伸到低侧两格，高程数值不变。点击任一部分切换整体；可相邻放置。改变占地前请先擦路。',
       building: '民居 2×2：移入画布预览，点击放置，R 转向，Esc 返回查看。两个外观用于四向，相反方向共用素材。',
+      pinnacle: '山峰 5×5：选择外观，移入画布预览，点击整体放置，Esc 返回查看。切换镜头保持外观；使用“清除”移除整座，地面按当前干湿环境恢复。占地须为等高平坦陆地，不能覆盖道路、其他地物或实体。',
       pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
       land: '陆地笔刷：拖动预览整笔，松开提交；Esc 取消。越过空角或地图边界会拒绝整笔；中键可平移。',
       water: '水域笔刷：拖动预览整笔，松开提交；Esc 取消。岸线随邻格更新；中键可平移。',
@@ -181,7 +183,7 @@
   function updateBrushControls() {
     const tool = get('edit-tool').value;
     const fixed = !brushTools.includes(tool) || tool === 'quarry';
-    const settings = fixed ? { shape: 'square', size: tool === 'quarry' ? window.quarryRules.brushSize : 1 } : brush;
+    const settings = fixed ? { shape: 'square', size: tool === 'quarry' ? window.quarryRules.brushSize : tool === 'pinnacle' ? 5 : 1 } : brush;
     get('brush-shape').value = settings.shape;
     get('brush-size').value = String(settings.size);
     for (const id of ['brush-shape', 'brush-size']) get(id).disabled = fixed;
@@ -212,6 +214,7 @@
     const size = Number(get('brush-size').value);
     const tool = get('edit-tool').value;
     get('brush-summary').textContent = tool === 'quarry' ? `固定 ${offsets.length} 格`
+      : tool === 'pinnacle' ? '固定 25 格 · 整体放置'
       : !brushTools.includes(tool) ? '无需笔刷' : `${offsets.length} 格${size % 2 ? '' : ' · 向 +x/+y 锚定'}`;
     const selected = new Set(offsets.map(grid => grid.join(',')));
     const swatch = get('brush-swatch');
@@ -232,14 +235,16 @@
     get('hover-info').textContent = '移到画布查看坐标与笔刷占地';
   }
 
-  function buildingPreview(hit) {
-    const element = get('building-type').value;
-    const angle = Number(get('building-angle').value);
+  function objectPreview(hit) {
+    const pinnacle = get('edit-tool').value === 'pinnacle';
+    const element = get(pinnacle ? 'pinnacle-type' : 'building-type').value;
+    const angle = pinnacle ? 0 : Number(get('building-angle').value);
     const definition = currentScene.elementsById[element];
     const placement = window.qtiledElementRendering.resolveElementPlacement(definition, hit.grid, angle, cameraAngle);
     let number = 1;
-    while (currentScene.map.entities.some(entity => entity.id === `house-${number}`)) number++;
-    const entity = { id: `house-${number}`, element, grid: placement.grid, angle };
+    const prefix = pinnacle ? 'pinnacle' : 'house';
+    while (currentScene.map.entities.some(entity => entity.id === `${prefix}-${number}`)) number++;
+    const entity = { id: `${prefix}-${number}`, element, grid: placement.grid, angle };
     const height = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]]?.elevation ?? viewport.baseHeight;
     const draw = window.qtiledElementRendering.resolveElementDraw(definition, entity.grid,
       { ...currentScene.view, originPixel: [0, currentScene.flatEditing ? 0 : -height * (currentScene.map.elevationStep || 0)] }, angle);
@@ -257,19 +262,19 @@
     return { entity, draw, error };
   }
 
-  // 地形悬停只计算占地；建筑用同一兼容检查预览，不写入地图或历史。
+  // 地形悬停只计算占地；实体用同一兼容检查预览，不写入地图或历史。
   function updateHover(event = hoverPointer) {
     if (event) hoverPointer = { clientX: event.clientX, clientY: event.clientY };
     if (!currentScene || !event || stroke || pan) { clearHover(); return; }
     const hit = hitAt(event);
     const tool = get('edit-tool').value;
     const offsets = brushTools.includes(tool) ? getBrushOffsets() : [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : [];
-    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}:${get('tree-kind').value}`;
+    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}:${get('pinnacle-type').value}:${get('tree-kind').value}`;
     if (key === hoverKey) return;
     clearHover();
     hoverKey = key;
-    if (tool === 'building') {
-      const preview = buildingPreview(hit);
+    if (tool === 'building' || tool === 'pinnacle') {
+      const preview = objectPreview(hit);
       const { Group, Polyline } = window.spritejs;
       hoverOverlay = new Group({ id: 'map-building-hover', opacity: 0.65 });
       if (!currentScene.flatEditing) window.qtiledElementRendering.renderElement(hoverOverlay, preview.draw,
@@ -280,7 +285,9 @@
         fillColor: preview.error ? 'rgba(188,62,48,.3)' : 'rgba(25,118,181,.2)', lineWidth: 2 / viewport.scale,
       })));
       currentScene.root.append(hoverOverlay);
-      get('hover-info').textContent = `民居 · 2×2 · ${preview.entity.angle}° · ${preview.error || '可放置 · 点击确认 / R 转向 / Esc 取消'}`;
+      get('hover-info').textContent = tool === 'pinnacle'
+        ? `山峰 · 5×5 · ${preview.error || '可放置 · 点击确认 / Esc 取消'}`
+        : `民居 · 2×2 · ${preview.entity.angle}° · ${preview.error || '可放置 · 点击确认 / R 转向 / Esc 取消'}`;
       return;
     }
     const cell = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]];
@@ -525,7 +532,7 @@
       });
     });
     // 按未抬升的世界占地下端排序，防止台地的垂直位移把前后关系颠倒。
-    // 本批完整2×2地基采用此画序；不作为任意尺寸交错或组合实体的通用画序。
+    // 民居2×2和山峰5×5完整占地采用此画序；不作为任意交错或组合实体的通用画序。
     const depth = entity => Math.max(...entity.draw.footprint.map(item => item.position[1]));
     [...entities].sort((a, b) => depth(a) - depth(b)).forEach(entity => {
       // renderElement 每个容器管理一个元素绘制组；共享定义的实例也必须各用独立容器。
@@ -755,9 +762,9 @@
     if (!canInteract()) return;
     const tool = get('edit-tool').value;
     const hit = hitAt(event);
-    if (tool === 'building') {
+    if (tool === 'building' || tool === 'pinnacle') {
       try {
-        const preview = buildingPreview(hit);
+        const preview = objectPreview(hit);
         if (preview.error) throw new Error(preview.error);
         editEntity({ type: 'place', entity: preview.entity });
       } catch (error) {
@@ -792,7 +799,9 @@
     viewport.mode = 'work';
     commitScene(next);
     clearIssue();
-    status.textContent = command.type === 'place' ? '已放置民居 · 可继续放置 / Esc 返回查看' : '已删除整个实例 · 可撤销';
+    status.textContent = command.type === 'place'
+      ? `已放置${command.entity.element === window.constructionRules.buildingId ? '民居' : '山峰'} · 可继续放置 / Esc 返回查看`
+      : '已删除整个实例 · 可撤销';
   }
 
   function rotateBuilding() {
@@ -802,9 +811,11 @@
   }
   get('rotate-building').addEventListener('click', rotateBuilding);
   get('building-angle').addEventListener('change', () => updateHover());
+  get('pinnacle-type').addEventListener('change', () => updateHover());
   document.addEventListener('keydown', event => {
-    if (get('edit-tool').value !== 'building') return;
-    if (event.key.toLowerCase() === 'r' && !event.ctrlKey && !event.metaKey && !event.altKey
+    const tool = get('edit-tool').value;
+    if (tool !== 'building' && tool !== 'pinnacle') return;
+    if (tool === 'building' && event.key.toLowerCase() === 'r' && !event.ctrlKey && !event.metaKey && !event.altKey
       && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) {
       event.preventDefault();
       rotateBuilding();
@@ -818,7 +829,7 @@
 
   function hitAt(event, scene = currentScene) {
     const pixel = getPointerPosition(event, container).map((value, axis) => (value - scene.viewportOrigin[axis]) / scene.viewportScale);
-    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.quarry) || scene.map.entities.some(entity => entity.element === window.constructionRules.buildingId)) && !scene.flatEditing) {
+    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.quarry) || scene.map.entities.some(entity => window.constructionRules.isSolid(entity.element))) && !scene.flatEditing) {
       for (let index = scene.drawables.length - 1; index >= 0; index--) {
         const item = scene.drawables[index];
         const frame = item.draw.sequence ? window.qtiledElementRendering.resolveElementFrame(item.definition, item.draw.imageAngle,

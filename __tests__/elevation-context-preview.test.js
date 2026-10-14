@@ -27,7 +27,7 @@ async function preview(mutate = () => {}) {
   window.qtiledMaps = maps;
   window.qtiledView = view;
   const sourceInfo = {};
-  for (const [file, folder] of [['beach-atlas.webp', 'emperor-land-water'], ['quarry-atlas.webp', 'emperor-land-water'], ['water-shore-atlas.webp', 'emperor-land-water'], ['elevation-atlas.webp', 'emperor-elevation'], ['grass-atlas.webp', 'emperor-land-water'], ['trees-atlas.webp', 'emperor-land-water'], ['rocks-atlas.webp', 'emperor-land-water'], ['dunes-atlas.webp', 'emperor-land-water'], ['salt-marsh-atlas.webp', 'emperor-land-water'], ['elevation-dirt-atlas.webp', 'emperor-elevation'], ['slope-features-atlas.webp', 'emperor-elevation'], ['slope-features-dirt-atlas.webp', 'emperor-elevation']]) {
+  for (const [file, folder] of [['beach-atlas.webp', 'emperor-land-water'], ['quarry-atlas.webp', 'emperor-land-water'], ['water-shore-atlas.webp', 'emperor-land-water'], ['elevation-atlas.webp', 'emperor-elevation'], ['grass-atlas.webp', 'emperor-land-water'], ['trees-atlas.webp', 'emperor-land-water'], ['rocks-atlas.webp', 'emperor-land-water'], ['dunes-atlas.webp', 'emperor-land-water'], ['salt-marsh-atlas.webp', 'emperor-land-water'], ['pinnacles-atlas.webp', 'emperor-land-water'], ['elevation-dirt-atlas.webp', 'emperor-elevation'], ['slope-features-atlas.webp', 'emperor-elevation'], ['slope-features-dirt-atlas.webp', 'emperor-elevation']]) {
     const png = fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${folder}/${file}`));
     sourceInfo[file] = { width: imagePixels(png).width, height: imagePixels(png).height };
   }

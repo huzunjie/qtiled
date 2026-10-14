@@ -1081,7 +1081,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(18);
+  expect(Object.keys(initial)).toHaveLength(19);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
   expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
   expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
@@ -1608,7 +1608,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'beach-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'beach-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -2733,6 +2733,63 @@ test.each([2, 3])('沙丘%s格原图四向可逐格清除，预览取消和历�
   p.tool('clear'); p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
   p.tool('dune'); p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
   expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('山峰四向整座清除、取消、历史和JSON回读保持外观与25格占地', async () => {
+  const p = await page({}, 'pinnacle-map');
+  expect(p.get('issues').hidden).toBe(true);
+  const original = p.save();
+  const peaks = () => p.sprites().filter(node => node.attrs.texture.file === 'pinnacles-atlas.webp');
+  expect(peaks()).toHaveLength(4);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    expect(peaks().map(node => node.attrs.sourceRect[0]).sort((a, b) => a - b)).toEqual([0, 400, 800, 1200]);
+    // 底面中央为真实不透明像素；拾取沿同一渲染画序，不能只删一格。
+    p.tool('clear'); p.pointer('pointermove', [5, 6]);
+    p.pointer('pointerdown', [5, 6]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(original);
+    p.pointer('pointerdown', [5, 6]); p.pointer('pointerup', [5, 6]);
+    const cleared = p.save();
+    expect(cleared.entities.map(entity => entity.id)).toEqual(['pinnacle-2', 'pinnacle-3', 'pinnacle-4']);
+    expect(cleared.cells).toEqual(original.cells);
+    expect(peaks()).toHaveLength(3);
+    p.get('undo').click(); expect(p.save()).toEqual(original); expect(peaks()).toHaveLength(4);
+    p.get('redo').click(); expect(p.save()).toEqual(cleared); expect(peaks()).toHaveLength(3);
+    p.get('read-map').click(); expect(p.save()).toEqual(cleared);
+    p.get('map-json').value = JSON.stringify(original); p.get('read-map').click();
+    expect(p.save()).toEqual(original);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('山峰工具放置四种外观，冲突拒绝；清除后使用当前气候恢复地面', async () => {
+  const p = await page({}, 'pinnacle-map');
+  const map = p.save(); map.entities = [];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  setDisplay(p, 'flat-edit', true);
+  p.tool('pinnacle');
+  expect(p.get('pinnacle-control').hidden).toBe(false);
+  expect(p.get('brush-summary').textContent).toContain('25');
+  for (let i = 1; i <= 4; i++) {
+    p.get('pinnacle-type').value = `emperor-pinnacle-${i}`;
+    p.get('pinnacle-type').dispatchEvent(new p.window.Event('change'));
+    p.pointer('pointermove', [5, 6]); expect(p.get('hover-info').textContent).toContain('可放置');
+    p.clickGrid([5, 6]);
+    expect(p.save().entities[0].element).toBe(`emperor-pinnacle-${i}`);
+    const occupied = p.save();
+    p.clickGrid([5, 6]); expect(p.get('status').textContent).toContain('拒绝');
+    expect(p.save()).toEqual(occupied);
+    p.get('undo').click(); expect(p.save()).toEqual(map);
+  }
+  p.clickGrid([5, 6]);
+  p.get('map-climate').value = 'arid'; p.get('map-climate').dispatchEvent(new p.window.Event('change'));
+  const dry = p.save(); expect(dry.climate).toBe('arid');
+  p.tool('clear'); p.pointer('pointerdown', [5, 6]); p.pointer('pointerup', [5, 6]);
+  expect(p.save()).toEqual({ ...dry, entities: [] });
+  setDisplay(p, 'flat-edit', false);
+  const clearedGround = p.terrainSprites().map(node => node.attrs.sourceRect);
+  p.get('map-json').value = JSON.stringify({ ...map, climate: 'arid' }); p.get('read-map').click();
+  expect(p.terrainSprites().map(node => node.attrs.sourceRect)).toEqual(clearedGround);
   expect(p.errors).toEqual([]); p.window.close();
 });
 

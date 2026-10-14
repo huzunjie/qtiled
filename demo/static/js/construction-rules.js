@@ -1,12 +1,13 @@
-/* 普通道路与静态建筑的 Demo 规则：保存事实，按当前邻接重建道路外观。
+/* 普通道路与静态实体的 Demo 规则：保存事实，按当前邻接重建道路外观。
  * 地图/矩形/旋转/占用由公共库处理；原作选图与本工具的兼容约束留在工具层。
  */
 (function () {
   const buildingId = 'courtyard-house';
+  const isSolid = element => element === buildingId || /^emperor-pinnacle-[1-4]$/.test(element);
   const cardinal = [[0, -1], [1, 0], [0, 1], [-1, 0]];
   const issue = (path, code, message) => ({ path, code, message });
-  // 既有装饰实例可共存；本批建筑的整个地基独占，不改变核心库默认策略。
-  const canCoexist = ({ entities }) => !entities.some(entity => entity.element === buildingId);
+  // 既有装饰实例可共存；建筑和山峰的完整占地独占，不改变核心库默认策略。
+  const canCoexist = ({ entities }) => !entities.some(entity => isSolid(entity.element));
 
   // 坡道只从高、低两端接路；半坡的两个部件属于同一段道路。
   function connects(tile, neighbor, cell, other, dx, dy) {
@@ -28,13 +29,13 @@
       const tile = byGrid.get(`${x},${y}`);
       const occupants = occupancy.index.get(`${x},${y}`) || [];
       if (cell.beach && occupants.length) issues.push(issue(path, 'beach-entity', '海滩不能与建筑或其他实体重叠。'));
-      const building = occupants.some(id => map.entities.find(entity => entity.id === id)?.element === buildingId);
+      const building = occupants.some(id => isSolid(map.entities.find(entity => entity.id === id)?.element));
       if (cell.road !== undefined && cell.road !== 'ordinary') {
         issues.push(issue(`${path}.road`, 'unsupported-road', '仅支持普通道路 ordinary；无道路时省略 road。'));
       }
       if (!cell.road && !building) continue;
       if (cell.terrain !== 'land' || (tile?.slope && (building || !tile.ramp))) {
-        issues.push(issue(path, 'construction-ground', '建筑需要平坦陆地；道路可经过坡道，不能占用水域或普通坡面。'));
+        issues.push(issue(path, 'construction-ground', '建筑和山峰需要平坦陆地；道路可经过坡道，不能占用水域或普通坡面。'));
       }
       if (cell.road && occupants.length) issues.push(issue(path, 'road-occupied', '道路不能与建筑或装饰实体重叠。'));
       if (cell.road && cardinal.some(([dx, dy]) => {
@@ -91,5 +92,5 @@
     return { definition: { ...map, cells }, issues: [], selectedGrids: [...selected.values()] };
   }
 
-  window.constructionRules = { buildingId, canCoexist, validate, resolve, applyRoadStroke };
+  window.constructionRules = { buildingId, isSolid, canCoexist, validate, resolve, applyRoadStroke };
 })();
