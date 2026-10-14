@@ -11,7 +11,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           0,
@@ -24,7 +24,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           0,
@@ -37,7 +37,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           0,
@@ -50,7 +50,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           0,
@@ -76,7 +76,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           0,
@@ -89,7 +89,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           0,
@@ -102,7 +102,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           0,
@@ -115,7 +115,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           0,
@@ -141,7 +141,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           0,
@@ -154,7 +154,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           0,
@@ -167,7 +167,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           0,
@@ -180,7 +180,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           0,
@@ -206,7 +206,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           0,
@@ -219,7 +219,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           0,
@@ -232,7 +232,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           0,
@@ -245,7 +245,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           0,
@@ -271,7 +271,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           0,
@@ -284,7 +284,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           0,
@@ -297,7 +297,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           0,
@@ -310,7 +310,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           0,
@@ -336,7 +336,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           0,
@@ -349,7 +349,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           0,
@@ -362,7 +362,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           0,
@@ -375,7 +375,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           0,
@@ -401,7 +401,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           40,
@@ -414,7 +414,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           40,
@@ -427,7 +427,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           40,
@@ -440,7 +440,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           40,
@@ -466,7 +466,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           40,
@@ -479,7 +479,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           40,
@@ -492,7 +492,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           40,
@@ -505,7 +505,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           40,
@@ -531,7 +531,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           40,
@@ -544,7 +544,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           40,
@@ -557,7 +557,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           40,
@@ -570,7 +570,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           40,
@@ -596,7 +596,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           40,
@@ -609,7 +609,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           40,
@@ -622,7 +622,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           40,
@@ -635,7 +635,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           40,
@@ -661,7 +661,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           40,
@@ -674,7 +674,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           40,
@@ -687,7 +687,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           40,
@@ -700,7 +700,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           40,
@@ -726,7 +726,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           40,
@@ -739,7 +739,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           40,
@@ -752,7 +752,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           40,
@@ -765,7 +765,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           40,
@@ -791,7 +791,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           80,
@@ -804,7 +804,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           80,
@@ -817,7 +817,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           80,
@@ -830,7 +830,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           0,
           80,
@@ -856,7 +856,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           80,
@@ -869,7 +869,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           80,
@@ -882,7 +882,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           80,
@@ -895,7 +895,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           78,
           80,
@@ -921,7 +921,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           80,
@@ -934,7 +934,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           80,
@@ -947,7 +947,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           80,
@@ -960,7 +960,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           156,
           80,
@@ -986,7 +986,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           80,
@@ -999,7 +999,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           80,
@@ -1012,7 +1012,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           80,
@@ -1025,7 +1025,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           234,
           80,
@@ -1051,7 +1051,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           80,
@@ -1064,7 +1064,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           80,
@@ -1077,7 +1077,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           80,
@@ -1090,7 +1090,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           312,
           80,
@@ -1116,7 +1116,7 @@
     ],
     "views": {
       "0": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           80,
@@ -1129,7 +1129,7 @@
         ]
       },
       "90": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           80,
@@ -1142,7 +1142,7 @@
         ]
       },
       "180": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           80,
@@ -1155,7 +1155,7 @@
         ]
       },
       "270": {
-        "source": "road-atlas.png",
+        "source": "road-atlas.webp",
         "rect": [
           390,
           80,
@@ -1193,7 +1193,7 @@
     ],
     "views": {
       "0": {
-        "source": "house-atlas.png",
+        "source": "house-atlas.webp",
         "rect": [
           0,
           0,
@@ -1206,7 +1206,7 @@
         ]
       },
       "90": {
-        "source": "house-atlas.png",
+        "source": "house-atlas.webp",
         "rect": [
           158,
           0,
@@ -1219,7 +1219,7 @@
         ]
       },
       "180": {
-        "source": "house-atlas.png",
+        "source": "house-atlas.webp",
         "rect": [
           0,
           0,
@@ -1232,7 +1232,7 @@
         ]
       },
       "270": {
-        "source": "house-atlas.png",
+        "source": "house-atlas.webp",
         "rect": [
           158,
           0,

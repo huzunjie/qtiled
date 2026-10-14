@@ -28,7 +28,7 @@ test.each([
     const selected = beach.select(map.cells, 6, 6, column, rules, null, 0);
     expect(selected).toEqual({ record: records[i], kind: 'land-edge', variant: 0 });
     const view = elements[`emperor-beach-${selected.record}`].views[0];
-    expect(view.source).toBe('beach-atlas.png');
+    expect(view.source).toBe('beach-atlas.webp');
     expect(view.rect[2]).toBe(78);
     expect(view.anchor).toEqual([39, view.rect[3] - 20]);
   });

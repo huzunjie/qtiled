@@ -12,9 +12,9 @@
     iron: { label: '铁矿', base: 486 },
   };
   const atlases = {
-    land: { 'beach-atlas.png': '20261015010000', 'quarry-atlas.png': '20261014010000', 'water-shore-atlas.png': '20261015020000', 'grass-atlas.png': '20261014010000', 'trees-atlas.png': '20261014001000', 'rocks-atlas.png': '20261014030000' },
-    elevation: { 'elevation-atlas.png': '', 'elevation-dirt-atlas.png': '', 'slope-features-atlas.png': '', 'slope-features-dirt-atlas.png': '' },
-    construction: { 'road-atlas.png': '', 'house-atlas.png': '' },
+    land: { 'beach-atlas.webp': '20261015030000', 'quarry-atlas.webp': '20261015030000', 'water-shore-atlas.webp': '20261015030000', 'grass-atlas.webp': '20261015030000', 'trees-atlas.webp': '20261015030000', 'rocks-atlas.webp': '20261015030000' },
+    elevation: { 'elevation-atlas.webp': '20261015030000', 'elevation-dirt-atlas.webp': '20261015030000', 'slope-features-atlas.webp': '20261015030000', 'slope-features-dirt-atlas.webp': '20261015030000' },
+    construction: { 'road-atlas.webp': '20261015030000', 'house-atlas.webp': '20261015030000' },
   };
   const getTree = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(trees, kind) ? trees[kind] : null;
   const getRock = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(rocks, kind) ? rocks[kind] : null;

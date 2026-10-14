@@ -1,3 +1,4 @@
+import { imagePixels } from '../test-utils/image-pixels';
 import { pathFinding } from '../src';
 import fs from 'fs';
 import path from 'path';
@@ -26,9 +27,9 @@ async function preview(mutate = () => {}) {
   window.qtiledMaps = maps;
   window.qtiledView = view;
   const sourceInfo = {};
-  for (const [file, folder] of [['beach-atlas.png', 'emperor-land-water'], ['quarry-atlas.png', 'emperor-land-water'], ['water-shore-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation'], ['grass-atlas.png', 'emperor-land-water'], ['trees-atlas.png', 'emperor-land-water'], ['rocks-atlas.png', 'emperor-land-water'], ['elevation-dirt-atlas.png', 'emperor-elevation'], ['slope-features-atlas.png', 'emperor-elevation'], ['slope-features-dirt-atlas.png', 'emperor-elevation']]) {
+  for (const [file, folder] of [['beach-atlas.webp', 'emperor-land-water'], ['quarry-atlas.webp', 'emperor-land-water'], ['water-shore-atlas.webp', 'emperor-land-water'], ['elevation-atlas.webp', 'emperor-elevation'], ['grass-atlas.webp', 'emperor-land-water'], ['trees-atlas.webp', 'emperor-land-water'], ['rocks-atlas.webp', 'emperor-land-water'], ['elevation-dirt-atlas.webp', 'emperor-elevation'], ['slope-features-atlas.webp', 'emperor-elevation'], ['slope-features-dirt-atlas.webp', 'emperor-elevation']]) {
     const png = fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${folder}/${file}`));
-    sourceInfo[file] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
+    sourceInfo[file] = { width: imagePixels(png).width, height: imagePixels(png).height };
   }
   window.qtiledElementRendering = { resolveElementDraw, validateElementDefinition, loadElementSources: async () =>
     ({ sources: Object.fromEntries(Object.keys(sourceInfo).map(key => [key, {}])), sourceInfo, issues: [] }) };

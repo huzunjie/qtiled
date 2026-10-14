@@ -149,7 +149,7 @@ test.each([['ordinary-mature', 927], ['bamboo-mature', 945]])('%s十八外观组
     const surrounded = at(resolve(map).tiles, 2, 2);
     expect(surrounded.element).toBe(`emperor-tree-${base + 9 + variant}`);
     const frame = elements[surrounded.element].views[0];
-    expect(frame.source).toBe('trees-atlas.png');
+    expect(frame.source).toBe('trees-atlas.webp');
     delete map.cells[1][1].tree;
     expect(at(resolve(map).tiles, 2, 2).element).toBe(`emperor-tree-${base + variant}`);
     map.cells[1][1].tree = kind;

@@ -1,3 +1,4 @@
+import { imagePixels } from '../test-utils/image-pixels';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -57,7 +58,7 @@ async function loadPage(name, overrides = {}, fetchOverride) {
             const png = fs.readFileSync(typeof files[key] === 'string'
               ? path.join(__dirname, '../demo', files[key].split('?')[0])
               : path.join(__dirname, '../demo/static/element-samples/dog/images', path.basename(key)));
-            sourceInfo[key] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
+            sourceInfo[key] = { width: imagePixels(png).width, height: imagePixels(png).height };
           }
         });
         return { sources, sourceInfo, issues: [] };
@@ -370,7 +371,7 @@ test('元素工具读取地图同一份原作地表定义与图集，换材和�
   await new Promise(resolve => setImmediate(resolve));
   for (const angle of [0, 90, 180, 270]) {
     editor.angle(angle);
-    expect(editor.draw().source).toBe('water-shore-atlas.png');
+    expect(editor.draw().source).toBe('water-shore-atlas.webp');
     expect(editor.draw().rect).toEqual(definitions[id].views[angle].rect);
     expect(editor.draw().anchor).toEqual(definitions[id].views[angle].anchor);
   }
@@ -838,7 +839,7 @@ test.each(['http', 'definition', 'missing-source'])('狗样本加载失败（%s�
   failing = false;
   editor.get('sample').click();
   await new Promise(resolve => setImmediate(resolve));
-  expect(editor.draw().source).not.toBe('water-shore-atlas.png');
+  expect(editor.draw().source).not.toBe('water-shore-atlas.webp');
   expect(editor.get('export').disabled).toBe(false);
   expect(editor.errors).toEqual([]);
   editor.window.close();
@@ -854,7 +855,7 @@ test('高程入口共用两主题真实 176 定义，四向锚点可独立编辑
   const id = Object.keys(definitions)[0];
   for (const angle of [0, 90, 180, 270]) {
     editor.angle(angle);
-    expect(editor.draw().source).toBe('elevation-atlas.png');
+    expect(editor.draw().source).toBe('elevation-atlas.webp');
     expect(editor.draw().rect).toEqual(definitions[id].views[angle].rect);
     expect(editor.draw().anchor).toEqual(definitions[id].views[angle].anchor);
   }
@@ -871,7 +872,7 @@ test('高程入口共用两主题真实 176 定义，四向锚点可独立编辑
   await imported.files('definition-file', [{ text: async () => json }]);
   for (const angle of [0, 90, 180, 270]) {
     imported.angle(angle);
-    expect(imported.draw().source).toBe('elevation-atlas.png');
+    expect(imported.draw().source).toBe('elevation-atlas.webp');
     expect(imported.draw().rect).toEqual(saved.views[angle].rect);
     expect(imported.draw().anchor).toEqual(saved.views[angle].anchor);
   }
@@ -887,11 +888,11 @@ test('草地分档与干旱坡面入口使用共享图集，选择副本不改�
   const editor = await loadPage('element-editor.html');
   editor.get('terrain-sample').click(); await new Promise(resolve => setImmediate(resolve));
   editor.change('terrain-material', 'emperor-grass-246', 'change'); await new Promise(resolve => setImmediate(resolve));
-  expect(editor.draw().source).toBe('grass-atlas.png');
+  expect(editor.draw().source).toBe('grass-atlas.webp');
   expect(editor.get('terrain-material').selectedOptions[0].textContent).toContain('第5档');
   editor.get('elevation-sample').click(); await new Promise(resolve => setImmediate(resolve));
   editor.change('terrain-material', 'emperor-elevation-dirt-201', 'change'); await new Promise(resolve => setImmediate(resolve));
-  expect(editor.draw().source).toBe('elevation-dirt-atlas.png');
+  expect(editor.draw().source).toBe('elevation-dirt-atlas.webp');
   expect(editor.get('terrain-material').selectedOptions[0].textContent).toContain('干旱');
   expect(editor.errors).toEqual([]); editor.window.close();
 });

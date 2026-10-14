@@ -52,7 +52,7 @@ const { json, issues } = exportElementDefinition(edited, sourceInfo);
 
 四向镜头和对象朝向操作不重置播放时间。画布适配使用各方向的所有帧范围，避免播放时反复改变显示比例；帧切换只更新现有 Sprite 和裁切边框。页面关闭时释放会话播放循环。
 
-“原作高程素材”入口读取 [emperor-elevation/elements.json](../demo/static/terrain-samples/emperor-elevation/elements.json) 和 `elevation-atlas.png`，与地图共用原作记录 201～232 的32个静态定义（E1、E2及一二级过渡）。可逐项查看完整裁切、四向锚点及占地，编辑后导出，再在另一个元素工具页面选取同一图集并导入 JSON。单个定义四向共用图片；地图按邻域和镜头选择不同元素。底菱形中心锚点 `[39,imageHeight-20]` 是工具对完整原图的定位适配，高程40px/级由地图v2的 `elevationStep` 保存，不混入元素锚点。
+“原作高程素材”入口读取 [emperor-elevation/elements.json](../demo/static/terrain-samples/emperor-elevation/elements.json) 和 `elevation-atlas.webp`，与地图共用原作记录 201～232 的32个静态定义（E1、E2及一二级过渡）。可逐项查看完整裁切、四向锚点及占地，编辑后导出，再在另一个元素工具页面选取同一图集并导入 JSON。单个定义四向共用图片；地图按邻域和镜头选择不同元素。底菱形中心锚点 `[39,imageHeight-20]` 是工具对完整原图的定位适配，高程40px/级由地图v2的 `elevationStep` 保存，不混入元素锚点。
 
 “高程形态 · 四向上下文预览”按需读取地图共用的多级样本、规则、元素定义及真实图片，选择直边、凸角、凹角、两级坡面后，四镜头调用同一规则及通用绘制解析，显示素材、独立锚点与所属低格。橙框标记该世界格，切换不会修改上方正在编辑的副本。缺图或无效定义明确报错，不展示半套方向；可重新载入。该面板只读，不保存形态规则，不代表完整地形主题资产制作闭环完成。
 

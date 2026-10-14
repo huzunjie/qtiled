@@ -136,7 +136,7 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 狗样本资源目录和图片清单由 `demo/static/js/dog-element-sample.js` 统一提供，供编辑、素材预览和地图浏览三页使用。这个固定样本配置不进入可选模块；各页仍独立加载、校验并持有图片和定义。
 
-元素编辑器另提供“原作地表素材”入口，读取[普通陆地与水域素材库](../demo/static/terrain-samples/emperor-land-water/elements.json)及其[图集](../demo/static/terrain-samples/emperor-land-water/water-shore-atlas.png)。素材库保留陆地、岸线和各水面单帧的 v1 定义，并增加 `emperor-water-even`、`emperor-water-odd`、`emperor-water-deep` 三个 v2 元素，各自以一份 24 帧序列供四向引用。每个元素使用单格占地、四个显式视图；素材定义与图集全部加载、校验通过后才替换编辑对象，失败保留原配置与资源。
+元素编辑器另提供“原作地表素材”入口，读取[普通陆地与水域素材库](../demo/static/terrain-samples/emperor-land-water/elements.json)及其[图集](../demo/static/terrain-samples/emperor-land-water/water-shore-atlas.webp)。素材库保留陆地、岸线和各水面单帧的 v1 定义，并增加 `emperor-water-even`、`emperor-water-odd`、`emperor-water-deep` 三个 v2 元素，各自以一份 24 帧序列供四向引用。每个元素使用单格占地、四个显式视图；素材定义与图集全部加载、校验通过后才替换编辑对象，失败保留原配置与资源。
 
 [地图编辑页](../demo/map-editor.html)读取同一份素材库和图集：地表规则按地图事实、邻域及镜头选择元素，再交给通用元素绘制模块。每张岸线图片的四向共用表示该图片本身的绑定；岸线随镜头变化时应选哪一张图片，由地表规则决定。元素工具展示和编辑所选元素副本，修改可导出 JSON，不会写回样本库或地图当前场景。
 

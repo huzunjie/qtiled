@@ -37,7 +37,7 @@ async function page(broken = false) {
 test('公共深水定义和单一图集支撑全部逐帧裁切、锚点与回绕', async () => {
   const p = await page();
   expect(p.requests).toEqual(['http://localhost/demo/static/terrain-samples/emperor-land-water/elements.json',
-    'http://localhost/demo/static/terrain-samples/emperor-land-water/water-shore-atlas.png?v=20261015020000']);
+    'http://localhost/demo/static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000']);
   const sprites = p.layer.children[0].children.slice(0, 9);
   for (const frame of catalogue['emperor-water-deep'].sequences.water.frames) {
     expect(sprites.every(s => JSON.stringify(s.attrs.sourceRect) === JSON.stringify(frame.rect))).toBe(true);

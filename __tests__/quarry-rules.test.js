@@ -38,7 +38,7 @@ test('四向、稳定外观和真实JSON序列化不改变范围或选图', () =
     const picked = resolve(map, angle).tiles.filter(t => t.quarry);
     expect(picked).toHaveLength(36);
     expect(picked.every(t => elements[t.element].views[angle].source
-      === (t.element.startsWith('emperor-bare-land') ? 'grass-atlas.png' : 'quarry-atlas.png'))).toBe(true);
+      === (t.element.startsWith('emperor-bare-land') ? 'grass-atlas.webp' : 'quarry-atlas.webp'))).toBe(true);
   }
 });
 
@@ -87,7 +87,7 @@ test('采石地外圈与普通地表共享全部八种黄土定义，无重复�
     map.cells[6][5].terrainVariant = i;
     const tile = resolve(map).tiles.find(t => t.grid[0] === 5 && t.grid[1] === 6);
     expect(tile.element).toBe(rules.landVariants[i]);
-    expect(elements[tile.element].views[0].source).toBe('grass-atlas.png');
+    expect(elements[tile.element].views[0].source).toBe('grass-atlas.webp');
     expect(elements).not.toHaveProperty(`emperor-quarry-${247 + i}`);
   }
 });

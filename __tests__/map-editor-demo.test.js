@@ -3,7 +3,7 @@ import { resolveElementPlacement } from '../src/element-rendering/placement';
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
-import { inflateSync } from 'zlib';
+import { imagePixels } from '../test-utils/image-pixels';
 import { JSDOM } from 'jsdom';
 import * as elements from '../src/elements';
 import * as view from '../src/isometric-view';
@@ -28,38 +28,11 @@ const read = file => fs.readFileSync(file === 'static/map-samples/deep-water-map
   ? path.join(__dirname, 'fixtures/map-samples/deep-water-map.json') : path.join(__dirname, '../demo', file), 'utf8');
 const settle = () => new Promise(resolve => setImmediate(resolve));
 
-// 当前仓库素材均为 8-bit RGBA PNG；拒绝其他格式，避免透明命中替身悄悄丢 alpha。
-const pixelCache = new Map();
-function pngPixels(png) {
-  const key = png.toString('base64');
-  if (pixelCache.has(key)) return pixelCache.get(key);
-  if (png[24] !== 8 || png[25] !== 6 || png[28] !== 0) throw new Error('测试图片需要无隔行的 RGBA8 PNG');
-  const width = png.readUInt32BE(16), height = png.readUInt32BE(20), chunks = [];
-  for (let offset = 8; offset < png.length;) {
-    const length = png.readUInt32BE(offset);
-    if (png.toString('ascii', offset + 4, offset + 8) === 'IDAT') chunks.push(png.subarray(offset + 8, offset + 8 + length));
-    offset += length + 12;
-  }
-  const raw = inflateSync(Buffer.concat(chunks)), stride = width * 4, data = new Uint8ClampedArray(stride * height);
-  for (let y = 0; y < height; y++) {
-    const filter = raw[y * (stride + 1)];
-    for (let x = 0; x < stride; x++) {
-      const i = y * stride + x, a = x >= 4 ? data[i - 4] : 0, b = y ? data[i - stride] : 0;
-      const c = y && x >= 4 ? data[i - stride - 4] : 0, p = a + b - c;
-      const paeth = Math.abs(p - a) <= Math.abs(p - b) && Math.abs(p - a) <= Math.abs(p - c) ? a : Math.abs(p - b) <= Math.abs(p - c) ? b : c;
-      data[i] = (raw[y * (stride + 1) + x + 1] + [0, a, b, Math.floor((a + b) / 2), paeth][filter]) & 255;
-    }
-  }
-  const result = { data, width, height };
-  pixelCache.set(key, result);
-  return result;
-}
-
 // 执行真实页面脚本和计算/渲染适配器，DOM、图片加载与 SpriteJS 节点使用替身。
 async function page(initialFaults = {}, sample = 'first-static-map') {
   const { window } = new JSDOM(read('map-editor.html'), { url: 'http://localhost/demo/map-editor.html' });
   const get = id => window.document.getElementById(id);
-  // 使用仓库 PNG 的真实 RGBA；只替代 Canvas 读图，不模拟浏览器合成结果。
+  // 使用仓库 PNG/WebP 的真实 RGBA；只替代 Canvas 读图，不模拟浏览器合成结果。
   window.HTMLCanvasElement.prototype.getContext = () => {
     let source;
     return { clearRect() {}, drawImage(image) { source = image; }, getImageData: () => source.pixels };
@@ -137,8 +110,9 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
     const batch = ++imageBatch;
     Object.keys(files).forEach(file => {
       const png = fs.readFileSync(path.join(__dirname, '../demo', files[file].split('?')[0]));
-      sourceInfo[file] = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
-      sources[file] = { batch, file, ...sourceInfo[file], pixels: pngPixels(png) };
+      const pixels = imagePixels(png);
+      sourceInfo[file] = { width: pixels.width, height: pixels.height };
+      sources[file] = { batch, file, ...sourceInfo[file], pixels };
     });
     return { sources, sourceInfo, issues: faults.image ? [{ path: 'images/sculpture_dog01.png', message: '图片加载失败' }] : [] };
   } };
@@ -189,8 +163,8 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const result = () => resolve.mock.results[resolve.mock.results.length - 1].value.entities;
   const descendants = node => node.children.flatMap(child => [child, ...descendants(child)]);
   const contentLayer = () => contentLayers.find(item => item.canvas === layer.children[0]?.children[0].attrs.texture);
-  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['water-shore-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
-  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['water-shore-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file));
+  const sprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && !['water-shore-atlas.webp', 'grass-atlas.webp', 'elevation-atlas.webp', 'elevation-dirt-atlas.webp'].includes(node.attrs.texture.file));
+  const terrainSprites = () => descendants(contentLayer()).filter(node => node instanceof Sprite && ['water-shore-atlas.webp', 'grass-atlas.webp'].includes(node.attrs.texture.file));
   const pointAt = grid => {
     const [map, , currentView] = resolve.mock.calls[resolve.mock.calls.length - 1];
     const local = view.projectGrid(grid, { ...currentView, tileSize: map.tileSize, originPixel: [0, 0] });
@@ -1044,9 +1018,9 @@ test('完整地表与实体共同按深度排列，前方地表不固定压在�
   const p = await page();
   const content = p.contentLayer().children[0];
   const rendered = content.children.map(holder => holder.children[0].children[0]);
-  const dog = rendered.findIndex(node => !['water-shore-atlas.png', 'grass-atlas.png', 'elevation-atlas.png', 'elevation-dirt-atlas.png'].includes(node.attrs.texture.file));
+  const dog = rendered.findIndex(node => !['water-shore-atlas.webp', 'grass-atlas.webp', 'elevation-atlas.webp', 'elevation-dirt-atlas.webp'].includes(node.attrs.texture.file));
   expect(dog).toBeGreaterThan(0);
-  expect(rendered.slice(dog + 1).some(node => ['water-shore-atlas.png', 'grass-atlas.png'].includes(node.attrs.texture.file))).toBe(true);
+  expect(rendered.slice(dog + 1).some(node => ['water-shore-atlas.webp', 'grass-atlas.webp'].includes(node.attrs.texture.file))).toBe(true);
 });
 
 test.each([true, false])('地图缓存恢复保留原播放状态（播放=%s）、累计时间和尺寸监听', async playing => {
@@ -1107,8 +1081,8 @@ test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部�
   const initial = p.imageRequests[0];
   expect(Object.keys(initial)).toHaveLength(16);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
-  expect(initial['water-shore-atlas.png']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.png?v=20261015020000');
-  expect(new URL(initial['trees-atlas.png'], 'http://localhost/').searchParams.get('v')).toBe('20261014001000');
+  expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
+  expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
   expect(Object.values(initial).every(url => !url.includes('reload='))).toBe(true);
   const switchSample = async sample => {
     p.get('map-sample').value = sample;
@@ -1248,7 +1222,7 @@ test('高程样本四向保留事实和高处坐标，平移缩放复用首次�
     expect(p.get('cell-info').textContent).toContain('elevation: 1');
     expect(p.save()).toEqual(before);
   }
-  expect(p.imageRequests.some(request => Object.keys(request).includes('elevation-atlas.png'))).toBe(true);
+  expect(p.imageRequests.some(request => Object.keys(request).includes('elevation-atlas.webp'))).toBe(true);
   expect(p.errors).toEqual([]);
   p.window.close();
 });
@@ -1544,8 +1518,8 @@ test('真实素材覆盖旧台地细缝，新增绘制部件的alpha命中与所
   p.get('read-map').click();
   p.mode('cell');
   const pixels = {};
-  for (const [source, directory] of [['water-shore-atlas.png', 'emperor-land-water'], ['grass-atlas.png', 'emperor-land-water'], ['elevation-atlas.png', 'emperor-elevation']]) {
-    pixels[source] = pngPixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
+  for (const [source, directory] of [['water-shore-atlas.webp', 'emperor-land-water'], ['grass-atlas.webp', 'emperor-land-water'], ['elevation-atlas.webp', 'emperor-elevation']]) {
+    pixels[source] = imagePixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
   }
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
@@ -1973,7 +1947,7 @@ test('道路四镜头只绘制自身一张图，替换原地表且邻近高差�
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
     const images = p.descendants(p.contentLayer()).filter(node => node instanceof Sprite);
-    const road = images.findIndex(node => node.attrs.texture.file === 'road-atlas.png');
+    const road = images.findIndex(node => node.attrs.texture.file === 'road-atlas.webp');
     expect(road).toBeGreaterThan(0);
     expect(p.terrainSprites()).toHaveLength(143);
     const map = p.save();
@@ -1981,7 +1955,7 @@ test('道路四镜头只绘制自身一张图，替换原地表且邻近高差�
     const library = JSON.parse(read('static/construction-samples/elements.json'));
     const tile = { grid: [4, 4], element: 'road-794', elevation: 8, road: 'ordinary' };
     expect(p.window.elevationRendering.resolveTileDraws(tile, map, library, { angle, tileSize: map.tileSize })).toHaveLength(1);
-    expect(images.filter(node => node.attrs.texture.file === 'road-atlas.png')).toHaveLength(1);
+    expect(images.filter(node => node.attrs.texture.file === 'road-atlas.webp')).toHaveLength(1);
   }
 });
 
@@ -2119,7 +2093,7 @@ test('新图三档选项、画水取消/提交/擦除和文件回读统一重建
   expect(p.get('map-climate').disabled).toBe(true);
   p.get('cancel-stroke').click();
   expect(p.save().cells.flat().every(cell => cell.terrain === 'land')).toBe(true);
-  expect(p.terrainSprites().every(node => node.attrs.texture.file === 'grass-atlas.png')).toBe(true);
+  expect(p.terrainSprites().every(node => node.attrs.texture.file === 'grass-atlas.webp')).toBe(true);
   p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
   const wet = p.save();
   const tiles = p.tiles();
@@ -2144,7 +2118,7 @@ test('真实道路单图与黄土草地拼接：旧锚点重现缺口，18张道
   const roads = JSON.parse(read('static/construction-samples/elements.json'));
   const land = JSON.parse(read('static/terrain-samples/emperor-land-water/elements.json'));
   function points(v, directory) {
-    const image = pngPixels(fs.readFileSync(path.join(__dirname, '../demo/static', directory, v.source)));
+    const image = imagePixels(fs.readFileSync(path.join(__dirname, '../demo/static', directory, v.source)));
     const [sx, sy, width, height] = v.rect;
     const result = [];
     for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
@@ -2418,7 +2392,7 @@ test.each([2, 3])('%s格方块四镜头可逐格命中清除，青框只提示�
   setDisplay(p, 'flat-edit', false);
   for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) Object.assign(map.cells[y][x], { rock: 'copper', terrainVariant: 0 });
   p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
-  const rocks = () => p.sprites().filter(node => node.attrs.texture.file === 'rocks-atlas.png');
+  const rocks = () => p.sprites().filter(node => node.attrs.texture.file === 'rocks-atlas.webp');
   expect(rocks()).toHaveLength(1);
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle); p.tool('clear');
