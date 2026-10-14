@@ -18,14 +18,15 @@
   <script src="./static/js/qtiled-maps.dev.js?20261012181344"></script>
   <script src="./static/js/pointer.js?20261012181344"></script>
   <script src="./static/js/dog-element-sample.js?20261012181344"></script>
-  <script src="./static/js/terrain-sample.js?20261014050001"></script>
-  <script src="./static/js/environment-rules.js?20261014070000"></script>
-  <script src="./static/js/land-water-rules.js?20261014070000"></script>
-  <script src="./static/js/elevation-rules.js?20261014070000"></script>
+  <script src="./static/js/terrain-sample.js?20261015010006"></script>
+  <script src="./static/js/environment-rules.js?20261015010000"></script>
+  <script src="./static/js/beach-rules.js?20261015010006"></script>
+  <script src="./static/js/land-water-rules.js?20261015010006"></script>
+  <script src="./static/js/elevation-rules.js?20261015010006"></script>
   <script src="./static/js/quarry-rules.js?20261014070000"></script>
   <script src="./static/js/rock-rules.js?20261014050001"></script>
   <script src="./static/js/tree-rules.js?20261014070000"></script>
-  <script src="./static/js/construction-rules.js?20261013000200"></script>
+  <script src="./static/js/construction-rules.js?20261015010000"></script>
   <script src="./static/js/elevation-rendering.js?20261014050001"></script>
   <script src="./static/js/element-animation-player.js?20261012181344"></script>
   <main class="map-demo">
@@ -33,9 +34,9 @@
       <h1>地图编辑工作台</h1>
       <details class="menu"><summary>地图</summary><div class="menu-panel">
     <div class="file-controls">
-      <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="mineral-map">普通石、铜矿与铁矿</option><option value="tree-map">树木、竹类与环境</option><option value="climate-map">三档气候与近水地表</option><option value="slope-features-map">坡道与直边半坡</option><option value="elevation-map">台地、转角与湖泊</option><option value="elevation-multilevel-map">多级台地与凹角</option><option value="first-static-map">雕塑与陆地</option><option value="village-map">普通道路与民居</option></select></label>
+      <label>样本 <select id="map-sample"><option value="rectangular-water-map" selected>矩形地图与湖泊</option><option value="beach-map">海滩与岸线</option><option value="mineral-map">普通石、铜矿与铁矿</option><option value="tree-map">树木、竹类与环境</option><option value="climate-map">三档气候与近水地表</option><option value="slope-features-map">坡道与直边半坡</option><option value="elevation-map">台地、转角与湖泊</option><option value="elevation-multilevel-map">多级台地与凹角</option><option value="first-static-map">雕塑与陆地</option><option value="village-map">普通道路与民居</option></select></label>
       <label>当前地图气候 <select id="map-climate" disabled aria-describedby="climate-help"><option value="">未设气候（原有地表）</option><option value="arid">干旱</option><option value="temperate">温带</option><option value="humid">湿润</option></select></label>
-      <p class="note" id="climate-help">更改气候立即更新环境与地表，可撤销。旧图保留原有地表；环境强度由水域、岩石、采石地与树木共同派生；岩石近水时不启动干燥影响。</p>
+      <p class="note" id="climate-help">更改气候立即更新环境与地表，可撤销。旧图保留原有地表；环境强度由水域、海滩、岩石、采石地与树木共同派生；岩石靠近水域或海滩时不启动干燥影响。</p>
       <div class="control-group">
         <label>预设基准高度 <select id="base-height" aria-label="预设基准高度" aria-describedby="base-height-help"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option></select></label>
         <label class="display-toggle"><input id="rebase-sample" type="checkbox">按基准高度加载</label>
@@ -137,6 +138,7 @@
               <button type="button" data-tool="pan" aria-pressed="false">平移</button>
               <button type="button" data-tool="land" aria-pressed="false">陆地</button>
               <button type="button" data-tool="water" aria-pressed="false">水域</button>
+              <button type="button" data-tool="beach" aria-pressed="false">海滩</button>
               <button type="button" data-tool="raise-two" aria-pressed="false">抬高两级</button>
               <button type="button" data-tool="raise" aria-pressed="false">抬高一级</button>
               <button type="button" data-tool="lower" aria-pressed="false">降低一级</button>
@@ -191,6 +193,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261014070000"></script>
+  <script src="./static/js/map-editor.js?20261015010006"></script>
 </body>
 </html>

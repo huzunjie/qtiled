@@ -128,6 +128,7 @@
     if (!angles.includes(angle)) issues.push(issue('$view.angle', 'invalid-angle', '镜头必须为 0、90、180 或 270。'));
     const flat = window.landWaterRules.resolve(flatView(map), elements, landRules, angle);
     issues.push(...flat.issues);
+    if (!issues.length && window.beachRules) issues.push(...window.beachRules.validate(map));
     if (issues.length) return failed(issues);
 
     const column = elevationRules.qtiledCameraColumns[angle / 90];
@@ -391,7 +392,8 @@
     if (issues.length) return { definition: null, ...failed(issues) };
     issues.push(...checkHeights(map, elevationRules));
     // 允许原图形态暂不支持的单笔候选修复，但结构与陆水事实始终必须有效。
-    issues.push(...window.landWaterRules.resolve(flatView(map), elements, landRules, angle).issues);
+    issues.push(...window.landWaterRules.resolve(flatView(map), elements, landRules, angle).issues
+      .filter(item => item.code !== 'beach-shape-needs-adjustment'));
     const heightTool = command && ['raise', 'lower', 'set-height'].includes(command.type);
     const levels = command?.levels === undefined ? 1 : command.levels;
     if (!isObject(command) || (!heightTool && !['land', 'water'].includes(command.terrain))
@@ -433,7 +435,10 @@
     const requested = new Map();
     for (const [x, y] of grids.values()) {
       const cell = cells[y][x];
-      if (!heightTool) cell.terrain = command.terrain;
+      if (!heightTool) {
+        cell.terrain = command.terrain;
+        delete cell.beach;
+      }
       else if (command.type === 'set-height') cell.elevation = command.height;
       else cell.elevation += command.type === 'raise' ? levels : -levels;
       if (cell.elevation < MIN_HEIGHT || cell.elevation > MAX_HEIGHT) {
@@ -465,7 +470,12 @@
     }));
     heightChanged = changes.length > 0;
     const upgraded = heightChanged && map.version === 1 ? { version: 2, elevationStep: elevationRules.elevationStep } : {};
-    const definition = { ...map, ...upgraded, cells };
+    let definition = { ...map, ...upgraded, cells };
+    if (!heightTool && window.beachRules) {
+      const normalized = window.beachRules.normalize(definition, [...grids.values()], false, landRules);
+      if (normalized.issues.length) return { definition: null, ...failed(normalized.issues) };
+      definition = normalized.definition;
+    }
     const result = resolve(definition, elements, landRules, elevationRules, angle);
     return { definition: result.issues.length ? null : definition, ...result, changes,
       adjusted: [...requested].filter(([key, height]) => {

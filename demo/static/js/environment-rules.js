@@ -3,21 +3,21 @@
   const { getTree, getRock } = window.terrainSample;
   const climates = { arid: [10, 10], temperate: [40, 20], humid: [60, 20] };
 
-  // 仅真实水格作来源。两遍八邻距离变换求 Chebyshev 距离；空角不是障碍或水源。
+  // 真实水格与海滩作来源。两遍八邻距离变换求 Chebyshev 距离；空角不是障碍或水源。
   // 原作普通陆水步骤的参数和换算见 climate-ground-selection-2026-10-12。
   function deriveMoisture(cells, climate) {
     if (climate === undefined) return null;
     const [radius, divisor] = climates[climate];
     const sources = [];
     cells.forEach((row, y) => row.forEach((cell, x) => {
-      if (cell?.terrain === 'water') sources.push([x, y]);
+      if (cell?.terrain === 'water' || cell?.beach === true) sources.push([x, y]);
     }));
     const distances = window.qtiled.pathFinding.getChebyshevDistanceField(cells[0].length, cells.length, sources);
     const moisture = distances.map(row => row.map(distance => distance > radius ? 0
       : Math.min(100, Math.trunc(100 * (radius + 1 - distance) / divisor))));
-    // 原作4c0274..4c02b9/4c0000：水距至少6且现U>0的石/矿/采石格按行扫描。
+    // 原作4c0274..4c02b9/4c0000：水/海滩距离至少6且现U>0的石/矿/采石格按行扫描。
     // 从-10起、四邻每步+20限制现值；更低现值截断，等值继续，不累计扣减。
-    // 当前仅有真实水格来源；原作mask中的海滩尚未接入本工具。
+    // 距离共用原作0x10004对应的水/海滩来源集合。
     cells.forEach((row, y) => row.forEach((cell, x) => {
       if ((!getRock(cell?.rock) && cell?.quarry !== true) || distances[y][x] < 6 || moisture[y][x] <= 0) return;
       const pending = [[x, y, -10]];

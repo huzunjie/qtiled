@@ -11,7 +11,7 @@
     copper: { label: '铜矿', base: 472 },
     iron: { label: '铁矿', base: 486 },
   };
-  const atlases = { 'quarry-atlas.png': '20261014050001', 'water-shore-atlas.png': '', 'bare-land-atlas.png': '', 'grass-atlas.png': '', 'trees-atlas.png': '20261014001000', 'rocks-atlas.png': '20261014030000' };
+  const atlases = { 'beach-atlas.png': '20261015010000', 'quarry-atlas.png': '20261014050001', 'water-shore-atlas.png': '', 'bare-land-atlas.png': '', 'grass-atlas.png': '', 'trees-atlas.png': '20261014001000', 'rocks-atlas.png': '20261014030000' };
   const getTree = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(trees, kind) ? trees[kind] : null;
   const getRock = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(rocks, kind) ? rocks[kind] : null;
 

@@ -28104,5 +28104,7415 @@
         ]
       }
     }
+  },
+  "emperor-beach-574": {
+    "version": 1,
+    "id": "emperor-beach-574",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-575": {
+    "version": 1,
+    "id": "emperor-beach-575",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-576": {
+    "version": 1,
+    "id": "emperor-beach-576",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-577": {
+    "version": 1,
+    "id": "emperor-beach-577",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-578": {
+    "version": 1,
+    "id": "emperor-beach-578",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-579": {
+    "version": 1,
+    "id": "emperor-beach-579",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-580": {
+    "version": 1,
+    "id": "emperor-beach-580",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-581": {
+    "version": 1,
+    "id": "emperor-beach-581",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-582": {
+    "version": 1,
+    "id": "emperor-beach-582",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-583": {
+    "version": 1,
+    "id": "emperor-beach-583",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-584": {
+    "version": 1,
+    "id": "emperor-beach-584",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-585": {
+    "version": 1,
+    "id": "emperor-beach-585",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-586": {
+    "version": 1,
+    "id": "emperor-beach-586",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-587": {
+    "version": 1,
+    "id": "emperor-beach-587",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-588": {
+    "version": 1,
+    "id": "emperor-beach-588",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-589": {
+    "version": 1,
+    "id": "emperor-beach-589",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          60,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-590": {
+    "version": 1,
+    "id": "emperor-beach-590",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-591": {
+    "version": 1,
+    "id": "emperor-beach-591",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-592": {
+    "version": 1,
+    "id": "emperor-beach-592",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-593": {
+    "version": 1,
+    "id": "emperor-beach-593",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-594": {
+    "version": 1,
+    "id": "emperor-beach-594",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-595": {
+    "version": 1,
+    "id": "emperor-beach-595",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-596": {
+    "version": 1,
+    "id": "emperor-beach-596",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-597": {
+    "version": 1,
+    "id": "emperor-beach-597",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          120,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-598": {
+    "version": 1,
+    "id": "emperor-beach-598",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-599": {
+    "version": 1,
+    "id": "emperor-beach-599",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-600": {
+    "version": 1,
+    "id": "emperor-beach-600",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-601": {
+    "version": 1,
+    "id": "emperor-beach-601",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-602": {
+    "version": 1,
+    "id": "emperor-beach-602",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-603": {
+    "version": 1,
+    "id": "emperor-beach-603",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-604": {
+    "version": 1,
+    "id": "emperor-beach-604",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-605": {
+    "version": 1,
+    "id": "emperor-beach-605",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          180,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-606": {
+    "version": 1,
+    "id": "emperor-beach-606",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-607": {
+    "version": 1,
+    "id": "emperor-beach-607",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-608": {
+    "version": 1,
+    "id": "emperor-beach-608",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-609": {
+    "version": 1,
+    "id": "emperor-beach-609",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-610": {
+    "version": 1,
+    "id": "emperor-beach-610",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-611": {
+    "version": 1,
+    "id": "emperor-beach-611",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-612": {
+    "version": 1,
+    "id": "emperor-beach-612",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-613": {
+    "version": 1,
+    "id": "emperor-beach-613",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          240,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-614": {
+    "version": 1,
+    "id": "emperor-beach-614",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-615": {
+    "version": 1,
+    "id": "emperor-beach-615",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-616": {
+    "version": 1,
+    "id": "emperor-beach-616",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-617": {
+    "version": 1,
+    "id": "emperor-beach-617",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-618": {
+    "version": 1,
+    "id": "emperor-beach-618",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-619": {
+    "version": 1,
+    "id": "emperor-beach-619",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-620": {
+    "version": 1,
+    "id": "emperor-beach-620",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-621": {
+    "version": 1,
+    "id": "emperor-beach-621",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          300,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-622": {
+    "version": 1,
+    "id": "emperor-beach-622",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-623": {
+    "version": 1,
+    "id": "emperor-beach-623",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-624": {
+    "version": 1,
+    "id": "emperor-beach-624",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-625": {
+    "version": 1,
+    "id": "emperor-beach-625",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-626": {
+    "version": 1,
+    "id": "emperor-beach-626",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-627": {
+    "version": 1,
+    "id": "emperor-beach-627",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-628": {
+    "version": 1,
+    "id": "emperor-beach-628",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-629": {
+    "version": 1,
+    "id": "emperor-beach-629",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          360,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-630": {
+    "version": 1,
+    "id": "emperor-beach-630",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-631": {
+    "version": 1,
+    "id": "emperor-beach-631",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-632": {
+    "version": 1,
+    "id": "emperor-beach-632",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-633": {
+    "version": 1,
+    "id": "emperor-beach-633",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-634": {
+    "version": 1,
+    "id": "emperor-beach-634",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-635": {
+    "version": 1,
+    "id": "emperor-beach-635",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-636": {
+    "version": 1,
+    "id": "emperor-beach-636",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-637": {
+    "version": 1,
+    "id": "emperor-beach-637",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          420,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-638": {
+    "version": 1,
+    "id": "emperor-beach-638",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-639": {
+    "version": 1,
+    "id": "emperor-beach-639",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-640": {
+    "version": 1,
+    "id": "emperor-beach-640",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-641": {
+    "version": 1,
+    "id": "emperor-beach-641",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-642": {
+    "version": 1,
+    "id": "emperor-beach-642",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-643": {
+    "version": 1,
+    "id": "emperor-beach-643",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-644": {
+    "version": 1,
+    "id": "emperor-beach-644",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-645": {
+    "version": 1,
+    "id": "emperor-beach-645",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          480,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-736": {
+    "version": 1,
+    "id": "emperor-beach-736",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-737": {
+    "version": 1,
+    "id": "emperor-beach-737",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-738": {
+    "version": 1,
+    "id": "emperor-beach-738",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-739": {
+    "version": 1,
+    "id": "emperor-beach-739",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-740": {
+    "version": 1,
+    "id": "emperor-beach-740",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-741": {
+    "version": 1,
+    "id": "emperor-beach-741",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-742": {
+    "version": 1,
+    "id": "emperor-beach-742",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          540,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-743": {
+    "version": 1,
+    "id": "emperor-beach-743",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          540,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          540,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          540,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          540,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-beach-744": {
+    "version": 1,
+    "id": "emperor-beach-744",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-beach-745": {
+    "version": 1,
+    "id": "emperor-beach-745",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-beach-746": {
+    "version": 1,
+    "id": "emperor-beach-746",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          600,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-beach-747": {
+    "version": 1,
+    "id": "emperor-beach-747",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          600,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          600,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          600,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          600,
+          78,
+          44
+        ],
+        "anchor": [
+          39,
+          24
+        ]
+      }
+    }
+  },
+  "emperor-beach-748": {
+    "version": 1,
+    "id": "emperor-beach-748",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-749": {
+    "version": 1,
+    "id": "emperor-beach-749",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-750": {
+    "version": 1,
+    "id": "emperor-beach-750",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-beach-751": {
+    "version": 1,
+    "id": "emperor-beach-751",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          600,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "emperor-beach-752": {
+    "version": 1,
+    "id": "emperor-beach-752",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          660,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "emperor-beach-753": {
+    "version": 1,
+    "id": "emperor-beach-753",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          660,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          660,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          660,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          660,
+          78,
+          43
+        ],
+        "anchor": [
+          39,
+          23
+        ]
+      }
+    }
+  },
+  "emperor-beach-754": {
+    "version": 1,
+    "id": "emperor-beach-754",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-755": {
+    "version": 1,
+    "id": "emperor-beach-755",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-756": {
+    "version": 1,
+    "id": "emperor-beach-756",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          660,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          660,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          660,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          660,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-beach-757": {
+    "version": 1,
+    "id": "emperor-beach-757",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-758": {
+    "version": 1,
+    "id": "emperor-beach-758",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-759": {
+    "version": 1,
+    "id": "emperor-beach-759",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          660,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-760": {
+    "version": 1,
+    "id": "emperor-beach-760",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-beach-761": {
+    "version": 1,
+    "id": "emperor-beach-761",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          720,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          720,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          720,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          720,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-beach-762": {
+    "version": 1,
+    "id": "emperor-beach-762",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          720,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          720,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          720,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          720,
+          78,
+          55
+        ],
+        "anchor": [
+          39,
+          35
+        ]
+      }
+    }
+  },
+  "emperor-beach-763": {
+    "version": 1,
+    "id": "emperor-beach-763",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-764": {
+    "version": 1,
+    "id": "emperor-beach-764",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-beach-765": {
+    "version": 1,
+    "id": "emperor-beach-765",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          720,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-766": {
+    "version": 1,
+    "id": "emperor-beach-766",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          720,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          720,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          720,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          720,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-beach-767": {
+    "version": 1,
+    "id": "emperor-beach-767",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          720,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          720,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          720,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          720,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "emperor-beach-768": {
+    "version": 1,
+    "id": "emperor-beach-768",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-769": {
+    "version": 1,
+    "id": "emperor-beach-769",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          780,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          780,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          780,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          780,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-beach-770": {
+    "version": 1,
+    "id": "emperor-beach-770",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          780,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          780,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          780,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          160,
+          780,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      }
+    }
+  },
+  "emperor-beach-771": {
+    "version": 1,
+    "id": "emperor-beach-771",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          780,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          780,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          780,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          240,
+          780,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "emperor-beach-772": {
+    "version": 1,
+    "id": "emperor-beach-772",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          320,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-773": {
+    "version": 1,
+    "id": "emperor-beach-773",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          400,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-774": {
+    "version": 1,
+    "id": "emperor-beach-774",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          480,
+          780,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-775": {
+    "version": 1,
+    "id": "emperor-beach-775",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          780,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          780,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          780,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          560,
+          780,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "emperor-beach-776": {
+    "version": 1,
+    "id": "emperor-beach-776",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          0,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-beach-777": {
+    "version": 1,
+    "id": "emperor-beach-777",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "beach-atlas.png",
+        "rect": [
+          80,
+          840,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
   }
 }

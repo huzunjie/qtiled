@@ -27,6 +27,7 @@
       const path = `cells[${y}][${x}]`;
       const tile = byGrid.get(`${x},${y}`);
       const occupants = occupancy.index.get(`${x},${y}`) || [];
+      if (cell.beach && occupants.length) issues.push(issue(path, 'beach-entity', '海滩不能与建筑或其他实体重叠。'));
       const building = occupants.some(id => map.entities.find(entity => entity.id === id)?.element === buildingId);
       if (cell.road !== undefined && cell.road !== 'ordinary') {
         issues.push(issue(`${path}.road`, 'unsupported-road', '仅支持普通道路 ordinary；无道路时省略 road。'));

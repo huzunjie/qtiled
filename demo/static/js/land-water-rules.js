@@ -138,6 +138,12 @@
       return { tiles: null, issues: [issue('$qtiled', 'missing-distance-field', '气候地表需要新版 QTiled 距离场接口，请更新核心包并刷新页面。')] };
     }
 
+    const hasBeach = map.cells.some(row => row.some(cell => cell?.beach !== undefined));
+    if (hasBeach && window.beachRules) issues.push(...window.beachRules.validate(map));
+    else if (hasBeach) {
+      issues.push(issue('$beachRules', 'missing-beach-rules', '海滩规则未加载，请刷新页面。'));
+    }
+    if (issues.length) return { tiles: null, issues };
     const tiles = [];
     const column = rules.qtiledCameraColumns[angle / 90];
     const markers = deriveWaterMarkers(map.cells);
@@ -197,6 +203,20 @@
             phase = ((stableByte % 24) + stableByte % 2) / 2;
           }
         }
+        const beach = hasBeach && window.beachRules?.select(map.cells, x, y, column, rules,
+          rowIndex === null ? null : rules.rows[rowIndex],
+          (cell.terrainVariant ?? (cell.terrain === 'water'
+            ? Math.imul(x, 374761393) ^ Math.imul(y, 668265263) : getStableGridValue(x, y))) & 255);
+        if (beach?.issue) {
+          issues.push(beach.issue);
+          continue;
+        }
+        if (beach) {
+          element = beach.element || `emperor-beach-${beach.record}`;
+          variant = beach.variant;
+          phase = 0;
+          if (cell.beach) grassGrade = null;
+        }
         const definition = owns(elementsById, element) && elementsById[element];
         if (!definition) {
           issues.push(issue(`cells[${y}][${x}]`, 'missing-terrain-element', `缺少地表元素 ${element}。`));
@@ -205,7 +225,7 @@
           || !isGrid(definition.footprint[0]) || definition.footprint[0].some(Boolean)) {
           issues.push(issue(`cells[${y}][${x}]`, 'invalid-terrain-element', `地表元素 ${element} 必须是单格 tile。`));
         } else {
-          tiles.push({ grid: [x, y], element, variant, rowIndex, phase, waterKind,
+          tiles.push({ grid: [x, y], ...(beach ? { beachKind: beach.kind } : {}), element, variant, rowIndex, phase, waterKind,
             ...(moisture ? { moisture: moisture[y][x], grassGrade } : {}) });
         }
       }
@@ -238,8 +258,16 @@
     }
     if (issues.length) return { definition: null, tiles: null, issues };
     const cells = map.cells.map(row => row.map(cell => cell === null ? null : { ...cell }));
-    for (const [x, y] of grids.values()) cells[y][x].terrain = command.terrain;
-    const definition = { ...map, cells };
+    for (const [x, y] of grids.values()) {
+      cells[y][x].terrain = command.terrain;
+      delete cells[y][x].beach;
+    }
+    let definition = { ...map, cells };
+    if (window.beachRules) {
+      const normalized = window.beachRules.normalize(definition, [...grids.values()], false, rules);
+      if (normalized.issues.length) return { definition: null, tiles: null, issues: normalized.issues };
+      definition = normalized.definition;
+    }
     const result = resolve(definition, elementsById, rules, angle);
     return { definition: result.issues.length ? null : definition, ...result };
   }
