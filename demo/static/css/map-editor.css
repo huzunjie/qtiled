@@ -68,7 +68,7 @@
 .map-demo #controls { gap: 10px 16px; }
 .map-demo .control-group + .control-group { padding-left: 12px; border-left: 1px solid #e3e8e5; }
 .map-demo .file-controls .control-group { padding-left: 0; border-left: 0; }
-.map-demo .brush-swatch { display: grid; grid-template-columns: repeat(9, 3px); grid-template-rows: repeat(9, 3px); gap: 1px; padding: 2px; }
+.map-demo .brush-swatch { display: grid; grid-template-columns: repeat(9, 3px); grid-template-rows: repeat(9, 3px); gap: 1px; padding: 2px; margin: -5px 0; }
 .map-demo .brush-swatch i { background: #dfe6e2; }
 .map-demo .brush-swatch i[data-filled="true"] { background: #23875c; }
 .map-demo #brush-summary { color: #526278; font-size: 11px; }
