@@ -34,10 +34,11 @@
   let suppressClick = false;
   let hoverPointer = null;
   let hoverOverlay = null;
+  let mapRepair = null;
   let hoverKey = null;
   let brushKey = null;
   let brushOffsets = [];
-  const brushTools = ['land', 'water', 'beach', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', 'quarry', ...rockTools, ...treeTools];
+  const brushTools = ['land', 'water', 'beach', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', 'quarry', 'dune', ...rockTools, ...treeTools];
   // 相机只属于当前页面，不写入地图事实或撤销记录；中心允许位于半格。
   const viewport = { width: container.clientWidth || 640, height: container.clientHeight || 440,
     center: null, baseHeight: 0, scale: 1, mode: 'work' };
@@ -155,10 +156,11 @@
         ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
         : '点击实体查看完整占地与属性；使用“清除”移除实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
-      clear: '清除海滩、植被、岩石、铜矿、铁矿、采石地、道路和实体。海滩恢复普通陆地，水域与高度保留。单格只清实际命中的实体；范围笔刷清除占地内实体，橙框表示待清除，灰框表示无可清除内容，红框表示不能落笔。松开提交，Esc 取消。',
+      clear: '清除海滩、植被、沙丘、岩石、铜矿、铁矿、采石地、道路和实体。海滩恢复普通陆地，水域与高度保留。单格只清实际命中的实体；范围笔刷清除占地内实体，橙框表示待清除，灰框表示无可清除内容，红框表示不能落笔。松开提交，Esc 取消。',
       tree: '普通树、竹类及静态残株：在已有草地的平地绘制，不能与水、道路、实体或坡面重叠。整笔松开提交，Esc 取消；树木与残株都会影响周围草地，不会自动生长。',
       beach: '海滩：将等高陆地或水域改为海滩；周围两格需平坦。按下预览时整理草沙轮廓，蓝框为选区，橙框为联动格。清除及陆水替换也会整理轮廓。不能覆盖道路、树石或实体。松开整笔提交，Esc 取消。',
       quarry: '采石地：固定 6×6，在等高平坦陆地放置，可重叠或相邻扩展。使用“清除”工具擦除，可调整清除笔刷范围。坑边与坑内按周围采石格自动拼接。松开提交，Esc 取消；不记录可采数量或开采进度。',
+      dune: '沙丘：在平坦陆地逐格绘制，自动组合为1×1、2×2或3×3原图。不能覆盖水、道路、其他地物、实体或坡面；清除按格擦除。',
       rock: '普通石、铜矿与铁矿：在平坦陆地逐格绘制或互换类别，同类自动组合为1×1、2×2或3×3大块。不能覆盖水、植被、道路、实体或坡面。青框表示周围重新分块，类别保留；清除只删笔刷内的岩石格。含矿格分布表示含矿范围，不记录可采数量。松开提交，Esc 取消。',
       ramp: '一级直边坡道：按下预览，松开切换；Esc 取消。可放在普通坡面或半坡上，再沿高低两端铺路。移除前请先擦路。',
       'half-slope': '一级直边半坡：将坡面延伸到低侧两格，高程数值不变。点击任一部分切换整体；可相邻放置。改变占地前请先擦路。',
@@ -246,6 +248,7 @@
       const candidate = { ...currentScene.map, entities: [...currentScene.map.entities, entity] };
       const checked = requireSuccess(window.constructionRules.validate(candidate, currentScene.groundTiles, currentScene.elementsById));
       requireSuccess(window.rockRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
+      requireSuccess(window.duneRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
       requireSuccess(window.treeRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
       requireSuccess(window.quarryRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index, cameraAngle));
     } catch (reason) { error = reason.message; }
@@ -286,6 +289,7 @@
     let error = '';
     let clearPreview = null;
     let rockPreview = null;
+    let dunePreview = null;
     if (!hit.missed && tool === 'clear') {
       try {
         clearPreview = clearContents(currentScene, grids, clearEntityIds(currentScene, hit, grids, offsets.length > 1));
@@ -293,6 +297,8 @@
         requireSuccess(window.quarryRules.resolve(clearPreview.definition, currentScene.groundTiles,
           currentScene.elementsById, currentScene.occupancyIndex, cameraAngle));
         rockPreview = window.rockRules.resolve(clearPreview.definition, currentScene.groundTiles,
+          currentScene.elementsById, currentScene.occupancyIndex);
+        dunePreview = window.duneRules.resolve(clearPreview.definition, currentScene.groundTiles,
           currentScene.elementsById, currentScene.occupancyIndex);
       } catch (reason) { error = reason.message; }
     } else if (!hit.missed && tool === 'beach') {
@@ -304,6 +310,11 @@
       const candidate = window.quarryRules.applyStroke(currentScene.map, grids);
       error = candidate.issues[0]?.message || window.quarryRules.resolve(candidate.definition,
         currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex, cameraAngle).issues[0]?.message || '';
+    } else if (!hit.missed && tool === 'dune') {
+      const candidate = window.duneRules.applyStroke(currentScene.map, grids, false);
+      if (!candidate.issues.length) dunePreview = window.duneRules.resolve(candidate.definition,
+        currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex);
+      error = candidate.issues[0]?.message || dunePreview?.issues[0]?.message || '';
     } else if (!hit.missed && rockTools.includes(tool)) {
       const candidate = window.rockRules.applyStroke(currentScene.map, grids, false, tool);
       if (!candidate.issues.length) rockPreview = window.rockRules.resolve(candidate.definition,
@@ -316,6 +327,7 @@
     } else if (feature && !feature.issues.length) {
       error = window.quarryRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex, cameraAngle).issues[0]?.message
         || window.rockRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message
+        || window.duneRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message
         || window.treeRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message || '';
     }
     const invalid = hit.missed || error || feature?.issues.length || grids.some(([x, y]) => !currentScene.map.cells[y]?.[x]);
@@ -338,21 +350,25 @@
         lineWidth: 2 / viewport.scale }));
     });
     if (!invalid && rockPreview?.tiles) {
-      const count = appendRockReflow(hoverOverlay, currentScene, { ...currentScene, tiles: rockPreview.tiles }, grids);
+      const count = appendBlockReflow(hoverOverlay, currentScene, { ...currentScene, tiles: rockPreview.tiles }, grids, 'rock');
       if (count) get('hover-info').textContent += ` · 周围${count}格重新分块（青框，类别保留）`;
+    }
+    if (!invalid && dunePreview?.tiles) {
+      const count = appendBlockReflow(hoverOverlay, currentScene, { ...currentScene, tiles: dunePreview.tiles }, grids, 'dune');
+      if (count) get('hover-info').textContent += ` · 周围${count}格重新分块（青框，沙丘格保留）`;
     }
     currentScene.root.append(hoverOverlay);
   }
 
   // 标明笔刷外实际改变显示的岩石格，不把分块范围当作删除范围。
-  function appendRockReflow(overlay, before, after, selectedGrids) {
+  function appendBlockReflow(overlay, before, after, selectedGrids, kind) {
     const selected = new Set(selectedGrids.map(grid => grid.join(',')));
     const oldTiles = new Map(before.tiles.map(tile => [tile.grid.join(','), tile]));
     let count = 0;
     for (const tile of after.tiles) {
       const old = oldTiles.get(tile.grid.join(','));
-      if (selected.has(tile.grid.join(',')) || (!tile.rock && !old?.rock)) continue;
-      if (old?.element === tile.element && old?.rockOwner?.join(',') === tile.rockOwner?.join(',')) continue;
+      if (selected.has(tile.grid.join(',')) || (!tile[kind] && !old?.[kind])) continue;
+      if (old?.element === tile.element && old?.[`${kind}Owner`]?.join(',') === tile[`${kind}Owner`]?.join(',')) continue;
       overlay.append(new window.spritejs.Polyline({ pos: projectCell(tile.grid, after), points: after.vertexes,
         close: true, strokeColor: '#168b92', fillColor: 'rgba(22,139,146,.08)', lineWidth: 2 / viewport.scale }));
       count++;
@@ -406,9 +422,10 @@
     if (cell && tile?.waterKind) get('cell-info').textContent += `\n水面: ${{ ordinary: '普通', transition: '过渡', deep: '深处' }[tile.waterKind]}`;
     if (cell?.beach) get('cell-info').textContent += '\n海滩：岸线与湿度按当前地图派生';
     if (cell?.quarry) get('cell-info').textContent += '\n采石地：静态范围，局部清除后重新拼接';
+    if (cell?.dune) get('cell-info').textContent += `\n沙丘: 当前组合${tile.duneSize}×${tile.duneSize}（逐格编辑）`;
     if (cell?.rock) get('cell-info').textContent += `\n岩石: ${getRock(cell.rock).label} · 当前组合${tile.rockSize}×${tile.rockSize}（逐格编辑）`;
     if (cell?.tree) get('cell-info').textContent += `\n树木: ${getTree(cell.tree).detail} · 占地1格`;
-    if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n环境强度: ${currentScene.moisture[selectedGrid[1]][selectedGrid[0]]} / 100（水域/岩石/采石地/树木派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
+    if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n环境强度: ${currentScene.moisture[selectedGrid[1]][selectedGrid[0]]} / 100（水域/岩石/采石地/沙丘/树木派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
     if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.halfSlope ? `半坡${tile.ramp ? '坡道' : ''}（主格 ${tile.slopeOwner}，部件 ${tile.slopePart + 1}/2）` : tile?.ramp ? '坡道' : tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
     updateWaterFrame();
     get('selection-actions').hidden = !selectedGrid && !entity;
@@ -431,7 +448,8 @@
     const construction = requireSuccess(window.constructionRules.resolve(map, groundTiles, elementsById, mapState.roadRules, nextAngle));
     const quarryTiles = requireSuccess(window.quarryRules.resolve(map, construction.tiles, elementsById, construction.index, nextAngle)).tiles;
     const rockTiles = requireSuccess(window.rockRules.resolve(map, quarryTiles, elementsById, construction.index)).tiles;
-    const tiles = requireSuccess(window.treeRules.resolve(map, rockTiles, elementsById, construction.index)).tiles;
+    const duneTiles = requireSuccess(window.duneRules.resolve(map, rockTiles, elementsById, construction.index)).tiles;
+    const tiles = requireSuccess(window.treeRules.resolve(map, duneTiles, elementsById, construction.index)).tiles;
     const view = { angle: nextAngle, tileSize: map.tileSize, originPixel: [0, 0] };
     const flatEditing = get('flat-edit').checked;
     const { entities } = requireSuccess(window.qtiledMaps.resolveMapEntities(map, elementsById, view));
@@ -474,7 +492,7 @@
         holder.append(new Polyline({ pos, points: vertexes, close: true, lineWidth: 1,
           strokeColor: '#788c86', fillColor: cell.terrain === 'water' ? '#9acbdc'
             : `hsl(95, 24%, ${88 - cell.elevation * 3}%)` }));
-        holder.append(new Label({ text: `${cell.elevation}${cell.beach ? ' 滩' : ''}${cell.road ? ' 路' : ''}${cell.quarry ? ' 采石' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
+        holder.append(new Label({ text: `${cell.elevation}${cell.beach ? ' 滩' : ''}${cell.road ? ' 路' : ''}${cell.quarry ? ' 采石' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}${cell.dune ? ' 沙丘' : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
         content.append(holder);
         return;
       }
@@ -488,9 +506,9 @@
         window.qtiledElementRendering.renderElement(part, draw, sources, { footprint: false, placement: false });
         if (draw.sequence) animated.push({ holder: part, definition, grid: tile.grid, phase, imageAngle: draw.imageAngle,
           frameIndex: draw.frameIndex, sequence: draw.sequence });
-        drawables.push({ holder: part, depth: tile.rock ? Math.max(...draw.footprint.map(item => projectGrid(item.grid, view)[1]))
+        drawables.push({ holder: part, depth: tile.rock || tile.dune ? Math.max(...draw.footprint.map(item => projectGrid(item.grid, view)[1]))
           : projectGrid(tile.grid, view)[1], draw, grid: tile.grid, definition, phase,
-        rockSize: tile.rockSize, elevation: tile.elevation });
+        rockSize: tile.rockSize, duneSize: tile.duneSize, elevation: tile.elevation });
       });
     });
     // 按未抬升的世界占地下端排序，防止台地的垂直位移把前后关系颠倒。
@@ -592,7 +610,7 @@
   }
 
   function interactionMode() {
-    return pinch ? 'pinch' : stroke ? 'stroke' : pan ? 'pan' : 'idle';
+    return mapRepair ? 'map-repair' : pinch ? 'pinch' : stroke ? 'stroke' : pan ? 'pan' : 'idle';
   }
 
   function canInteract() {
@@ -601,7 +619,7 @@
 
   function updateControls() {
     // 平移沿用既有控件显示；实际操作统一等待手势结束，取消整笔单独可用。
-    const locked = ['stroke', 'pinch'].includes(interactionMode());
+    const locked = ['stroke', 'pinch', 'map-repair'].includes(interactionMode());
     document.querySelectorAll('[data-editor-controls]').forEach(group => {
       group.disabled = !currentScene || locked;
     });
@@ -612,9 +630,11 @@
     get('new-map').disabled = !currentScene || locked;
     get('base-height').disabled = locked;
     get('map-climate').disabled = !currentScene || locked;
-    for (const id of ['save-map', 'view-map-json', 'read-map', 'map-file', 'map-sample', 'reload', 'rebase-sample']) {
-      get(id).disabled = locked || (!currentScene && ['save-map', 'view-map-json', 'read-map'].includes(id));
+    for (const id of ['save-map', 'view-map-json', 'read-map', 'preview-map-repair', 'map-file', 'map-sample', 'reload', 'rebase-sample']) {
+      get(id).disabled = locked || (!currentScene && ['save-map', 'view-map-json', 'read-map', 'preview-map-repair'].includes(id));
     }
+    get('map-json').readOnly = Boolean(mapRepair);
+    get('map-repair-actions').hidden = !mapRepair;
   }
 
   function clearIssue() {
@@ -654,7 +674,7 @@
     try {
       const baseHeight = get('rebase-sample').checked ? presetHeight() : null;
       if (window.location.protocol === 'file:') throw new Error('本页需要 HTTP 服务');
-      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.beachRules || !window.landWaterRules || !window.elevationRules || !window.constructionRules || !window.treeRules || !window.rockRules || !window.quarryRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
+      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.beachRules || !window.landWaterRules || !window.elevationRules || !window.constructionRules || !window.treeRules || !window.rockRules || !window.duneRules || !window.quarryRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
         throw new Error('运行包缺失或过期；仓库 Demo 请先执行 npm run debug，独立目录请按 docs/browser-consumption.md 重新准备');
       }
       const { loadElementSources, importElementDefinition } = window.qtiledElementRendering;
@@ -785,7 +805,7 @@
 
   function hitAt(event, scene = currentScene) {
     const pixel = getPointerPosition(event, container).map((value, axis) => (value - scene.viewportOrigin[axis]) / scene.viewportScale);
-    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.quarry) || scene.map.entities.some(entity => entity.element === window.constructionRules.buildingId)) && !scene.flatEditing) {
+    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.quarry) || scene.map.entities.some(entity => entity.element === window.constructionRules.buildingId)) && !scene.flatEditing) {
       for (let index = scene.drawables.length - 1; index >= 0; index--) {
         const item = scene.drawables[index];
         const frame = item.draw.sequence ? window.qtiledElementRendering.resolveElementFrame(item.definition, item.draw.imageAngle,
@@ -795,10 +815,10 @@
         if (x < 0 || y < 0 || x >= frame.rect[2] || y >= frame.rect[3]) continue;
         const source = scene.sourcePixels[frame.source];
         if (source.data[((frame.rect[1] + y) * source.width + frame.rect[0] + x) * 4 + 3] > 0) {
-          if (item.rockSize > 1) {
+          if (item.rockSize > 1 || item.duneSize > 1) {
             const ground = window.qtiledView.pickGrid([pixel[0], pixel[1] + item.elevation * (scene.map.elevationStep || 0)], scene.view);
             // 大块仍逐格编辑；上凸像素归最近边格，不把整块当成一个可删除实体。
-            return { grid: ground.map((value, axis) => Math.max(item.grid[axis], Math.min(item.grid[axis] + item.rockSize - 1, value))) };
+            return { grid: ground.map((value, axis) => Math.max(item.grid[axis], Math.min(item.grid[axis] + (item.rockSize || item.duneSize) - 1, value))) };
           }
           return { grid: item.grid, entityId: item.entityId };
         }
@@ -1044,6 +1064,7 @@
     let result = requireSuccess(window.beachRules.applyStroke(scene.map, grids, true));
     result = requireSuccess(window.treeRules.applyStroke(result.definition, grids, true, scene.moisture));
     result = requireSuccess(window.rockRules.applyStroke(result.definition, grids, true));
+    result = requireSuccess(window.duneRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.quarryRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.constructionRules.applyRoadStroke(result.definition, grids, true, scene.groundTiles));
     const selected = new Map(result.selectedGrids.map(grid => [grid.join(','), grid]));
@@ -1053,7 +1074,7 @@
     // 同一候选内完成各类事实删除；prepareScene与历史只提交一次。
     for (const id of ids) result.definition = requireSuccess(window.qtiledMaps.applyMapEdit(result.definition,
       { type: 'remove', id }, scene.elementsById, window.constructionRules.canCoexist)).definition;
-    const hasContent = ids.size > 0 || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.beach || scene.map.cells[y]?.[x]?.tree || scene.map.cells[y]?.[x]?.rock || scene.map.cells[y]?.[x]?.quarry)
+    const hasContent = ids.size > 0 || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.beach || scene.map.cells[y]?.[x]?.tree || scene.map.cells[y]?.[x]?.rock || scene.map.cells[y]?.[x]?.dune || scene.map.cells[y]?.[x]?.quarry)
       || result.selectedGrids.some(([x, y]) => scene.map.cells[y]?.[x]?.road);
     const normalized = requireSuccess(window.beachRules.normalize(result.definition, grids, false, scene.rules));
     return { ...result, definition: normalized.definition, selectedGrids: [...selected.values()], hasContent };
@@ -1144,6 +1165,8 @@
         ? window.beachRules.applyStroke(base.map, [...grids.values()], false, base.rules)
         : terrain === 'quarry'
         ? window.quarryRules.applyStroke(base.map, [...grids.values()])
+        : terrain === 'dune'
+        ? window.duneRules.applyStroke(base.map, [...grids.values()], false)
         : rockTools.includes(terrain)
         ? window.rockRules.applyStroke(base.map, [...grids.values()], false, terrain)
         : treeTools.includes(terrain)
@@ -1152,7 +1175,7 @@
         ? window.constructionRules.applyRoadStroke(base.map, [...grids.values()], false, base.groundTiles)
         : window.elevationRules.applyStroke(base.map, { ...command, grids: [...grids.values()] }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
       // 只保护已有树与岩石的实际高度变化，不改高程联动算法；最终坡面冲突由prepareScene拒绝。
-      if (base.map.cells.some((row, y) => row.some((cell, x) => (cell?.tree || cell?.rock || cell?.quarry)
+      if (base.map.cells.some((row, y) => row.some((cell, x) => (cell?.tree || cell?.rock || cell?.dune || cell?.quarry)
         && result.definition.cells[y]?.[x]?.elevation !== cell.elevation))) {
         throw new Error('高程联动会改变已有树木、岩石或采石地所在格，请先清除。');
       }
@@ -1173,7 +1196,8 @@
           strokeColor: terrain === 'clear' ? result.hasContent ? '#a56308' : '#77818a' : selected ? '#1976b5' : '#d07a18',
           fillColor: terrain === 'clear' ? result.hasContent ? 'rgba(224,145,30,.22)' : 'rgba(119,129,138,.08)' : selected ? 'rgba(25,118,181,.15)' : 'rgba(208,122,24,.24)', lineWidth: 2 / viewport.scale }));
       }
-      const rockReflow = appendRockReflow(preview, base, next, selectedGrids);
+      const rockReflow = appendBlockReflow(preview, base, next, selectedGrids, 'rock');
+      const duneReflow = appendBlockReflow(preview, base, next, selectedGrids, 'dune');
       next.root.append(preview);
       stroke.overlay = preview;
       stroke.adjusted = result.adjusted?.length || 0;
@@ -1181,7 +1205,7 @@
       stroke.failed = false;
       commitScene(next);
       clearIssue();
-      status.textContent = `${terrain === 'clear' ? result.hasContent ? '待清除' : '无可清除内容' : '整笔预览'} · 选中 ${selectedGrids.length} 格${changes.length ? ` · 联动 ${linked.length} 格 · 实际改变 ${changes.length} 格` : ''}${result.adjusted?.length ? ` · ${result.adjusted.length} 格目标经整理调整` : ''}${rockReflow ? ` · 周围${rockReflow}格重新分块（类别保留）` : ''} · 松开提交 / Esc 取消`;
+      status.textContent = `${terrain === 'clear' ? result.hasContent ? '待清除' : '无可清除内容' : '整笔预览'} · 选中 ${selectedGrids.length} 格${changes.length ? ` · 联动 ${linked.length} 格 · 实际改变 ${changes.length} 格` : ''}${result.adjusted?.length ? ` · ${result.adjusted.length} 格目标经整理调整` : ''}${rockReflow ? ` · 周围${rockReflow}格岩石重新分块（类别保留）` : ''}${duneReflow ? ` · 周围${duneReflow}格沙丘重新分块` : ''} · 松开提交 / Esc 取消`;
     } catch (error) {
       stroke.failed = true;
       stroke.candidate = null;
@@ -1309,6 +1333,56 @@
     clearIssue();
     status.textContent = '已读取地图 · 可撤销';
   }
+
+  function previewMapRepair() {
+    if (!canInteract()) return;
+    const imported = requireSuccess(window.qtiledMaps.importMapDefinition(get('map-json').value, currentScene.elementsById));
+    const map = imported.definition;
+    const seeds = map.cells.flatMap((row, y) => row.flatMap((cell, x) => cell?.beach ? [[x, y]] : []));
+    const repaired = requireSuccess(window.beachRules.normalize(map, seeds, true, currentScene.rules));
+    // 完整校验候选，避免整理掩盖占用、坡面或其他输入错误；原始输入始终保留。
+    const next = prepareScene({ ...currentScene, map: repaired.definition, occupancyIndex: imported.index }, cameraAngle);
+    const changed = map.cells.flatMap((row, y) => row.flatMap((cell, x) =>
+      cell?.beach !== next.map.cells[y][x]?.beach ? [[x, y]] : []));
+    if (!changed.length) throw new Error('这份地图无需整理草沙轮廓，可直接导入当前输入框地图数据。');
+    const { Group, Polyline } = window.spritejs;
+    const overlay = new Group({ id: 'map-repair-preview' });
+    changed.forEach(grid => overlay.append(new Polyline({ pos: projectCell(grid, next), points: next.vertexes,
+      close: true, strokeColor: '#a56308', fillColor: 'rgba(224,145,30,.22)', lineWidth: 2 })));
+    next.root.append(overlay);
+    mapRepair = { base: currentScene, viewport: { ...viewport, center: [...viewport.center] },
+      selectedEntityId, selectedGrid, overlay, count: changed.length };
+    commitScene(next, true);
+    clearIssue();
+    closeMenus();
+    status.textContent = `整理预览 · 橙框 ${changed.length} 格将扩为海滩 · 原始输入保留，请确认导入或取消`;
+  }
+
+  function finishMapRepair(apply) {
+    if (!mapRepair) return;
+    const pending = mapRepair;
+    mapRepair = null;
+    pending.overlay.remove();
+    if (apply) {
+      undoStack.push(pending.base.map);
+      redoStack.length = 0;
+      updateControls();
+    } else {
+      Object.assign(viewport, pending.viewport);
+      selectedEntityId = pending.selectedEntityId;
+      selectedGrid = pending.selectedGrid;
+      commitScene(pending.base);
+    }
+    clearIssue();
+    status.textContent = apply ? `已整理并导入地图 · 联动 ${pending.count} 格 · 可整笔撤销` : '已取消整理 · 地图和原始输入保留';
+  }
+  get('preview-map-repair').addEventListener('click', () => {
+    ++loadRequestId;
+    try { previewMapRepair(); } catch (error) { fail(error); }
+  });
+  get('apply-map-repair').addEventListener('click', () => finishMapRepair(true));
+  get('cancel-map-repair').addEventListener('click', () => finishMapRepair(false));
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') finishMapRepair(false); });
   function showNewMapOptions(show) {
     get('new-map-options').hidden = !show;
     get('new-map').setAttribute('aria-expanded', String(show));
@@ -1375,7 +1449,10 @@
     const requestId = ++loadRequestId;
     try {
       const json = await file.text();
-      if (requestId === loadRequestId) readMap(json);
+      if (requestId === loadRequestId) {
+        get('map-json').value = json;
+        readMap(json);
+      }
     } catch (error) { if (requestId === loadRequestId) fail(error); }
     finally { event.target.value = ''; }
   });

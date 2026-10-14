@@ -43,6 +43,7 @@
 .map-demo #cancel-stroke:disabled { visibility: hidden; }
 .map-demo #status { margin: 0; padding: 6px 10px; border-radius: 4px; background: rgba(244,246,248,.8); font-size: 11px; }
 .map-demo .issue-panel { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 135px); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; pointer-events: none; }
+.map-demo #map-repair-actions { pointer-events: auto; }
 .map-demo #issues { max-height: 140px; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; color: #9b3021; background: rgba(255,240,236,.8); padding: 10px; margin: 0; border-radius: 4px; white-space: pre-wrap; overflow-wrap: anywhere; pointer-events: auto; }
 .map-demo aside dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; }
 .map-demo aside dt, .map-demo aside dd { margin: 0; }

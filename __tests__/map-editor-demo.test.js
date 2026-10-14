@@ -151,6 +151,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/construction-rules.js'), context);
   vm.runInContext(read('static/js/tree-rules.js'), context);
   vm.runInContext(read('static/js/rock-rules.js'), context);
+  vm.runInContext(read('static/js/dune-rules.js'), context);
   vm.runInContext(read('static/js/quarry-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rendering.js'), context);
   const terrainResolve = jest.fn(window.landWaterRules.resolve);
@@ -1079,7 +1080,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(16);
+  expect(Object.keys(initial)).toHaveLength(17);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
   expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
   expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
@@ -2661,4 +2662,75 @@ test('水格画海滩可取消和撤销，统一清除回陆地，水笔刷可�
   expect(p.save().cells[4][4]).toEqual({ terrain: 'land', elevation: 0 });
   p.tool('water'); p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
   expect(p.save()).toEqual(water); expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('旧图草沙整理需显式预览确认，取消保留输入，确认整次可撤销', async () => {
+  const p = await page({}, 'beach-map');
+  const before = p.save();
+  const old = { ...before, id: 'old-beach', entities: [], cells: Array.from({ length: 9 }, () =>
+    Array.from({ length: 9 }, () => ({ terrain: 'land', elevation: 0, beach: true }))) };
+  delete old.cells[4][4].beach;
+  const draft = JSON.stringify(old);
+  p.get('map-json').value = draft;
+  p.get('read-map').click();
+  expect(p.get('issues').textContent).toContain('草沙轮廓');
+  expect(p.get('undo').disabled).toBe(true);
+  p.get('preview-map-repair').click();
+  expect(p.get('status').textContent).toContain('橙框 1 格');
+  expect(p.get('map-json').value).toBe(draft);
+  expect(p.get('save-map').disabled).toBe(true);
+  expect(p.get('map-json').readOnly).toBe(true);
+  expect(p.get('map-repair-actions').hidden).toBe(false);
+  const preview = p.layer.children[0].children.find(node => node.attrs.id === 'map-repair-preview');
+  expect(preview.children).toHaveLength(1);
+  p.get('cancel-map-repair').click();
+  expect(p.get('map-json').value).toBe(draft);
+  expect(p.get('undo').disabled).toBe(true);
+  expect(p.save()).toEqual(before);
+  p.get('map-json').value = draft; p.get('preview-map-repair').click();
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(p.get('map-repair-actions').hidden).toBe(true);
+  expect(p.get('map-json').value).toBe(draft);
+  p.get('preview-map-repair').click(); p.get('apply-map-repair').click();
+  expect(p.get('map-json').value).toBe(draft);
+  const repaired = p.save();
+  expect(repaired.cells[4][4].beach).toBe(true);
+  expect(repaired.id).toBe(old.id);
+  for (const angle of [0, 90, 180, 270]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); }
+  p.get('undo').click(); expect(p.save()).toEqual(before);
+  p.get('redo').click(); expect(p.save()).toEqual(repaired);
+  old.cells[4][4].rock = 'ordinary';
+  p.get('map-json').value = JSON.stringify(old); p.get('preview-map-repair').click();
+  expect(p.get('issues').textContent).toContain('占用');
+  expect(p.get('map-repair-actions').hidden).toBe(true);
+  expect(p.save()).toEqual(repaired);
+  p.get('map-json').value = '{'; p.get('preview-map-repair').click();
+  expect(p.get('map-repair-actions').hidden).toBe(true);
+  expect(p.save()).toEqual(repaired);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test.each([2, 3])('沙丘%s格原图四向可逐格清除，预览取消和历史保持', async size => {
+  const p = await constructionPage(); const map = p.save();
+  for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) Object.assign(map.cells[y][x], { dune: true, terrainVariant: 0 });
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  setDisplay(p, 'flat-edit', false);
+  const dunes = () => p.sprites().filter(node => node.attrs.texture.file === 'dunes-atlas.webp');
+  expect(dunes()).toHaveLength(1);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); p.tool('clear'); p.pointer('pointermove', [3, 3]);
+    expect(guide(p, 'map-brush-hover').children.filter(node => node.attrs.strokeColor === '#168b92')).toHaveLength(size * size - 1);
+    p.pointer('pointerdown', [3, 3]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
+    expect(p.save().cells[3][3].dune).toBeUndefined();
+    expect(p.save().cells.flat().filter(cell => cell.dune)).toHaveLength(size * size - 1);
+    p.get('undo').click(); expect(p.save()).toEqual(map); expect(dunes()).toHaveLength(1);
+  }
+  p.tool('dune'); p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+  expect(p.save()).toEqual(map);
+  p.tool('clear'); p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
+  p.tool('dune'); p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
+  expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
 });

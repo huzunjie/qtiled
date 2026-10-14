@@ -15,11 +15,11 @@
     const distances = window.qtiled.pathFinding.getChebyshevDistanceField(cells[0].length, cells.length, sources);
     const moisture = distances.map(row => row.map(distance => distance > radius ? 0
       : Math.min(100, Math.trunc(100 * (radius + 1 - distance) / divisor))));
-    // 原作4c0274..4c02b9/4c0000：水/海滩距离至少6且现U>0的石/矿/采石格按行扫描。
+    // 原作4c0274..4c02b9/4c0000：水/海滩距离至少6且现U>0的石/矿/采石/沙丘格按行扫描。
     // 从-10起、四邻每步+20限制现值；更低现值截断，等值继续，不累计扣减。
     // 距离共用原作0x10004对应的水/海滩来源集合。
     cells.forEach((row, y) => row.forEach((cell, x) => {
-      if ((!getRock(cell?.rock) && cell?.quarry !== true) || distances[y][x] < 6 || moisture[y][x] <= 0) return;
+      if ((!getRock(cell?.rock) && cell?.quarry !== true && cell?.dune !== true) || distances[y][x] < 6 || moisture[y][x] <= 0) return;
       const pending = [[x, y, -10]];
       while (pending.length) {
         const [px, py, value] = pending.pop();

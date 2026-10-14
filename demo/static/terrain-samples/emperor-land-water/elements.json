@@ -35189,5 +35189,1027 @@
         ]
       }
     }
+  },
+  "emperor-dune-1138": {
+    "version": 1,
+    "id": "emperor-dune-1138",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      }
+    }
+  },
+  "emperor-dune-1139": {
+    "version": 1,
+    "id": "emperor-dune-1139",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-dune-1140": {
+    "version": 1,
+    "id": "emperor-dune-1140",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-dune-1141": {
+    "version": 1,
+    "id": "emperor-dune-1141",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-dune-1142": {
+    "version": 1,
+    "id": "emperor-dune-1142",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          41
+        ],
+        "anchor": [
+          39,
+          21
+        ]
+      }
+    }
+  },
+  "emperor-dune-1143": {
+    "version": 1,
+    "id": "emperor-dune-1143",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-dune-1144": {
+    "version": 1,
+    "id": "emperor-dune-1144",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          46
+        ],
+        "anchor": [
+          39,
+          26
+        ]
+      }
+    }
+  },
+  "emperor-dune-1145": {
+    "version": 1,
+    "id": "emperor-dune-1145",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          45
+        ],
+        "anchor": [
+          39,
+          25
+        ]
+      }
+    }
+  },
+  "emperor-dune-1146": {
+    "version": 1,
+    "id": "emperor-dune-1146",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          48,
+          158,
+          80
+        ],
+        "anchor": [
+          39,
+          40
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          48,
+          158,
+          80
+        ],
+        "anchor": [
+          79,
+          20
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          48,
+          158,
+          80
+        ],
+        "anchor": [
+          119,
+          40
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          48,
+          158,
+          80
+        ],
+        "anchor": [
+          79,
+          60
+        ]
+      }
+    }
+  },
+  "emperor-dune-1147": {
+    "version": 1,
+    "id": "emperor-dune-1147",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          48,
+          158,
+          82
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          48,
+          158,
+          82
+        ],
+        "anchor": [
+          79,
+          22
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          48,
+          158,
+          82
+        ],
+        "anchor": [
+          119,
+          42
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          160,
+          48,
+          158,
+          82
+        ],
+        "anchor": [
+          79,
+          62
+        ]
+      }
+    }
+  },
+  "emperor-dune-1148": {
+    "version": 1,
+    "id": "emperor-dune-1148",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          48,
+          158,
+          92
+        ],
+        "anchor": [
+          39,
+          52
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          48,
+          158,
+          92
+        ],
+        "anchor": [
+          79,
+          32
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          48,
+          158,
+          92
+        ],
+        "anchor": [
+          119,
+          52
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          320,
+          48,
+          158,
+          92
+        ],
+        "anchor": [
+          79,
+          72
+        ]
+      }
+    }
+  },
+  "emperor-dune-1149": {
+    "version": 1,
+    "id": "emperor-dune-1149",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          48,
+          158,
+          81
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          48,
+          158,
+          81
+        ],
+        "anchor": [
+          79,
+          21
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          48,
+          158,
+          81
+        ],
+        "anchor": [
+          119,
+          41
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          480,
+          48,
+          158,
+          81
+        ],
+        "anchor": [
+          79,
+          61
+        ]
+      }
+    }
+  },
+  "emperor-dune-1150": {
+    "version": 1,
+    "id": "emperor-dune-1150",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          142,
+          238,
+          122
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          142,
+          238,
+          122
+        ],
+        "anchor": [
+          119,
+          22
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          142,
+          238,
+          122
+        ],
+        "anchor": [
+          199,
+          62
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          0,
+          142,
+          238,
+          122
+        ],
+        "anchor": [
+          119,
+          102
+        ]
+      }
+    }
+  },
+  "emperor-dune-1151": {
+    "version": 1,
+    "id": "emperor-dune-1151",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          142,
+          238,
+          120
+        ],
+        "anchor": [
+          39,
+          60
+        ]
+      },
+      "90": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          142,
+          238,
+          120
+        ],
+        "anchor": [
+          119,
+          20
+        ]
+      },
+      "180": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          142,
+          238,
+          120
+        ],
+        "anchor": [
+          199,
+          60
+        ]
+      },
+      "270": {
+        "source": "dunes-atlas.webp",
+        "rect": [
+          240,
+          142,
+          238,
+          120
+        ],
+        "anchor": [
+          119,
+          100
+        ]
+      }
+    }
   }
 }
