@@ -38,7 +38,7 @@
   let hoverKey = null;
   let brushKey = null;
   let brushOffsets = [];
-  const brushTools = ['land', 'water', 'beach', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', 'quarry', 'dune', ...rockTools, ...treeTools];
+  const brushTools = ['land', 'water', 'beach', 'raise-two', 'raise', 'lower', 'lower-two', 'clear', 'quarry', 'dune', 'salt-marsh', ...rockTools, ...treeTools];
   // 相机只属于当前页面，不写入地图事实或撤销记录；中心允许位于半格。
   const viewport = { width: container.clientWidth || 640, height: container.clientHeight || 440,
     center: null, baseHeight: 0, scale: 1, mode: 'work' };
@@ -156,11 +156,12 @@
         ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
         : '点击实体查看完整占地与属性；使用“清除”移除实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
-      clear: '清除海滩、植被、沙丘、岩石、铜矿、铁矿、采石地、道路和实体。海滩恢复普通陆地，水域与高度保留。单格只清实际命中的实体；范围笔刷清除占地内实体，橙框表示待清除，灰框表示无可清除内容，红框表示不能落笔。松开提交，Esc 取消。',
+      clear: '清除海滩、植被、沙丘、岩石、铜矿、铁矿、采石地、道路和实体。海滩恢复普通陆地，水域、盐沼与高度保留；盐沼上的道路清除后恢复盐沼。单格只清实际命中的实体；范围笔刷清除占地内实体，橙框表示待清除，灰框表示无可清除内容，红框表示不能落笔。松开提交，Esc 取消。',
       tree: '普通树、竹类及静态残株：在已有草地的平地绘制，不能与水、道路、实体或坡面重叠。整笔松开提交，Esc 取消；树木与残株都会影响周围草地，不会自动生长。',
       beach: '海滩：将等高陆地或水域改为海滩；周围两格需平坦。按下预览时整理草沙轮廓，蓝框为选区，橙框为联动格。清除及陆水替换也会整理轮廓。不能覆盖道路、树石或实体。松开整笔提交，Esc 取消。',
       quarry: '采石地：固定 6×6，在等高平坦陆地放置，可重叠或相邻扩展。使用“清除”工具擦除，可调整清除笔刷范围。坑边与坑内按周围采石格自动拼接。松开提交，Esc 取消；不记录可采数量或开采进度。',
       dune: '沙丘：在平坦陆地逐格绘制，自动组合为1×1、2×2或3×3原图。不能覆盖水、道路、其他地物、实体或坡面；清除按格擦除。',
+      'salt-marsh': '盐沼：在距水域或海滩至少5格（含斜向）的平坦陆地绘制，可铺普通道路。清路保留盐沼；用陆地或水域笔刷替换盐沼。不能覆盖其他地物、实体或坡面。松开整笔提交，Esc 取消。',
       rock: '普通石、铜矿与铁矿：在平坦陆地逐格绘制或互换类别，同类自动组合为1×1、2×2或3×3大块。不能覆盖水、植被、道路、实体或坡面。青框表示周围重新分块，类别保留；清除只删笔刷内的岩石格。含矿格分布表示含矿范围，不记录可采数量。松开提交，Esc 取消。',
       ramp: '一级直边坡道：按下预览，松开切换；Esc 取消。可放在普通坡面或半坡上，再沿高低两端铺路。移除前请先擦路。',
       'half-slope': '一级直边半坡：将坡面延伸到低侧两格，高程数值不变。点击任一部分切换整体；可相邻放置。改变占地前请先擦路。',
@@ -247,6 +248,7 @@
       if (hit.missed) throw new Error('未命中地表，不能放置');
       const candidate = { ...currentScene.map, entities: [...currentScene.map.entities, entity] };
       const checked = requireSuccess(window.constructionRules.validate(candidate, currentScene.groundTiles, currentScene.elementsById));
+      requireSuccess(window.saltMarshRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
       requireSuccess(window.rockRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
       requireSuccess(window.duneRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
       requireSuccess(window.treeRules.resolve(candidate, currentScene.groundTiles, currentScene.elementsById, checked.index));
@@ -315,6 +317,10 @@
       if (!candidate.issues.length) dunePreview = window.duneRules.resolve(candidate.definition,
         currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex);
       error = candidate.issues[0]?.message || dunePreview?.issues[0]?.message || '';
+    } else if (!hit.missed && tool === 'salt-marsh') {
+      const candidate = window.saltMarshRules.applyStroke(currentScene.map, grids);
+      error = candidate.issues[0]?.message || window.saltMarshRules.resolve(candidate.definition,
+        currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message || '';
     } else if (!hit.missed && rockTools.includes(tool)) {
       const candidate = window.rockRules.applyStroke(currentScene.map, grids, false, tool);
       if (!candidate.issues.length) rockPreview = window.rockRules.resolve(candidate.definition,
@@ -325,10 +331,15 @@
       error = candidate.issues[0]?.message || window.treeRules.resolve(candidate.definition,
         currentScene.groundTiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message || '';
     } else if (feature && !feature.issues.length) {
-      error = window.quarryRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex, cameraAngle).issues[0]?.message
+      error = window.saltMarshRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message
+        || window.quarryRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex, cameraAngle).issues[0]?.message
         || window.rockRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message
         || window.duneRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message
         || window.treeRules.resolve(feature.definition, feature.tiles, currentScene.elementsById, currentScene.occupancyIndex).issues[0]?.message || '';
+    }
+    if (!error && ['quarry', 'dune', ...rockTools, ...treeTools].includes(tool)
+      && grids.some(([x, y]) => currentScene.map.cells[y]?.[x]?.saltMarsh)) {
+      error = '盐沼不能与其他地物重叠；可用陆地或水域笔刷替换盐沼。';
     }
     const invalid = hit.missed || error || feature?.issues.length || grids.some(([x, y]) => !currentScene.map.cells[y]?.[x]);
     get('hover-info').textContent = `世界 ${hit.grid.join(', ')} · ${hit.missed ? '未命中地表' : cell ? `高度 ${cell.elevation}` : '地图之外 / 空角'}${grids.length ? ` · 占地 ${grids.length} 格${invalid ? ' · 越界、空角或未命中，不能落笔' : ' · 地形规则在拖动时检查'}` : ''}`;
@@ -423,9 +434,10 @@
     if (cell?.beach) get('cell-info').textContent += '\n海滩：岸线与湿度按当前地图派生';
     if (cell?.quarry) get('cell-info').textContent += '\n采石地：静态范围，局部清除后重新拼接';
     if (cell?.dune) get('cell-info').textContent += `\n沙丘: 当前组合${tile.duneSize}×${tile.duneSize}（逐格编辑）`;
+    if (cell?.saltMarsh) get('cell-info').textContent += '\n盐沼：可铺道路，清路后恢复；陆地/水域笔刷可替换';
     if (cell?.rock) get('cell-info').textContent += `\n岩石: ${getRock(cell.rock).label} · 当前组合${tile.rockSize}×${tile.rockSize}（逐格编辑）`;
     if (cell?.tree) get('cell-info').textContent += `\n树木: ${getTree(cell.tree).detail} · 占地1格`;
-    if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n环境强度: ${currentScene.moisture[selectedGrid[1]][selectedGrid[0]]} / 100（水域/岩石/采石地/沙丘/树木派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
+    if (cell && map.climate) get('cell-info').textContent += `\n气候: ${{ arid: '干旱', temperate: '温带', humid: '湿润' }[map.climate]}\n环境强度: ${currentScene.moisture[selectedGrid[1]][selectedGrid[0]]} / 100（水域/岩石/采石地/沙丘/盐沼/树木派生）${tile.grassGrade === null ? '' : `\n草地档位: ${tile.grassGrade + 1} / 5${tile.slope ? '（坡面按气候主题显示）' : ''}`}`;
     if (cell && map.version === 2) get('cell-info').textContent += `\n形态: ${tile?.halfSlope ? `半坡${tile.ramp ? '坡道' : ''}（主格 ${tile.slopeOwner}，部件 ${tile.slopePart + 1}/2）` : tile?.ramp ? '坡道' : tile?.slope ? '坡面（归属此低格）' : '平面'} · ${map.elevationStep}px / 级`;
     updateWaterFrame();
     get('selection-actions').hidden = !selectedGrid && !entity;
@@ -446,7 +458,8 @@
     }
     const { tiles: groundTiles, moisture } = resolvedGround ?? requireSuccess(window.elevationRules.resolve(map, elementsById, rules, elevationRules, nextAngle));
     const construction = requireSuccess(window.constructionRules.resolve(map, groundTiles, elementsById, mapState.roadRules, nextAngle));
-    const quarryTiles = requireSuccess(window.quarryRules.resolve(map, construction.tiles, elementsById, construction.index, nextAngle)).tiles;
+    const saltTiles = requireSuccess(window.saltMarshRules.resolve(map, construction.tiles, elementsById, construction.index)).tiles;
+    const quarryTiles = requireSuccess(window.quarryRules.resolve(map, saltTiles, elementsById, construction.index, nextAngle)).tiles;
     const rockTiles = requireSuccess(window.rockRules.resolve(map, quarryTiles, elementsById, construction.index)).tiles;
     const duneTiles = requireSuccess(window.duneRules.resolve(map, rockTiles, elementsById, construction.index)).tiles;
     const tiles = requireSuccess(window.treeRules.resolve(map, duneTiles, elementsById, construction.index)).tiles;
@@ -492,7 +505,7 @@
         holder.append(new Polyline({ pos, points: vertexes, close: true, lineWidth: 1,
           strokeColor: '#788c86', fillColor: cell.terrain === 'water' ? '#9acbdc'
             : `hsl(95, 24%, ${88 - cell.elevation * 3}%)` }));
-        holder.append(new Label({ text: `${cell.elevation}${cell.beach ? ' 滩' : ''}${cell.road ? ' 路' : ''}${cell.quarry ? ' 采石' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}${cell.dune ? ' 沙丘' : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
+        holder.append(new Label({ text: `${cell.elevation}${cell.beach ? ' 滩' : ''}${cell.road ? ' 路' : ''}${cell.quarry ? ' 采石' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}${cell.dune ? ' 沙丘' : ''}${cell.saltMarsh ? ' 盐沼' : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
         content.append(holder);
         return;
       }
@@ -674,7 +687,7 @@
     try {
       const baseHeight = get('rebase-sample').checked ? presetHeight() : null;
       if (window.location.protocol === 'file:') throw new Error('本页需要 HTTP 服务');
-      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.beachRules || !window.landWaterRules || !window.elevationRules || !window.constructionRules || !window.treeRules || !window.rockRules || !window.duneRules || !window.quarryRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
+      if (!window.qtiledElementRendering?.resolveElementFrame || !window.qtiledElementRendering?.updateElementFrame || !window.qtiledMaps?.importMapDefinition || !window.beachRules || !window.landWaterRules || !window.elevationRules || !window.constructionRules || !window.treeRules || !window.rockRules || !window.duneRules || !window.saltMarshRules || !window.quarryRules || !window.qtiledView || !window.spritejs || typeof getPointerPosition !== 'function' || typeof getDogElementSample !== 'function') {
         throw new Error('运行包缺失或过期；仓库 Demo 请先执行 npm run debug，独立目录请按 docs/browser-consumption.md 重新准备');
       }
       const { loadElementSources, importElementDefinition } = window.qtiledElementRendering;
@@ -1167,6 +1180,8 @@
         ? window.quarryRules.applyStroke(base.map, [...grids.values()])
         : terrain === 'dune'
         ? window.duneRules.applyStroke(base.map, [...grids.values()], false)
+        : terrain === 'salt-marsh'
+        ? window.saltMarshRules.applyStroke(base.map, [...grids.values()])
         : rockTools.includes(terrain)
         ? window.rockRules.applyStroke(base.map, [...grids.values()], false, terrain)
         : treeTools.includes(terrain)

@@ -440,6 +440,7 @@
       return new Option(elevation ? `${id.startsWith('emperor-elevation-dirt-') ? '干旱' : '温带/湿润'} · ${number >= 269 ? '半坡部件' : number >= 233 ? '坡道' : number >= 221 ? '一级坡面' : number >= 213 ? '一二级过渡' : '两级坡面'} · ${number}` : animationNames[id]
         || (id.startsWith('emperor-tree-') ? window.terrainSample.getTreeMaterialLabel(number) : '')
         || (id.startsWith('emperor-beach-') ? `海滩 · ${number < 736 ? '沙岸' : number < 742 ? '沙地' : '交界'} · ${number}` : '')
+        || (id.startsWith('emperor-salt-marsh-') ? `盐沼 · ${number}` : '')
         || (id.startsWith('emperor-rock-') ? window.terrainSample.getRockMaterialLabel(number) : '')
         || (id.startsWith('emperor-grass-') ? `草地 · 第${Math.floor((number - 202) / 9) + 1}档 · ${number}` : '')
         || (id.startsWith('emperor-bare-land-') ? `陆地 · 黄土 ${number + 1}` : '') || `${number === 202 ? '陆地' : number >= 664 ? '水面单帧' : '岸线'} · ${number}`, id);

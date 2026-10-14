@@ -152,6 +152,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/tree-rules.js'), context);
   vm.runInContext(read('static/js/rock-rules.js'), context);
   vm.runInContext(read('static/js/dune-rules.js'), context);
+  vm.runInContext(read('static/js/salt-marsh-rules.js'), context);
   vm.runInContext(read('static/js/quarry-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rendering.js'), context);
   const terrainResolve = jest.fn(window.landWaterRules.resolve);
@@ -1080,7 +1081,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(17);
+  expect(Object.keys(initial)).toHaveLength(18);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
   expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
   expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
@@ -1607,7 +1608,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'beach-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'beach-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -2732,5 +2733,41 @@ test.each([2, 3])('沙丘%s格原图四向可逐格清除，预览取消和历�
   p.tool('clear'); p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
   p.tool('dune'); p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
   expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('盐沼真实素材经铺路、清除、取消、历史及存读恢复，四镜头一致', async () => {
+  const p = await page({}, 'salt-marsh-map');
+  const original = p.save();
+  const saltSprites = () => p.sprites().filter(node => node.attrs.texture.file === 'salt-marsh-atlas.webp');
+  expect(saltSprites()).toHaveLength(6);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); p.tool('clear');
+    p.pointer('pointerdown', [7, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(original);
+    p.pointer('pointerdown', [7, 4]); p.pointer('pointerup', [7, 4]);
+    const cleared = p.save();
+    expect(cleared.cells[4][7]).toEqual({ terrain: 'land', elevation: 8, saltMarsh: true, terrainVariant: 4 });
+    expect(saltSprites()).toHaveLength(7);
+    expect(saltSprites().some(node => JSON.stringify(node.attrs.sourceRect) === '[80,42,78,40]')).toBe(true);
+    p.get('undo').click(); expect(p.save()).toEqual(original); expect(saltSprites()).toHaveLength(6);
+    p.get('redo').click(); expect(p.save()).toEqual(cleared); expect(saltSprites()).toHaveLength(7);
+    p.get('read-map').click(); expect(p.save()).toEqual(cleared); expect(saltSprites()).toHaveLength(7);
+    p.tool('road'); p.pointer('pointerdown', [7, 4]); p.pointer('pointerup', [7, 4]);
+    expect(p.save()).toEqual(original); expect(saltSprites()).toHaveLength(6);
+  }
+  // 盐沼自身不是可清除内容；不产生空历史，陆地笔刷可明确替换。
+  p.tool('clear'); p.pointer('pointermove', [7, 3]); expect(p.get('hover-info').textContent).toContain('无可清除内容');
+  p.pointer('pointerdown', [7, 3]); p.pointer('pointerup', [7, 3]); expect(p.save()).toEqual(original);
+  p.tool('land'); p.pointer('pointerdown', [7, 3]); p.pointer('pointerup', [7, 3]);
+  expect(p.save().cells[3][7].saltMarsh).toBeUndefined();
+  p.get('undo').click(); expect(p.save()).toEqual(original);
+  p.tool('salt-marsh'); p.pointer('pointerdown', [9, 3]); p.pointer('pointerup', [9, 3]);
+  expect(p.save().cells[3][9].saltMarsh).toBe(true);
+  p.get('undo').click(); expect(p.save()).toEqual(original);
+  p.tool('salt-marsh'); p.pointer('pointermove', [2, 3]);
+  expect(p.get('hover-info').textContent).toContain('至少 5 格');
+  p.pointer('pointerdown', [2, 3]); p.pointer('pointerup', [2, 3]); expect(p.save()).toEqual(original);
+  p.tool('dune'); p.pointer('pointermove', [7, 3]); expect(p.get('hover-info').textContent).toContain('盐沼');
+  p.pointer('pointerdown', [7, 3]); p.pointer('pointerup', [7, 3]); expect(p.save()).toEqual(original);
   expect(p.errors).toEqual([]); p.window.close();
 });

@@ -438,6 +438,7 @@
       if (!heightTool) {
         cell.terrain = command.terrain;
         delete cell.beach;
+        delete cell.saltMarsh;
       }
       else if (command.type === 'set-height') cell.elevation = command.height;
       else cell.elevation += command.type === 'raise' ? levels : -levels;

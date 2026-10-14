@@ -261,6 +261,7 @@
     for (const [x, y] of grids.values()) {
       cells[y][x].terrain = command.terrain;
       delete cells[y][x].beach;
+      delete cells[y][x].saltMarsh;
     }
     let definition = { ...map, cells };
     if (window.beachRules) {

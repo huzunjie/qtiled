@@ -36211,5 +36211,590 @@
         ]
       }
     }
+  },
+  "emperor-salt-marsh-869": {
+    "version": 1,
+    "id": "emperor-salt-marsh-869",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-870": {
+    "version": 1,
+    "id": "emperor-salt-marsh-870",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-871": {
+    "version": 1,
+    "id": "emperor-salt-marsh-871",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-872": {
+    "version": 1,
+    "id": "emperor-salt-marsh-872",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-873": {
+    "version": 1,
+    "id": "emperor-salt-marsh-873",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-874": {
+    "version": 1,
+    "id": "emperor-salt-marsh-874",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          42,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-875": {
+    "version": 1,
+    "id": "emperor-salt-marsh-875",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          0,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-876": {
+    "version": 1,
+    "id": "emperor-salt-marsh-876",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          80,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-salt-marsh-877": {
+    "version": 1,
+    "id": "emperor-salt-marsh-877",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "salt-marsh-atlas.webp",
+        "rect": [
+          160,
+          84,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
   }
 }
