@@ -11,6 +11,7 @@
     "test-w": "jest --coverage --watch",
     "lint": "eslint . --fix",
     "dev": "rollup -c build/rollup.config.dev.js -w",
+    "build:demo": "node build/demo-release.js",
     "build": "npm run cjs && npm run mjs && npm run umd && npm run min && npm run optional && npm run debug && npm run update-demo-version",
     "optional": "rollup -c build/rollup.config.optional.js",
     "cjs": "rollup -c build/rollup.config.cjs.js",

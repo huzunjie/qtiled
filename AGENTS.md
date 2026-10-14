@@ -18,6 +18,7 @@ QTiled 是一套零依赖的轻量级 Tiled 多边形布局库，提供基础图
 - `npm test` —— 运行 Jest 并输出覆盖率到 `coverage/`；`npm run test-w` 为监听模式。
 - `npm run lint` —— 按 `.eslintrc` 检查并自动修复（`--fix`）。
 - `npm run dev` —— Rollup 监听构建到 `demo/static/js/qtiled.dev.js`，并在 `http://localhost:8033/demo/index.html` 提供示例预览。
+- `npm run build:demo` —— 独立生成 `output/demo-release/` 发布副本：四个压缩包、无 LiveReload/source map、HTML 使用资源内容哈希。发布只使用此目录；不覆盖 `demo/` 开发包。
 - `npm run build` —— 在 `dist/` 生成全部产物（`qtiled.cjs.js`、`qtiled.mjs.js`、`qtiled.umd.js`、`qtiled.min.js`）；也可单独执行 `npm run cjs`、`mjs`、`umd`、`min`、`debug`。
 
 ## 基础行为准则
