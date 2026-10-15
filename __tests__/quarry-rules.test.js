@@ -4,7 +4,7 @@ import * as maps from '../src/maps';
 const read = path => fs.readFileSync(`${__dirname}/../demo/static/${path}`, 'utf8');
 const elements = JSON.parse(read('terrain-samples/emperor-land-water/elements.json'));
 const context = vm.createContext({ window: {} });
-['terrain-sample', 'quarry-rules'].forEach(name => vm.runInContext(read(`js/${name}.js`), context));
+['terrain-sample', 'environment-rules', 'land-water-rules', 'quarry-rules'].forEach(name => vm.runInContext(read(`js/${name}.js`), context));
 const quarry = context.window.quarryRules;
 const makeMap = () => ({ version: 2, id: 'quarry', tileSize: [80, 40], elevationStep: 40,
   cells: Array.from({ length: 20 }, () => Array.from({ length: 24 }, () => ({ terrain: 'land', elevation: 8, terrainVariant: 0 }))), entities: [] });

@@ -241,7 +241,7 @@ test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump']
   expect(painted.cells[9][26].tree).toBe(kind);
   p.get('undo').click(); expect(p.save()).toEqual(before);
   p.get('redo').click(); expect(p.save()).toEqual(painted);
-  for (const tool of ['road', 'water', 'raise', 'raise-two', 'lower', 'lower-two']) {
+  for (const tool of ['road', 'raise', 'raise-two', 'lower', 'lower-two']) {
     p.tool(tool); p.pointer('pointerdown', [26, 9]); p.pointer('pointerup', [26, 9]);
     expect({ tool, hidden: p.get('issues').hidden }).toEqual({ tool, hidden: false });
     expect(p.save()).toEqual(painted);
@@ -1182,7 +1182,7 @@ test('高程预览 resize 取消，保持旧地图和历史，坏 v2 导入也�
   p.window.close();
 });
 
-test('抬高水格整笔拒绝；完整实体占地不能被单格抬高', async () => {
+test('孤立水格可抬高形成湖台；完整实体占地不能被单格抬高', async () => {
   const p = await page();
   const initial = p.save();
   heightStroke(p, 'raise', [[1, 1]]);
@@ -1192,8 +1192,9 @@ test('抬高水格整笔拒绝；完整实体占地不能被单格抬高', async
   heightStroke(p, 'water', [[4, 4]]);
   const water = p.save();
   heightStroke(p, 'raise', [[4, 4]]);
-  expect(p.get('issues').hidden).toBe(false);
-  expect(p.save()).toEqual(water);
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells[4][4]).toEqual({ ...water.cells[4][4], elevation: water.cells[4][4].elevation + 1 });
+  p.get('undo').click(); expect(p.save()).toEqual(water);
   expect(p.errors).toEqual([]);
   p.window.close();
 });
@@ -1734,7 +1735,7 @@ test('滚动单位、浏览器缩放、画布外滚动及活动手势保护', as
   p.window.close();
 });
 
-test('悬停复用纯几何，奇偶尺寸与两形状均不重建地形；参数与离开清理一致', async () => {
+test('悬停完整校验，奇偶尺寸与两形状均不重建绘制节点；参数与离开清理一致', async () => {
   const p = await page({}, 'rectangular-water-map');
   p.get('new-map').click();
   p.get('create-map').click();
@@ -1752,7 +1753,12 @@ test('悬停复用纯几何，奇偶尺寸与两形状均不重建地形；参�
     expect(guide(p, 'map-brush-hover').children).toHaveLength(expected);
     expect(p.get('brush-summary').textContent).toContain(`${expected} 格`);
   }
-  expect([p.resolve.mock.calls.length, p.occupancy.mock.calls.length, p.terrainResolve.mock.calls.length]).toEqual(calls);
+  expect(p.resolve.mock.calls.length).toBe(calls[0]);
+  expect(p.occupancy.mock.calls.length).toBeGreaterThan(calls[1]);
+  expect(p.terrainResolve.mock.calls.length).toBeGreaterThan(calls[2]);
+  const repeated = p.terrainResolve.mock.calls.length;
+  p.pointer('pointermove', [16, 16]);
+  expect(p.terrainResolve.mock.calls.length).toBe(repeated);
   expect(p.save()).toEqual(before);
   p.tool('land'); expect(p.get('brush-size').value).toBe('9');
   p.pointer('pointermove', [0, 0]);
@@ -2307,7 +2313,7 @@ test.each([[9, 4], [9, 9]])('范围清除跳采样到[%i,%i]补齐中途实体�
   p.tool('clear'); p.get('brush-size').value = '3';
   const sweep = () => { p.pointer('pointerdown', start); p.pointer('pointermove', [x, y]); };
   sweep();
-  const preview = p.layer.children[0].children.find(node => node.children.some(child => child.attrs.strokeColor === '#a56308'));
+  const preview = p.layer.children[0].children.find(node => node.children.some(child => child.attrs.strokeColor === '#e8ffe9'));
   for (const grid of [[5, 5], [6, 5], [5, 6], [6, 6]]) {
     expect(preview.children.some(node => node.attrs.pos.every((value, axis) => value === view.projectGrid(grid, { tileSize: [80, 40], angle: 0 })[axis]))).toBe(true);
   }
@@ -2324,11 +2330,11 @@ test.each([[9, 4], [9, 9]])('范围清除跳采样到[%i,%i]补齐中途实体�
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('清除视觉区分橙色有效、灰色空地与红色无效，拖动提示保持一致', async () => {
+test('清除有效与空地统一绿色，红色无效提供原因，拖动提示保持一致', async () => {
   const p = await constructionPage();
   const map = p.save(); map.cells[4][4].road = 'ordinary';
   p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); p.tool('clear');
-  for (const [grid, color, text] of [[[4, 4], '#a56308', '待清除'], [[8, 8], '#77818a', '无可清除内容'], [[-1, 0], '#bc3e30', '不能落笔']]) {
+  for (const [grid, color, text] of [[[4, 4], '#e8ffe9', '待清除'], [[8, 8], '#e8ffe9', '无可清除内容'], [[-1, 0], '#bc3e30', '不能落笔']]) {
     p.pointer('pointermove', grid);
     expect(guide(p, 'map-brush-hover').children[0].attrs.strokeColor).toBe(color);
     expect(p.get('hover-info').textContent).toContain(text);
@@ -2355,7 +2361,7 @@ test('三个岩石按钮直接绘制对应类别，冲突拒绝、取消与历�
     p.pointer('pointerdown', [4, 4]); p.pointer('pointermove', [7, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(before);
     p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [7, 4]);
     const painted = p.save(); expect(painted.cells[4].slice(4, 8).map(c => c.rock)).toEqual(Array(4).fill(kind));
-    for (const tool of ['water', 'road', 'raise', 'raise-two', 'lower', 'lower-two', 'tree']) {
+    for (const tool of ['road', 'raise', 'raise-two', 'lower', 'lower-two', 'tree']) {
       p.tool(tool); p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]); expect(p.save()).toEqual(painted);
     }
     p.tool('building'); p.clickGrid([4, 4]); expect(p.save()).toEqual(painted);
@@ -2372,7 +2378,7 @@ test('三个岩石按钮直接绘制对应类别，冲突拒绝、取消与历�
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('岩石混合清除包含补间格，橙灰提示及撤销重做保持完整候选', async () => {
+test('岩石混合清除包含补间格，统一绿框及撤销重做保持完整候选', async () => {
   const p = await constructionPage(); const map = p.save(); map.climate = 'arid';
   map.cells[4][3].rock = 'ordinary'; map.cells[4][4].rock = 'copper'; map.cells[4][5].rock = 'iron';
   map.cells[4][6].tree = 'bamboo-mature'; map.cells[4][7].road = 'ordinary';
@@ -2389,7 +2395,7 @@ test('岩石混合清除包含补间格，橙灰提示及撤销重做保持完�
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test.each([2, 3])('%s格方块四镜头可逐格命中清除，青框只提示重新分块，取消和历史保持', async size => {
+test.each([2, 3])('%s格方块四镜头可逐格命中清除，不把重新分块画作联动，取消和历史保持', async size => {
   const p = await constructionPage(); const map = p.save();
   setDisplay(p, 'flat-edit', false);
   for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) Object.assign(map.cells[y][x], { rock: 'copper', terrainVariant: 0 });
@@ -2401,8 +2407,8 @@ test.each([2, 3])('%s格方块四镜头可逐格命中清除，青框只提示�
     for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) {
       p.pointer('pointermove', [x, y]);
       const hover = guide(p, 'map-brush-hover');
-      expect(hover.children.filter(node => node.attrs.strokeColor === '#a56308')).toHaveLength(1);
-      expect(hover.children.filter(node => node.attrs.strokeColor === '#168b92')).toHaveLength(size * size - 1);
+      expect(hover.children.filter(node => node.attrs.strokeColor === '#e8ffe9')).toHaveLength(1);
+      expect(hover.children.filter(node => node.attrs.strokeColor === '#168b92')).toHaveLength(0);
       p.pointer('pointerdown', [x, y]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
       p.pointer('pointerdown', [x, y]); p.pointer('pointerup', [x, y]);
       const erased = p.save(); expect(erased.cells[y][x].rock).toBeUndefined();
@@ -2677,7 +2683,7 @@ test('旧图草沙整理需显式预览确认，取消保留输入，确认整�
   expect(p.get('issues').textContent).toContain('草沙轮廓');
   expect(p.get('undo').disabled).toBe(true);
   p.get('preview-map-repair').click();
-  expect(p.get('status').textContent).toContain('橙框 1 格');
+  expect(p.get('status').textContent).toContain('绿框 1 格');
   expect(p.get('map-json').value).toBe(draft);
   expect(p.get('save-map').disabled).toBe(true);
   expect(p.get('map-json').readOnly).toBe(true);
@@ -2721,7 +2727,7 @@ test.each([2, 3])('沙丘%s格原图四向可逐格清除，预览取消和历�
   expect(dunes()).toHaveLength(1);
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle); p.tool('clear'); p.pointer('pointermove', [3, 3]);
-    expect(guide(p, 'map-brush-hover').children.filter(node => node.attrs.strokeColor === '#168b92')).toHaveLength(size * size - 1);
+    expect(guide(p, 'map-brush-hover').children.filter(node => node.attrs.strokeColor === '#168b92')).toHaveLength(0);
     p.pointer('pointerdown', [3, 3]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
     p.pointer('pointerdown', [3, 3]); p.pointer('pointerup', [3, 3]);
     expect(p.save().cells[3][3].dune).toBeUndefined();
@@ -2826,5 +2832,285 @@ test('盐沼真实素材经铺路、清除、取消、历史及存读恢复，�
   p.pointer('pointerdown', [2, 3]); p.pointer('pointerup', [2, 3]); expect(p.save()).toEqual(original);
   p.tool('dune'); p.pointer('pointermove', [7, 3]); expect(p.get('hover-info').textContent).toContain('盐沼');
   p.pointer('pointerdown', [7, 3]); p.pointer('pointerup', [7, 3]); expect(p.save()).toEqual(original);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+// 断言的是地图结果和事务边界，而非候选实现的内部调用顺序。
+test.each([1, 2])('v%s陆水替换树竹残株与岩矿，单格修改、整笔历史及存读一致', async version => {
+  const p = await constructionPage();
+  const map = p.save(); map.version = version; map.climate = 'humid';
+  if (version === 1) { delete map.elevationStep; map.cells.flat().forEach(cell => { cell.elevation = 0; }); }
+  const facts = [{ tree: 'ordinary-mature' }, { tree: 'bamboo-mature' }, { tree: 'ordinary-stump' },
+    { tree: 'bamboo-stump' }, { rock: 'ordinary' }, { rock: 'copper' }, { rock: 'iron' }];
+  facts.forEach((fact, i) => Object.assign(map.cells[4][i + 2], fact));
+  for (const tool of ['land', 'water']) {
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+    expect(p.get('issues').hidden).toBe(true);
+    p.tool(tool); p.pointer('pointermove', [2, 4]);
+    expect(p.get('hover-info').textContent).toContain('可落笔');
+    p.pointer('pointerdown', [2, 4]); p.pointer('pointerup', [8, 4]);
+    expect(p.get('issues').hidden).toBe(true);
+    const after = p.save();
+    expect(after.cells[4].slice(2, 9)).toEqual(facts.map(() => ({ terrain: tool, elevation: version === 1 ? 0 : 8 })));
+    expect(after.cells.filter((row, y) => y !== 4)).toEqual(map.cells.filter((row, y) => y !== 4));
+    p.get('undo').click(); expect(p.save()).toEqual(map);
+    p.get('redo').click(); expect(p.save()).toEqual(after);
+    p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each([undefined, 'arid', 'temperate', 'humid'])('%s环境三类岩矿填水四向预览/执行一致', async climate => {
+  const p = await constructionPage(); const map = p.save();
+  if (climate) map.climate = climate;
+  map.cells[5][5].terrain = 'water';
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    for (const tool of ['copper', 'iron', 'ordinary']) {
+      p.tool(tool); p.pointer('pointermove', [5, 5]);
+      expect(p.get('hover-info').textContent).toContain('可落笔');
+      p.pointer('pointerdown', [5, 5]);
+      p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+      p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]);
+      expect(p.get('issues').hidden).toBe(true);
+      const after = p.save();
+      expect(after.cells[5][5]).toEqual({ terrain: 'land', elevation: 8, rock: tool });
+      p.get('undo').click(); expect(p.save()).toEqual(map);
+      p.get('redo').click(); expect(p.save()).toEqual(after);
+      p.get('undo').click();
+    }
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('全部笔刷共用完整校验，绿色候选可以提交，红色候选不改变地图', async () => {
+  const p = await constructionPage(); const map = p.save(); map.climate = 'humid';
+  const tools = ['land', 'water', 'beach', 'raise', 'raise-two', 'lower', 'lower-two', 'clear',
+    'quarry', 'dune', 'salt-marsh', 'ordinary', 'copper', 'iron', 'tree', 'road', 'ramp', 'half-slope', 'building', 'pinnacle'];
+  for (const tool of tools) {
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+    p.tool(tool); p.pointer('pointermove', [5, 5]);
+    const expected = !['ramp', 'half-slope', 'tree'].includes(tool);
+    expect({ tool, allowed: !p.get('hover-info').textContent.includes('不能') }).toEqual({ tool, allowed: expected });
+    if (['building', 'pinnacle'].includes(tool)) p.clickGrid([5, 5]);
+    else { p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); }
+    expect({ tool, success: p.get('issues').hidden }).toEqual({ tool, success: expected });
+    if (!expected) expect(p.save()).toEqual(map);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('水刷不能淹没道路、实体、沙丘或采石地，失败反馈可取消且无红框残留', async () => {
+  const p = await constructionPage(); const empty = p.save();
+  for (const fact of [{ road: 'ordinary' }, { dune: true }, { quarry: true }, { entity: true }]) {
+    const map = JSON.parse(JSON.stringify(empty));
+    if (fact.entity) map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
+    else Object.assign(map.cells[5][5], fact);
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+    expect(p.get('issues').hidden).toBe(true);
+    p.tool('water'); p.pointer('pointermove', [5, 5]);
+    expect(p.get('hover-info').textContent).toContain('不能落笔');
+    p.pointer('pointerdown', [5, 5]);
+    expect(guide(p, 'map-stroke-preview').children[0].attrs.strokeColor).toBe('#bc3e30');
+    p.get('cancel-stroke').click();
+    expect(guide(p, 'map-stroke-preview')).toBeUndefined();
+    expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); expect(p.save()).toEqual(map);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('完整实体删除把占地外延标作淡绿联动，不把环境重算算作改格', async () => {
+  const p = await constructionPage(); const map = p.save(); map.climate = 'humid';
+  map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  p.tool('clear'); p.pointer('pointermove', [5, 5]);
+  const hover = guide(p, 'map-brush-hover');
+  expect(hover.children.filter(node => node.attrs.strokeColor === '#e8ffe9')).toHaveLength(1);
+  expect(hover.children.filter(node => node.attrs.strokeColor === '#83b68b')).toHaveLength(3);
+  expect(p.get('hover-info').textContent).toContain('联动 3 格');
+  p.pointer('pointerdown', [5, 5]); expect(p.get('status').textContent).toContain('实际改变 4 格');
+  p.pointer('pointerup', [5, 5]); expect(p.save().entities).toEqual([]);
+  expect(p.save().cells).toEqual(map.cells);
+  p.get('undo').click(); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test.each(['ordinary', 'copper', 'iron', 'dune', 'quarry'])('%s统一转换水域与沙滩，整理边界、重算环境并保持完整事务', async tool => {
+  const p = await constructionPage(); const empty = p.save(); empty.climate = 'arid';
+  for (const surface of ['water', 'beach']) {
+    const map = JSON.parse(JSON.stringify(empty));
+    map.cells[0][0].terrain = 'water';
+    // 沙滩用合法大片，覆盖中心会触发笔刷外草沙轮廓整理。
+    if (surface === 'water') map.cells[6][6].terrain = 'water';
+    else for (let y = 3; y <= 9; y++) for (let x = 3; x <= 9; x++) map.cells[y][x].beach = true;
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+    expect(p.get('issues').hidden).toBe(true);
+    const beforeMoisture = p.window.environmentRules.deriveMoisture(map.cells, map.climate);
+    expect(beforeMoisture[6][6]).toBe(100);
+    p.tool(tool); p.pointer('pointermove', [6, 6]);
+    expect(p.get('hover-info').textContent).toContain('可落笔');
+    p.pointer('pointerdown', [6, 6]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [6, 6]); p.pointer('pointerup', [6, 6]);
+    expect(p.get('issues').hidden).toBe(true);
+    const after = p.save();
+    expect(after.cells[6][6]).toEqual({ terrain: 'land', elevation: 8,
+      ...(['dune', 'quarry'].includes(tool) ? { [tool]: true } : { rock: tool }) });
+    expect(after.cells[0][0]).toEqual(map.cells[0][0]);
+    const afterMoisture = p.window.environmentRules.deriveMoisture(after.cells, after.climate);
+    if (surface === 'water') expect(afterMoisture[6][6]).toBe(0);
+    for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); expect(p.save()).toEqual(after); }
+    p.get('undo').click(); expect(p.save()).toEqual(map);
+    p.get('redo').click(); expect(p.save()).toEqual(after);
+    p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  }
+  // 转换地面不会删除道路，也不会允许半座实体覆盖。
+  const protectedMap = JSON.parse(JSON.stringify(empty)); protectedMap.cells[6][6].road = 'ordinary';
+  p.get('map-json').value = JSON.stringify(protectedMap); p.get('read-map').click();
+  p.tool(tool); p.pointer('pointermove', [6, 6]); expect(p.get('hover-info').textContent).toContain('不能落笔');
+  p.pointer('pointerdown', [6, 6]); p.pointer('pointerup', [6, 6]); expect(p.save()).toEqual(protectedMap);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+const waterHeightMap = () => ({ version: 2, id: 'water-height-test', tileSize: [80, 40], elevationStep: 40,
+  climate: 'temperate', entities: [], cells: Array.from({ length: 12 }, () => Array.from({ length: 12 }, (_, x) =>
+    ({ terrain: x < 6 ? 'land' : 'water', elevation: 8, terrainVariant: 0 }))),
+});
+
+test('邻水高程候选、红绿预览、必要岸带、取消及整笔历史同源', async () => {
+  const p = await page();
+  const before = waterHeightMap();
+  p.get('map-json').value = JSON.stringify(before); p.get('read-map').click();
+  p.get('flat-edit').click(); p.tool('raise');
+  const savedDepth = p.get('undo').disabled;
+  p.pointer('pointermove', [5, 5]);
+  expect(p.get('hover-info').textContent).toContain('可落笔');
+  expect(p.get('hover-info').textContent).toContain('保留/生成岸带 3 格');
+  const hover = p.layer.children[0].children.find(node => node.attrs.id === 'map-brush-hover');
+  expect(hover.children.filter(node => node.attrs.lineDash?.length)).toHaveLength(3);
+  p.pointer('pointerdown', [5, 5]);
+  expect(p.get('status').textContent).toContain('实际改变 4 格');
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(p.save()).toEqual(before); expect(p.get('undo').disabled).toBe(savedDepth);
+  heightStroke(p, 'raise', [[5, 5]]);
+  const after = p.save();
+  for (const y of [4, 5, 6]) expect(after.cells[y][6]).toEqual({ terrain: 'land', elevation: 8, terrainVariant: 0 });
+  expect(after.cells[5][5].elevation).toBe(9);
+  expect(after.cells[5][7].elevation).toBe(8);
+  p.get('undo').click(); expect(p.save()).toEqual(before);
+  p.get('redo').click(); expect(p.save()).toEqual(after);
+  p.tool('water'); p.pointer('pointermove', [6, 5]);
+  expect(p.get('hover-info').textContent).toContain('保留/生成岸带 1 格');
+  heightStroke(p, 'water', [[6, 5]]); expect(p.save()).toEqual(after);
+  p.tool('raise'); p.pointer('pointermove', [8, 5]);
+  expect(p.get('hover-info').textContent).toContain('相邻水格必须等高');
+  heightStroke(p, 'raise', [[8, 5]]); expect(p.save()).toEqual(after);
+  p.get('map-json').value = JSON.stringify(after); p.get('read-map').click();
+  expect(p.save()).toEqual(after);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('旧图缺岸带时直接导入拒绝，显式整理预览完整原图且可取消/撤销', async () => {
+  const p = await page(); const previous = p.save();
+  const incoming = waterHeightMap();
+  incoming.cells.forEach(row => row.forEach((cell, x) => { if (x < 6) cell.elevation = 10; }));
+  const draft = JSON.stringify(incoming);
+  p.get('map-json').value = draft; p.get('read-map').click();
+  expect(p.get('issues').textContent).toContain('岸带');
+  expect(p.save()).toEqual(previous);
+  p.get('map-json').value = draft; p.get('preview-map-repair').click();
+  expect(p.get('status').textContent).toContain('绿框 12 格');
+  expect(p.get('map-json').value).toBe(draft);
+  p.get('cancel-map-repair').click(); expect(p.save()).toEqual(previous);
+  p.get('map-json').value = draft; p.get('preview-map-repair').click(); p.get('apply-map-repair').click();
+  const after = p.save();
+  expect(after.cells.every(row => row[6].terrain === 'land' && row[6].elevation === 8 && row[7].terrain === 'water')).toBe(true);
+  p.get('undo').click(); expect(p.save()).toEqual(previous);
+  p.get('redo').click(); expect(p.save()).toEqual(after);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('真实岩壁/水岸像素四向遮挡与命中一致，高低水面动画不移动锚点', async () => {
+  const p = await page();
+  const map = waterHeightMap();
+  map.cells = Array.from({ length: 18 }, (_, y) => Array.from({ length: 18 }, (_, x) => {
+    const high = x >= 5 && x <= 11 && y >= 5 && y <= 12 && !(x === 11 && y === 12);
+    const lake = x >= 7 && x <= 9 && y >= 7 && y <= 9;
+    return { terrain: high && !lake ? 'land' : 'water', elevation: high ? 10 : 8, terrainVariant: 0 };
+  }));
+  const library = { ...JSON.parse(read('static/terrain-samples/emperor-land-water/elements.json')),
+    ...JSON.parse(read('static/terrain-samples/emperor-elevation/elements.json')) };
+  const land = JSON.parse(read('static/terrain-samples/emperor-land-water/rules.json'));
+  const rules = JSON.parse(read('static/terrain-samples/emperor-elevation/rules.json'));
+  const repaired = p.window.elevationRules.normalizeWaterBanks(map, library).definition;
+  p.get('map-json').value = JSON.stringify(repaired); p.get('read-map').click();
+  const pixels = {};
+  for (const source of ['water-shore-atlas.webp', 'grass-atlas.webp', 'elevation-atlas.webp', 'elevation-dirt-atlas.webp']) {
+    const directory = source.startsWith('elevation') ? 'emperor-elevation' : 'emperor-land-water';
+    pixels[source] = imagePixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
+  }
+  p.mode('cell');
+  for (const climate of ['temperate', 'arid']) for (const angle of [0, 90, 180, 270]) {
+    p.get('map-climate').value = climate; p.get('map-climate').dispatchEvent(new p.window.Event('change'));
+    p.camera(angle);
+    expect(p.get('issues').hidden).toBe(true);
+    const current = { ...repaired, climate };
+    const currentView = { angle, tileSize: map.tileSize };
+    const resolved = p.window.elevationRules.resolve(current, library, land, rules, angle);
+    expect(resolved.issues).toEqual([]);
+    const draws = resolved.tiles.flatMap(tile => p.window.elevationRendering.resolveTileDraws(tile, current, library, currentView)
+      .map(draw => ({ grid: tile.grid, slope: tile.slope, depth: view.projectGrid(tile.grid, currentView)[1], draw })))
+      .sort((a, b) => a.depth - b.depth);
+    const opaque = (item, point) => {
+      const { draw } = item; const [x, y] = point.map((v, i) => Math.floor(v - draw.position[i]));
+      const image = pixels[draw.source];
+      return x >= 0 && y >= 0 && x < draw.rect[2] && y < draw.rect[3]
+        && image.data[((y + draw.rect[1]) * image.width + x + draw.rect[0]) * 4 + 3];
+    };
+    // 从真实原图寻找前景岩壁不透明像素；按实际反向画序核对点击归属。
+    const rock = [...draws].reverse().find(item => item.slope && item.draw.rect[2] === 78 && item.draw.rect[3] > 90);
+    let point;
+    for (let y = 10; y < 45 && !point; y++) for (let x = 15; x < 65; x++) {
+      const candidate = [rock.draw.position[0] + x + 0.25, rock.draw.position[1] + y + 0.25];
+      if (opaque(rock, candidate) && [...draws].reverse().find(item => opaque(item, candidate)) === rock) { point = candidate; break; }
+    }
+    expect(point).toBeDefined();
+    const root = p.layer.children[0];
+    p.get('map-canvas').dispatchEvent(new p.window.MouseEvent('click', {
+      clientX: -100 + root.attrs.pos[0] + point[0] * root.attrs.scale[0],
+      clientY: 73 + root.attrs.pos[1] + point[1] * root.attrs.scale[1],
+    }));
+    expect(p.get('cell-grid').textContent).toBe(JSON.stringify(rock.grid));
+    const water = draws.filter(item => item.draw.sequence);
+    expect(water.length).toBeGreaterThan(0);
+    for (const item of water) {
+      const tile = resolved.tiles.find(tile => tile.grid.join() === item.grid.join());
+      const later = p.window.elevationRendering.resolveTileDraws(tile, current, library, currentView, { elapsedMs: 1000, phase: tile.phase })[0];
+      expect(later.position).toEqual(item.draw.position);
+    }
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test.each(['ordinary', 'copper', 'iron', 'dune', 'quarry'])('%s在临岩壁水岸旁转换平水格，坡面与水位保持', async tool => {
+  const p = await page();
+  const map = { ...waterHeightMap(), cells: Array.from({ length: 20 }, () => Array.from({ length: 20 }, (_, x) =>
+    ({ terrain: x <= 6 ? 'land' : 'water', elevation: x < 6 ? 9 : 8 }))) };
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+  p.get('flat-edit').click();
+  p.tool(tool); p.pointer('pointermove', [10, 10]); expect(p.get('hover-info').textContent).toContain('可落笔');
+  p.pointer('pointerdown', [10, 10]); p.pointer('pointerup', [10, 10]);
+  const after = p.save();
+  expect(after.cells[10][10]).toEqual({ terrain: 'land', elevation: 8,
+    ...(['dune', 'quarry'].includes(tool) ? { [tool]: true } : { rock: tool }) });
+  after.cells.forEach((row, y) => row.forEach((cell, x) => { expect(cell.elevation).toBe(map.cells[y][x].elevation); }));
+  expect(after.cells.every((row, y) => JSON.stringify(row[6]) === JSON.stringify(map.cells[y][6]))).toBe(true);
+  for (const angle of [0, 90, 180, 270]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); }
+  p.get('undo').click(); expect(p.save()).toEqual(map);
   expect(p.errors).toEqual([]); p.window.close();
 });

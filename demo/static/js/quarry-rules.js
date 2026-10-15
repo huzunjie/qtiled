@@ -153,7 +153,7 @@
     return { tiles: issues.length ? null : result, issues };
   }
 
-  function applyStroke(map, grids, erase = false) {
+  function applyStroke(map, grids, erase = false, rules) {
     const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
     let elevation;
     for (const [x, y] of grids) {
@@ -166,10 +166,12 @@
           return { definition: null, issues: [issue(path, 'quarry-height', '采石地整笔需要同一高度的平地。')] };
         }
         elevation = cell.elevation;
+        window.landWaterRules.replaceNaturalCell(cell, 'dry-land');
         cell.quarry = true;
       }
     }
-    return { definition: { ...map, cells }, issues: [] };
+    const definition = { ...map, cells };
+    return erase ? { definition, issues: [] } : window.landWaterRules.normalizeNaturalStroke(definition, grids, rules);
   }
 
   window.quarryRules = { brushSize, offsets, resolve, applyStroke };

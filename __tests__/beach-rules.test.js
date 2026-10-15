@@ -76,10 +76,10 @@ test.each([{ beach: false }, { beach: true, terrain: 'water' }, { beach: true, r
   expect(resolve(map).issues.length).toBeGreaterThan(0);
 });
 
-test('坡面影响与实体占地均拒绝；越界落笔不能部分修改', () => {
+test('海滩允许两格内普通高差，仍保护实体及越界落笔', () => {
   const map = beach.applyStroke(make(), [[6, 6]]).definition;
   map.cells[6][8].elevation = 9;
-  expect(resolve(map).issues.some(issue => issue.code === 'beach-height')).toBe(true);
+  expect(resolve(map).issues).toEqual([]);
   map.cells[6][8].elevation = 8;
   map.cells[6][7].terrain = 'water';
   expect(beach.applyStroke(map, [[7, 6], [18, 6]]).definition).toBeNull();
@@ -177,3 +177,30 @@ test.each([[[7, 6]], [[7, 6], [8, 6], [7, 7], [8, 7]],
     expect(JSON.stringify(cleared)).toBe(before);
   },
 );
+
+
+test('平沙地可贴高处湖缘及低侧坡脚，但沙地本格不能承担坡面', () => {
+  const map = make();
+  map.cells.forEach((row, y) => row.forEach((cell, x) => {
+    cell.elevation = x < 7 ? 9 : 8;
+    if (x < 7) cell.beach = true;
+  }));
+  for (const angle of [0, 90, 180, 270]) {
+    const result = resolve(map, angle);
+    expect(result.issues).toEqual([]);
+    expect(tileAt(result, 6, 6).element).toMatch(/^emperor-beach-/);
+    expect(tileAt(result, 7, 6).element).toMatch(/^emperor-elevation-/);
+    expect(tileAt(result, 8, 6).element).not.toMatch(/^emperor-beach-/);
+  }
+  map.cells[6][7].beach = true;
+  expect(resolve(map).issues).toContainEqual(expect.objectContaining({ code: 'beach-height' }));
+});
+
+test('跨高差不派生草沙边缘；草沙整理不跨层扩散', () => {
+  const map = make();
+  map.cells.forEach(row => row.forEach((cell, x) => { cell.elevation = x < 7 ? 9 : 8; }));
+  const edited = beach.applyStroke(map, [[6, 6]]);
+  expect(edited.issues).toEqual([]);
+  expect(edited.definition.cells.flat().filter(cell => cell.beach).every(cell => cell.elevation === 9)).toBe(true);
+  for (const angle of [0, 90, 180, 270]) expect(resolve(edited.definition, angle).issues).toEqual([]);
+});

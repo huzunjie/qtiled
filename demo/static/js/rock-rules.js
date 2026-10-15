@@ -49,16 +49,20 @@
     return { tiles: issues.length ? null : result, issues };
   }
 
-  function applyStroke(map, grids, erase, kind = 'ordinary') {
+  function applyStroke(map, grids, erase, kind = 'ordinary', rules) {
     if (!erase && !getRock(kind)) return { definition: null, issues: [issue('$rockKind', 'unsupported-rock', '请选择普通石、铜矿或铁矿。')] };
     const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
     for (const [x, y] of grids) {
       const cell = cells[y]?.[x];
       if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}].rock`, 'rock-outside', '岩石整笔不能越界或经过空角。')] };
       if (erase) delete cell.rock;
-      else cell.rock = kind;
+      else {
+        window.landWaterRules.replaceNaturalCell(cell, 'dry-land');
+        cell.rock = kind;
+      }
     }
-    return { definition: { ...map, cells }, issues: [] };
+    const definition = { ...map, cells };
+    return erase ? { definition, issues: [] } : window.landWaterRules.normalizeNaturalStroke(definition, grids, rules);
   }
 
   window.rockRules = { resolve, applyStroke };

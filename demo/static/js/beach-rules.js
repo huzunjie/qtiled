@@ -1,5 +1,5 @@
 /* 海滩业务规则：作者只保存 land 上的 beach:true，岸边记录按当前地图派生。
- * 取证：beach-mvp-evidence-2026-10-13。限普通平地；不模拟原编辑器历史记录生命周期。
+ * 取证：beach-mvp-evidence-2026-10-13。海滩本格保持平地，允许邻接完整坡面岸带；不模拟原编辑器历史记录生命周期。
  */
 (function () {
   const neighbors = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
@@ -16,11 +16,11 @@
       if (cell.road || cell.tree !== undefined || cell.rock !== undefined || cell.quarry !== undefined) {
         issues.push(issue(path, 'beach-occupied', '海滩不能覆盖道路、树木、岩石或采石地，请先清除冲突内容。'));
       }
-      // 一圈海滩交界图也必须是平地；第二圈只检查其高差/坡道影响。
+      // 坡道/半坡的跨格部件仍单列；普通高差交给高程解析器按本格形态判断。
       for (let dy = -2; dy <= 2; dy += 1) for (let dx = -2; dx <= 2; dx += 1) {
         const other = map.cells[y + dy]?.[x + dx];
-        if (other && (other.elevation !== cell.elevation || other.ramp !== undefined || other.halfSlope !== undefined)) {
-          issues.push(issue(path, 'beach-height', '海滩及周围两格需为等高平地，暂不支持与坡面、坡道或半坡衔接。'));
+        if (other && (other.ramp !== undefined || other.halfSlope !== undefined)) {
+          issues.push(issue(path, 'beach-height', '海滩暂不支持与周围两格内的坡道或半坡衔接。'));
           dy = 3;
           break;
         }
@@ -31,7 +31,7 @@
 
   function select(cells, x, y, column, rules, waterRow, stable) {
     const at = (px, py) => cells[py]?.[px];
-    const beachAt = (px, py) => at(px, py)?.beach === true;
+    const beachAt = (px, py) => at(px, py)?.beach === true && at(px, py).elevation === at(x, y).elevation;
     const waterAt = (px, py) => !at(px, py) || at(px, py).terrain === 'water';
     const ring = neighbors.map(([dx, dy]) => beachAt(x + dx, y + dy) ? 1 : 0);
     if (beachAt(x, y)) return { record: 736 + stable % 6, kind: 'sand', variant: stable % 6 };
@@ -87,8 +87,9 @@
     for (let cursor = 0; cursor < queue.length; cursor += 1) {
       const [x, y] = queue[cursor];
       const cell = cells[y]?.[x];
-      if (!cell || cell.terrain !== 'land' || cell.beach) continue;
-      const ring = neighbors.map(([dx, dy]) => +(cells[y + dy]?.[x + dx]?.beach === true));
+      if (!cell || cell.terrain !== 'land' || cell.beach
+        || window.landWaterRules.needsSlope(cells, x, y)) continue;
+      const ring = neighbors.map(([dx, dy]) => +(cells[y + dy]?.[x + dx]?.beach === true && cells[y + dy][x + dx].elevation === cell.elevation));
       if (rows.some(row => row.conditions.every((value, i) => value === 2 || value === ring[i]))) continue;
       const editable = (px, py) => {
         const other = cells[py]?.[px];

@@ -46,15 +46,19 @@
     return { tiles: issues.length ? null : result, issues };
   }
 
-  function applyStroke(map, grids, erase) {
+  function applyStroke(map, grids, erase, rules) {
     const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
     for (const [x, y] of grids) {
       const cell = cells[y]?.[x];
       if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}].dune`, 'dune-outside', '沙丘整笔不能越界或经过空角。')] };
       if (erase) delete cell.dune;
-      else cell.dune = true;
+      else {
+        window.landWaterRules.replaceNaturalCell(cell, 'dry-land');
+        cell.dune = true;
+      }
     }
-    return { definition: { ...map, cells }, issues: [] };
+    const definition = { ...map, cells };
+    return erase ? { definition, issues: [] } : window.landWaterRules.normalizeNaturalStroke(definition, grids, rules);
   }
 
   window.duneRules = { resolve, applyStroke };

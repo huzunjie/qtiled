@@ -12,6 +12,32 @@
   const isGrid = value => Array.isArray(value) && value.length === 2 && Array.from(value).every(Number.isSafeInteger);
   const issue = (path, code, message) => ({ path, code, message });
 
+  // 地表与高程消费者共用：只有真实邻格的高处才要求本格承担坡面，空角不制造高差。
+  function needsSlope(cells, x, y) {
+    const cell = cells[y]?.[x];
+    return Boolean(cell && waterNeighbors.some(([dx, dy]) => cells[y + dy]?.[x + dx]?.elevation > cell.elevation));
+  }
+
+  // 自然替换只修改调用方已克隆的候选格。方向表不等于任意地物互刷；
+  // 干地地物共用地面转换；彼此占用、道路和整体实体仍由最终校验保护。
+  const replacements = {
+    land: { terrain: 'land', remove: ['tree', 'rock', 'beach', 'saltMarsh'] },
+    water: { terrain: 'water', remove: ['tree', 'rock', 'beach', 'saltMarsh'] },
+    'dry-land': { terrain: 'land', remove: ['beach'] },
+  };
+  function replaceNaturalCell(cell, tool) {
+    const rule = owns(replacements, tool) && replacements[tool];
+    if (!rule) return;
+    cell.terrain = rule.terrain;
+    rule.remove.forEach(key => { delete cell[key]; });
+  }
+
+  // 地面转换后统一整理草沙边界；只用于显式编辑，读取地图不改写事实。
+  function normalizeNaturalStroke(definition, grids, rules) {
+    return window.beachRules ? window.beachRules.normalize(definition, grids, false, rules)
+      : { definition, issues: [] };
+  }
+
   // 地图结构、实体与图片本身仍由 maps/elements 校验；这里检查规则实际读取的格事实。
   function checkCells(map) {
     const issues = [];
@@ -125,7 +151,7 @@
    * terrainVariant 可固定变体输入字节；省略时采用世界格哈希，与镜头和执行次数无关。
    * 岸线与深水推导将 null / 矩阵外视为外接水域；仅派生结果，不补写地图格。
    */
-  function resolve(map, elementsById, rules, angle = 0) {
+  function resolve(map, elementsById, rules, angle = 0, surfaceCells = map?.cells) {
     const issues = [...checkCells(map), ...checkRules(rules)];
     if (!angles.includes(angle)) issues.push(issue('$view.angle', 'invalid-angle', '镜头必须为 0、90、180 或 270。'));
     if (!isObject(elementsById)) issues.push(issue('$elements', 'invalid-element-library', '地表元素库必须为对象。'));
@@ -203,7 +229,7 @@
             phase = ((stableByte % 24) + stableByte % 2) / 2;
           }
         }
-        const beach = hasBeach && window.beachRules?.select(map.cells, x, y, column, rules,
+        const beach = hasBeach && !needsSlope(surfaceCells, x, y) && window.beachRules?.select(surfaceCells, x, y, column, rules,
           rowIndex === null ? null : rules.rows[rowIndex],
           (cell.terrainVariant ?? (cell.terrain === 'water'
             ? Math.imul(x, 374761393) ^ Math.imul(y, 668265263) : getStableGridValue(x, y))) & 255);
@@ -259,19 +285,14 @@
     if (issues.length) return { definition: null, tiles: null, issues };
     const cells = map.cells.map(row => row.map(cell => cell === null ? null : { ...cell }));
     for (const [x, y] of grids.values()) {
-      cells[y][x].terrain = command.terrain;
-      delete cells[y][x].beach;
-      delete cells[y][x].saltMarsh;
+      replaceNaturalCell(cells[y][x], command.terrain);
     }
-    let definition = { ...map, cells };
-    if (window.beachRules) {
-      const normalized = window.beachRules.normalize(definition, [...grids.values()], false, rules);
-      if (normalized.issues.length) return { definition: null, tiles: null, issues: normalized.issues };
-      definition = normalized.definition;
-    }
+    const normalized = normalizeNaturalStroke({ ...map, cells }, [...grids.values()], rules);
+    if (normalized.issues.length) return { definition: null, tiles: null, issues: normalized.issues };
+    const definition = normalized.definition;
     const result = resolve(definition, elementsById, rules, angle);
     return { definition: result.issues.length ? null : definition, ...result };
   }
 
-  window.landWaterRules = { resolve, applyStroke };
+  window.landWaterRules = { resolve, applyStroke, replaceNaturalCell, normalizeNaturalStroke, needsSlope };
 })();

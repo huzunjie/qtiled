@@ -92,9 +92,7 @@ describe('整级高程真实素材规则', () => {
   });
 
   test.each([
-    ['水面高于岸边', map => { map.cells[4][4] = { terrain: 'water', elevation: 1 }; }, 'unsupported-elevation-water'],
-    ['坡面水', map => { map.cells[4][4].elevation = 1; map.cells[3][4].terrain = 'water'; }, 'unsupported-elevation-water'],
-    ['水贴坡脚', map => { map.cells[4][4].elevation = 1; map.cells[2][4].terrain = 'water'; }, 'unsupported-elevation-water'],
+    ['坡面水', map => { map.cells[4][4].elevation = 1; map.cells[3][4].terrain = 'water'; }, 'water-bank-required'],
     ['负处水', map => { map.cells[4][4] = { terrain: 'water', elevation: -1 }; }, 'unsupported-elevation'],
     ['负高度临水', map => { map.cells[4][4].terrain = 'water'; map.cells[3][4].elevation = -1; }, 'unsupported-elevation'],
     ['高度负17', map => { map.cells[4][4].elevation = -17; }, 'unsupported-elevation'],
@@ -504,22 +502,22 @@ describe('等高平台水域', () => {
     expect(JSON.stringify(map)).toBe(before);
   });
 
-  test.each([7, 9])('8级水面与%i级岸线衔接拒绝，不因升高整图而掩盖差值', height => {
+  test.each([[7, 'unsupported-elevation-control'], [9, 'water-bank-required']])('8级水面与%i级孤立岸格保留具体形态约束', (height, code) => {
     const map = lake(8);
     map.cells[3][0].elevation = height;
     freezeDeep(map);
     for (const angle of [0, 90, 180, 270]) {
-      hasIssue(resolve(map, angle), 'unsupported-elevation-water');
+      hasIssue(resolve(map, angle), code);
     }
   });
 
-  test('8级湖泊与同高岸线可邻接null，但岸线坡面直接接水仍拒绝', () => {
+  test('8级湖泊可邻接null，低水格需要坡面时读图明确要求岸带', () => {
     const map = lake(8);
     map.cells[0][3] = null;
     expect(resolve(freezeDeep(map)).issues).toEqual([]);
     const slope = lake(8);
     slope.cells[0][0] = { terrain: 'land', elevation: 9 };
-    hasIssue(resolve(freezeDeep(slope)), 'unsupported-elevation-water');
+    hasIssue(resolve(freezeDeep(slope)), 'water-bank-required');
   });
 });
 
@@ -541,4 +539,124 @@ test('气候仅切换坡面主题；无近水也遵循整图主题，四向行�
     }
   }
   expect(resolve({ ...map, climate: 'arid' }, 0, elements, { ...heightRules, dirtElementPrefix: '' }).tiles).toBeNull();
+});
+
+
+describe('贴水高差与必要岸带', () => {
+  const bankMap = (height = 8, step = 1) => ({ ...createMap(),
+    cells: Array.from({ length: 9 }, (_, y) => Array.from({ length: 9 }, (_, x) =>
+      ({ terrain: x < 4 ? 'land' : 'water', elevation: height + (x < 4 ? step : 0), terrainVariant: 17 }))),
+  });
+  const normalize = map => context.window.elevationRules.normalizeWaterBanks(map, elements);
+
+  test.each([1, 2])('低水贴高地%d层：只转换必要一圈岸带，四向原图、事实与水位稳定', step => {
+    const original = freezeDeep(bankMap(8, step));
+    const before = JSON.stringify(original);
+    hasIssue(resolve(original), 'water-bank-required');
+    const result = stroke(original, { terrain: 'water', grids: [[4, 4]] });
+    expect(result.issues).toEqual([]);
+    const map = result.definition;
+    map.cells.forEach((row, y) => row.forEach((cell, x) => {
+      expect(cell).toEqual({ ...original.cells[y][x], terrain: x <= 4 ? 'land' : 'water' });
+    }));
+    expect(normalize(map).definition).toBe(map);
+    for (const angle of [0, 90, 180, 270]) {
+      const resolved = resolve(map, angle);
+      expect(resolved.issues).toEqual([]);
+      expect(resolved.tiles.filter(tile => tile.slope)).toHaveLength(9);
+      expect(at(resolved, 4, 4).element).toMatch(/^emperor-elevation-/);
+      expect(at(resolved, 5, 4).element).toMatch(/^emperor-terrain-/);
+      expect(at(resolved, 6, 4).slope).toBe(false);
+    }
+    expect(JSON.stringify(original)).toBe(before);
+  });
+
+  test.each([0, 8, 14])('%i级低地旁高处湖面保留原水岸与下方岩壁，无岸带转换', height => {
+    const map = bankMap(height, 2);
+    map.cells.forEach(row => row.forEach((cell, x) => { cell.terrain = x < 4 ? 'water' : 'land'; }));
+    freezeDeep(map);
+    expect(normalize(map).definition).toBe(map);
+    for (const angle of [0, 90, 180, 270]) {
+      const result = resolve(map, angle);
+      expect(result.issues).toEqual([]);
+      expect(at(result, 3, 4)).toMatchObject({ elevation: height + 2, slope: false });
+      expect(at(result, 4, 4)).toMatchObject({ elevation: height, slope: true });
+    }
+  });
+
+  test('陆地坡脚可直接邻接同高水面；不因邻水而整体拒绝坡面', () => {
+    const map = createMap();
+    map.cells[4][4].elevation = 1;
+    map.cells[2][4].terrain = 'water';
+    for (const angle of [0, 90, 180, 270]) expect(resolve(freezeDeep(map), angle).issues).toEqual([]);
+  });
+
+  test('邻水升高联动转岸带但不改变任何既有水位；再次画水不抹掉岩壁', () => {
+    const map = bankMap(8, 0);
+    const before = JSON.stringify(map);
+    const result = stroke(freezeDeep(map), { type: 'raise', grids: [[3, 4]] });
+    expect(result.issues).toEqual([]);
+    expect(result.definition.cells[4][3].elevation).toBe(9);
+    for (const y of [3, 4, 5]) expect(result.definition.cells[y][4]).toEqual({ terrain: 'land', elevation: 8, terrainVariant: 17 });
+    map.cells.forEach((row, y) => row.forEach((cell, x) => {
+      if (cell.terrain === 'water') expect(result.definition.cells[y][x].elevation).toBe(cell.elevation);
+    }));
+    expect(stroke(result.definition, { terrain: 'water', grids: [[4, 4]] }).definition).toEqual(result.definition);
+    expect(JSON.stringify(map)).toBe(before);
+  });
+
+  test('相邻不同水位先拒绝，不能由转岸带掩盖；斜角同样检查', () => {
+    const map = bankMap();
+    map.cells[5][5].elevation = 9;
+    for (const result of [normalize(map), stroke(map, { terrain: 'water', grids: [[4, 4]] })]) {
+      hasIssue(result, 'unsupported-elevation-water'); expect(result.definition).toBeNull();
+    }
+    const diagonal = createMap();
+    diagonal.cells[3][3] = { terrain: 'water', elevation: 1 };
+    diagonal.cells[4][4] = { terrain: 'water', elevation: 0 };
+    hasIssue(normalize(diagonal), 'unsupported-elevation-water');
+  });
+
+  test('岸带转换保护完整实体和道路等事实，不丢弃字段来消除冲突', () => {
+    const map = bankMap();
+    map.entities = [{ id: 'dog-a', element: 'dog', grid: [4, 4] }];
+    hasIssue(normalize(freezeDeep(map)), 'water-bank-protected');
+    for (const fact of [{ road: 'ordinary' }, { quarry: true }, { ramp: true }]) {
+      const occupied = bankMap(); Object.assign(occupied.cells[4][4], fact);
+      hasIssue(normalize(freezeDeep(occupied)), 'water-bank-protected');
+    }
+  });
+
+  test.each([1, 2])('凸角、凹角与null边界的%d层岸带均可四向解析', step => {
+    for (const concave of [false, true]) {
+      const map = createMap();
+      map.cells.forEach((row, y) => row.forEach((cell, x) => {
+        const high = x >= 3 && x <= 5 && y >= 3 && y <= 5 && !(concave && x === 5 && y === 5);
+        Object.assign(cell, { elevation: high ? step : 0, terrain: high ? 'land' : 'water' });
+      }));
+      map.cells[0][0] = null;
+      const result = normalize(freezeDeep(map));
+      expect(result.issues).toEqual([]);
+      expect(result.definition.cells[0][0]).toBeNull();
+      for (const angle of [0, 90, 180, 270]) expect(resolve(result.definition, angle).issues).toEqual([]);
+    }
+  });
+});
+
+
+test('降低临水陆地不改变水位，可形成水面高于岸边的完整坡面', () => {
+  const map = createMap();
+  map.cells.forEach(row => row.forEach((cell, x) => { cell.elevation = 8; if (x >= 5) cell.terrain = 'water'; }));
+  const result = stroke(freezeDeep(map), { type: 'lower', grids: [[3, 4]] });
+  expect(result.issues).toEqual([]);
+  expect(result.definition.cells[4][3].elevation).toBe(7);
+  map.cells.forEach((row, y) => row.forEach((cell, x) => {
+    if (cell.terrain === 'water') expect(result.definition.cells[y][x].elevation).toBe(8);
+  }));
+  for (const angle of [0, 90, 180, 270]) expect(resolve(result.definition, angle).issues).toEqual([]);
+});
+
+
+test('空地图仍返回结构问题，不在传递原高度邻域时抛异常', () => {
+  expect(resolve(null).issues).toContainEqual(expect.objectContaining({ code: 'unsupported-version' }));
 });

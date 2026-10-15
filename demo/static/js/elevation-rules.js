@@ -108,7 +108,53 @@
     return { ring, heights };
   }
 
-  /** 输出平地/水面和低格坡面；高格保持陆地，投影由消费者减去 elevation * elevationStep。
+  // 水位与岸带是两个独立约束：先检查真实水格，不能用转陆地掩盖水位冲突。
+  function checkWaterLevels(cells) {
+    const issues = [];
+    cells.forEach((row, y) => row.forEach((cell, x) => {
+      if (cell?.terrain === 'water' && neighbors.some(([dx, dy]) => {
+        const other = cells[y + dy]?.[x + dx];
+        return other?.terrain === 'water' && other.elevation !== cell.elevation;
+      })) issues.push(issue(`cells[${y}][${x}]`, 'unsupported-elevation-water',
+        '相邻水格必须等高；请一起调整水位，或以陆地隔开不同水位。'));
+    }));
+    return issues;
+  }
+
+  // 完整坡面原图包含岸地；低处水格若承担高差，显式转成陆地岸带。
+  // 只用于编辑候选，读图不改事实；高度、外观和其他字段均保留，整实体不能被联动转换。
+  function normalizeWaterBanks(map, elements) {
+    const issues = checkWaterLevels(map.cells);
+    if (issues.length) return { definition: null, issues };
+    const banks = [];
+    map.cells.forEach((row, y) => row.forEach((cell, x) => {
+      if (cell?.terrain === 'water' && window.landWaterRules.needsSlope(map.cells, x, y)) {
+        banks.push([x, y]);
+      }
+    }));
+    if (!banks.length) return { definition: map, bankGrids: banks, issues };
+    if (map.entities?.length) {
+      const occupancy = window.qtiledMaps?.buildMapOccupancy(map, elements);
+      if (!occupancy) return { definition: null, issues: [issue('$maps', 'missing-map-occupancy', '岸带整理需要地图占地模块。')] };
+      issues.push(...occupancy.issues);
+      banks.forEach(([x, y]) => {
+        if (occupancy.index?.has(`${x},${y}`)) issues.push(issue(`cells[${y}][${x}]`,
+          'water-bank-protected', '岸带整理会改变已有完整实体下方的水域，请先移开实体。'));
+      });
+    }
+    // 不借岸带转换绕过水刷对已有道路、地物及作者标记的保护。
+    banks.forEach(([x, y]) => {
+      if (['road', 'tree', 'rock', 'dune', 'quarry', 'saltMarsh', 'beach', 'ramp', 'halfSlope']
+        .some(key => map.cells[y][x][key] !== undefined)) issues.push(issue(`cells[${y}][${x}]`,
+        'water-bank-protected', '岸带整理遇到道路、地物或坡道标记，整笔取消；请先处理冲突。'));
+    });
+    if (issues.length) return { definition: null, issues };
+    const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
+    banks.forEach(([x, y]) => { cells[y][x].terrain = 'land'; });
+    return { definition: { ...map, cells }, bankGrids: banks, issues };
+  }
+
+  /** 输出平地/水面和低格坡面；高格保持自身地表，投影由消费者减去 elevation * elevationStep。
    * 纯解析不修改高度；坡道/半坡另由作者标记派生，不把控制 1/2 当素材。
    */
   function resolve(map, elements, landRules, elevationRules, angle = 0) {
@@ -126,9 +172,10 @@
     if (issues.length) return failed(issues);
     issues.push(...checkHeights(map, elevationRules));
     if (!angles.includes(angle)) issues.push(issue('$view.angle', 'invalid-angle', '镜头必须为 0、90、180 或 270。'));
-    const flat = window.landWaterRules.resolve(flatView(map), elements, landRules, angle);
+    const flat = window.landWaterRules.resolve(flatView(map), elements, landRules, angle, map?.cells);
     issues.push(...flat.issues);
     if (!issues.length && window.beachRules) issues.push(...window.beachRules.validate(map));
+    if (!issues.length) issues.push(...checkWaterLevels(map.cells));
     if (issues.length) return failed(issues);
 
     const column = elevationRules.qtiledCameraColumns[angle / 90];
@@ -138,16 +185,15 @@
       const cell = cellAt(x, y);
       const result = { ...tile, elevation: cell.elevation, slope: false };
       const path = `cells[${y}][${x}]`;
-      const { ring, heights } = neighborhood(map.cells, x, y);
-      const hasHigher = heights.some(height => height > cell.elevation);
-      // 水面和岸线可整体处于任意合法高度；仅拒绝真实邻格之间的水陆/水水高差。
-      if (cell.terrain === 'water' && ring.some(neighbor => neighbor && neighbor.elevation !== cell.elevation)) {
-        issues.push(issue(path, 'unsupported-elevation-water', '水面及相邻地表必须等高；当前不支持水域直接衔接高差。'));
+      const { heights } = neighborhood(map.cells, x, y);
+      const hasHigher = window.landWaterRules.needsSlope(map.cells, x, y);
+      if (!hasHigher) return result;
+      if (cell.terrain === 'water') {
+        issues.push(issue(path, 'water-bank-required', '此低处水格需要完整坡面岸带；导入时请先预览岸带整理，编辑时可用陆水笔刷整理。'));
         return result;
       }
-      if (!hasHigher) return result;
-      if (ring.some(neighbor => neighbor?.terrain === 'water')) {
-        issues.push(issue(path, 'unsupported-elevation-water', '坡面接触水域的组合尚未补证，整笔取消。'));
+      if (cell.beach) {
+        issues.push(issue(path, 'beach-height', '海滩所在格需要完整坡面，不能同时绘制平沙地；请将本格改为普通陆地岸带。'));
         return result;
       }
       const delta = heights.map(height => height - cell.elevation);
@@ -327,9 +373,8 @@
       for (let y = 0; y < cells.length; y += 1) for (let x = 0; x < cells[y].length; x += 1) {
         const cell = cells[y][x];
         if (!cell || cell.terrain !== 'land') continue;
-        const { ring, heights } = neighborhood(cells, x, y);
-        // 水域不是可联动陆地；空边缘仅延拓输入，最终混合形态由纯解析器校验。
-        if (ring.some(neighbor => neighbor && neighbor.terrain !== 'land')) continue;
+        // 水位参与边界形态判断，但整理只修改陆地；必要水岸转换随后统一处理。
+        const { heights } = neighborhood(cells, x, y);
         const delta = heights.map(height => height - cell.elevation);
         const row = matchRow(delta, rules);
         const low = Math.max(...heights) - 2;
@@ -392,7 +437,7 @@
     if (issues.length) return { definition: null, ...failed(issues) };
     issues.push(...checkHeights(map, elevationRules));
     // 允许原图形态暂不支持的单笔候选修复，但结构与陆水事实始终必须有效。
-    issues.push(...window.landWaterRules.resolve(flatView(map), elements, landRules, angle).issues
+    issues.push(...window.landWaterRules.resolve(flatView(map), elements, landRules, angle, map?.cells).issues
       .filter(item => item.code !== 'beach-shape-needs-adjustment'));
     const heightTool = command && ['raise', 'lower', 'set-height'].includes(command.type);
     const levels = command?.levels === undefined ? 1 : command.levels;
@@ -436,9 +481,7 @@
     for (const [x, y] of grids.values()) {
       const cell = cells[y][x];
       if (!heightTool) {
-        cell.terrain = command.terrain;
-        delete cell.beach;
-        delete cell.saltMarsh;
+        window.landWaterRules.replaceNaturalCell(cell, command.terrain);
       }
       else if (command.type === 'set-height') cell.elevation = command.height;
       else cell.elevation += command.type === 'raise' ? levels : -levels;
@@ -448,6 +491,8 @@
       if (heightTool) requested.set(`${x},${y}`, cell.elevation);
       if (cell.elevation !== map.cells[y][x].elevation) heightChanged = true;
     }
+    if (issues.length) return { definition: null, ...failed(issues) };
+    issues.push(...checkWaterLevels(cells));
     if (issues.length) return { definition: null, ...failed(issues) };
     if (heightTool && heightChanged) {
       // 设高同时跨越高低两侧时，采用降低优先的确定顺序；这是区域工具约定。
@@ -472,18 +517,21 @@
     heightChanged = changes.length > 0;
     const upgraded = heightChanged && map.version === 1 ? { version: 2, elevationStep: elevationRules.elevationStep } : {};
     let definition = { ...map, ...upgraded, cells };
-    if (!heightTool && window.beachRules) {
-      const normalized = window.beachRules.normalize(definition, [...grids.values()], false, landRules);
+    const banks = normalizeWaterBanks(definition, elements);
+    if (banks.issues.length) return { definition: null, ...failed(banks.issues) };
+    definition = banks.definition;
+    if (!heightTool || banks.definition.cells !== cells) {
+      const normalized = window.landWaterRules.normalizeNaturalStroke(definition, [...grids.values(), ...banks.bankGrids], landRules);
       if (normalized.issues.length) return { definition: null, ...failed(normalized.issues) };
       definition = normalized.definition;
     }
     const result = resolve(definition, elements, landRules, elevationRules, angle);
-    return { definition: result.issues.length ? null : definition, ...result, changes,
+    return { definition: result.issues.length ? null : definition, ...result, changes, bankGrids: banks.bankGrids,
       adjusted: [...requested].filter(([key, height]) => {
         const [x, y] = grids.get(key);
         return cells[y][x].elevation !== height;
       }).map(([key]) => grids.get(key)) };
   }
 
-  window.elevationRules = { resolve, applyStroke, applyFeature };
+  window.elevationRules = { resolve, applyStroke, applyFeature, normalizeWaterBanks };
 })();
