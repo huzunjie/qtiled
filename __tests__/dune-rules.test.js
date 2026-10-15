@@ -13,7 +13,7 @@ const elements = { ...json('terrain-samples/emperor-land-water/elements.json'), 
 const rules = json('terrain-samples/emperor-land-water/rules.json');
 const heights = json('terrain-samples/emperor-elevation/rules.json');
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps, qtiledView: view, qtiledElementRendering: { resolveElementDraw } } });
-['terrain-sample', 'environment-rules', 'land-water-rules', 'elevation-rules', 'dune-rules', 'elevation-rendering'].forEach(name => vm.runInContext(read(`js/${name}.js`).toString(), context));
+['terrain-sample', 'environment-rules', 'land-water-rules', 'elevation-rules', 'square-groups', 'dune-rules', 'elevation-rendering'].forEach(name => vm.runInContext(read(`js/${name}.js`).toString(), context));
 const { duneRules: dunes, elevationRules: elevation, elevationRendering: rendering, environmentRules: environment } = context.window;
 const makeMap = () => ({ version: 2, id: 'dunes', tileSize: [80, 40], elevationStep: 40, climate: 'arid',
   cells: Array.from({ length: 8 }, () => Array.from({ length: 8 }, () => ({ terrain: 'land', elevation: 8 }))), entities: [] });

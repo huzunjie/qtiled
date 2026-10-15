@@ -151,6 +151,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/elevation-rules.js'), context);
   vm.runInContext(read('static/js/construction-rules.js'), context);
   vm.runInContext(read('static/js/tree-rules.js'), context);
+  vm.runInContext(read('static/js/square-groups.js'), context);
   vm.runInContext(read('static/js/rock-rules.js'), context);
   vm.runInContext(read('static/js/dune-rules.js'), context);
   vm.runInContext(read('static/js/ruin-rules.js'), context);

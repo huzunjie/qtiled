@@ -21,15 +21,8 @@
       return { ...tile, groundElement: tile.element, dune: true };
     });
     if (issues.length) return { tiles: null, issues };
-    const byGrid = new Map(result.map(tile => [tile.grid.join(','), tile]));
-    const dunes = result.filter(tile => tile.dune).sort((a, b) => a.grid[1] - b.grid[1] || a.grid[0] - b.grid[0]);
-    for (const tile of dunes) {
-      if (tile.duneOwner) continue;
+    for (const { tile, size, parts } of window.groupSquareTiles(result, 'dune', [3, 2, 1])) {
       const [x, y] = tile.grid;
-      const cellsFor = size => Array.from({ length: size * size }, (_, i) => byGrid.get(`${x + i % size},${y + Math.floor(i / size)}`));
-      const size = [3, 2, 1].find(size => cellsFor(size).every(part => part?.dune && !part.duneOwner
-        && part.elevation === tile.elevation));
-      const parts = cellsFor(size);
       const cell = map.cells[y][x];
       const variant = (cell.terrainVariant ?? getStableGridValue(x, y)) & (size === 3 ? 1 : size === 2 ? 3 : 7);
       const imageId = 1138 + (size === 3 ? 12 : size === 2 ? 8 : 0) + variant;

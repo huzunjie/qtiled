@@ -24,16 +24,9 @@
       return { ...tile, groundElement: tile.element, rock: cell.rock };
     });
     if (issues.length) return { tiles: null, issues };
-    const byGrid = new Map(result.map(tile => [tile.grid.join(','), tile]));
     // 542e80逐行清图再扫描；4bb3a0要求同类且尚未占用，543c40先3×3再2×2。
-    const rocks = result.filter(tile => tile.rock).sort((a, b) => a.grid[1] - b.grid[1] || a.grid[0] - b.grid[0]);
-    for (const tile of rocks) {
-      if (tile.rockOwner) continue;
+    for (const { tile, size, parts } of window.groupSquareTiles(result, 'rock', [3, 2, 1])) {
       const [x, y] = tile.grid;
-      const cellsFor = size => Array.from({ length: size * size }, (_, i) => byGrid.get(`${x + i % size},${y + Math.floor(i / size)}`));
-      const size = [3, 2, 1].find(size => cellsFor(size).every(part => part?.rock === tile.rock
-        && !part.rockOwner && part.elevation === tile.elevation));
-      const parts = cellsFor(size);
       const cell = map.cells[y][x];
       const variant = (cell.terrainVariant ?? getStableGridValue(x, y)) & (size === 3 ? 1 : size === 2 ? 3 : 7);
       const element = `emperor-rock-${getRock(tile.rock).base + (size === 3 ? 12 : size === 2 ? 8 : 0) + variant}`;

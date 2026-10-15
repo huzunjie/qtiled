@@ -21,15 +21,8 @@
       return { ...tile, groundElement: tile.element, ruin: true };
     });
     if (issues.length) return { tiles: null, issues };
-    const byGrid = new Map(result.map(tile => [tile.grid.join(','), tile]));
-    const ruins = result.filter(tile => tile.ruin).sort((a, b) => a.grid[1] - b.grid[1] || a.grid[0] - b.grid[0]);
-    for (const tile of ruins) {
-      if (tile.ruinOwner) continue;
+    for (const { tile, size, parts } of window.groupSquareTiles(result, 'ruin', [2, 1])) {
       const [x, y] = tile.grid;
-      const cellsFor = size => Array.from({ length: size * size }, (_, i) => byGrid.get(`${x + i % size},${y + Math.floor(i / size)}`));
-      const size = [2, 1].find(size => cellsFor(size).every(part => part?.ruin && !part.ruinOwner
-        && part.elevation === tile.elevation));
-      const parts = cellsFor(size);
       const cell = map.cells[y][x];
       const variant = (cell.terrainVariant ?? getStableGridValue(x, y)) & (size === 2 ? 3 : 7);
       const imageId = 1126 + (size === 2 ? 8 : 0) + variant;

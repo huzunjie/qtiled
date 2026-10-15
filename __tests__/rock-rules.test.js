@@ -11,7 +11,7 @@ const elements = { ...json('terrain-samples/emperor-land-water/elements.json'), 
 const rules = json('terrain-samples/emperor-land-water/rules.json');
 const heights = json('terrain-samples/emperor-elevation/rules.json');
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps, qtiledView: view, qtiledElementRendering: { resolveElementDraw } } });
-['terrain-sample', 'environment-rules', 'land-water-rules', 'elevation-rules', 'rock-rules', 'tree-rules', 'elevation-rendering'].forEach(name => vm.runInContext(read(`js/${name}.js`), context));
+['terrain-sample', 'environment-rules', 'land-water-rules', 'elevation-rules', 'square-groups', 'rock-rules', 'tree-rules', 'elevation-rendering'].forEach(name => vm.runInContext(read(`js/${name}.js`), context));
 const { rockRules: rocks, treeRules: trees, elevationRules: elevation, elevationRendering: rendering } = context.window;
 const makeMap = () => ({ version: 2, id: 'rocks', tileSize: [80, 40], elevationStep: 40, cells: Array.from({ length: 7 }, () => Array.from({ length: 7 }, () => ({ terrain: 'land', elevation: 8 }))), entities: [] });
 const tiles = (map, angle = 0) => {
