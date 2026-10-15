@@ -57,8 +57,7 @@
       if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}].rock`, 'rock-outside', '岩石整笔不能越界或经过空角。')] };
       if (erase) delete cell.rock;
       else {
-        window.landWaterRules.replaceNaturalCell(cell, 'dry-land');
-        cell.rock = kind;
+        window.landWaterRules.replaceNaturalCell(cell, 'rock', kind);
       }
     }
     const definition = { ...map, cells };

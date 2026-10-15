@@ -2830,8 +2830,10 @@ test('盐沼真实素材经铺路、清除、取消、历史及存读恢复，�
   p.tool('salt-marsh'); p.pointer('pointermove', [2, 3]);
   expect(p.get('hover-info').textContent).toContain('至少 5 格');
   p.pointer('pointerdown', [2, 3]); p.pointer('pointerup', [2, 3]); expect(p.save()).toEqual(original);
-  p.tool('dune'); p.pointer('pointermove', [7, 3]); expect(p.get('hover-info').textContent).toContain('盐沼');
-  p.pointer('pointerdown', [7, 3]); p.pointer('pointerup', [7, 3]); expect(p.save()).toEqual(original);
+  p.tool('dune'); p.pointer('pointermove', [7, 3]); expect(p.get('hover-info').textContent).toContain('可落笔');
+  p.pointer('pointerdown', [7, 3]); p.pointer('pointerup', [7, 3]);
+  expect(p.save().cells[3][7]).toEqual({ terrain: 'land', elevation: 8, terrainVariant: original.cells[3][7].terrainVariant, dune: true });
+  p.get('undo').click(); expect(p.save()).toEqual(original);
   expect(p.errors).toEqual([]); p.window.close();
 });
 
@@ -2902,9 +2904,9 @@ test('全部笔刷共用完整校验，绿色候选可以提交，红色候选�
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('水刷不能淹没道路、实体、沙丘或采石地，失败反馈可取消且无红框残留', async () => {
+test('水刷不能淹没道路或实体，失败反馈可取消且无红框残留', async () => {
   const p = await constructionPage(); const empty = p.save();
-  for (const fact of [{ road: 'ordinary' }, { dune: true }, { quarry: true }, { entity: true }]) {
+  for (const fact of [{ road: 'ordinary' }, { entity: true }]) {
     const map = JSON.parse(JSON.stringify(empty));
     if (fact.entity) map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
     else Object.assign(map.cells[5][5], fact);
@@ -3112,5 +3114,106 @@ test.each(['ordinary', 'copper', 'iron', 'dune', 'quarry'])('%s在临岩壁水�
   expect(after.cells.every((row, y) => JSON.stringify(row[6]) === JSON.stringify(map.cells[y][6]))).toBe(true);
   for (const angle of [0, 90, 180, 270]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); }
   p.get('undo').click(); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+// 替换只改作者选中的自然事实，资格取自起笔地图，显示与提交共用候选。
+test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'])('%s可切换为全部树竹残株，稳定外观输入与环境保持', async from => {
+  const p = await constructionPage(); const map = p.save(); map.climate = 'arid';
+  Object.assign(map.cells[5][5], { tree: from, terrainVariant: 17 });
+  const moisture = p.window.environmentRules.deriveMoisture(map.cells, map.climate);
+  for (const to of ['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump']) {
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+    p.get('tree-kind').value = to; p.tool('tree'); p.pointer('pointermove', [5, 5]);
+    expect(p.get('hover-info').textContent).toContain('可落笔');
+    p.pointer('pointerdown', [5, 5]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]);
+    const status = p.get('status').textContent;
+    const after = p.save(); const expected = JSON.parse(JSON.stringify(map)); expected.cells[5][5].tree = to;
+    expect(after).toEqual(expected);
+    expect(p.window.environmentRules.deriveMoisture(after.cells, after.climate)).toEqual(moisture);
+    if (from !== to) { p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(after); }
+    else expect(status).toContain('未改变');
+    p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['land', 'water'])('%s逐格替换沙丘及采石地，外围重新组图不扩大事实删除', async tool => {
+  const p = await constructionPage(); const empty = p.save(); empty.climate = 'arid';
+  for (const field of ['dune', 'quarry']) {
+    const map = JSON.parse(JSON.stringify(empty));
+    for (let y = 3; y < 9; y++) for (let x = 3; x < 9; x++) Object.assign(map.cells[y][x], { [field]: true, terrainVariant: 7 });
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+    p.tool(tool); p.pointer('pointermove', [5, 5]);
+    expect(p.get('hover-info').textContent).toContain('可落笔'); expect(p.get('hover-info').textContent).toContain('联动 0 格');
+    p.pointer('pointerdown', [5, 5]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]);
+    const after = p.save(); const expected = JSON.parse(JSON.stringify(map));
+    expected.cells[5][5] = { terrain: tool, elevation: 8, terrainVariant: 7 };
+    expect(after).toEqual(expected); expect(after.cells.flat().filter(cell => cell[field])).toHaveLength(35);
+    expect(p.get('issues').hidden).toBe(true);
+    for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); expect(p.save()).toEqual(after); }
+    p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(after);
+    p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('盐沼替换九类自然地物，去除来源后重算环境；不改变相邻作者事实', async () => {
+  const p = await constructionPage(); const empty = p.save(); empty.climate = 'arid';
+  const facts = ['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'].map(tree => ({ tree }))
+    .concat(['ordinary', 'copper', 'iron'].map(rock => ({ rock })), [{ dune: true }, { quarry: true }]);
+  for (const fact of facts) {
+    const map = JSON.parse(JSON.stringify(empty)); Object.assign(map.cells[8][8], fact, { terrainVariant: 23 });
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+    p.tool('salt-marsh'); p.pointer('pointermove', [8, 8]); expect(p.get('hover-info').textContent).toContain('可落笔');
+    p.pointer('pointerdown', [8, 8]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
+    const after = p.save(); const expected = JSON.parse(JSON.stringify(map));
+    expected.cells[8][8] = { terrain: 'land', elevation: 8, terrainVariant: 23, saltMarsh: true };
+    expect(after).toEqual(expected);
+    expect(p.window.environmentRules.deriveMoisture(after.cells, after.climate)[8][8]).toBe(0);
+    if (fact.tree) expect(p.window.environmentRules.deriveMoisture(map.cells, map.climate)[8][8]).toBe(50);
+    p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(after);
+    p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['ordinary', 'copper', 'iron', 'dune', 'quarry', 'tree'])('%s覆盖盐沼，完整候选资格与四向历史一致', async tool => {
+  const p = await constructionPage(); const map = p.save(); map.climate = 'humid'; map.cells[0][0].terrain = 'water';
+  for (let y = 3; y < 9; y++) for (let x = 3; x < 9; x++) map.cells[y][x].saltMarsh = true;
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+  p.get('tree-kind').value = 'bamboo-stump'; p.tool(tool); p.pointer('pointermove', [5, 5]);
+  expect(p.get('hover-info').textContent).toContain('可落笔');
+  p.pointer('pointerdown', [5, 5]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); expect(p.get('issues').hidden).toBe(true);
+  const after = p.save();
+  const field = ['dune', 'quarry', 'tree'].includes(tool) ? tool : 'rock';
+  expect(after.cells[5][5]).toEqual({ terrain: 'land', elevation: 8, [field]: tool === 'tree' ? 'bamboo-stump' : field === 'rock' ? tool : true });
+  const changed = after.cells.flat().filter((cell, i) => JSON.stringify(cell) !== JSON.stringify(map.cells.flat()[i]));
+  expect(changed).toHaveLength(tool === 'quarry' ? 36 : 1);
+  for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); expect(p.save()).toEqual(after); }
+  p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(after);
+  p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('盐沼替换不能绕过原水源距离与道路实体保护；树不能靠自己在干盐沼取得草地', async () => {
+  const p = await constructionPage(); const empty = p.save(); empty.climate = 'arid';
+  for (const conflict of ['water', 'beach', 'near-water', 'road', 'entity', 'dry-salt']) {
+    const map = JSON.parse(JSON.stringify(empty));
+    if (conflict === 'water') map.cells[5][5].terrain = 'water';
+    if (conflict === 'beach') for (let y = 3; y <= 9; y++) for (let x = 3; x <= 9; x++) map.cells[y][x].beach = true;
+    if (conflict === 'near-water') { map.cells[5][1].terrain = 'water'; map.cells[5][5].rock = 'ordinary'; }
+    if (conflict === 'road') map.cells[5][5].road = 'ordinary';
+    if (conflict === 'entity') map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
+    if (conflict === 'dry-salt') map.cells[5][5].saltMarsh = true;
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+    p.tool(conflict === 'dry-salt' ? 'tree' : 'salt-marsh'); p.pointer('pointermove', [5, 5]);
+    expect(p.get('hover-info').textContent).toContain('不能落笔');
+    p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); expect(p.save()).toEqual(map);
+  }
   expect(p.errors).toEqual([]); p.window.close();
 });

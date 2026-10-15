@@ -52,12 +52,11 @@
       if (!cell) return { definition: null, issues: [issue(path, 'tree-outside', '树木整笔不能越界或经过空角。')] };
       if (erase) delete cell.tree;
       else if (cell.tree !== kind) {
-        if (cell.tree !== undefined) return { definition: null, issues: [issue(path, 'tree-occupied', '已有其他类别树木，请先清除再绘制。')] };
         // 整笔基图的草地资格固定，不能靠候选树自身增湿批准下一落点。
         if (!map.climate || !(moisture?.[y]?.[x] > 0)) {
-          return { definition: null, issues: [issue(path, 'tree-grass', '新增树需要已有草地；请先选择气候并在有草的平地落笔。')] };
+          return { definition: null, issues: [issue(path, 'tree-grass', '新增或换类需要已有草地；请先选择气候并在有草的平地落笔。')] };
         }
-        cell.tree = kind;
+        window.landWaterRules.replaceNaturalCell(cell, 'tree', kind);
       }
     }
     return { definition: { ...map, cells }, issues: [] };

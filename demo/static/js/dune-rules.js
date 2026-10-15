@@ -53,8 +53,7 @@
       if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}].dune`, 'dune-outside', '沙丘整笔不能越界或经过空角。')] };
       if (erase) delete cell.dune;
       else {
-        window.landWaterRules.replaceNaturalCell(cell, 'dry-land');
-        cell.dune = true;
+        window.landWaterRules.replaceNaturalCell(cell, 'dune');
       }
     }
     const definition = { ...map, cells };

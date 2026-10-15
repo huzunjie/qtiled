@@ -166,8 +166,7 @@
           return { definition: null, issues: [issue(path, 'quarry-height', '采石地整笔需要同一高度的平地。')] };
         }
         elevation = cell.elevation;
-        window.landWaterRules.replaceNaturalCell(cell, 'dry-land');
-        cell.quarry = true;
+        window.landWaterRules.replaceNaturalCell(cell, 'quarry');
       }
     }
     const definition = { ...map, cells };

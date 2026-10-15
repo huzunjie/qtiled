@@ -52,7 +52,7 @@
       if (cell.road && cell.saltMarsh !== true) {
         return { definition: null, issues: [issue(path, 'salt-marsh-road', '先清除道路再绘制盐沼，随后可重新铺路。')] };
       }
-      cell.saltMarsh = true;
+      window.landWaterRules.replaceNaturalCell(cell, 'salt-marsh');
     }
     return { definition: { ...map, cells }, issues: [] };
   }

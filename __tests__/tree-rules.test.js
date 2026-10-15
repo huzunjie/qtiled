@@ -165,7 +165,7 @@ test.each([['ordinary-mature', 927], ['bamboo-mature', 945]])('%s十八外观组
 });
 
 
-test('混种八邻按共同树标志包围；类别切换不改环境；异类覆盖整笔失败', () => {
+test('混种八邻按共同树标志包围；类别切换不改环境；异类覆盖按原草地资格成功', () => {
   const map = makeMap(5); map.cells.flat().forEach(c => { c.tree = kind; c.terrainVariant = 0; });
   const moisture = tiles(map).map(t => t.moisture);
   map.cells[1][1].tree = 'bamboo-mature';
@@ -176,8 +176,8 @@ test('混种八邻按共同树标志包围；类别切换不改环境；异类�
   delete map.cells[1][2].tree;
   expect(at(resolve(map).tiles, 2, 2).element).toBe('emperor-tree-945');
   const before = JSON.stringify(map);
-  expect(trees.applyStroke(map, [[2, 1], [2, 2]], false, environment(map)).issues[0].code).toBe('tree-occupied');
-  expect(trees.applyStroke(map, [[2, 1], [3, 3]], false, environment(map), 'bamboo-mature').issues[0].code).toBe('tree-occupied');
+  expect(trees.applyStroke(map, [[2, 1], [2, 2]], false, environment(map)).definition.cells[2][2].tree).toBe(kind);
+  expect(trees.applyStroke(map, [[2, 1], [3, 3]], false, environment(map), 'bamboo-mature').definition.cells[3][3].tree).toBe('bamboo-mature');
   expect(trees.applyStroke(map, [[2, 2]], false, environment(map), 'bamboo-mature').definition).toEqual(map);
   expect(trees.applyStroke(map, [[2, 1]], false, environment(map), 'unknown').issues[0].code).toBe('unsupported-tree');
   expect(JSON.stringify(map)).toBe(before);
@@ -202,7 +202,7 @@ test.each(['ordinary-stump', 'bamboo-stump'])('%s全部九图稳定，不按邻�
     expect(at(resolve(map).tiles, 2, 2).element).toBe(`emperor-tree-${base}`);
     map.cells[1][1].tree = kind;
     const before = JSON.stringify(map);
-    expect(trees.applyStroke(map, [[0, 0], [2, 2]], false, environment(map), kind).issues[0].code).toBe('tree-occupied');
+    expect(trees.applyStroke(map, [[0, 0], [2, 2]], false, environment(map), kind).definition.cells[2][2].tree).toBe(kind);
     expect(JSON.stringify(map)).toBe(before);
   }
   map.cells[2][2].tree = kind; delete map.cells[2][2].terrainVariant;

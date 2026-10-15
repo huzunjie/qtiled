@@ -19,17 +19,22 @@
   }
 
   // 自然替换只修改调用方已克隆的候选格。方向表不等于任意地物互刷；
-  // 干地地物共用地面转换；彼此占用、道路和整体实体仍由最终校验保护。
+  // 资格由各画笔基于起笔地图判断；表只声明允许替换的字段，其余占用由最终校验保护。
   const replacements = {
-    land: { terrain: 'land', remove: ['tree', 'rock', 'beach', 'saltMarsh'] },
-    water: { terrain: 'water', remove: ['tree', 'rock', 'beach', 'saltMarsh'] },
-    'dry-land': { terrain: 'land', remove: ['beach'] },
+    land: { terrain: 'land', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry'] },
+    water: { terrain: 'water', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry'] },
+    rock: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'rock' },
+    dune: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'dune' },
+    quarry: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'quarry' },
+    tree: { remove: ['saltMarsh'], field: 'tree' },
+    'salt-marsh': { remove: ['tree', 'rock', 'dune', 'quarry'], field: 'saltMarsh' },
   };
-  function replaceNaturalCell(cell, tool) {
+  function replaceNaturalCell(cell, tool, value = true) {
     const rule = owns(replacements, tool) && replacements[tool];
     if (!rule) return;
-    cell.terrain = rule.terrain;
+    if (rule.terrain) cell.terrain = rule.terrain;
     rule.remove.forEach(key => { delete cell[key]; });
+    if (rule.field) cell[rule.field] = value;
   }
 
   // 地面转换后统一整理草沙边界；只用于显式编辑，读取地图不改写事实。
