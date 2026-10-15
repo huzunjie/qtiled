@@ -441,6 +441,7 @@
         || (id.startsWith('emperor-tree-') ? window.terrainSample.getTreeMaterialLabel(number) : '')
         || (id.startsWith('emperor-beach-') ? `海滩 · ${number < 736 ? '沙岸' : number < 742 ? '沙地' : '交界'} · ${number}` : '')
         || (id.startsWith('emperor-salt-marsh-') ? `盐沼 · ${number}` : '')
+        || (id.startsWith('emperor-ruin-') ? `废墟 · ${number < 1134 ? '1×1' : '2×2'} · ${number}` : '')
         || (id.startsWith('emperor-pinnacle-') ? `山峰 · 外观 ${number} · 5×5` : '')
         || (id.startsWith('emperor-rock-') ? window.terrainSample.getRockMaterialLabel(number) : '')
         || (id.startsWith('emperor-grass-') ? `草地 · 第${Math.floor((number - 202) / 9) + 1}档 · ${number}` : '')

@@ -153,6 +153,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/tree-rules.js'), context);
   vm.runInContext(read('static/js/rock-rules.js'), context);
   vm.runInContext(read('static/js/dune-rules.js'), context);
+  vm.runInContext(read('static/js/ruin-rules.js'), context);
   vm.runInContext(read('static/js/salt-marsh-rules.js'), context);
   vm.runInContext(read('static/js/quarry-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rendering.js'), context);
@@ -1081,7 +1082,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(19);
+  expect(Object.keys(initial)).toHaveLength(20);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
   expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
   expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
@@ -1609,7 +1610,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'beach-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'beach-map', 'ruins-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -3319,5 +3320,35 @@ test('旧竹残株仅在导入边界迁移，保存和重读只留下统一树�
   expect(p.window.terrainSample.getTree('bamboo-stump')).toBeNull();
   p.get('undo').click(); expect(p.save()).toEqual(original); p.get('redo').click(); expect(p.save()).toEqual(migrated);
   p.get('map-json').value = JSON.stringify(migrated); p.get('read-map').click(); expect(p.save()).toEqual(migrated);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test('遗迹多格笔刷、四向逐格清除重组、取消、历史和JSON往返', async () => {
+  const p = await page({}, 'ruins-map');
+  expect(p.get('issues').hidden).toBe(true);
+  const original = p.save();
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); p.tool('clear');
+    p.pointer('pointerdown', [2, 9]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(original);
+    p.pointer('pointerdown', [2, 9]); p.pointer('pointerup', [2, 9]);
+    const cleared = p.save();
+    expect(cleared.cells[9][2].ruin).toBeUndefined();
+    expect(cleared.cells.flat().filter(cell => cell.ruin)).toHaveLength(23);
+    p.get('undo').click(); expect(p.save()).toEqual(original);
+    p.get('redo').click(); expect(p.save()).toEqual(cleared);
+    p.get('map-json').value = JSON.stringify(original); p.get('read-map').click();
+    expect(p.save()).toEqual(original);
+  }
+  setDisplay(p, 'flat-edit', true);
+  p.tool('ruin');
+  p.get('brush-size').value = '3'; p.get('brush-size').dispatchEvent(new p.window.Event('change'));
+  expect(p.get('brush-size').disabled).toBe(false);
+  p.pointer('pointerdown', [7, 7]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(original);
+  p.pointer('pointerdown', [7, 7]); p.pointer('pointerup', [7, 7]);
+  const painted = p.save(); expect(painted.cells.flat().filter(cell => cell.ruin)).toHaveLength(33);
+  p.get('undo').click(); expect(p.save()).toEqual(original);
+  p.get('redo').click(); expect(p.save()).toEqual(painted);
+  p.get('map-json').value = JSON.stringify(painted); p.get('read-map').click(); expect(p.save()).toEqual(painted);
   expect(p.errors).toEqual([]); p.window.close();
 });

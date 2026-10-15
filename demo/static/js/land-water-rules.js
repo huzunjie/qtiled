@@ -21,8 +21,8 @@
   // 自然替换只修改调用方已克隆的候选格。方向表不等于任意地物互刷；
   // 资格由各画笔基于起笔地图判断；表只声明允许替换的字段，其余占用由最终校验保护。
   const replacements = {
-    land: { terrain: 'land', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry'] },
-    water: { terrain: 'water', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry'] },
+    land: { terrain: 'land', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry', 'ruin'] },
+    water: { terrain: 'water', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry', 'ruin'] },
     rock: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'rock' },
     dune: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'dune' },
     quarry: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'quarry' },

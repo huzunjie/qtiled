@@ -144,7 +144,7 @@
     }
     // 不借岸带转换绕过水刷对已有道路、地物及作者标记的保护。
     banks.forEach(([x, y]) => {
-      if (['road', 'tree', 'rock', 'dune', 'quarry', 'saltMarsh', 'beach', 'ramp', 'halfSlope']
+      if (['road', 'tree', 'rock', 'dune', 'ruin', 'quarry', 'saltMarsh', 'beach', 'ramp', 'halfSlope']
         .some(key => map.cells[y][x][key] !== undefined)) issues.push(issue(`cells[${y}][${x}]`,
         'water-bank-protected', '岸带整理遇到道路、地物或坡道标记，整笔取消；请先处理冲突。'));
     });

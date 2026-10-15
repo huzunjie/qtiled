@@ -37440,5 +37440,833 @@
         ]
       }
     }
+  },
+  "emperor-ruin-1126": {
+    "version": 1,
+    "id": "emperor-ruin-1126",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39.0,
+          39
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39.0,
+          39
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1127": {
+    "version": 1,
+    "id": "emperor-ruin-1127",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39.0,
+          20
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39.0,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1128": {
+    "version": 1,
+    "id": "emperor-ruin-1128",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39.0,
+          22
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39,
+          22
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          42
+        ],
+        "anchor": [
+          39.0,
+          22
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1129": {
+    "version": 1,
+    "id": "emperor-ruin-1129",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39.0,
+          20
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39.0,
+          20
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1130": {
+    "version": 1,
+    "id": "emperor-ruin-1130",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39.0,
+          33
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39.0,
+          33
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1131": {
+    "version": 1,
+    "id": "emperor-ruin-1131",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39.0,
+          32
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          52
+        ],
+        "anchor": [
+          39.0,
+          32
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1132": {
+    "version": 1,
+    "id": "emperor-ruin-1132",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          47
+        ],
+        "anchor": [
+          39.0,
+          27
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          47
+        ],
+        "anchor": [
+          39,
+          27
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          47
+        ],
+        "anchor": [
+          39.0,
+          27
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1133": {
+    "version": 1,
+    "id": "emperor-ruin-1133",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          48
+        ],
+        "anchor": [
+          39.0,
+          28
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          48
+        ],
+        "anchor": [
+          39,
+          28
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          48
+        ],
+        "anchor": [
+          39.0,
+          28
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1134": {
+    "version": 1,
+    "id": "emperor-ruin-1134",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          640,
+          0,
+          158,
+          94
+        ],
+        "anchor": [
+          39,
+          54
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          640,
+          0,
+          158,
+          94
+        ],
+        "anchor": [
+          79.0,
+          34
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          640,
+          0,
+          158,
+          94
+        ],
+        "anchor": [
+          119,
+          54
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          640,
+          0,
+          158,
+          94
+        ],
+        "anchor": [
+          79.0,
+          74
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1135": {
+    "version": 1,
+    "id": "emperor-ruin-1135",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          800,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          39,
+          40
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          800,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          79.0,
+          20
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          800,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          119,
+          40
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          800,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          79.0,
+          60
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1136": {
+    "version": 1,
+    "id": "emperor-ruin-1136",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          960,
+          0,
+          158,
+          83
+        ],
+        "anchor": [
+          39,
+          43
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          960,
+          0,
+          158,
+          83
+        ],
+        "anchor": [
+          79.0,
+          23
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          960,
+          0,
+          158,
+          83
+        ],
+        "anchor": [
+          119,
+          43
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          960,
+          0,
+          158,
+          83
+        ],
+        "anchor": [
+          79.0,
+          63
+        ]
+      }
+    }
+  },
+  "emperor-ruin-1137": {
+    "version": 1,
+    "id": "emperor-ruin-1137",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          39,
+          40
+        ]
+      },
+      "90": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          79.0,
+          20
+        ]
+      },
+      "180": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          119,
+          40
+        ]
+      },
+      "270": {
+        "source": "ruins-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          158,
+          80
+        ],
+        "anchor": [
+          79.0,
+          60
+        ]
+      }
+    }
   }
 }
