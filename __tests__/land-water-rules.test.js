@@ -479,7 +479,7 @@ describe('原作岩石与采石地环境修正', () => {
   });
 
   test('岩石在树源之前；树补回岩石区，原本干地不能因后加树而倒推干燥源', () => {
-    const map = make(); setRock(map, 10, 8, 'copper'); map.cells[8][12].tree = 'bamboo-stump';
+    const map = make(); setRock(map, 10, 8, 'copper'); map.cells[8][12].tree = 'ordinary-stump';
     expect(at(field(map), 10, 8).moisture).toBe(30);
     expect(at(field(map), 12, 8).moisture).toBe(50);
     const dry = make('arid'); setRock(dry, 17, 8, 'iron'); dry.cells[8][18].tree = 'ordinary-mature';

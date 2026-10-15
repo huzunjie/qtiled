@@ -20,7 +20,7 @@ const tiles = (map, angle = 0) => elevation.resolve(map, elements, rules, height
 const resolve = (map, angle = 0) => trees.resolve(map, tiles(map, angle), elements, maps.buildMapOccupancy(map, elements).index);
 const at = (result, x, y) => result.find(tile => tile.grid[0] === x && tile.grid[1] === y);
 
-test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'])('%s孤立源四邻50递减，擦除恢复、四镜头和IO一致', kind => {
+test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s孤立源四邻50递减，擦除恢复、四镜头和IO一致', kind => {
   const map = makeMap();
   const before = tiles(map);
   map.cells[6][6].tree = kind;
@@ -39,7 +39,7 @@ test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump']
   expect(map.cells[6][6].tree).toBe(kind);
 });
 
-test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'].flatMap(kind => ['arid', 'temperate', 'humid'].map(climate => [kind, climate])))('%s水树合并不相加，删除来源按%s气候重建', (kind, climate) => {
+test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'].flatMap(kind => ['arid', 'temperate', 'humid'].map(climate => [kind, climate])))('%s水树合并不相加，删除来源按%s气候重建', (kind, climate) => {
   const map = makeMap(75);
   map.climate = climate;
   map.cells[35][1].terrain = 'water';
@@ -114,7 +114,7 @@ test('整笔冻结已有草地资格；无效尾格不部分修改；重复与�
   expect(trees.applyStroke(map, [[3, 3]], true, environment(map)).definition).toEqual(map);
 });
 
-test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'])('%s水路实体冲突和非法事实拒绝；未明气候不能自选', kind => {
+test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s水路实体冲突和非法事实拒绝；未明气候不能自选', kind => {
   for (const conflict of ['water', 'road', 'building', 'invalid', 'climate']) {
     const map = makeMap(); map.cells[6][6].tree = kind;
     if (conflict === 'water') map.cells[6][6].terrain = 'water';
@@ -128,7 +128,7 @@ test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump']
   }
 });
 
-test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'])('%s坡道半坡两部分拒绝，混种样本四向解析', kind => {
+test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s坡道半坡两部分拒绝，混种样本四向解析', kind => {
   const map = json('map-samples/slope-features-map.json');
   const groundTiles = tiles(map);
   for (const tile of groundTiles.filter(tile => tile.slope)) {
@@ -184,7 +184,7 @@ test('混种八邻按共同树标志包围；类别切换不改环境；异类�
 });
 
 
-test.each(['ordinary-stump', 'bamboo-stump'])('%s全部九图稳定，不按邻域分组；残株仍包围成熟树', kind => {
+test.each(['ordinary-stump'])('%s全部九图稳定，不按邻域分组；残株仍包围成熟树', kind => {
   const map = makeMap(5);
   map.cells.flat().forEach(cell => { cell.tree = kind; cell.terrainVariant = 0; });
   for (let variant = 0; variant < 9; variant++) {

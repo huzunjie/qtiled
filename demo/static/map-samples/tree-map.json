@@ -1724,7 +1724,7 @@
       {
         "terrain": "land",
         "elevation": 8,
-        "tree": "bamboo-stump",
+        "tree": "ordinary-stump",
         "terrainVariant": 1
       },
       {
@@ -1870,7 +1870,7 @@
       {
         "terrain": "land",
         "elevation": 8,
-        "tree": "bamboo-stump",
+        "tree": "ordinary-stump",
         "terrainVariant": 3
       },
       {
@@ -1882,7 +1882,7 @@
       {
         "terrain": "land",
         "elevation": 8,
-        "tree": "bamboo-stump",
+        "tree": "ordinary-stump",
         "terrainVariant": 5
       },
       {
@@ -2028,7 +2028,7 @@
       {
         "terrain": "land",
         "elevation": 8,
-        "tree": "bamboo-stump",
+        "tree": "ordinary-stump",
         "terrainVariant": 7
       },
       {

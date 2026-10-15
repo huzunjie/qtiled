@@ -62,7 +62,7 @@ test('非法类别、越界、空角及缺素材均拒绝；输入不变', () =>
 });
 
 test.each(['ordinary', 'copper', 'iron'])('%s拒绝水路植被完整建筑占用及半坡主副格', kind => {
-  for (const extra of [{ terrain: 'water' }, { road: 'ordinary' }, ...['ordinary-mature', 'bamboo-mature', 'ordinary-stump', 'bamboo-stump'].map(tree => ({ tree }))]) {
+  for (const extra of [{ terrain: 'water' }, { road: 'ordinary' }, ...['ordinary-mature', 'bamboo-mature', 'ordinary-stump'].map(tree => ({ tree }))]) {
     const map = makeMap(); map.climate = 'arid'; Object.assign(map.cells[3][3], extra, { rock: kind });
     expect(resolve(map).issues.length).toBeGreaterThan(0);
   }

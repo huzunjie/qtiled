@@ -18,7 +18,7 @@
   <script src="./static/js/qtiled-maps.dev.js?20261012181344"></script>
   <script src="./static/js/pointer.js?20261012181344"></script>
   <script src="./static/js/dog-element-sample.js?20261012181344"></script>
-  <script src="./static/js/terrain-sample.js?20261015050000"></script>
+  <script src="./static/js/terrain-sample.js?20261016002002"></script>
   <script src="./static/js/environment-rules.js?20261015040000"></script>
   <script src="./static/js/beach-rules.js?20261015221500"></script>
   <script src="./static/js/land-water-rules.js?20261016001000"></script>
@@ -94,11 +94,11 @@
       </div></details>
       <details class="menu"><summary>帮助</summary><div class="menu-panel">
           <div>
-          <p class="note">方形与菱形按世界网格定义。偶数尺寸向世界 +x/+y 多覆盖一格；镜头旋转不改变占地。地图内双指捏合可缩放，触控板双指滚动可平移；缩放与工具栏同步。绿色表示可落笔，外围淡绿表示实际联动格，红色及具体原因表示不能落笔；悬停与整笔执行使用同一套规则。</p>
+          <p class="note">方形与菱形按世界网格定义。偶数尺寸向世界 +x/+y 多覆盖一格；镜头旋转不改变占地。地图内双指捏合可缩放，触控板双指滚动可平移；缩放与工具栏同步。绿色表示可落笔，外围淡绿表示实际联动格，红色及具体原因表示不能落笔；悬停与整笔执行使用同一套规则。树木、竹子与树桩的混合范围逐格筛选，绿格生效、红格保持原状；松开统一提交，一笔撤销一次。</p>
           <p class="note" id="base-height-help">新建可选择宽高与菱形/矩形轮廓，按预设基准高度填充陆地、清空实体，可撤销。勾选“按基准高度加载”时，将样本最低地表移到此高度，保留高差；打开文件保持原高度。</p>
           <p class="note">高程为 0～16 级，建议逐级塑形。可在地图边缘和空角旁编辑，空角本身不可绘制。绿色为选格，外围淡绿为实际联动格；下挖会按坡面需要联动扩展范围，保留目标高度。平面编辑显示真实高度并选取被遮挡格。水面保持平坦，贴高地时必要低格整理为陆地岸带，水位不变。不同水位相邻及无法稳定整理的组合整笔拒绝。</p>
           <p class="note">水域与岸线支持 0～16 级的等高平台；高处水面可邻接低处完整坡面，低处水面贴高地时以必要陆地岸带衔接。水域可延伸到地图边缘，岸线与深水推导均将无地图数据的邻格视为外接水域，地图边界不会使水面变浅，真实陆岸仍决定深浅过渡。动画默认每帧 100ms，为预览设置；洪水事件尚未接入。</p>
-          <p class="note">干旱、温带、湿润的近水影响最远为 10、40、60 格，取最近真实水格的八向距离；空角和地图外不作为水源。草地五档内外观固定，干旱使用土坡主题。保存气候和陆水事实，读取时重建草地；树木、资源和农业影响尚未接入。气候样本沿长边观察三档差异。</p>
+          <p class="note">干旱、温带、湿润的近水影响最远为 10、40、60 格，取最近真实水格的八向距离；空角和地图外不作为水源。草地五档内外观固定，干旱使用土坡主题。保存气候和来源事实，读取时重建草地；树木、树桩及岩矿、沙丘、盐沼、采石地已参与环境计算，农业影响尚未接入。气候样本沿长边观察三档差异。</p>
           <p class="note">画布随容器调整；平移、缩放和镜头只改变查看位置，不改变地图。靠近真实边界或查看小地图时允许留白，可随时“查看全图”找回地图。</p>
           <p class="note">网格和坐标仅覆盖有效格，坐标为世界 x,y，不随镜头重新编号。坐标在缩放小于 50% 时暂时隐藏，放大至 50% 以上恢复；显示开关不写入地图文件。</p>
           <p class="note">旧平地装饰地图按占地选择实体；高程或含民居的地图按可见地表或实体像素选择，透明处不会挡住后方格子。高程笔刷遇实体占地整笔拒绝，避免改变建筑地基。</p>
@@ -159,6 +159,8 @@
               <button type="button" data-tool="iron" aria-pressed="false">铁矿</button>
               <button type="button" data-tool="quarry" aria-pressed="false">采石地</button>
               <button type="button" data-tool="tree" aria-pressed="false">树木</button>
+              <button type="button" data-tool="bamboo" aria-pressed="false">竹子</button>
+              <button type="button" data-tool="stump" aria-pressed="false">树桩</button>
               <button type="button" data-tool="clear" aria-pressed="false">清除</button>
               <button type="button" data-tool="building" aria-pressed="false">建筑</button>
           </div>
@@ -166,9 +168,6 @@
             <button id="clear-selection" type="button">取消选择</button>
           </div>
           <div class="tool-parameters"><strong id="current-tool">查看实体</strong></div>
-          <div id="tree-control" hidden>
-            <label>树木类别 <select id="tree-kind"></select></label>
-          </div>
           <div id="building-control" hidden>
             <label>建筑 <select id="building-type"><option value="courtyard-house">民居 · 2×2</option></select></label>
             <label>朝向 <select id="building-angle"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></label>
@@ -204,6 +203,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261016001000"></script>
+  <script src="./static/js/map-editor.js?20261016002002"></script>
 </body>
 </html>

@@ -3,8 +3,7 @@
   const trees = {
     'ordinary-mature': { label: '普通树', detail: '成熟普通树', shortLabel: '树', base: 927, variants: 9, surroundedOffset: 9 },
     'bamboo-mature': { label: '竹类', detail: '成熟竹类', shortLabel: '竹', base: 945, variants: 9, surroundedOffset: 9 },
-    'ordinary-stump': { label: '普通树桩', detail: '普通树桩', shortLabel: '桩', base: 963, variants: 9, surroundedOffset: 0 },
-    'bamboo-stump': { label: '竹残株', detail: '竹残株', shortLabel: '竹残', base: 963, variants: 9, surroundedOffset: 0 },
+    'ordinary-stump': { label: '树桩', detail: '树桩', shortLabel: '桩', base: 963, variants: 9, surroundedOffset: 0 },
   };
   const rocks = {
     ordinary: { label: '普通石', base: 458 },
@@ -37,7 +36,7 @@
     const tree = Object.values(trees).find(item => number >= item.base && number < item.base + item.variants + item.surroundedOffset);
     if (!tree) return '';
     return tree.surroundedOffset ? `${tree.detail} · ${number - tree.base >= tree.variants ? '周围环绕' : '外围'} · ${number}`
-      : `树桩 / 竹残株 · ${number}`;
+      : `树桩 · ${number}`;
   }
 
   function getRockMaterialLabel(number) {
