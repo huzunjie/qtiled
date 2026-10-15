@@ -618,7 +618,7 @@ test('resize 取消活动平移和笔刷，水面时间继续且保存格式没�
   expect(p.get('water-frame').textContent).toBe(`${(deep.phase + 3) % 24 + 1} / 24`);
   p.tool('water');
   p.pointer('pointerdown', [15, 0]);
-  expect(p.get('save-map').disabled).toBe(true);
+  expect(p.get('save-map').disabled).toBe(false);
   p.advance(200);
   p.resize(680, 420);
   expect(p.get('save-map').disabled).toBe(false);
@@ -717,7 +717,7 @@ test('改地形使深处水面重新派生，预览取消和整笔撤销恢复�
   p.tool('land');
   p.pointer('pointerdown', [3, 3]);
   expect(p.get('animation-state').textContent).toContain('0 格动态水面');
-  expect(p.get('save-map').disabled).toBe(true);
+  expect(p.get('save-map').disabled).toBe(false);
   expect(p.get('undo').disabled).toBe(true);
   p.advance(500);
   p.get('cancel-stroke').click();
@@ -917,7 +917,10 @@ test('整笔拖动包含中间格，预览不入历史，提交一次撤销并�
   p.pointer('pointerdown', [1, 0]);
   p.pointer('pointermove', [4, 0]);
   expect(p.get('status').textContent).toContain('整笔预览');
-  expect(p.get('save-map').disabled).toBe(true);
+  for (const id of ['controls', 'tool-controls', 'view-controls', 'new-map-options', 'new-map', 'base-height', 'map-climate']) {
+    expect(p.get(id).disabled).toBe(false);
+  }
+  expect(p.get('save-map').disabled).toBe(false);
   expect(p.get('undo').disabled).toBe(true);
   p.pointer('pointerup', [4, 0]);
   const after = p.save();
@@ -1166,7 +1169,7 @@ test('高程预览 resize 取消，保持旧地图和历史，坏 v2 导入也�
   const undoDisabled = p.get('undo').disabled;
   p.tool('raise');
   p.pointer('pointerdown', [4, 4]);
-  expect(p.get('save-map').disabled).toBe(true);
+  expect(p.get('save-map').disabled).toBe(false);
   p.resize(611, 479);
   expect(p.save()).toEqual(before);
   expect(p.get('undo').disabled).toBe(undoDisabled);
@@ -1241,7 +1244,7 @@ test('同一笔联动补平封闭低洞，继续补格只提交一次历史', as
   points.slice(1, -1).forEach(point => p.sendPointer('pointermove', point));
   expect(p.get('issues').hidden).toBe(true);
   expect(p.get('status').textContent).toContain('联动');
-  expect(p.get('save-map').disabled).toBe(true);
+  expect(p.get('save-map').disabled).toBe(false);
   p.sendPointer('pointermove', points[points.length - 1]);
   expect(p.get('issues').hidden).toBe(true);
   p.sendPointer('pointerup', points[points.length - 1]);
@@ -1274,7 +1277,7 @@ test('平面编辑四向选取真实世界格，大笔刷可挖低顶层，撤�
   const point = p.pointAt([12, 12]);
   p.sendPointer('pointerdown', point);
   expect(p.get('status').textContent).toContain('实际改变 9 格');
-  expect(p.get('flat-edit').disabled || p.get('controls').disabled).toBe(true);
+  expect(p.get('flat-edit').disabled || p.get('controls').disabled).toBe(false);
   p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
   expect(p.save()).toEqual(before);
   heightStroke(p, 'lower-two', [[12, 12]]);
@@ -1454,7 +1457,7 @@ test('单格降低一级四向结果一致，联动预览可取消、撤销和�
     p.tool('lower');
     p.pointer('pointerdown', [5, 5]);
     expect(p.get('status').textContent).toContain('实际改变 21 格');
-    expect(p.get('rebase-sample').disabled).toBe(true);
+    expect(p.get('rebase-sample').disabled).toBe(false);
     p.get('cancel-stroke').click();
     expect(p.save()).toEqual(initial);
     heightStroke(p, 'lower', [[5, 5]]);
@@ -2099,7 +2102,7 @@ test('新图三档选项、画水取消/提交/擦除和文件回读统一重建
   expect(p.save().climate).toBe('arid');
   expect(p.tiles().every(tile => tile.moisture === 0)).toBe(true);
   p.tool('water'); p.pointer('pointerdown', [8, 8]);
-  expect(p.get('map-climate').disabled).toBe(true);
+  expect(p.get('map-climate').disabled).toBe(false);
   p.get('cancel-stroke').click();
   expect(p.save().cells.flat().every(cell => cell.terrain === 'land')).toBe(true);
   expect(p.terrainSprites().every(node => node.attrs.texture.file === 'grass-atlas.webp')).toBe(true);

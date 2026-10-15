@@ -647,8 +647,8 @@
   }
 
   function updateControls() {
-    // 平移沿用既有控件显示；实际操作统一等待手势结束，取消整笔单独可用。
-    const locked = ['stroke', 'pinch', 'map-repair'].includes(interactionMode());
+    // 笔刷和平移沿用既有控件显示；实际操作统一等待手势结束，取消整笔单独可用。
+    const locked = ['pinch', 'map-repair'].includes(interactionMode());
     document.querySelectorAll('[data-editor-controls]').forEach(group => {
       group.disabled = !currentScene || locked;
     });
