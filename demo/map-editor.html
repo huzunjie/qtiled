@@ -138,10 +138,8 @@
         <fieldset id="tool-controls" data-editor-controls disabled aria-label="编辑工具">
           <h2>编辑工具</h2>
           <input id="edit-tool" type="hidden" value="select">
-          <input id="pick-mode" type="hidden" value="entity">
           <div class="tool-grid">
-              <button type="button" data-tool="select" data-pick-mode="cell" aria-pressed="false">查看格子</button>
-              <button type="button" data-tool="select" data-pick-mode="entity" aria-pressed="true">查看实体</button>
+              <button type="button" data-tool="select" aria-pressed="true">查看</button>
               <button type="button" data-tool="pan" aria-pressed="false">平移</button>
               <button type="button" data-tool="land" aria-pressed="false">陆地</button>
               <button type="button" data-tool="water" aria-pressed="false">水域</button>
@@ -174,7 +172,7 @@
           <div id="selection-actions" class="control-group" hidden>
             <button id="clear-selection" type="button">取消选择</button>
           </div>
-          <div class="tool-parameters"><strong id="current-tool">查看实体</strong></div>
+          <div class="tool-parameters"><strong id="current-tool">查看</strong></div>
           <div id="building-control" hidden>
             <label>建筑 <select id="building-type"><option value="courtyard-house">民居 · 2×2</option></select></label>
             <label>朝向 <select id="building-angle"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></label>
@@ -210,6 +208,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261017030001"></script>
+  <script src="./static/js/map-editor.js?20261017040001"></script>
 </body>
 </html>

@@ -191,7 +191,6 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const tool = value => { get('edit-tool').value = value; get('edit-tool').dispatchEvent(new window.Event('change')); };
   const save = () => { get('save-map').click(); return JSON.parse(get('map-json').value); };
   const camera = angle => { get('camera-angle').value = String(angle); get('camera-angle').dispatchEvent(new window.Event('change')); };
-  const mode = value => { get('pick-mode').value = value; get('pick-mode').dispatchEvent(new window.Event('change')); };
   const reload = async () => { get('reload').click(); await settle(); };
   const tiles = () => {
     const latest = [terrainResolve, terrainStroke].sort((a, b) =>
@@ -217,7 +216,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
     const determinant = a[0] * b[1] - a[1] * b[0];
     return [(pixel[0] * b[1] - pixel[1] * b[0]) / determinant, (a[0] * pixel[1] - a[1] * pixel[0]) / determinant];
   };
-  return { window, get, faults, layer, result, sprites, terrainSprites, clickGrid, camera, mode, reload, resolve, importMap,
+  return { window, get, faults, layer, result, sprites, terrainSprites, clickGrid, camera, reload, resolve, importMap,
     fetch, pointer, tool, save, exportMap, terrainResolve, terrainStroke, resolveFrame, updateFrame, advance, callbacks, tiles, errors, descendants,
     size, resize, scene: () => scene, screenPointer, captured, worldCenter, occupancy, canvasContext, contentLayer, imageRequests, pointAt, sendPointer };
 }
@@ -485,7 +484,7 @@ test('默认矩形地图完整纳入有效格与素材外延，四镜头缩放�
     p.camera(angle);
     p.get('fit-map').click();
     expectVisibleSprites(p);
-    p.mode('cell');
+
     p.tool('select');
     p.clickGrid([15, 0]);
     expect(p.get('cell-grid').textContent).toBe('[15,0]');
@@ -603,7 +602,7 @@ test('resize 取消活动平移和笔刷，水面时间继续且保存格式没�
   const before = p.save();
   const deep = p.tiles().find(tile => tile.waterKind === 'deep');
   expect(deep).toBeDefined();
-  p.mode('cell');
+
   p.clickGrid(deep.grid);
   p.get('native-size').click();
   const center = p.worldCenter();
@@ -640,7 +639,7 @@ test('宽水域样本包含派生深处水面，时钟只更新图片而不重�
   expect(waterTiles.filter(tile => tile.waterKind === 'deep').map(tile => tile.grid)).toEqual([[3, 3]]);
   expect(waterTiles.filter(tile => tile.waterKind === 'transition')).toHaveLength(8);
   expect(p.get('animation-state').textContent).toContain('9 格动态水面');
-  p.mode('cell');
+
   p.clickGrid([3, 3]);
   expect(p.get('cell-info').textContent).toContain('水面: 深处');
   const deep = waterTiles.find(tile => tile.waterKind === 'deep');
@@ -680,7 +679,7 @@ test('宽水域样本包含派生深处水面，时钟只更新图片而不重�
 
 test('水面暂停、四向切换、继续与显式重播保持相位规则，时间不进入地图 JSON', async () => {
   const p = await page({}, 'deep-water-map');
-  p.mode('cell');
+
   p.clickGrid([3, 3]);
   const deep = p.tiles().find(tile => tile.waterKind === 'deep');
   p.advance(230);
@@ -710,7 +709,7 @@ test('水面暂停、四向切换、继续与显式重播保持相位规则，�
 
 test('改地形使深处水面重新派生，预览取消和整笔撤销恢复当前时间的动画', async () => {
   const p = await page({}, 'deep-water-map');
-  p.mode('cell');
+
   p.clickGrid([3, 3]);
   const before = p.save();
   const deep = p.tiles().find(tile => tile.waterKind === 'deep');
@@ -751,7 +750,7 @@ test('改地形使深处水面重新派生，预览取消和整笔撤销恢复�
 
 test('坏 v2 水面素材重新加载失败保留旧动态节点，修复后在同一时钟恢复', async () => {
   const p = await page({}, 'deep-water-map');
-  p.mode('cell');
+
   p.clickGrid([3, 3]);
   const before = p.save();
   const root = p.layer.children[0];
@@ -797,12 +796,12 @@ test('四镜头保留两个姿态和全部占地；选中实例保持，素材�
   }
 });
 
-test('格子模式可查看实体下格属性，空角和矩阵外可区分，切镜头保留世界格', async () => {
+test('查看同时展示实体与格属性，空角和矩阵外可区分，切镜头保留世界格', async () => {
   const p = await page();
-  p.mode('cell');
+
   p.clickGrid([1, 1]);
   expect(p.get('cell-info').textContent).toContain('terrain: land');
-  expect(p.get('entity-id').textContent).toBe('—');
+  expect(p.get('entity-id').textContent).toBe('dog-a');
   p.camera(90);
   expect(p.get('cell-grid').textContent).toBe('[1,1]');
   p.clickGrid([0, 0]);
@@ -811,13 +810,13 @@ test('格子模式可查看实体下格属性，空角和矩阵外可区分，�
   expect(p.get('cell-info').textContent).toBe('地图矩阵之外');
 });
 
-test('加载只解析一次，点选和切换查看方式只更新高亮，不重建实体节点', async () => {
+test('加载只解析一次，点选只更新高亮，不重建实体节点', async () => {
   const p = await page();
   const root = p.layer.children[0];
   const sprites = p.sprites();
   expect(p.resolve).toHaveBeenCalledTimes(1);
   for (const grid of [[1, 1], [3, 1], [0, 0], [-1, 0]]) p.clickGrid(grid);
-  p.mode('cell');
+
   p.clickGrid([1, 1]);
   expect(p.get('cell-info').textContent).toContain('terrain: land');
   expect(p.resolve).toHaveBeenCalledTimes(1);
@@ -1032,7 +1031,7 @@ test('完整地表与实体共同按深度排列，前方地表不固定压在�
 
 test.each([true, false])('地图缓存恢复保留原播放状态（播放=%s）、累计时间和尺寸监听', async playing => {
   const p = await page({}, 'deep-water-map');
-  p.mode('cell');
+
   p.clickGrid([3, 3]);
   p.advance(200);
   if (!playing) p.get('play-animation').click();
@@ -1221,7 +1220,7 @@ test('高程样本四向保留事实和高处坐标，平移缩放复用首次�
   // 浏览器会在 pointerup 后合成 click，该次点击应被平移抑制。
   p.get('map-canvas').dispatchEvent(new p.window.MouseEvent('click', { clientX: 210, clientY: 283 }));
   expect(content.render).toHaveBeenCalledTimes(1);
-  p.tool('select'); p.mode('cell');
+  p.tool('select');
   const grid = high[Math.floor(high.length / 2)];
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
@@ -1261,7 +1260,7 @@ test('平面编辑四向选取真实世界格，大笔刷可挖低顶层，撤�
   const before = p.save();
   p.get('flat-edit').click();
   expect(p.get('click-help').textContent).toContain('平面编辑');
-  p.tool('select'); p.mode('cell');
+  p.tool('select');
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
     p.clickGrid([12, 12]);
@@ -1314,7 +1313,7 @@ test('手动设高入口已移除，大笔刷边界裁切且不留下预览层',
 test('合并样本四向点选与空角保持，整笔可取消/撤销/重做，文件不含派生格', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   const initial = p.save();
-  p.mode('cell');
+
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
     p.clickGrid([3, 6]);
@@ -1525,7 +1524,7 @@ test('真实素材覆盖旧台地细缝，新增绘制部件的alpha命中与所
   const before = JSON.stringify(repaired);
   p.get('map-json').value = before;
   p.get('read-map').click();
-  p.mode('cell');
+
   const pixels = {};
   for (const [source, directory] of [['water-shore-atlas.webp', 'emperor-land-water'], ['grass-atlas.webp', 'emperor-land-water'], ['elevation-atlas.webp', 'emperor-elevation']]) {
     pixels[source] = imagePixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
@@ -1582,7 +1581,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
   expect(p.get('issues').hidden).toBe(true);
   const original = p.save();
   expect(original.cells.flat().filter(Boolean).every(cell => cell.elevation === 8)).toBe(true);
-  p.mode('cell');
+
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
     p.clickGrid([3, 3]);
@@ -2035,22 +2034,20 @@ test('取消新建与无效尺寸保留地图及历史，菱形支持不同边�
   p.window.close();
 });
 
-test('上方格子和实体工具分别选取，操作随选择显示，实体删除保留地表并可撤销', async () => {
+test('统一查看展示格子与实体，实体清除保留地表并可撤销', async () => {
   const p = await page();
   const before = p.save();
-  const button = mode => p.window.document.querySelector(`[data-pick-mode="${mode}"]`);
+  const buttons = p.window.document.querySelectorAll('button[data-tool="select"]');
+  expect(buttons).toHaveLength(1);
+  expect(buttons[0].textContent).toBe('查看');
   expect(p.get('selection-actions').hidden).toBe(true);
-  button('cell').click();
+  buttons[0].click();
   p.clickGrid([2, 2]);
-  expect(button('cell').getAttribute('aria-pressed')).toBe('true');
-  expect(button('entity').getAttribute('aria-pressed')).toBe('false');
+  expect(buttons[0].getAttribute('aria-pressed')).toBe('true');
   expect(p.get('cell-grid').textContent).toBe('[2,2]');
-  expect(p.get('entity-details').hidden).toBe(true);
+  expect(p.get('cell-info').textContent).toContain('terrain: land');
+  expect(p.get('entity-details').hidden).toBe(false);
   expect(p.get('selection-actions').hidden).toBe(false);
-  expect(p.get('delete-entity')).toBeNull();
-  button('entity').click();
-  expect(p.get('selection-actions').hidden).toBe(true);
-  p.clickGrid([2, 2]);
   expect(p.get('entity-id').textContent).toBe('dog-a');
   setDisplay(p, 'flat-edit', true);
   p.tool('clear'); p.pointer('pointerdown', [2, 2]); p.pointer('pointerup', [2, 2]);
@@ -2116,7 +2113,7 @@ test('新图三档选项、画水取消/提交/擦除和文件回读统一重建
   const tiles = p.tiles();
   expect(tiles.some(tile => tile.grassGrade === 4)).toBe(true);
   expect(JSON.stringify(wet)).not.toMatch(/moisture|grassGrade|"tile"/);
-  p.tool('select'); p.mode('cell'); p.clickGrid([7, 8]);
+  p.tool('select'); p.clickGrid([7, 8]);
   expect(p.get('cell-info').textContent).toContain('环境强度: 100');
   expect(p.get('cell-info').textContent).toContain('气候: 干旱');
   p.tool('land'); p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
@@ -2602,7 +2599,7 @@ test.each(['ordinary', 'copper', 'iron', 'quarry'])('%s修改后的干湿随取�
   // 读取当前场景的格详情；取消会恢复旧场景，不会重新调用地表派生器。
   const value = () => {
     const previousTool = p.get('edit-tool').value;
-    p.tool('select'); p.mode('cell'); p.clickGrid([12, 8]);
+    p.tool('select'); p.clickGrid([12, 8]);
     const value = Number(p.get('cell-info').textContent.match(/环境强度: (\d+)/)[1]);
     p.tool(previousTool);
     return value;
@@ -3122,7 +3119,7 @@ test('真实岩壁/水岸像素四向遮挡与命中一致，高低水面动画�
     const directory = source.startsWith('elevation') ? 'emperor-elevation' : 'emperor-land-water';
     pixels[source] = imagePixels(fs.readFileSync(path.join(__dirname, `../demo/static/terrain-samples/${directory}/${source}`)));
   }
-  p.mode('cell');
+
   for (const climate of ['temperate', 'arid']) for (const angle of [0, 90, 180, 270]) {
     p.get('map-climate').value = climate; p.get('map-climate').dispatchEvent(new p.window.Event('change'));
     p.camera(angle);

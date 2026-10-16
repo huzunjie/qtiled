@@ -142,7 +142,7 @@
     container.dataset.tool = tool;
     document.querySelectorAll('[data-tool]').forEach(button => {
       if (button === container) return;
-      const active = button.dataset.tool === tool && (!button.dataset.pickMode || button.dataset.pickMode === get('pick-mode').value)
+      const active = button.dataset.tool === tool
         && (!button.dataset.wallStyle || Number(button.dataset.wallStyle) === wallStyle);
       button.setAttribute('aria-pressed', String(active));
       if (active) get('current-tool').textContent = button.textContent;
@@ -150,9 +150,7 @@
     get('building-control').hidden = tool !== 'building';
     get('pinnacle-control').hidden = tool !== 'pinnacle';
     get('click-help').textContent = {
-      select: get('pick-mode').value === 'cell'
-        ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
-        : '点击实体查看完整占地与属性；使用“清除”移除实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
+      select: '点击查看格子属性；命中实体时同时查看其完整占地与属性。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
       'residential-wall': '住宅围墙（四款）：宽 1 格，拖动绘制直线或一个直角弯，沿较长方向先画。覆盖已有普通道路生成门洞；已有墙不能直接铺路。需要平坦陆地，树木及其他地物、实体须先清除。四款可相邻连接；同款重复绘制不变，异款须先拆除；清除门保留道路，再清除一次才删路。松开整笔提交，Esc 取消。',
       clear: '清除海滩、植被、沙丘、废墟、岩石、铜矿、铁矿、采石地、住宅围墙、道路和实体。拆门保留道路，下一笔才可清路。海滩恢复普通陆地，水域、盐沼与高度保留；盐沼上的道路清除后恢复盐沼。单格只清实际命中的实体；范围笔刷清除占地内实体，绿色表示可清除，空白处不产生修改；外围淡绿表示实际联动，红框及原因表示不能落笔。松开提交，Esc 取消。',
@@ -665,7 +663,7 @@
     get('undo').disabled = !undoStack.length || locked;
     get('redo').disabled = !redoStack.length || locked;
     get('cancel-stroke').disabled = !stroke;
-    for (const id of ['pick-mode', 'clear-selection']) get(id).disabled = !currentScene || locked;
+    get('clear-selection').disabled = !currentScene || locked;
     get('new-map').disabled = !currentScene || locked;
     get('base-height').disabled = locked;
     get('map-climate').disabled = !currentScene || locked;
@@ -775,7 +773,6 @@
     if (currentScene) updateSelection();
   }
   get('clear-selection').addEventListener('click', clearSelection);
-  get('pick-mode').addEventListener('change', () => { clearSelection(); updateTool(); });
   container.addEventListener('click', event => {
     if (suppressClick) { suppressClick = false; return; }
     if (!canInteract()) return;
@@ -803,7 +800,7 @@
     selectedGrid = hit.grid;
     // 可见像素优先；旧平地装饰与平面编辑保留占用索引候选。
     const candidates = currentScene.occupancyIndex.get(selectedGrid.join(',')) || [];
-    selectedEntityId = get('pick-mode').value === 'entity' ? hit.entityId || candidates[0] || null : null;
+    selectedEntityId = hit.entityId || candidates[0] || null;
     updateSelection();
   });
   function editEntity(command) {
@@ -1030,10 +1027,6 @@
       wallStyle = Number(button.dataset.wallStyle);
     }
     get('edit-tool').value = button.dataset.tool;
-    if (button.dataset.pickMode) {
-      if (get('pick-mode').value !== button.dataset.pickMode) clearSelection();
-      get('pick-mode').value = button.dataset.pickMode;
-    }
     updateTool();
   }));
   const menus = [...document.querySelectorAll('.menu')];
