@@ -163,3 +163,84 @@ test('只清除失效道路，同类重画和未改格不删除内容；读图�
   const invalid = copy(before); invalid.cells[3][4].terrain = 'water';
   const snapshot = copy(invalid); construction.validate(invalid, tiles(invalid), elements); expect(invalid).toEqual(snapshot);
 });
+
+const wallAt = (map, angle = 0) => construction.resolve(map, tiles(map), elements, rules, angle).tiles.find(tile => String(tile.grid) === '4,4');
+
+test('住宅墙使用专用连接表，端点/转角/T形/十字随四镜头换图，删除门也重算邻墙', () => {
+  const cardinal = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+  // 原作表的独立样例（镜头列已换为 QTiled 0/90/180/270）。
+  const cases = [[1, [0, 2, 0, 2]], [3, [6, 7, 4, 5]], [7, [8, 9, 10, 11]], [15, [12, 12, 12, 12]]];
+  for (const [mask, expected] of cases) {
+    const grids = [[4, 4], ...cardinal.filter((_, i) => mask & 1 << i).map(([x, y]) => [4 + x, 4 + y])];
+    const map = construction.applyWallStroke(fresh(), grids).definition;
+    const snapshot = copy(map);
+    [0, 90, 180, 270].forEach((angle, i) => expect(wallAt(map, angle).element).toBe(`residential-wall-${370 + expected[i]}`));
+    expect(map).toEqual(snapshot);
+  }
+  const map = fresh(); map.cells[4][5].road = 'ordinary';
+  const placed = construction.applyWallStroke(map, [[4, 4], [5, 4], [4, 3]]).definition;
+  expect(wallAt(placed).element).toBe('residential-wall-376');
+  expect(wallAt(construction.applyWallStroke(placed, [[5, 4]], true).definition).element).toBe('residential-wall-370');
+});
+
+test('先路后墙生成独立门，四向跟随道路；先墙后路拒绝，拆门保留路且须先拆门才能删路', () => {
+  for (const neighbors of [[[4, 3], [4, 5]], [[3, 4], [5, 4]], []]) {
+    const road = construction.applyRoadStroke(fresh(), [[4, 4], ...neighbors]).definition;
+    const gate = construction.applyWallStroke(road, [[4, 4]]).definition;
+    expect(gate.cells[4][4]).toEqual({ terrain: 'land', elevation: 8, road: 'ordinary', residentialWall: 'gate-1' });
+    expect([0, 90, 180, 270].map(angle => wallAt(gate, angle).element)).toEqual(
+      (neighbors[0]?.[0] === 4 ? [384, 383, 384, 383] : [383, 384, 383, 384]).map(id => `residential-wall-${id}`));
+    expect(construction.applyRoadStroke(gate, [[4, 4]], true).definition).toBeNull();
+    expect(construction.applyWallStroke(gate, [[4, 4]], true).definition).toEqual(road);
+    expect(construction.applyWallStroke(gate, [[4, 4]]).definition).toEqual(gate);
+  }
+  const wall = construction.applyWallStroke(fresh(), [[4, 4]]).definition;
+  expect(construction.applyRoadStroke(wall, [[4, 3], [4, 4]]).definition).toBeNull();
+  const sides = construction.applyRoadStroke(wall, [[4, 3], [4, 5]]).definition;
+  expect(sides.cells[4][4].residentialWall).toBe('wall-1');
+  expect(construction.applyWallStroke(sides, [[4, 4]]).definition).toEqual(sides);
+});
+
+test('住宅墙拒绝树木及其他自然地物、实体、水面、坡面和非法身份，地形修改只清失效墙门', () => {
+  for (const field of context.window.landWaterRules.naturalFields) {
+    const map = fresh(); map.cells[4][4][field] = true;
+    expect(resolve(construction.applyWallStroke(map, [[4, 4]]).definition).issues.some(i => i.code === 'wall-ground')).toBe(true);
+  }
+  const occupied = house(fresh());
+  const [key] = maps.buildMapOccupancy(occupied, elements).index.keys();
+  expect(resolve(construction.applyWallStroke(occupied, [key.split(',').map(Number)]).definition).issues.some(i => i.code === 'wall-ground')).toBe(true);
+  const wall = construction.applyWallStroke(fresh(), [[4, 4], [7, 7]]).definition;
+  const ground = tiles(wall); ground.find(tile => String(tile.grid) === '4,4').slope = true;
+  expect(construction.validate(wall, ground, elements).issues.some(i => i.code === 'wall-ground')).toBe(true);
+  const cleaned = construction.reconcileTerrain(wall, wall, ground, elements).definition;
+  expect(cleaned.cells[4][4].residentialWall).toBeUndefined(); expect(cleaned.cells[7][7].residentialWall).toBe('wall-1');
+  const water = copy(wall); water.cells[4][4].terrain = 'water';
+  expect(resolve(water).issues.some(i => i.code === 'wall-ground')).toBe(true);
+  expect(construction.reconcileSurface(wall, water, elements).definition.cells[4][4].residentialWall).toBeUndefined();
+  for (const value of [false, null, ['wall-1'], 'wall-5', 'gate-1']) {
+    const invalid = copy(wall); invalid.cells[4][4].residentialWall = value;
+    expect(resolve(invalid).issues.length).toBeGreaterThan(0);
+  }
+  expect(construction.applyWallStroke(wall, [[4, 4], [-1, 0]]).definition).toBeNull();
+});
+
+test.each([1, 2, 3, 4])('第 %i 款混合邻接保留本款外观，门洞/删除/重画/地形清理采用同一规则', style => {
+  const base = [370, 387, 404, 421][style - 1];
+  let map = construction.applyWallStroke(fresh(), [[4, 4]], false, style).definition;
+  const other = style % 4 + 1;
+  map = construction.applyWallStroke(map, [[4, 3], [5, 4]], false, other).definition;
+  [0, 90, 180, 270].forEach((angle, i) => expect(wallAt(map, angle).element).toBe(`residential-wall-${base + [6, 7, 4, 5][i]}`));
+  expect(construction.applyWallStroke(map, [[4, 4]], false, style).definition).toEqual(map);
+  expect(construction.applyWallStroke(map, [[3, 4], [4, 4]], false, other).definition).toBeNull();
+  expect(construction.applyRoadStroke(map, [[4, 4]]).definition).toBeNull();
+  map = construction.applyRoadStroke(fresh(), [[4, 4], [4, 3]]).definition;
+  map = construction.applyWallStroke(map, [[4, 4]], false, style).definition;
+  expect(map.cells[4][4].residentialWall).toBe(`gate-${style}`);
+  [0, 90, 180, 270].forEach((angle, i) => expect(wallAt(map, angle).element).toBe(`residential-wall-${base + [14, 13, 14, 13][i]}`));
+  expect(construction.applyRoadStroke(map, [[4, 4]], true).definition).toBeNull();
+  expect(construction.applyWallStroke(map, [[4, 4]], true).definition.cells[4][4]).toEqual({ terrain: 'land', elevation: 8, road: 'ordinary' });
+  const water = copy(map); water.cells[4][4].terrain = 'water';
+  const cleared = construction.reconcileSurface(map, water, elements).definition.cells[4][4];
+  expect(cleared.road).toBeUndefined(); expect(cleared.residentialWall).toBeUndefined();
+  for (const invalid of [0, 5, '2', NaN]) expect(construction.applyWallStroke(map, [[4, 4]], false, invalid).definition).toBeNull();
+});

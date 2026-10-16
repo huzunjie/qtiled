@@ -13,7 +13,7 @@
   const atlases = {
     land: { 'beach-atlas.webp': '20261015030000', 'quarry-atlas.webp': '20261015030000', 'water-shore-atlas.webp': '20261015030000', 'grass-atlas.webp': '20261015030000', 'trees-atlas.webp': '20261015030000', 'rocks-atlas.webp': '20261015030000', 'dunes-atlas.webp': '20261015030003', 'salt-marsh-atlas.webp': '20261015040000', 'pinnacles-atlas.webp': '20261015050000', 'ruins-atlas.webp': '20261015190000' },
     elevation: { 'elevation-atlas.webp': '20261015030000', 'elevation-dirt-atlas.webp': '20261015030000', 'slope-features-atlas.webp': '20261015030000', 'slope-features-dirt-atlas.webp': '20261015030000' },
-    construction: { 'road-atlas.webp': '20261015030000', 'house-atlas.webp': '20261015030000' },
+    construction: { 'road-atlas.webp': '20261015030000', 'house-atlas.webp': '20261015030000', 'residential-wall-atlas.webp': '20261017020000' },
   };
   const getTree = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(trees, kind) ? trees[kind] : null;
   const getRock = kind => typeof kind === 'string' && Object.prototype.hasOwnProperty.call(rocks, kind) ? rocks[kind] : null;

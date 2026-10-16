@@ -1245,5 +1245,3905 @@
         ]
       }
     }
+  },
+  "residential-wall-370": {
+    "version": 1,
+    "id": "residential-wall-370",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-371": {
+    "version": 1,
+    "id": "residential-wall-371",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-372": {
+    "version": 1,
+    "id": "residential-wall-372",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-373": {
+    "version": 1,
+    "id": "residential-wall-373",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-374": {
+    "version": 1,
+    "id": "residential-wall-374",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          0,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "residential-wall-375": {
+    "version": 1,
+    "id": "residential-wall-375",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-376": {
+    "version": 1,
+    "id": "residential-wall-376",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      }
+    }
+  },
+  "residential-wall-377": {
+    "version": 1,
+    "id": "residential-wall-377",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-378": {
+    "version": 1,
+    "id": "residential-wall-378",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-379": {
+    "version": 1,
+    "id": "residential-wall-379",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-380": {
+    "version": 1,
+    "id": "residential-wall-380",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          0,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-381": {
+    "version": 1,
+    "id": "residential-wall-381",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-382": {
+    "version": 1,
+    "id": "residential-wall-382",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-383": {
+    "version": 1,
+    "id": "residential-wall-383",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          0,
+          78,
+          79
+        ],
+        "anchor": [
+          39,
+          59
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          0,
+          78,
+          79
+        ],
+        "anchor": [
+          39,
+          59
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          0,
+          78,
+          79
+        ],
+        "anchor": [
+          39,
+          59
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          0,
+          78,
+          79
+        ],
+        "anchor": [
+          39,
+          59
+        ]
+      }
+    }
+  },
+  "residential-wall-384": {
+    "version": 1,
+    "id": "residential-wall-384",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          0,
+          78,
+          78
+        ],
+        "anchor": [
+          39,
+          58
+        ]
+      }
+    }
+  },
+  "residential-wall-387": {
+    "version": 1,
+    "id": "residential-wall-387",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-388": {
+    "version": 1,
+    "id": "residential-wall-388",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-389": {
+    "version": 1,
+    "id": "residential-wall-389",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-390": {
+    "version": 1,
+    "id": "residential-wall-390",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-391": {
+    "version": 1,
+    "id": "residential-wall-391",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          79,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          79,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          79,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          79,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "residential-wall-392": {
+    "version": 1,
+    "id": "residential-wall-392",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-393": {
+    "version": 1,
+    "id": "residential-wall-393",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-394": {
+    "version": 1,
+    "id": "residential-wall-394",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-395": {
+    "version": 1,
+    "id": "residential-wall-395",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-396": {
+    "version": 1,
+    "id": "residential-wall-396",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-397": {
+    "version": 1,
+    "id": "residential-wall-397",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-398": {
+    "version": 1,
+    "id": "residential-wall-398",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-399": {
+    "version": 1,
+    "id": "residential-wall-399",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          79,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-400": {
+    "version": 1,
+    "id": "residential-wall-400",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      }
+    }
+  },
+  "residential-wall-401": {
+    "version": 1,
+    "id": "residential-wall-401",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          79,
+          78,
+          65
+        ],
+        "anchor": [
+          39,
+          45
+        ]
+      }
+    }
+  },
+  "residential-wall-404": {
+    "version": 1,
+    "id": "residential-wall-404",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-405": {
+    "version": 1,
+    "id": "residential-wall-405",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-406": {
+    "version": 1,
+    "id": "residential-wall-406",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-407": {
+    "version": 1,
+    "id": "residential-wall-407",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-408": {
+    "version": 1,
+    "id": "residential-wall-408",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          158,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          158,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          158,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          158,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "residential-wall-409": {
+    "version": 1,
+    "id": "residential-wall-409",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-410": {
+    "version": 1,
+    "id": "residential-wall-410",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-411": {
+    "version": 1,
+    "id": "residential-wall-411",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-412": {
+    "version": 1,
+    "id": "residential-wall-412",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-413": {
+    "version": 1,
+    "id": "residential-wall-413",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-414": {
+    "version": 1,
+    "id": "residential-wall-414",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-415": {
+    "version": 1,
+    "id": "residential-wall-415",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          158,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          158,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          158,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          158,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-416": {
+    "version": 1,
+    "id": "residential-wall-416",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          158,
+          78,
+          57
+        ],
+        "anchor": [
+          39,
+          37
+        ]
+      }
+    }
+  },
+  "residential-wall-417": {
+    "version": 1,
+    "id": "residential-wall-417",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      }
+    }
+  },
+  "residential-wall-418": {
+    "version": 1,
+    "id": "residential-wall-418",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          158,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      }
+    }
+  },
+  "residential-wall-421": {
+    "version": 1,
+    "id": "residential-wall-421",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          0,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-422": {
+    "version": 1,
+    "id": "residential-wall-422",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          80,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-423": {
+    "version": 1,
+    "id": "residential-wall-423",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          160,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      }
+    }
+  },
+  "residential-wall-424": {
+    "version": 1,
+    "id": "residential-wall-424",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          240,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      }
+    }
+  },
+  "residential-wall-425": {
+    "version": 1,
+    "id": "residential-wall-425",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          237,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          237,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          237,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          320,
+          237,
+          78,
+          49
+        ],
+        "anchor": [
+          39,
+          29
+        ]
+      }
+    }
+  },
+  "residential-wall-426": {
+    "version": 1,
+    "id": "residential-wall-426",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          400,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-427": {
+    "version": 1,
+    "id": "residential-wall-427",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          480,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-428": {
+    "version": 1,
+    "id": "residential-wall-428",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          560,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-429": {
+    "version": 1,
+    "id": "residential-wall-429",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          640,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-430": {
+    "version": 1,
+    "id": "residential-wall-430",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          720,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-431": {
+    "version": 1,
+    "id": "residential-wall-431",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          800,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-432": {
+    "version": 1,
+    "id": "residential-wall-432",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          880,
+          237,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "residential-wall-433": {
+    "version": 1,
+    "id": "residential-wall-433",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          960,
+          237,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      }
+    }
+  },
+  "residential-wall-434": {
+    "version": 1,
+    "id": "residential-wall-434",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          237,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          237,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          237,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1040,
+          237,
+          78,
+          70
+        ],
+        "anchor": [
+          39,
+          50
+        ]
+      }
+    }
+  },
+  "residential-wall-435": {
+    "version": 1,
+    "id": "residential-wall-435",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          237,
+          78,
+          69
+        ],
+        "anchor": [
+          39,
+          49
+        ]
+      },
+      "90": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          237,
+          78,
+          69
+        ],
+        "anchor": [
+          39,
+          49
+        ]
+      },
+      "180": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          237,
+          78,
+          69
+        ],
+        "anchor": [
+          39,
+          49
+        ]
+      },
+      "270": {
+        "source": "residential-wall-atlas.webp",
+        "rect": [
+          1120,
+          237,
+          78,
+          69
+        ],
+        "anchor": [
+          39,
+          49
+        ]
+      }
+    }
   }
 }

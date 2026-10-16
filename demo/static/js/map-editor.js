@@ -8,7 +8,7 @@
   const terrainDirectory = './static/terrain-samples/emperor-land-water/';
   const constructionDirectory = './static/construction-samples/';
   const featureTools = ['ramp', 'half-slope'];
-  const roadTools = ['road'];
+  const roadTools = ['road', 'residential-wall'];
   const treeKinds = { tree: 'ordinary-mature', bamboo: 'bamboo-mature', stump: 'ordinary-stump' };
   const treeTools = Object.keys(treeKinds);
   const rockTools = Object.keys(rocks);
@@ -23,6 +23,7 @@
   let cameraAngle = 0;
   let loadRequestId = 0;
   let stroke = null;
+  let wallStyle = 1;
   let pan = null;
   let pinch = null;
   const touchPointers = new Map();
@@ -141,7 +142,8 @@
     container.dataset.tool = tool;
     document.querySelectorAll('[data-tool]').forEach(button => {
       if (button === container) return;
-      const active = button.dataset.tool === tool && (!button.dataset.pickMode || button.dataset.pickMode === get('pick-mode').value);
+      const active = button.dataset.tool === tool && (!button.dataset.pickMode || button.dataset.pickMode === get('pick-mode').value)
+        && (!button.dataset.wallStyle || Number(button.dataset.wallStyle) === wallStyle);
       button.setAttribute('aria-pressed', String(active));
       if (active) get('current-tool').textContent = button.textContent;
     });
@@ -152,7 +154,8 @@
         ? '点击地面查看格子属性。触控板双指滚动或鼠标中键拖动可平移。'
         : '点击实体查看完整占地与属性；使用“清除”移除实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
-      clear: '清除海滩、植被、沙丘、废墟、岩石、铜矿、铁矿、采石地、道路和实体。海滩恢复普通陆地，水域、盐沼与高度保留；盐沼上的道路清除后恢复盐沼。单格只清实际命中的实体；范围笔刷清除占地内实体，绿色表示可清除，空白处不产生修改；外围淡绿表示实际联动，红框及原因表示不能落笔。松开提交，Esc 取消。',
+      'residential-wall': '住宅围墙（四款）：宽 1 格，拖动绘制直线或一个直角弯，沿较长方向先画。覆盖已有普通道路生成门洞；已有墙不能直接铺路。需要平坦陆地，树木及其他地物、实体须先清除。四款可相邻连接；同款重复绘制不变，异款须先拆除；清除门保留道路，再清除一次才删路。松开整笔提交，Esc 取消。',
+      clear: '清除海滩、植被、沙丘、废墟、岩石、铜矿、铁矿、采石地、住宅围墙、道路和实体。拆门保留道路，下一笔才可清路。海滩恢复普通陆地，水域、盐沼与高度保留；盐沼上的道路清除后恢复盐沼。单格只清实际命中的实体；范围笔刷清除占地内实体，绿色表示可清除，空白处不产生修改；外围淡绿表示实际联动，红框及原因表示不能落笔。松开提交，Esc 取消。',
       tree: '树木、竹子与树桩：三类可直接互换或替换其他地物，均以起笔前已有草地为准；混合范围逐格筛选，绿格生效，红格保持原状并提示原因。可替换其他地物、道路和实体；水域及坡面不能落笔。整笔松开提交，Esc 取消，一笔撤销一次；树木与树桩都会影响周围草地，不会自动生长。',
       beach: '海滩：将平坦陆地或水域改为海滩，可邻接普通坡面岸带；需要承担坡面或半坡部件的格保留普通岸地，其余平地可绘制。按下预览时整理草沙轮廓，绿色为笔刷占地，外围淡绿为实际联动格。清除及陆水替换也会整理轮廓。可直接替换其他地物、道路和实体。松开整笔提交，Esc 取消。',
       quarry: '采石地：可选方形或菱形、1～9 格尺寸，可将水域或海滩改为陆地后放置，也可替换其他地物、道路和实体，可重叠或相邻扩展。使用“清除”工具按所选范围擦除。坑边与坑内按周围采石格自动拼接。松开提交，Esc 取消；不记录可采数量或开采进度。',
@@ -210,6 +213,7 @@
     const size = Number(get('brush-size').value);
     const tool = get('edit-tool').value;
     get('brush-summary').textContent = tool === 'pinnacle' ? '固定 25 格 · 整体放置'
+      : tool === 'residential-wall' ? '宽 1 格 · 沿线绘制'
       : !brushTools.includes(tool) ? '无需笔刷' : `${offsets.length} 格${size % 2 ? '' : ' · 向 +x/+y 锚定'}`;
     const selected = new Set(offsets.map(grid => grid.join(',')));
     const swatch = get('brush-swatch');
@@ -288,7 +292,7 @@
     return rejected.length ? ` · 跳过 ${rejected.length} 格：${rejected.map(item => `${item.grid.join(', ')}：${item.reason}`).join('；')}` : '';
   }
 
-  function evaluateWholeBrush(base, terrain, grids, { grid = grids[0], entityIds = new Set(), treeKind = treeKinds[terrain] } = {}) {
+  function evaluateWholeBrush(base, terrain, grids, { grid = grids[0], entityIds = new Set(), treeKind = treeKinds[terrain], wallStyle: selectedWallStyle = wallStyle } = {}) {
     const command = ['land', 'water'].includes(terrain) ? { terrain }
       : { type: terrain.replace('-two', ''), levels: terrain.endsWith('-two') ? 2 : 1 };
     let result = requireSuccess(terrain === 'clear'
@@ -309,7 +313,9 @@
       ? window.rockRules.applyStroke(base.map, grids, false, terrain, base.rules)
       : treeTools.includes(terrain)
       ? window.treeRules.applyStroke(base.map, grids, false, base.moisture, treeKind, base.rules)
-      : roadTools.includes(terrain)
+      : terrain === 'residential-wall'
+      ? window.constructionRules.applyWallStroke(base.map, grids, false, selectedWallStyle)
+      : terrain === 'road'
       ? window.constructionRules.applyRoadStroke(base.map, grids, false, base.groundTiles)
       : window.elevationRules.applyStroke(base.map, { ...command, grids }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
     const naturalTool = ['quarry', 'ruin', 'dune', 'salt-marsh', ...rockTools, ...treeTools].includes(terrain);
@@ -326,7 +332,12 @@
     const selectedGrids = featureTools.includes(terrain) ? result.selectedGrids : grids;
     const selected = new Set(selectedGrids.map(grid => grid.join(',')));
     const changes = changedGrids(base.map, result.definition, base.occupancyIndex);
-    return { ...result, resolved, selectedGrids, changes, linked: changes.filter(grid => !selected.has(grid.join(','))) };
+    const affected = new Map(changes.map(grid => [grid.join(','), grid]));
+    // 墙门的相邻连接图也属于预览联动，作者事实仍只提交实际编辑的格。
+    for (const [x, y] of changes) for (const [dx, dy] of [[0, -1], [1, 0], [0, 1], [-1, 0]]) {
+      if (result.definition.cells[y + dy]?.[x + dx]?.residentialWall) affected.set(`${x + dx},${y + dy}`, [x + dx, y + dy]);
+    }
+    return { ...result, resolved, selectedGrids, changes, linked: [...affected.values()].filter(grid => !selected.has(grid.join(','))) };
   }
 
   function appendBrushFeedback(overlay, scene, grids, { invalid = false, linked = [], rejected = [], hit } = {}) {
@@ -355,7 +366,7 @@
     const hit = hitAt(event);
     const tool = get('edit-tool').value;
     const offsets = brushTools.includes(tool) ? getBrushOffsets() : [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : [];
-    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}:${get('pinnacle-type').value}`;
+    const key = `${hit.grid}:${hit.entityId || ''}:${Boolean(hit.missed)}:${tool}:${brushKey}:${get('building-angle').value}:${get('pinnacle-type').value}:${wallStyle}`;
     if (key === hoverKey) return;
     clearHover();
     hoverKey = key;
@@ -437,6 +448,7 @@
       : cell ? `terrain: ${cell.terrain}${cell.road ? '\n道路: 普通' : ''}\nelevation: ${cell.elevation}\n素材: ${tile?.element || '无'}\n变体: ${tile?.variant ?? '无'}` : '地图矩阵之外';
     if (cell && tile?.waterKind) get('cell-info').textContent += `\n水面: ${{ ordinary: '普通', transition: '过渡', deep: '深处' }[tile.waterKind]}`;
     if (cell?.beach) get('cell-info').textContent += '\n海滩：岸线与湿度按当前地图派生';
+    if (cell?.residentialWall) get('cell-info').textContent += `\n住宅围墙：第${cell.residentialWall.slice(-1)}款${cell.residentialWall.startsWith('gate-') ? '门洞（拆门保留道路）' : '墙段'}`;
     if (cell?.quarry) get('cell-info').textContent += '\n采石地：静态范围，局部清除后重新拼接';
     if (cell?.ruin) get('cell-info').textContent += `\n废墟: 当前组合${tile.ruinSize}×${tile.ruinSize}（逐格编辑）`;
     if (cell?.dune) get('cell-info').textContent += `\n沙丘: 当前组合${tile.duneSize}×${tile.duneSize}（逐格编辑）`;
@@ -519,7 +531,7 @@
         holder.append(new Polyline({ pos, points: vertexes, close: true, lineWidth: 1,
           strokeColor: '#788c86', fillColor: cell.terrain === 'water' ? '#9acbdc'
             : `hsl(95, 24%, ${88 - cell.elevation * 3}%)` }));
-        holder.append(new Label({ text: `${cell.elevation}${cell.beach ? ' 滩' : ''}${cell.road ? ' 路' : ''}${cell.quarry ? ' 采石' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}${cell.dune ? ' 沙丘' : ''}${cell.ruin ? ' 废墟' : ''}${cell.saltMarsh ? ' 盐沼' : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
+        holder.append(new Label({ text: `${cell.elevation}${cell.beach ? ' 滩' : ''}${cell.road ? ' 路' : ''}${cell.residentialWall ? cell.residentialWall.startsWith('gate-') ? ' 门' : ' 墙' : ''}${cell.quarry ? ' 采石' : ''}${cell.tree ? ` ${getTree(cell.tree).shortLabel}` : ''}${cell.rock ? ` ${getRock(cell.rock).label}` : ''}${cell.dune ? ' 沙丘' : ''}${cell.ruin ? ' 废墟' : ''}${cell.saltMarsh ? ' 盐沼' : ''}`, pos, anchor: [0.5, 0.5], font: '12px monospace', fillColor: '#253d35' }));
         content.append(holder);
         return;
       }
@@ -836,7 +848,7 @@
 
   function hitAt(event, scene = currentScene) {
     const pixel = getPointerPosition(event, container).map((value, axis) => (value - scene.viewportOrigin[axis]) / scene.viewportScale);
-    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.ruin || tile.quarry) || scene.map.entities.some(entity => window.constructionRules.isSolid(entity.element))) && !scene.flatEditing) {
+    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.ruin || tile.quarry || tile.residentialWall) || scene.map.entities.some(entity => window.constructionRules.isSolid(entity.element))) && !scene.flatEditing) {
       for (let index = scene.drawables.length - 1; index >= 0; index--) {
         const item = scene.drawables[index];
         const frame = item.draw.sequence ? window.qtiledElementRendering.resolveElementFrame(item.definition, item.draw.imageAngle,
@@ -1012,7 +1024,11 @@
     updateBrushParameters();
   });
   document.querySelectorAll('button[data-tool]').forEach(button => button.addEventListener('click', () => {
+    if (button.dataset.wallStyle && interactionMode() === 'stroke') cancelStroke();
     if (!canInteract()) return;
+    if (button.dataset.wallStyle) {
+      wallStyle = Number(button.dataset.wallStyle);
+    }
     get('edit-tool').value = button.dataset.tool;
     if (button.dataset.pickMode) {
       if (get('pick-mode').value !== button.dataset.pickMode) clearSelection();
@@ -1098,11 +1114,15 @@
     result = requireSuccess(window.duneRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.ruinRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.quarryRules.applyStroke(result.definition, grids, true));
-    result = requireSuccess(window.constructionRules.applyRoadStroke(result.definition, grids, true, scene.groundTiles));
+    // 起笔时有墙门的格，本笔只拆墙门；门下道路必须下一笔才能清除。
+    const roadGrids = grids.filter(([x, y]) => !scene.map.cells[y]?.[x]?.residentialWall);
+    result = requireSuccess(window.constructionRules.applyWallStroke(result.definition, grids, true));
+    result = requireSuccess(window.constructionRules.applyRoadStroke(result.definition, roadGrids, true, scene.groundTiles));
     // 同一候选内完成各类事实删除；prepareScene与历史只提交一次。
     for (const id of ids) result.definition = requireSuccess(window.qtiledMaps.applyMapEdit(result.definition,
       { type: 'remove', id }, scene.elementsById, window.constructionRules.canCoexist)).definition;
     const hasContent = ids.size > 0 || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.beach || scene.map.cells[y]?.[x]?.tree || scene.map.cells[y]?.[x]?.rock || scene.map.cells[y]?.[x]?.dune || scene.map.cells[y]?.[x]?.ruin || scene.map.cells[y]?.[x]?.quarry)
+      || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.residentialWall)
       || result.selectedGrids.some(([x, y]) => scene.map.cells[y]?.[x]?.road);
     const normalized = requireSuccess(window.beachRules.normalize(result.definition, grids, false, scene.rules));
     return { ...result, definition: normalized.definition, hasContent };
@@ -1163,13 +1183,15 @@
     if (featureTools.includes(stroke.terrain)) {
       stroke.grids = new Map([[grid.join(','), grid]]);
       stroke.last = grid;
-    } else if (stroke.terrain === 'road') {
+    } else if (roadTools.includes(stroke.terrain)) {
       // 原作平地道路从终点回溯，等长方向按象限固定排序；选区只取本次起终点。
       const start = stroke.start || grid;
       stroke.start = start;
       stroke.grids = new Map([[start.join(','), start]]);
       const point = [...start];
-      const axes = (grid[0] - start[0]) * (grid[1] - start[1]) > 0 ? [1, 0] : [0, 1];
+      const axes = stroke.terrain === 'residential-wall'
+        ? Math.abs(grid[0] - start[0]) > Math.abs(grid[1] - start[1]) ? [0, 1] : [1, 0]
+        : (grid[0] - start[0]) * (grid[1] - start[1]) > 0 ? [1, 0] : [0, 1];
       for (const axis of axes) while (point[axis] !== grid[axis]) {
         point[axis] += Math.sign(grid[axis] - point[axis]);
         stroke.grids.set(point.join(','), [...point]);
@@ -1204,7 +1226,7 @@
       if (terrain === 'clear' && stroke.offsets.length > 1) {
         for (const id of clearEntityIds(base, hit, [...grids.values()], true)) stroke.entityIds.add(id);
       }
-      const result = evaluateBrush(base, terrain, [...grids.values()], { grid, entityIds: stroke.entityIds, treeKind: stroke.treeKind });
+      const result = evaluateBrush(base, terrain, [...grids.values()], { grid, entityIds: stroke.entityIds, treeKind: stroke.treeKind, wallStyle: stroke.wallStyle });
       const next = prepareScene({ ...base, map: result.definition }, cameraAngle, result.resolved);
       const preview = new window.spritejs.Group({ id: 'map-stroke-preview' });
       appendBrushFeedback(preview, next, result.selectedGrids, { linked: result.linked, rejected: result.rejected, hit });
@@ -1248,7 +1270,7 @@
     ++loadRequestId; // 新编辑不能被较早的异步读取覆盖。
     // 从全图开始编辑时保持当前缩放，避免新增岸线改变外框导致笔尖漂移。
     viewport.mode = 'work';
-    stroke = { base: currentScene, terrain: tool, treeKind: treeKinds[tool], entityIds: new Set(),
+    stroke = { base: currentScene, terrain: tool, treeKind: treeKinds[tool], wallStyle, entityIds: new Set(),
       offsets: [...roadTools, ...featureTools].includes(tool) ? [[0, 0]] : getBrushOffsets(),
       grids: new Map(), pointerId: event.pointerId };
     container.setPointerCapture?.(event.pointerId);

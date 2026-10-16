@@ -1085,7 +1085,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(20);
+  expect(Object.keys(initial)).toHaveLength(21);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
   expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
   expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
@@ -1615,7 +1615,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'beach-map', 'ruins-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'village-map',
+    'rectangular-water-map', 'beach-map', 'ruins-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'residential-wall-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -3681,4 +3681,106 @@ test('抬高道路格只清除新坡面与跨高差道路，合法孤立高台�
   expect(after.cells[5][4].road).toBeUndefined(); expect(after.cells[5][6].road).toBeUndefined();
   expect(after.cells[5][5].road).toBe('ordinary'); expect(after.cells[5][10].road).toBe('ordinary');
   p.get('undo').click(); expect(p.save()).toEqual(map); expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('住宅墙长边先画，预览取消/拒绝整笔，拆门留路和两步清除均可撤销，四向及JSON保留身份', async () => {
+  const p = await constructionPage();
+  const draw = (tool, start, end = start) => {
+    p.tool(tool); p.pointer('pointerdown', start); p.pointer('pointermove', end); p.pointer('pointerup', end);
+  };
+  draw('road', [5, 2], [5, 7]);
+  const before = p.save();
+  p.tool('residential-wall'); p.pointer('pointerdown', [3, 3]); p.pointer('pointermove', [8, 5]);
+  expect(p.save()).toEqual(before);
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(p.save()).toEqual(before);
+  draw('residential-wall', [3, 3], [8, 5]);
+  const placed = p.save();
+  expect(p.get('issues').hidden).toBe(true);
+  expect(placed.cells.flat().filter(cell => cell.residentialWall)).toHaveLength(8);
+  expect(placed.cells[3][5].residentialWall).toBe('gate-1');
+  expect(placed.cells[5][8].residentialWall).toBe('wall-1');
+  draw('residential-wall', [3, 3], [8, 5]);
+  p.get('undo').click(); expect(p.save()).toEqual(before);
+  p.get('redo').click(); expect(p.save()).toEqual(placed);
+  draw('road', [4, 2], [4, 5]);
+  expect(p.get('issues').hidden).toBe(false); expect(p.save()).toEqual(placed);
+  draw('clear', [5, 3]);
+  expect(p.save().cells[3][5]).toEqual(before.cells[3][5]);
+  draw('clear', [5, 3]); expect(p.save().cells[3][5].road).toBeUndefined();
+  p.get('undo').click(); expect(p.save().cells[3][5]).toEqual(before.cells[3][5]);
+  p.get('undo').click(); expect(p.save()).toEqual(placed);
+  p.get('map-json').value = JSON.stringify(placed); p.get('read-map').click();
+  setDisplay(p, 'flat-edit', false);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); expect(p.save()).toEqual(placed);
+    expect(p.sprites().filter(sprite => sprite.attrs.texture.file === 'residential-wall-atlas.webp')).toHaveLength(8);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('围墙样本可加载；树上建墙整笔拒绝，先清树再建墙', async () => {
+  const p = await page({}, 'residential-wall-map');
+  expect(p.get('issues').hidden).toBe(true);
+  const before = p.save();
+  setDisplay(p, 'flat-edit', true);
+  p.tool('residential-wall'); p.pointer('pointerdown', [11, 6]); p.pointer('pointermove', [12, 6]); p.pointer('pointerup', [12, 6]);
+  expect(p.get('issues').hidden).toBe(false); expect(p.save()).toEqual(before);
+  p.tool('clear'); p.pointer('pointerdown', [12, 6]); p.pointer('pointerup', [12, 6]);
+  p.tool('residential-wall'); p.pointer('pointerdown', [12, 6]); p.pointer('pointerup', [12, 6]);
+  expect(p.get('issues').hidden).toBe(true); expect(p.save().cells[6][12].residentialWall).toBe('wall-1');
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each([1, 2, 3, 4])('第 %i 款门洞四镜头真实像素清除与透明角穿透', async style => {
+  const p = await constructionPage();
+  const map = p.save(); map.cells[5][5].road = 'ordinary'; map.cells[5][5].residentialWall = `gate-${style}`;
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  setDisplay(p, 'flat-edit', false);
+  const library = JSON.parse(read('static/construction-samples/elements.json'));
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle); p.tool('clear');
+    const def = library[`residential-wall-${[370, 387, 404, 421][style - 1] + (angle % 180 === 0 ? 13 : 14)}`];
+    const draw = resolveElementDraw(def, [5, 5], { angle, tileSize: [80, 40], originPixel: [0, 0] });
+    draw.position[1] -= 320;
+    const image = p.sprites().find(sprite => sprite.attrs.texture.file === draw.source).attrs.texture.pixels;
+    let pixel;
+    for (let y = 0; y < 20 && !pixel; y++) for (let x = 0; x < draw.rect[2]; x++) {
+      if (image.data[((y + draw.rect[1]) * image.width + x + draw.rect[0]) * 4 + 3]) { pixel = [x, y]; break; }
+    }
+    expect(pixel).toBeDefined();
+    const root = p.layer.children[0];
+    const screen = point => point.map((v, axis) => root.attrs.pos[axis] + (draw.position[axis] + v + 0.5) * root.attrs.scale[axis]);
+    expect(image.data[(draw.rect[1] * image.width + draw.rect[0]) * 4 + 3]).toBe(0);
+    p.screenPointer('pointerdown', screen([0, 0])); p.screenPointer('pointerup', screen([0, 0]));
+    expect(p.save()).toEqual(map);
+    p.screenPointer('pointerdown', screen(pixel)); p.screenPointer('pointerup', screen(pixel));
+    expect(p.save().cells[5][5]).toEqual({ terrain: 'land', elevation: 8, road: 'ordinary' });
+    p.get('undo').click(); expect(p.save()).toEqual(map);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each([1, 2, 3, 4])('款式 %i 控件参与预览/取消/历史/文件，异款覆盖整笔拒绝', async style => {
+  const p = await constructionPage();
+  const setStyle = value => p.window.document.querySelector(`[data-wall-style="${value}"]`).click();
+  const draw = (tool, start, end = start) => { p.tool(tool); p.pointer('pointerdown', start); p.pointer('pointermove', end); p.pointer('pointerup', end); };
+  draw('road', [5, 2], [5, 6]); const before = p.save();
+  p.tool('residential-wall'); setStyle(style);
+  expect(p.get('wall-style')).toBeNull();
+  expect(p.window.document.querySelectorAll('button[data-wall-style]')).toHaveLength(4);
+  expect(p.window.document.querySelectorAll('button[data-wall-style][aria-pressed="true"]')).toHaveLength(1);
+  expect(p.get('current-tool').textContent).toBe(['红色围墙', '灰色围墙', '黄褐色围墙', '棕色围墙'][style - 1]);
+  p.pointer('pointerdown', [3, 4]); p.pointer('pointermove', [7, 4]);
+  expect(p.save()).toEqual(before);
+  setStyle(style % 4 + 1); p.pointer('pointerup', [7, 4]); expect(p.save()).toEqual(before);
+  setStyle(style); draw('residential-wall', [3, 4], [7, 4]);
+  const placed = p.save(); expect(placed.cells[4][5].residentialWall).toBe(`gate-${style}`);
+  expect(placed.cells[4][4].residentialWall).toBe(`wall-${style}`);
+  setStyle(style % 4 + 1); draw('residential-wall', [4, 3], [4, 5]);
+  expect(p.get('issues').hidden).toBe(false); expect(p.save()).toEqual(placed);
+  p.get('undo').click(); expect(p.save()).toEqual(before); p.get('redo').click(); expect(p.save()).toEqual(placed);
+  p.get('map-json').value = JSON.stringify(placed); p.get('read-map').click(); expect(p.save()).toEqual(placed);
+  draw('clear', [5, 4]); expect(p.save().cells[4][5]).toEqual(before.cells[4][5]);
+  expect(p.window.document.querySelectorAll('button[data-wall-style][aria-pressed="true"]')).toHaveLength(0); expect(p.errors).toEqual([]); p.window.close();
 });

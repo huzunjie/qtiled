@@ -1,0 +1,890 @@
+{
+  "version": 2,
+  "id": "residential-wall-map",
+  "tileSize": [
+    80,
+    40
+  ],
+  "elevationStep": 40,
+  "climate": "temperate",
+  "cells": [
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary",
+        "residentialWall": "gate-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-1"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-2"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-4"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-2"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-4"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-2"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-4"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "tree": "ordinary-mature"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "gate-2",
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "gate-4",
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-2"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-4"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-2"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-4"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary",
+        "residentialWall": "gate-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "residentialWall": "wall-3"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ],
+    [
+      {
+        "terrain": "water",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8,
+        "road": "ordinary"
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      },
+      {
+        "terrain": "land",
+        "elevation": 8
+      }
+    ]
+  ],
+  "entities": [
+    {
+      "id": "house-1",
+      "element": "courtyard-house",
+      "grid": [
+        4,
+        5
+      ],
+      "angle": 0
+    }
+  ]
+}

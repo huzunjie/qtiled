@@ -4,8 +4,15 @@
 (function () {
   const buildingId = 'courtyard-house';
   const isSolid = element => element === buildingId || /^emperor-pinnacle-[1-4]$/.test(element);
+  const wallBases = [370, 387, 404, 421];
+  const isGate = value => /^gate-[1-4]$/.test(value);
   const cardinal = [[0, -1], [1, 0], [0, 1], [-1, 0]];
   const issue = (path, code, message) => ({ path, code, message });
+  // 原作住宅墙专用表：N/E/S/W 四位邻接，四列为原作四镜头；不能套用道路表。
+  const wallViews = [[0, 2, 0, 2], [2, 0, 2, 0], [0, 2, 0, 2], [7, 6, 5, 4],
+    [2, 0, 2, 0], [2, 0, 2, 0], [4, 7, 6, 5], [9, 8, 11, 10],
+    [0, 2, 0, 2], [6, 5, 4, 7], [0, 2, 0, 2], [8, 11, 10, 9],
+    [5, 4, 7, 6], [11, 10, 9, 8], [10, 9, 8, 11], [12, 12, 12, 12]];
   // 既有装饰实例可共存；建筑和山峰的完整占地独占，不改变核心库默认策略。
   const canCoexist = ({ entities }) => !entities.some(entity => isSolid(entity.element));
 
@@ -28,6 +35,12 @@
       if (cell.road && (cell.terrain !== 'land' || cell.beach)) {
         const next = { ...cell };
         delete next.road;
+        delete next.residentialWall;
+        return next;
+      }
+      if (cell.residentialWall && !supportsGround({}, cell)) {
+        const next = { ...cell };
+        delete next.residentialWall;
         return next;
       }
       return cell;
@@ -108,6 +121,12 @@
       }
     }
     removeRoads.forEach(key => { const [x, y] = key.split(',').map(Number); delete cells[y][x].road; });
+    for (const tile of tiles) {
+      const [x, y] = tile.grid;
+      const cell = cells[y][x];
+      if (cell.residentialWall && (!supportsGround({}, cell) || tile.slope
+        || (isGate(cell.residentialWall) && !cell.road))) delete cell.residentialWall;
+    }
     const entities = new Map(after.entities.map(entity => [entity.id, entity]));
     const heights = new Map();
     const removed = new Set();
@@ -139,6 +158,17 @@
         issues.push(issue(path, 'entity-ground', '实体完整占地的地表或地物不符合放置要求。'));
       }
       const building = occupants.some(id => isSolid(map.entities.find(entity => entity.id === id)?.element));
+      if (cell.residentialWall !== undefined) {
+        if (typeof cell.residentialWall !== 'string' || !/^(wall|gate)-[1-4]$/.test(cell.residentialWall)) {
+          issues.push(issue(`${path}.residentialWall`, 'unsupported-wall', '仅支持四款住宅墙 wall-1～4 和门 gate-1～4。'));
+        }
+        if (!supportsGround({}, cell) || tile?.slope || occupants.length) {
+          issues.push(issue(path, 'wall-ground', '住宅围墙需要平坦陆地，不能与地物或其他实体重叠。'));
+        }
+        if (isGate(cell.residentialWall) !== (cell.road === 'ordinary')) {
+          issues.push(issue(path, 'wall-road', '住宅门需要保留普通道路；已有墙不能直接铺路，须先拆墙。'));
+        }
+      }
       if (cell.road !== undefined && cell.road !== 'ordinary') {
         issues.push(issue(`${path}.road`, 'unsupported-road', '仅支持普通道路 ordinary；无道路时省略 road。'));
       }
@@ -168,6 +198,26 @@
     const issues = [];
     const result = tiles.map(tile => {
       const [x, y] = tile.grid;
+      const cell = map.cells[y][x];
+      if (cell.residentialWall) {
+        const mask = field => cardinal.reduce((value, [dx, dy], i) => value
+          | (map.cells[y + dy]?.[x + dx]?.[field] ? 1 << i : 0), 0);
+        const walls = mask('residentialWall');
+        let offset = wallViews[walls][column];
+        let variant = 0;
+        if (isGate(cell.residentialWall)) {
+          const roads = mask('road');
+          offset = (roads ? roads & 5 : walls & 10) ? 13 : 14;
+          if (column % 2) offset = 27 - offset;
+        } else if (offset === 0 || offset === 2) {
+          // Demo 的稳定变体，不复制原作刷新次序相关的随机状态。
+          variant = ((x * 31 + y * 17) >>> 0) % 2;
+          offset += variant;
+        }
+        const element = `residential-wall-${wallBases[Number(cell.residentialWall.slice(-1)) - 1] + offset}`;
+        if (!elements[element]) issues.push(issue(`cells[${y}][${x}].residentialWall`, 'missing-wall-element', '缺少住宅墙或门素材。'));
+        return { ...tile, element, variant, residentialWall: cell.residentialWall, ...(cell.road ? { road: cell.road } : {}) };
+      }
       if (!map.cells[y][x].road) return tile;
       if (tile.ramp) return { ...tile, road: 'ordinary' };
       const neighbors = rules.neighborOffsets.map(([dx, dy]) => map.cells[y + dy]?.[x + dx]?.road === 'ordinary' ? 1 : 0);
@@ -195,11 +245,28 @@
     for (const [x, y] of selected.values()) {
       const cell = cells[y]?.[x];
       if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}]`, 'road-outside', '道路整笔不能越界或经过空角。')] };
+      if ((!erase && cell.residentialWall && !isGate(cell.residentialWall)) || (erase && isGate(cell.residentialWall))) {
+        return { definition: null, issues: [issue(`cells[${y}][${x}]`, 'wall-road', '请先拆除住宅墙或门，再编辑其下道路。')] };
+      }
       if (erase) delete cell.road;
       else cell.road = 'ordinary';
     }
     return { definition: { ...map, cells }, issues: [], selectedGrids: [...selected.values()] };
   }
 
-  window.constructionRules = { buildingId, isSolid, canCoexist, validate, resolve, applyRoadStroke, reconcileSurface, applySurfaceStroke, reconcileTerrain };
+  function applyWallStroke(map, grids, erase = false, style = 1) {
+    if (!Number.isInteger(style) || style < 1 || style > 4) return { definition: null, issues: [issue('$wallStyle', 'unsupported-wall', '请选择住宅围墙款式 1～4。')] };
+    const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
+    for (const [x, y] of grids) {
+      const cell = cells[y]?.[x];
+      if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}]`, 'wall-outside', '围墙整笔不能越界或经过空角。')] };
+      if (erase) delete cell.residentialWall;
+      else if (cell.residentialWall && Number(cell.residentialWall.slice(-1)) !== style) {
+        return { definition: null, issues: [issue(`cells[${y}][${x}]`, 'wall-occupied', '更换围墙款式前请先拆除已有墙门。')] };
+      } else if (!cell.residentialWall) cell.residentialWall = `${cell.road ? 'gate' : 'wall'}-${style}`;
+    }
+    return { definition: { ...map, cells }, issues: [], selectedGrids: grids };
+  }
+
+  window.constructionRules = { buildingId, isSolid, canCoexist, validate, resolve, applyRoadStroke, applyWallStroke, reconcileSurface, applySurfaceStroke, reconcileTerrain };
 })();
