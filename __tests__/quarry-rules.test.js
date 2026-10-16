@@ -8,13 +8,14 @@ const context = vm.createContext({ window: {} });
 const quarry = context.window.quarryRules;
 const makeMap = () => ({ version: 2, id: 'quarry', tileSize: [80, 40], elevationStep: 40,
   cells: Array.from({ length: 20 }, () => Array.from({ length: 24 }, () => ({ terrain: 'land', elevation: 8, terrainVariant: 0 }))), entities: [] });
-const brush = (x, y) => quarry.offsets.map(([dx, dy]) => [x + dx, y + dy]);
+// 保留旧样本的非对称 6×6 夹具，用于轮廓回归；不是产品笔刷限制。
+const brush = (x, y) => Array.from({ length: 36 }, (_, i) => [x + i % 6 - 3, y + Math.floor(i / 6) - 2]);
 const resolve = (map, angle = 0, occupancy = new Map(), catalog = elements) => quarry.resolve(map,
   map.cells.flatMap((row, y) => row.map((cell, x) => cell && ({ grid: [x, y], elevation: cell.elevation, element: 'emperor-bare-land' })).filter(Boolean)), catalog, occupancy, angle);
 const paint = (map, x, y, erase) => quarry.applyStroke(map, brush(x, y), erase).definition;
 const count = map => map.cells.flat().filter(c => c?.quarry).length;
 
-test('足迹固定为原作36格，邻接重叠和局部删除不创建实体、不修改地面高度', () => {
+test('自定义36格足迹，邻接重叠和局部删除不创建实体、不修改地面高度', () => {
   const original = makeMap(); const first = paint(original, 8, 8);
   expect(count(original)).toBe(0); expect(count(first)).toBe(36);
   expect(first.cells[6][5].quarry).toBe(true); expect(first.cells[11][10].quarry).toBe(true);
@@ -56,7 +57,7 @@ test.each(['road', 'tree', 'rock', 'water', 'height', 'entity', 'invalid'])('%s�
   expect(JSON.stringify(map)).toBe(before);
 });
 
-test('越界、空角及整笔跨高度拒绝，复杂掩码与缺图不静默使用错误素材', () => {
+test('越界、空角拒绝，跨高度由最终地形判断，零碎边格显示黄土，缺图仍拒绝', () => {
   const map = makeMap();
   expect(quarry.applyStroke(map, brush(1, 1)).issues[0].code).toBe('quarry-outside');
   map.cells[8][8] = null; expect(quarry.applyStroke(map, brush(8, 8)).issues[0].code).toBe('quarry-outside');
@@ -65,9 +66,12 @@ test('越界、空角及整笔跨高度拒绝，复杂掩码与缺图不静默�
   const bad = makeMap(); bad.cells[8][8].quarry = true;
   // 原外表未匹配取反mask10：仅东北、东南缺失。
   [[0,-1],[1,0],[0,1],[-1,1],[-1,0],[-1,-1]].forEach(([dx,dy]) => { bad.cells[8+dy][8+dx].quarry = true; });
-  expect(resolve(bad).issues.some(i => i.code === 'quarry-contour')).toBe(true);
+  expect(resolve(bad).issues).toEqual([]);
+  expect(resolve(bad).tiles.find(tile => tile.grid.join(',') === '8,8').element).toMatch(/^emperor-bare-land/);
   const heights = makeMap(); heights.cells[8][8].elevation = 9;
-  expect(quarry.applyStroke(heights, brush(8, 8)).issues[0].code).toBe('quarry-height');
+  const candidate = quarry.applyStroke(heights, brush(8, 8));
+  expect(candidate.issues).toEqual([]);
+  expect(resolve(candidate.definition).issues.some(item => item.code === 'quarry-ground')).toBe(true);
 });
 
 
@@ -89,5 +93,32 @@ test('采石地外圈与普通地表共享全部八种黄土定义，无重复�
     expect(tile.element).toBe(rules.landVariants[i]);
     expect(elements[tile.element].views[0].source).toBe('grass-atlas.webp');
     expect(elements).not.toHaveProperty(`emperor-quarry-${247 + i}`);
+  }
+});
+
+
+test('同一笔可绘制互不相连的不同高度平台，不自动抹平地形', () => {
+  const map = makeMap();
+  for (let y = 0; y < 20; y++) for (let x = 13; x < 24; x++) map.cells[y][x].elevation = 10;
+  const grids = [...brush(6, 8), ...brush(18, 8)];
+  const result = quarry.applyStroke(map, grids);
+  expect(result.issues).toEqual([]);
+  expect(count(result.definition)).toBe(72);
+  for (const angle of [0, 90, 180, 270]) expect(resolve(result.definition, angle).issues).toEqual([]);
+  result.definition.cells.forEach((row, y) => row.forEach((cell, x) => expect(cell.elevation).toBe(map.cells[y][x].elevation)));
+});
+
+
+test('全部256种边邻域可局部编辑，四向有合法原图且不改变采石格事实', () => {
+  const neighbors = [[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1]];
+  for (let mask = 0; mask < 256; mask++) {
+    const map = makeMap(); map.cells[8][8].quarry = true;
+    neighbors.forEach(([dx, dy], i) => { if (mask & (1 << i)) map.cells[8 + dy][8 + dx].quarry = true; });
+    const before = JSON.stringify(map);
+    for (const angle of [0, 90, 180, 270]) {
+      const result = resolve(map, angle); expect(result.issues).toEqual([]);
+      expect(elements[result.tiles.find(tile => tile.grid.join(',') === '8,8').element]).toBeDefined();
+    }
+    expect(JSON.stringify(map)).toBe(before);
   }
 });

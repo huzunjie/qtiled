@@ -18,22 +18,26 @@
     return Boolean(cell && waterNeighbors.some(([dx, dy]) => cells[y + dy]?.[x + dx]?.elevation > cell.elevation));
   }
 
-  // 自然替换只修改调用方已克隆的候选格。方向表不等于任意地物互刷；
-  // 资格由各画笔基于起笔地图判断；表只声明允许替换的字段，其余占用由最终校验保护。
+  // 只修改调用方已克隆的候选格；目标资格仍由画笔检查，最终事实保持互斥。
+  const naturalFields = ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry', 'ruin'];
   const replacements = {
-    land: { terrain: 'land', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry', 'ruin'] },
-    water: { terrain: 'water', remove: ['tree', 'rock', 'beach', 'saltMarsh', 'dune', 'quarry', 'ruin'] },
-    rock: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'rock' },
-    dune: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'dune' },
-    quarry: { terrain: 'land', remove: ['beach', 'saltMarsh'], field: 'quarry' },
-    tree: { remove: ['saltMarsh'], field: 'tree' },
-    'salt-marsh': { remove: ['tree', 'rock', 'dune', 'quarry'], field: 'saltMarsh' },
+    land: { terrain: 'land', keepRoad: true },
+    water: { terrain: 'water', keepRoad: true },
+    beach: { terrain: 'land', field: 'beach', keepRoad: true },
+    rock: { terrain: 'land', field: 'rock' },
+    dune: { terrain: 'land', field: 'dune' },
+    quarry: { terrain: 'land', field: 'quarry' },
+    ruin: { terrain: 'land', field: 'ruin' },
+    tree: { field: 'tree' },
+    'salt-marsh': { field: 'saltMarsh', keepRoad: true },
   };
   function replaceNaturalCell(cell, tool, value = true) {
     const rule = owns(replacements, tool) && replacements[tool];
     if (!rule) return;
     if (rule.terrain) cell.terrain = rule.terrain;
-    rule.remove.forEach(key => { delete cell[key]; });
+    naturalFields.forEach(key => { delete cell[key]; });
+    // 陆水/海滩的道路在最终地表确定后处理；盐沼允许共存，其余地物直接替换道路。
+    if (!rule.keepRoad) delete cell.road;
     if (rule.field) cell[rule.field] = value;
   }
 
@@ -299,5 +303,5 @@
     return { definition: result.issues.length ? null : definition, ...result };
   }
 
-  window.landWaterRules = { resolve, applyStroke, replaceNaturalCell, normalizeNaturalStroke, needsSlope };
+  window.landWaterRules = { resolve, applyStroke, naturalFields, replaceNaturalCell, normalizeNaturalStroke, needsSlope };
 })();

@@ -204,3 +204,29 @@ test('跨高差不派生草沙边缘；草沙整理不跨层扩散', () => {
   expect(edited.definition.cells.flat().filter(cell => cell.beach).every(cell => cell.elevation === 9)).toBe(true);
   for (const angle of [0, 90, 180, 270]) expect(resolve(edited.definition, angle).issues).toEqual([]);
 });
+
+test.each(['ramp', 'halfSlope'])('平沙地可接近%s，真实部件仍完整且四向原图可解析', feature => {
+  const map = make(); map.cells.forEach(row => row.forEach((cell, x) => { cell.elevation = x < 7 ? 9 : 8; }));
+  map.cells[6][7][feature] = true;
+  expect(resolve(map).issues).toEqual([]);
+  const edited = construction.applySurfaceStroke(map, 'beach', [[9, 7]], elements, rules, heights);
+  expect(edited.issues).toEqual([]); expect(edited.definition.cells[7][9].beach).toBe(true);
+  expect(edited.definition.cells[6][7][feature]).toBe(true);
+  for (const angle of [0, 90, 180, 270]) {
+    const result = resolve(edited.definition, angle); expect(result.issues).toEqual([]);
+    expect(tileAt(result, 7, 6).slope).toBe(true);
+    expect(tileAt(result, 9, 7).element).toMatch(/^emperor-beach-/);
+    if (feature === 'halfSlope') expect(tileAt(result, 8, 6).halfSlope).toBe(true);
+  }
+  expect(map.cells[7][9].beach).toBeUndefined();
+});
+
+test('海滩区域升降后只把实际坡面恢复为普通岸地，保留高处与远处平沙地', () => {
+  const map = make(); map.cells.flat().forEach(cell => { cell.beach = true; });
+  const edited = elevation.applyStroke(map, { type: 'raise', grids: [[6, 6]] }, elements, rules, heights);
+  expect(edited.issues).toEqual([]);
+  expect(edited.definition.cells[6][6]).toMatchObject({ beach: true, elevation: 9 });
+  expect(edited.definition.cells[6][7].beach).toBeUndefined();
+  expect(edited.definition.cells[12][16].beach).toBe(true);
+  for (const angle of [0, 90, 180, 270]) expect(resolve(edited.definition, angle).issues).toEqual([]);
+});

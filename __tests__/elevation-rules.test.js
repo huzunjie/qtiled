@@ -18,6 +18,7 @@ vm.runInContext(read('demo/static/js/terrain-sample.js'), context);
 vm.runInContext(read('demo/static/js/environment-rules.js'), context);
 vm.runInContext(read('demo/static/js/land-water-rules.js'), context);
 vm.runInContext(read('demo/static/js/elevation-rules.js'), context);
+vm.runInContext(read('demo/static/js/construction-rules.js'), context);
 const resolve = (map, angle = 0, library = elements, rules = heightRules) => context.window.elevationRules.resolve(map, library, landRules, rules, angle);
 const stroke = (map, command, angle = 0) => context.window.elevationRules.applyStroke(map, command, elements, landRules, heightRules, angle);
 const createMap = (version = 2) => ({
@@ -34,6 +35,24 @@ const freezeDeep = value => {
 };
 const hasIssue = (result, code) => expect(result.issues).toContainEqual(expect.objectContaining({ code }));
 const at = (result, x, y) => result.tiles.find(tile => tile.grid[0] === x && tile.grid[1] === y);
+
+test('地表入口有无高程整理均保留最终清理结果及岸带信息', () => {
+  vm.runInContext(read('demo/static/js/beach-rules.js'), context);
+  const map = createMap();
+  map.entities = [{ id: 'dog-1', element: 'dog', grid: [4, 4], angle: 0 }];
+  map.cells[4][5].road = 'ordinary'; map.cells[7][7].road = 'ordinary';
+  const original = JSON.stringify(map);
+  for (const terrain of ['water', 'beach']) {
+    const results = [undefined, heightRules].map(rules => context.window.constructionRules.applySurfaceStroke(
+      map, terrain, [[4, 4], [5, 4]], elements, landRules, rules));
+    expect(results[0].issues).toEqual([]); expect(results[1]).toEqual(results[0]);
+    expect(results[0].definition.entities).toEqual([]);
+    expect(results[0].definition.cells[4][5].road).toBeUndefined();
+    expect(results[0].definition.cells[7][7].road).toBe('ordinary');
+    expect(results[0].bankGrids).toEqual([]);
+  }
+  expect(JSON.stringify(map)).toBe(original);
+});
 
 describe('整级高程真实素材规则', () => {
   test('v1 陆水解析和整笔操作完全沿用已有消费者', () => {
@@ -155,7 +174,7 @@ describe('高程整笔事务', () => {
     expect(result.issues).toEqual([]);
     expect(result.definition).toMatchObject({ version: 2, elevationStep: 40 });
     expect(result.definition.cells[4][4]).toEqual({ ...map.cells[4][4], elevation: 1 });
-    expect(result.definition.entities).toBe(map.entities);
+    expect(result.definition.entities).toEqual(map.entities);
     expect(JSON.stringify(map)).toBe(before);
     for (const angle of [0, 90, 180, 270]) expect(stroke(map, command, angle).definition).toEqual(result.definition);
     // VM 中构造的对象来自另一 JS realm；IO 明确仅收当前 realm 普通 JSON 对象。
@@ -196,14 +215,15 @@ describe('高程整笔事务', () => {
     hasIssue(stroke(createMap(), { type: 'raise', grids: [[4, 4]], levels }), 'invalid-elevation-stroke');
   });
 
-  test('设零不升级版本，零地面下挖拒绝；实体地基不可直接升降', () => {
+  test('设零不升级版本，零地面下挖拒绝；实体仍在平坦地面时可随地形升降', () => {
     const map = createMap(1);
     expect(stroke(map, { type: 'set-height', height: 0, grids: [[4, 4]] }).definition).toEqual(map);
     hasIssue(stroke(map, { type: 'lower', grids: [[4, 4]] }), 'elevation-stroke-range');
     map.entities = [{ id: 'dog-a', element: 'dog', grid: [4, 4] }];
     const result = stroke(map, { type: 'raise', grids: [[4, 4]] });
-    hasIssue(result, 'elevation-stroke-entity');
-    expect(result.definition).toBeNull();
+    expect(result.issues).toEqual([]);
+    expect(result.definition.entities).toEqual(map.entities);
+    expect(result.definition.cells[4][4].elevation).toBe(1);
     expect(map.cells[4][4].elevation).toBe(0);
   });
 
@@ -300,14 +320,15 @@ describe('多级与沟谷的创作过程', () => {
     expect(map.cells.flat().every(cell => cell.elevation === 8)).toBe(true);
   });
 
-  test('下挖联动遇到实体地基整笔拒绝，空角和边缘不填成陆地', () => {
+  test('下挖联动保留仍落在平地的完整实体，空角和边缘不填成陆地', () => {
     const map = large(12);
     map.cells.forEach(row => row.forEach(cell => { cell.elevation = 8; }));
     map.entities = [{ id: 'protected', element: 'dog', grid: [6, 5] }];
     const before = JSON.stringify(map);
     const result = stroke(map, { type: 'lower', grids: [[5, 5]] });
-    hasIssue(result, 'elevation-adjustment-protected');
-    expect(result.definition).toBeNull();
+    expect(result.issues).toEqual([]);
+    expect(result.definition.entities).toEqual(map.entities);
+    expect(result.definition.cells[5][6].elevation).toBe(7);
     expect(JSON.stringify(map)).toBe(before);
     map.entities = [];
     map.cells[0][0] = null;
@@ -336,14 +357,15 @@ describe('多级与沟谷的创作过程', () => {
     for (const angle of [0, 90, 180, 270]) expect(resolve(restored.definition, angle).issues).toEqual([]);
   });
 
-  test('联动不能改变实体地基；循环整笔拒绝，保留原快照', () => {
+  test('联动保留仍合法的实体；循环整笔拒绝，保留原快照', () => {
     const map = createMap();
     map.entities = [{ id: 'protected', element: 'dog', grid: [4, 4] }];
     freezeDeep(map);
     const ring = heightRules.neighborOffsets.map(([dx, dy]) => [4 + dx, 4 + dy]);
     const protectedResult = set(map, ring, 1);
-    hasIssue(protectedResult, 'elevation-adjustment-protected');
-    expect(protectedResult.definition).toBeNull();
+    expect(protectedResult.issues).toEqual([]);
+    expect(protectedResult.definition.entities).toEqual(map.entities);
+    expect(protectedResult.definition.cells[4][4].elevation).toBe(1);
     expect(map.cells.flat().every(cell => cell.elevation === 0)).toBe(true);
     const plain = freezeDeep(large());
     for (const [grids, height, code] of [
@@ -449,13 +471,13 @@ describe('非负高程与有效地图边缘', () => {
     expect(bottom.cells[0][0].elevation).toBe(0);
   });
 
-  test('高平台实体可加载，但不能被直接或联动改高，水域不随高程变化产生', () => {
+  test('高平台实体可加载和随合法地基直接或联动改高，水域不随高程变化产生', () => {
     const map = shift(createMap(), 8);
     map.entities = [{ id: 'dog-a', element: 'dog', grid: [4, 4] }];
     expect(resolve(map).issues).toEqual([]);
-    hasIssue(stroke(map, { type: 'raise', grids: [[4, 4]] }), 'elevation-stroke-entity');
+    expect(stroke(map, { type: 'raise', grids: [[4, 4]] }).definition.entities).toEqual(map.entities);
     const ring = heightRules.neighborOffsets.map(([dx, dy]) => [4 + dx, 4 + dy]);
-    hasIssue(stroke(map, { type: 'raise', grids: ring }), 'elevation-adjustment-protected');
+    expect(stroke(map, { type: 'raise', grids: ring }).definition.entities).toEqual(map.entities);
     expect(map.cells.flat().every(cell => cell.terrain === 'land' && cell.elevation === 8)).toBe(true);
   });
 });
@@ -659,4 +681,20 @@ test('降低临水陆地不改变水位，可形成水面高于岸边的完整�
 
 test('空地图仍返回结构问题，不在传递原高度邻域时抛异常', () => {
   expect(resolve(null).issues).toContainEqual(expect.objectContaining({ code: 'unsupported-version' }));
+});
+
+test('抬升邻水陆地生成岸带并清除水面专属实体，远处水面实例与所有水位保留', () => {
+  const map = createMap(); map.cells.flat().forEach(cell => { cell.terrain = 'water'; cell.elevation = 8; });
+  map.cells[4][4].terrain = 'land';
+  const library = { ...elements, boat: { ...elements.dog, id: 'boat', groundTerrain: 'water' } };
+  map.entities = [{ id: 'bank', element: 'boat', grid: [4, 3] }, { id: 'keep', element: 'boat', grid: [7, 7] }];
+  freezeDeep(map);
+  for (const angle of [0, 90, 180, 270]) {
+    const result = context.window.elevationRules.applyStroke(map, { type: 'raise', grids: [[4, 4]] }, library, landRules, heightRules, angle);
+    expect(result.issues).toEqual([]); expect(result.bankGrids).toHaveLength(8);
+    expect(result.definition.cells[3][4].terrain).toBe('land');
+    expect(result.definition.entities.map(e => e.id)).toEqual(['keep']);
+    expect(result.definition.cells.flat().filter(c => c.terrain === 'water').every(c => c.elevation === 8)).toBe(true);
+    expect(map.entities).toHaveLength(2);
+  }
 });

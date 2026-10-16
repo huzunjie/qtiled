@@ -153,33 +153,34 @@
         : '点击实体查看完整占地与属性；使用“清除”移除实例，支持撤销。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
       clear: '清除海滩、植被、沙丘、废墟、岩石、铜矿、铁矿、采石地、道路和实体。海滩恢复普通陆地，水域、盐沼与高度保留；盐沼上的道路清除后恢复盐沼。单格只清实际命中的实体；范围笔刷清除占地内实体，绿色表示可清除，空白处不产生修改；外围淡绿表示实际联动，红框及原因表示不能落笔。松开提交，Esc 取消。',
-      tree: '树木、竹子与树桩：三类可直接互换，也可替换盐沼，均以起笔前已有草地为准；混合范围逐格筛选，绿格生效，红格保持原状并提示原因。不能与水、道路、实体或坡面重叠。整笔松开提交，Esc 取消，一笔撤销一次；树木与树桩都会影响周围草地，不会自动生长。',
-      beach: '海滩：将平坦陆地或水域改为海滩，可邻接普通坡面岸带；海滩本格不能承担坡面，周围两格仍不能有坡道或半坡。按下预览时整理草沙轮廓，绿色为笔刷占地，外围淡绿为实际联动格。清除及陆水替换也会整理轮廓。不能覆盖道路、树石或实体。松开整笔提交，Esc 取消。',
-      quarry: '采石地：固定 6×6，可将等高水域或海滩改为陆地后放置，也可替换盐沼，可重叠或相邻扩展。使用“清除”工具擦除，可调整清除笔刷范围。坑边与坑内按周围采石格自动拼接。松开提交，Esc 取消；不记录可采数量或开采进度。',
-      ruin: '废墟：方形或菱形笔刷可连续绘制多格，自动组合为1×1或2×2原图，四镜头保持外观。清除按格擦除并重新组合；松开整笔提交，Esc取消，支持撤销重做。需要平坦陆地，不能覆盖水、海滩、道路、其他地物或实体。',
-      dune: '沙丘：可将水域或海滩改为平坦陆地后逐格绘制，也可替换盐沼，自动组合为1×1、2×2或3×3原图。不能覆盖道路、其他地物、实体或坡面；清除按格擦除。',
-      'salt-marsh': '盐沼：在距水域或海滩至少5格（含斜向）的平坦陆地绘制，可铺普通道路。清路保留盐沼；用陆地或水域笔刷替换盐沼。满足起笔前距水条件时可替换树竹、残株、岩矿、沙丘和采石地；不能覆盖道路、实体或坡面。松开整笔提交，Esc 取消。',
-      rock: '普通石、铜矿与铁矿：在平坦陆地逐格绘制或互换类别，同类自动组合为1×1、2×2或3×3大块。三类都可直接将水域或海滩改为陆地并放置，也可替换盐沼，环境随事实重算。不能覆盖植被、道路、实体或坡面；清除只删笔刷内的岩石格。含矿格分布表示含矿范围，不记录可采数量。松开提交，Esc 取消。',
-      ramp: '一级直边坡道：按下预览，松开切换；Esc 取消。可放在普通坡面或半坡上，再沿高低两端铺路。移除前请先擦路。',
-      'half-slope': '一级直边半坡：将坡面延伸到低侧两格，高程数值不变。点击任一部分切换整体；可相邻放置。改变占地前请先擦路。',
+      tree: '树木、竹子与树桩：三类可直接互换或替换其他地物，均以起笔前已有草地为准；混合范围逐格筛选，绿格生效，红格保持原状并提示原因。可替换其他地物、道路和实体；水域及坡面不能落笔。整笔松开提交，Esc 取消，一笔撤销一次；树木与树桩都会影响周围草地，不会自动生长。',
+      beach: '海滩：将平坦陆地或水域改为海滩，可邻接普通坡面岸带；需要承担坡面或半坡部件的格保留普通岸地，其余平地可绘制。按下预览时整理草沙轮廓，绿色为笔刷占地，外围淡绿为实际联动格。清除及陆水替换也会整理轮廓。可直接替换其他地物、道路和实体。松开整笔提交，Esc 取消。',
+      quarry: '采石地：可选方形或菱形、1～9 格尺寸，可将水域或海滩改为陆地后放置，也可替换其他地物、道路和实体，可重叠或相邻扩展。使用“清除”工具按所选范围擦除。坑边与坑内按周围采石格自动拼接。松开提交，Esc 取消；不记录可采数量或开采进度。',
+      ruin: '废墟：方形或菱形笔刷可连续绘制多格，自动组合为1×1或2×2原图，四镜头保持外观。清除按格擦除并重新组合；松开整笔提交，Esc取消，支持撤销重做。需要平坦地面，可将水域或海滩改为陆地并替换其他地物、道路和实体。',
+      dune: '沙丘：可将水域或海滩改为平坦陆地后逐格绘制，也可替换盐沼，自动组合为1×1、2×2或3×3原图。可替换其他地物、道路和实体，不能占用坡面；清除按格擦除。',
+      'salt-marsh': '盐沼：在距水域或海滩至少5格（含斜向）的平坦陆地绘制，可铺普通道路。清路保留盐沼；用陆地或水域笔刷替换盐沼。满足起笔前距水条件时可替换树竹、残株、岩矿、沙丘和采石地；保留普通道路，可替换失效实体，不能占用坡面。松开整笔提交，Esc 取消。',
+      rock: '普通石、铜矿与铁矿：在平坦陆地逐格绘制或互换类别，同类自动组合为1×1、2×2或3×3大块。三类都可直接将水域或海滩改为陆地并放置，也可替换盐沼，环境随事实重算。可替换其他地物、道路和实体，不能占用坡面；清除只删笔刷内的岩石格。含矿格分布表示含矿范围，不记录可采数量。松开提交，Esc 取消。',
+      ramp: '一级直边坡道：按下预览，松开切换；Esc 取消。可放在普通坡面或半坡上，再沿高低两端铺路。移除后自动清除失效道路。',
+      'half-slope': '一级直边半坡：将坡面延伸到低侧两格，高程数值不变。点击任一部分切换整体；可相邻放置。改变占地后自动清除失效道路及地物。',
       building: '民居 2×2：移入画布预览，点击放置，R 转向，Esc 返回查看。两个外观用于四向，相反方向共用素材。',
       pinnacle: '山峰 5×5：选择外观，移入画布预览，点击整体放置，Esc 返回查看。切换镜头保持外观；使用“清除”移除整座，地面按当前干湿环境恢复。占地须为等高平坦陆地，不能覆盖道路、其他地物或实体。',
       pan: '左键拖动或触控板双指滚动可平移；Esc 取消当前拖动。“查看全图”可找回地图。',
-      land: '陆地笔刷：替换树木、岩矿、海滩、盐沼、沙丘、废墟和所选采石格，保护道路和完整实体；拖动预览整笔，松开提交；Esc 取消。越过空角或地图边界会拒绝整笔；中键可平移。',
-      water: '水域笔刷：替换树木、岩矿、海滩、盐沼、沙丘、废墟和所选采石格，不能淹没道路和完整实体；拖动预览整笔，松开提交；Esc 取消。相邻水格必须等高；贴高地时必要低格保留为陆地岸带，预览会标明。岸线随邻格更新；中键可平移。',
-      raise: '抬高一级：同一格每笔只升一次，最高 16 级。绿色为笔刷占地，外围淡绿包含必要水转陆岸带；水位不随陆地联动改变。松开提交，Esc 取消。',
+      land: '陆地笔刷：替换树木、岩矿、海滩、盐沼、沙丘、废墟和所选采石格，保留仍适用于陆地的道路和实体，自动清除失效实例；拖动预览整笔，松开提交；Esc 取消。笔刷越界部分跳过，离开地表暂停、返回续画；松开保留已画部分，中键可平移。',
+      water: '水域笔刷：替换树木、岩矿、海滩、盐沼、沙丘、废墟和所选采石格，自动清除最终水域上的道路和陆地实体，整实体占地会标明；拖动预览整笔，松开提交；Esc 取消。相邻水格必须等高；贴高地时必要低格保留为陆地岸带，预览会标明。岸线随邻格更新；中键可平移。',
+      raise: '抬高一级：同一格每笔只升一次，最高 16 级。绿色为笔刷占地，外围淡绿包含必要水转陆岸带；水位不随陆地联动改变；地形变化后保留合法内容、清除失效地物、道路及完整实体。松开提交，Esc 取消。',
       lower: '降低一级：最低 0 级；需要坡面空间时会联动扩大下挖范围。绿色为笔刷占地，外围淡绿为实际联动格。',
       'raise-two': '抬高两级：同一格每笔目标只增加两级，超出 16 级整笔拒绝；周边沿用现有坡面整理，目标可能修订。松开提交，Esc 取消。',
       'lower-two': '降低两级：同一格每笔目标只减少两级，低于 0 级整笔拒绝；沿用现有下挖联动。松开提交，Esc 取消。',
     }[rockTools.includes(tool) ? 'rock' : treeTools.includes(tool) ? 'tree' : tool];
+    if (brushTools.includes(tool)) get('click-help').textContent += ' 笔刷只处理地图内有效格；拖出地表或画布暂停，返回续画，松开保留此前有效部分。';
     if (get('flat-edit').checked) get('click-help').textContent += ' 平面编辑按世界格选取，数字为真实高度，可编辑遮挡沟底。';
   }
 
   // 可调笔刷参数属于作者选择；固定工具只改变显示，不覆盖这份选择。
   function updateBrushControls() {
     const tool = get('edit-tool').value;
-    const fixed = !brushTools.includes(tool) || tool === 'quarry';
-    const settings = fixed ? { shape: 'square', size: tool === 'quarry' ? window.quarryRules.brushSize : tool === 'pinnacle' ? 5 : 1 } : brush;
+    const fixed = !brushTools.includes(tool);
+    const settings = fixed ? { shape: 'square', size: tool === 'pinnacle' ? 5 : 1 } : brush;
     get('brush-shape').value = settings.shape;
     get('brush-size').value = String(settings.size);
     for (const id of ['brush-shape', 'brush-size']) get(id).disabled = fixed;
@@ -193,7 +194,6 @@
   }
 
   function getBrushOffsets() {
-    if (get('edit-tool').value === 'quarry') return window.quarryRules.offsets;
     const size = Number(get('brush-size').value);
     const shape = get('brush-shape').value;
     if (!Number.isInteger(size) || size < 1 || size > 9) throw new Error('笔刷尺寸应为1～9的整数');
@@ -209,8 +209,7 @@
     const offsets = getBrushOffsets();
     const size = Number(get('brush-size').value);
     const tool = get('edit-tool').value;
-    get('brush-summary').textContent = tool === 'quarry' ? `固定 ${offsets.length} 格`
-      : tool === 'pinnacle' ? '固定 25 格 · 整体放置'
+    get('brush-summary').textContent = tool === 'pinnacle' ? '固定 25 格 · 整体放置'
       : !brushTools.includes(tool) ? '无需笔刷' : `${offsets.length} 格${size % 2 ? '' : ' · 向 +x/+y 锚定'}`;
     const selected = new Set(offsets.map(grid => grid.join(',')));
     const swatch = get('brush-swatch');
@@ -268,9 +267,10 @@
   }
 
   function evaluateBrush(base, terrain, grids, options = {}) {
+    // 涂绘范围裁到真实格；道路与坡道仍按其完整路径/占地校验。
+    if (brushTools.includes(terrain)) grids = grids.filter(([x, y]) => base.map.cells[y]?.[x]);
+    if (!grids.length) throw new Error('地图之外 / 空角，无有效格可绘制。');
     if (!treeTools.includes(terrain)) return evaluateWholeBrush(base, terrain, grids, options);
-    // 越界和空角仍整笔拒绝；只有地图内的树木资格按格筛选。
-    if (grids.some(([x, y]) => !base.map.cells[y]?.[x])) throw new Error('树木整笔不能越界或经过空角。');
     const accepted = [];
     const rejected = [];
     for (const grid of grids) {
@@ -295,33 +295,31 @@
       ? clearContents(base, grids, entityIds)
       : featureTools.includes(terrain)
       ? window.elevationRules.applyFeature(base.map, { type: terrain, grid }, base.elementsById, base.rules, base.elevationRules, cameraAngle)
-      : terrain === 'beach'
-      ? window.beachRules.applyStroke(base.map, grids, false, base.rules)
+      : ['land', 'water', 'beach'].includes(terrain)
+      ? window.constructionRules.applySurfaceStroke(base.map, terrain, grids, base.elementsById, base.rules, base.elevationRules)
       : terrain === 'quarry'
       ? window.quarryRules.applyStroke(base.map, grids, false, base.rules)
       : terrain === 'ruin'
-      ? window.ruinRules.applyStroke(base.map, grids, false)
+      ? window.ruinRules.applyStroke(base.map, grids, false, base.rules)
       : terrain === 'dune'
       ? window.duneRules.applyStroke(base.map, grids, false, base.rules)
       : terrain === 'salt-marsh'
-      ? window.saltMarshRules.applyStroke(base.map, grids)
+      ? window.saltMarshRules.applyStroke(base.map, grids, base.rules)
       : rockTools.includes(terrain)
       ? window.rockRules.applyStroke(base.map, grids, false, terrain, base.rules)
       : treeTools.includes(terrain)
-      ? window.treeRules.applyStroke(base.map, grids, false, base.moisture, treeKind)
+      ? window.treeRules.applyStroke(base.map, grids, false, base.moisture, treeKind, base.rules)
       : roadTools.includes(terrain)
       ? window.constructionRules.applyRoadStroke(base.map, grids, false, base.groundTiles)
       : window.elevationRules.applyStroke(base.map, { ...command, grids }, base.elementsById, base.rules, base.elevationRules, cameraAngle));
+    const naturalTool = ['quarry', 'ruin', 'dune', 'salt-marsh', ...rockTools, ...treeTools].includes(terrain);
+    if (naturalTool) result = { ...result, ...requireSuccess(window.constructionRules.reconcileSurface(base.map, result.definition, base.elementsById)) };
     // 所有画笔的最终候选共用岸带约束；高程/陆水笔刷内部也调用同一整理器。
     const banks = requireSuccess(window.elevationRules.normalizeWaterBanks(result.definition, base.elementsById));
     if (banks.definition !== result.definition) {
       const normalized = requireSuccess(window.landWaterRules.normalizeNaturalStroke(banks.definition, banks.bankGrids, base.rules));
       result = { ...result, definition: normalized.definition, bankGrids: banks.bankGrids, tiles: null };
-    }
-    // 只保护已有地物的实际高度变化，不改高程联动算法；最终坡面冲突由完整场景链拒绝。
-    if (base.map.cells.some((row, y) => row.some((cell, x) => (cell?.tree || cell?.rock || cell?.dune || cell?.ruin || cell?.quarry)
-      && result.definition.cells[y]?.[x]?.elevation !== cell.elevation))) {
-      throw new Error('高程联动会改变已有树木、岩石、沙丘、废墟或采石地所在格，请先清除。');
+      if (naturalTool) result = { ...result, ...requireSuccess(window.constructionRules.reconcileSurface(base.map, result.definition, base.elementsById)) };
     }
     const resolved = resolveScene({ ...base, map: result.definition }, cameraAngle, result.tiles ? result : undefined);
     // 半坡的双格是工具占地；整实体删除和道路扩展则是笔刷外的实际联动。
@@ -378,7 +376,7 @@
     let error = '';
     if (grids.length) {
       try {
-        if (hit.missed) throw new Error('未命中地表');
+        if (hit.missed || !cell) throw new Error('未命中地表');
         candidate = evaluateBrush(currentScene, tool, grids, { grid: hit.grid,
           entityIds: tool === 'clear' ? clearEntityIds(currentScene, hit, grids, offsets.length > 1) : new Set() });
         grids = candidate.selectedGrids;
@@ -849,7 +847,8 @@
         const source = scene.sourcePixels[frame.source];
         if (source.data[((frame.rect[1] + y) * source.width + frame.rect[0] + x) * 4 + 3] > 0) {
           if (item.rockSize > 1 || item.duneSize > 1 || item.ruinSize > 1) {
-            const ground = window.qtiledView.pickGrid([pixel[0], pixel[1] + item.elevation * (scene.map.elevationStep || 0)], scene.view);
+            // v1 地表没有派生 elevation，按零高度反算，避免 undefined * 0 产生 NaN。
+            const ground = window.qtiledView.pickGrid([pixel[0], pixel[1] + (item.elevation ?? 0) * (scene.map.elevationStep || 0)], scene.view);
             // 大块仍逐格编辑；上凸像素归最近边格，不把整块当成一个可删除实体。
             return { grid: ground.map((value, axis) => Math.max(item.grid[axis], Math.min(item.grid[axis] + (item.rockSize || item.duneSize || item.ruinSize) - 1, value))) };
           }
@@ -1140,13 +1139,18 @@
     if (!stroke || event.pointerId !== stroke.pointerId) return;
     const hit = hitAt(event, stroke.base);
     const grid = hit.grid;
-    if (hit.missed) {
-      stroke.missed = stroke.terrain !== 'road' || !stroke.start;
+    const pointer = getPointerPosition(event, container);
+    if (hit.missed || !stroke.base.map.cells[grid[1]]?.[grid[0]] || pointer[0] < 0 || pointer[1] < 0
+      || pointer[0] >= container.clientWidth || pointer[1] >= container.clientHeight) {
+      // 离开后保留候选，返回时从新落点续画，不跨空白补线。
+      stroke.paused = true;
       stroke.last = null;
-      rejectStroke(new Error('指针未命中可见地表；整笔拒绝。'), hit);
+      status.textContent = stroke.failed ? '已暂停绘制 · 当前形态仍无效，返回调整或 Esc 取消'
+        : '已暂停绘制 · 返回有效地表继续；松开保留此前有效绘制 / Esc 取消';
       return;
     }
-    if (stroke.missed) return;
+    const resumed = stroke.paused;
+    stroke.paused = false;
     let newEntity = false;
     if (stroke.terrain === 'clear' && stroke.offsets.length === 1) {
       const brush = window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(grid, stroke.offsets);
@@ -1155,7 +1159,7 @@
         stroke.entityIds.add(id);
       }
     }
-    if (!newEntity && stroke.last && grid.every((value, axis) => value === stroke.last[axis])) return;
+    if (!resumed && !newEntity && stroke.last && grid.every((value, axis) => value === stroke.last[axis])) return;
     if (featureTools.includes(stroke.terrain)) {
       stroke.grids = new Map([[grid.join(','), grid]]);
       stroke.last = grid;
@@ -1182,15 +1186,15 @@
         // 清除继续按经过格四邻补齐，避免斜拖漏掉道路，不沿用铺路的起终点选区。
         if (stroke.terrain === 'clear' && nextGrid[0] !== previousGrid[0] && nextGrid[1] !== previousGrid[1]) {
           const corner = [previousGrid[0], nextGrid[1]];
-          stroke.grids.set(corner.join(','), corner);
+          if (stroke.base.map.cells[corner[1]]?.[corner[0]]) stroke.grids.set(corner.join(','), corner);
         }
         previousGrid = nextGrid;
         for (const grid of window.qtiled.shapes.rhombus.getIsometricNeighborsByOffsets(nextGrid, stroke.offsets)) {
-          stroke.grids.set(grid.join(','), grid);
+          if (stroke.base.map.cells[grid[1]]?.[grid[0]]) stroke.grids.set(grid.join(','), grid);
         }
       }
       stroke.last = grid;
-      if (!newEntity && stroke.grids.size === previousSize) return;
+      if (!resumed && !newEntity && stroke.grids.size === previousSize) return;
     }
     stroke.overlay?.remove();
     stroke.overlay = null;

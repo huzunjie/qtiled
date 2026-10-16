@@ -39,18 +39,18 @@
     return { tiles: issues.length ? null : result, issues };
   }
 
-  function applyStroke(map, grids, erase) {
+  function applyStroke(map, grids, erase, rules) {
     const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
     for (const [x, y] of grids) {
       const cell = cells[y]?.[x];
       if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}].ruin`, 'ruin-outside', '废墟整笔不能越界或经过空角。')] };
       if (erase) delete cell.ruin;
       else {
-        cell.ruin = true;
+        window.landWaterRules.replaceNaturalCell(cell, 'ruin');
       }
     }
     const definition = { ...map, cells };
-    return { definition, issues: [] };
+    return erase ? { definition, issues: [] } : window.landWaterRules.normalizeNaturalStroke(definition, grids, rules);
   }
 
   window.ruinRules = { resolve, applyStroke };

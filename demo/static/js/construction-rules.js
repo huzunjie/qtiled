@@ -9,6 +9,58 @@
   // 既有装饰实例可共存；建筑和山峰的完整占地独占，不改变核心库默认策略。
   const canCoexist = ({ entities }) => !entities.some(entity => isSolid(entity.element));
 
+  // Demo 的地表适用规则；当前实例默认陆地，水面专属元素声明 groundTerrain: 'water'。
+  const supportsGround = (element, cell) => cell
+    && !window.landWaterRules.naturalFields.some(key => cell[key] !== undefined)
+    && cell.terrain === (element.groundTerrain || 'land');
+
+  function reconcileSurface(before, after, elements) {
+    const occupancy = window.qtiledMaps.buildMapOccupancy(before, elements, canCoexist);
+    if (occupancy.issues.length) return { definition: null, issues: occupancy.issues };
+    const removed = new Set();
+    const entities = new Map(before.entities.map(entity => [entity.id, entity]));
+    const cells = after.cells.map((row, y) => row.map((cell, x) => {
+      const old = before.cells[y][x];
+      if (!cell || ['terrain', ...window.landWaterRules.naturalFields].every(key => cell[key] === old?.[key])) return cell;
+      for (const id of occupancy.index.get(`${x},${y}`) || []) {
+        if (!supportsGround(elements[entities.get(id).element], cell)) removed.add(id);
+      }
+      if (cell.road && (cell.terrain !== 'land' || cell.beach)) {
+        const next = { ...cell };
+        delete next.road;
+        return next;
+      }
+      return cell;
+    }));
+    return { definition: { ...after, cells, entities: after.entities.filter(entity => !removed.has(entity.id)) }, issues: [] };
+  }
+
+  // 地表笔刷先形成最终陆水/岸带，再处理完整实例；不把中间水格当成删除依据。
+  function applySurfaceStroke(map, terrain, grids, elements, rules, elevationRules) {
+    if (!['land', 'water', 'beach'].includes(terrain)) {
+      return { definition: null, issues: [issue('$tool', 'invalid-surface-tool', '仅支持陆地、水域和海滩笔刷。')] };
+    }
+    const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
+    for (const [x, y] of grids) {
+      if (!Number.isSafeInteger(x) || !Number.isSafeInteger(y) || !cells[y]?.[x]) {
+        return { definition: null, issues: [issue('$grids', 'surface-outside', '笔刷不能越界或经过空角。')] };
+      }
+      window.landWaterRules.replaceNaturalCell(cells[y][x], terrain);
+    }
+    const banks = window.elevationRules.normalizeWaterBanks({ ...map, cells }, elements, true);
+    if (banks.issues.length) return banks;
+    // 海滩可能在坡面整理时撤回；清理必须依据最终地表，不能先删合法道路/实体。
+    let result = window.beachRules.normalize(banks.definition, [...grids, ...banks.bankGrids], terrain === 'beach', rules);
+    if (result.issues.length) return result;
+    if (elevationRules) {
+      result = window.elevationRules.reconcileTerrain(map, result.definition, elements, rules, elevationRules);
+      if (result.issues.length) return result;
+      return { ...result, bankGrids: banks.bankGrids };
+    }
+    // 草沙整理也可能改变笔刷外的基础属性，清理以实际差分为准。
+    return { ...reconcileSurface(map, result.definition, elements), bankGrids: banks.bankGrids };
+  }
+
   // 坡道只从高、低两端接路；半坡的两个部件属于同一段道路。
   function connects(tile, neighbor, cell, other, dx, dy) {
     if (!tile?.ramp) return true;
@@ -16,6 +68,61 @@
     const [sx, sy] = tile.slopeDirection;
     return (tile.slopePart === 0 && dx === -sx && dy === -sy && other.elevation === cell.elevation + 1)
       || (tile.slopePart === (tile.halfSlope ? 1 : 0) && dx === sx && dy === sy && other.elevation === cell.elevation);
+  }
+
+  // 显式地形编辑完成后按最终坡面清理；读取地图仍只校验，不修补输入。
+  function reconcileTerrain(before, after, tiles, elements) {
+    const occupancy = window.qtiledMaps.buildMapOccupancy(before, elements, canCoexist);
+    if (occupancy.issues.length) return { definition: null, issues: occupancy.issues };
+    const cells = after.cells.map(row => row.map(cell => cell && { ...cell }));
+    const byGrid = new Map(tiles.map(tile => [tile.grid.join(','), tile]));
+    for (const tile of tiles) {
+      const [x, y] = tile.grid;
+      const cell = cells[y][x];
+      if (tile.slope || cell.terrain !== 'land') {
+        window.landWaterRules.naturalFields.forEach(key => { delete cell[key]; });
+      }
+      if (cell.terrain !== 'land' || cell.beach || (tile.slope && !tile.ramp)) delete cell.road;
+    }
+    const removeRoads = new Set();
+    for (const tile of tiles) {
+      const [x, y] = tile.grid;
+      const cell = cells[y][x];
+      if (!cell.road) continue;
+      if (cardinal.some(([dx, dy]) => {
+        const neighbor = cells[y + dy]?.[x + dx];
+        if (!neighbor?.road) return false;
+        const other = byGrid.get(`${x + dx},${y + dy}`);
+        // 只清除自身无法接入的坡段；对端会检查自身资格，不连带删除平地支路。
+        return !connects(tile, other, cell, neighbor, dx, dy)
+          || (!tile.ramp && !other?.ramp && neighbor.elevation !== cell.elevation);
+      })) removeRoads.add(`${x},${y}`);
+    }
+    // 半坡道路任一部件失效时整体清路，不留下单片道路。
+    for (const tile of tiles.filter(tile => tile.halfSlope)) {
+      const [x, y] = tile.slopeOwner;
+      const [dx, dy] = tile.slopeDirection;
+      const parts = [[x, y], [x + dx, y + dy]];
+      if (parts.some(([px, py]) => !cells[py][px].road || removeRoads.has(`${px},${py}`))) {
+        parts.forEach(grid => removeRoads.add(grid.join(',')));
+      }
+    }
+    removeRoads.forEach(key => { const [x, y] = key.split(',').map(Number); delete cells[y][x].road; });
+    const entities = new Map(after.entities.map(entity => [entity.id, entity]));
+    const heights = new Map();
+    const removed = new Set();
+    for (const [key, ids] of occupancy.index) {
+      const [x, y] = key.split(',').map(Number);
+      const cell = cells[y][x];
+      for (const id of ids) {
+        const entity = entities.get(id);
+        if (!entity) continue;
+        if (!heights.has(id)) heights.set(id, cell?.elevation);
+        if (!supportsGround(elements[entity.element], cell) || byGrid.get(key)?.slope
+          || cell.elevation !== heights.get(id)) removed.add(id);
+      }
+    }
+    return { definition: { ...after, cells, entities: after.entities.filter(entity => !removed.has(entity.id)) }, issues: [] };
   }
 
   function validate(map, tiles, elements) {
@@ -28,7 +135,9 @@
       const path = `cells[${y}][${x}]`;
       const tile = byGrid.get(`${x},${y}`);
       const occupants = occupancy.index.get(`${x},${y}`) || [];
-      if (cell.beach && occupants.length) issues.push(issue(path, 'beach-entity', '海滩不能与建筑或其他实体重叠。'));
+      if (occupants.some(id => !supportsGround(elements[map.entities.find(entity => entity.id === id).element], cell))) {
+        issues.push(issue(path, 'entity-ground', '实体完整占地的地表或地物不符合放置要求。'));
+      }
       const building = occupants.some(id => isSolid(map.entities.find(entity => entity.id === id)?.element));
       if (cell.road !== undefined && cell.road !== 'ordinary') {
         issues.push(issue(`${path}.road`, 'unsupported-road', '仅支持普通道路 ordinary；无道路时省略 road。'));
@@ -92,5 +201,5 @@
     return { definition: { ...map, cells }, issues: [], selectedGrids: [...selected.values()] };
   }
 
-  window.constructionRules = { buildingId, isSolid, canCoexist, validate, resolve, applyRoadStroke };
+  window.constructionRules = { buildingId, isSolid, canCoexist, validate, resolve, applyRoadStroke, reconcileSurface, applySurfaceStroke, reconcileTerrain };
 })();

@@ -12,7 +12,7 @@ const elements = { ...JSON.parse(read('terrain-samples/emperor-land-water/elemen
   ...JSON.parse(read('construction-samples/elements.json')) };
 const sample = () => JSON.parse(read('map-samples/pinnacle-map.json'));
 const context = vm.createContext({ window: { qtiledMaps: maps } });
-vm.runInContext(read('js/construction-rules.js').toString(), context);
+['terrain-sample', 'environment-rules', 'land-water-rules', 'construction-rules'].forEach(name => vm.runInContext(read(`js/${name}.js`).toString(), context));
 const { validate, canCoexist } = context.window.constructionRules;
 const ground = map => map.cells.flatMap((row, y) => row.map((cell, x) => ({ grid: [x, y], elevation: cell?.elevation })));
 // 独立原作解码和四张原PNG逐字节相同；期望摘要不从待测WebP生成。

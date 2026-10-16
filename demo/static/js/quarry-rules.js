@@ -2,8 +2,6 @@
 (function () {
   const { getStableGridValue } = window.terrainSample;
   const neighbors = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
-  const brushSize = 6;
-  const offsets = Array.from({ length: brushSize ** 2 }, (_, i) => [i % brushSize - 3, Math.floor(i / brushSize) - 2]);
   // 原表0x837e70 / 0x8380f0；每行依次为八邻条件、四镜头偏移、变体数。
   // 0不存在、1存在、2任意；输入是取反的内部邻域。内表最后零行被前行遮蔽，保留原值。
   const outer = [
@@ -126,15 +124,17 @@
         const column = [1, 0, 3, 2][camera / 90];
         for (let depth = 0; depth < 3; depth++) {
           const bits = neighbors.map(([dx, dy]) => Number(!full(x + dx, y + dy, depth)));
-          const row = (depth ? inner : outer).find(row => bits.every((bit, i) => row[i] === 2 || row[i] === bit));
-          if (!row || !row[12]) {
-            issues.push(issue(path, 'quarry-contour', '采石地轮廓过于零碎，原作素材无法拼接；请调整清除或放置范围。'));
-            break;
+          let row = (depth ? inner : outer).find(row => bits.every((bit, i) => row[i] === 2 || row[i] === bit));
+          const bareEdge = !row || !row[12];
+          if (bareEdge) {
+            // 原 matcher 未匹配时沿用全局旧输出，不能用作无状态选图。
+            // 零碎边格以已使用的公共黄土显示，保留事实与其他坑壁，不拒绝局部覆盖。
+            row = [...Array(8).fill(2), 6, 6, 6, 6, 1];
           }
           const offset = row[8 + column];
           if (!offset && depth < 2) continue;
           const variant = stableByte % row[12];
-          const record = depth === 0 && offset + variant >= 6 && offset + variant <= 33
+          const record = (bareEdge || depth === 0 && offset + variant >= 6 && offset + variant <= 33)
             ? 247 + (stableByte & 7) : [972, 1006, 1066][depth] + offset + variant;
           // 外圈沿用原作公共黄土，和普通陆地引用同一份元素定义。
           const id = record >= 247 && record <= 254
@@ -155,17 +155,12 @@
 
   function applyStroke(map, grids, erase = false, rules) {
     const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
-    let elevation;
     for (const [x, y] of grids) {
       const cell = cells[y]?.[x];
       const path = `cells[${y}][${x}].quarry`;
       if (!cell) return { definition: null, issues: [issue(path, 'quarry-outside', '采石地整笔不能越界或经过空角。')] };
       if (erase) delete cell.quarry;
       else {
-        if (elevation !== undefined && elevation !== cell.elevation) {
-          return { definition: null, issues: [issue(path, 'quarry-height', '采石地整笔需要同一高度的平地。')] };
-        }
-        elevation = cell.elevation;
         window.landWaterRules.replaceNaturalCell(cell, 'quarry');
       }
     }
@@ -173,5 +168,5 @@
     return erase ? { definition, issues: [] } : window.landWaterRules.normalizeNaturalStroke(definition, grids, rules);
   }
 
-  window.quarryRules = { brushSize, offsets, resolve, applyStroke };
+  window.quarryRules = { resolve, applyStroke };
 })();

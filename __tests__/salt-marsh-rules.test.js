@@ -100,7 +100,7 @@ test('新增盐沼距水或海滩5格含斜向；整笔越界拒绝且不改基�
     map.cells[4][4].saltMarsh = true; expect(salt.applyStroke(map, [[4, 4]]).issues).toEqual([]);
     expect(salt.applyStroke(map, [[5, 5], [99, 99]]).definition).toBeNull();
     map.cells[6][6] = null; expect(salt.applyStroke(map, [[5, 5], [6, 6]]).definition).toBeNull();
-    map.cells[5][5].road = 'ordinary'; expect(salt.applyStroke(map, [[5, 5]]).issues[0].code).toBe('salt-marsh-road');
+    map.cells[5][5].road = 'ordinary'; expect(salt.applyStroke(map, [[5, 5]]).definition.cells[5][5]).toMatchObject({ road: 'ordinary', saltMarsh: true });
   }
 });
 

@@ -11,7 +11,7 @@ const read = file => fs.readFileSync(path.join(__dirname, '../demo/static', file
 const elements = JSON.parse(read('terrain-samples/emperor-land-water/elements.json'));
 const sample = () => JSON.parse(read('map-samples/ruins-map.json'));
 const context = vm.createContext({ window: { qtiledView: view, qtiledElementRendering: { resolveElementDraw } } });
-['terrain-sample', 'square-groups', 'ruin-rules', 'elevation-rendering'].forEach(name => vm.runInContext(read(`js/${name}.js`).toString(), context));
+['terrain-sample', 'environment-rules', 'land-water-rules', 'square-groups', 'ruin-rules', 'elevation-rendering'].forEach(name => vm.runInContext(read(`js/${name}.js`).toString(), context));
 const { ruinRules: ruins, elevationRendering: rendering } = context.window;
 const resolve = map => ruins.resolve(map, map.cells.flatMap((row, y) => row.map((cell, x) => ({ grid: [x, y], elevation: cell.elevation, element: 'emperor-bare-land' }))), elements, new Map());
 // 摘要来自原SG解码与12张PNG逐字节核对，不由待测WebP生成。

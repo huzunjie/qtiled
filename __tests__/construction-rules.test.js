@@ -9,7 +9,7 @@ const read = file => fs.readFileSync(path.join(__dirname, '../demo', file), 'utf
 const elements = JSON.parse(read('static/construction-samples/elements.json'));
 const rules = JSON.parse(read('static/construction-samples/road-rules.json'));
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
-vm.runInContext(read('static/js/construction-rules.js'), context);
+['terrain-sample', 'environment-rules', 'land-water-rules', 'construction-rules'].forEach(name => vm.runInContext(read(`static/js/${name}.js`), context));
 const construction = context.window.constructionRules;
 const fresh = (height = 8) => ({ version: 2, id: 'test', tileSize: [80, 40], elevationStep: 40,
   cells: Array.from({ length: 10 }, () => Array.from({ length: 10 }, () => ({ terrain: 'land', elevation: height }))), entities: [] });
@@ -97,4 +97,69 @@ test('建筑16组姿态均与矩形上角格对齐，重复占地/道路/水面/
     expect(resolve(map).issues.length).toBeGreaterThan(0);
   }
   expect(resolve(house(fresh(), [0, 0])).issues.length).toBeGreaterThan(0);
+});
+
+const copy = map => JSON.parse(JSON.stringify(map));
+
+test('每类自然地物均清除完整实体，地表冲突每格只报告一次', () => {
+  const before = house(fresh());
+  const [key] = maps.buildMapOccupancy(before, elements).index.keys();
+  const [x, y] = key.split(',').map(Number);
+  for (const field of context.window.landWaterRules.naturalFields) {
+    const after = copy(before); after.cells[y][x][field] = true;
+    expect(construction.validate(after, tiles(after), elements).issues).toEqual([
+      expect.objectContaining({ path: `cells[${y}][${x}]`, code: 'entity-ground' }),
+    ]);
+    expect(construction.reconcileSurface(before, after, elements).definition.entities).toEqual([]);
+  }
+  expect(before.entities).toHaveLength(1);
+});
+
+test('地表变化按旋转后的完整占地移除实例，保留合法实例及原地图', () => {
+  for (const angle of [0, 90, 180, 270]) {
+    const before = house(house(fresh(), [4, 3], angle), [8, 7], 0, 0, 'outside');
+    const footprint = [...maps.buildMapOccupancy(before, elements).index].filter(([, ids]) => ids.includes('house-1'));
+    for (const [key] of footprint) {
+      const after = copy(before); const [x, y] = key.split(',').map(Number);
+      after.cells[y][x].terrain = 'water';
+      const result = construction.reconcileSurface(before, after, elements);
+      expect(result.issues).toEqual([]);
+      expect(result.definition.entities.map(entity => entity.id)).toEqual(['outside']);
+      expect(before.entities).toHaveLength(2);
+      expect(before.cells[y][x].terrain).toBe('land');
+      expect(maps.buildMapOccupancy(result.definition, elements).index.has(key)).toBe(false);
+    }
+  }
+});
+
+test('水面专属测试元素在填陆或海滩后整实例清除，不误删仍在水中的实例', () => {
+  const library = { ...elements, 'water-fixture': { ...elements['courtyard-house'], id: 'water-fixture', groundTerrain: 'water' } };
+  const before = house(house(fresh(), [4, 3]), [8, 7], 0, 0, 'outside');
+  before.entities.forEach(entity => { entity.element = 'water-fixture'; });
+  for (const key of maps.buildMapOccupancy(before, library).index.keys()) {
+    const [x, y] = key.split(',').map(Number); before.cells[y][x].terrain = 'water';
+  }
+  expect(construction.validate(before, tiles(before), library).issues).toEqual([]);
+  const key = [...maps.buildMapOccupancy(before, library).index.keys()][1];
+  const [x, y] = key.split(',').map(Number);
+  for (const beach of [false, true]) {
+    const after = copy(before); Object.assign(after.cells[y][x], { terrain: 'land', ...(beach ? { beach: true } : {}) });
+    expect(construction.validate(after, tiles(after), library).issues.some(item => item.code === 'entity-ground')).toBe(true);
+    const result = construction.reconcileSurface(before, after, library);
+    expect(result.definition.entities.map(entity => entity.id)).toEqual(['outside']);
+    expect(construction.validate(result.definition, tiles(result.definition), library).issues).toEqual([]);
+  }
+});
+
+test('只清除失效道路，同类重画和未改格不删除内容；读图校验不偷偷清理', () => {
+  const before = house(fresh()); before.cells[7][7].road = 'ordinary'; before.cells[7][8].road = 'ordinary';
+  expect(construction.reconcileSurface(before, copy(before), elements).definition).toEqual(before);
+  for (const target of [{ terrain: 'water' }, { terrain: 'land', beach: true }]) {
+    const after = copy(before); Object.assign(after.cells[7][7], target);
+    const next = construction.reconcileSurface(before, after, elements).definition;
+    expect(next.cells[7][7].road).toBeUndefined(); expect(next.cells[7][8].road).toBe('ordinary');
+    expect(next.entities).toEqual(before.entities);
+  }
+  const invalid = copy(before); invalid.cells[3][4].terrain = 'water';
+  const snapshot = copy(invalid); construction.validate(invalid, tiles(invalid), elements); expect(invalid).toEqual(snapshot);
 });

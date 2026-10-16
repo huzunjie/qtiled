@@ -43,7 +43,7 @@
     return { tiles: issues.length ? null : result, issues };
   }
 
-  function applyStroke(map, grids, erase, moisture, kind = 'ordinary-mature') {
+  function applyStroke(map, grids, erase, moisture, kind = 'ordinary-mature', rules) {
     if (!erase && !getTree(kind)) return { definition: null, issues: [issue('$treeKind', 'unsupported-tree', '请选择普通树、竹类或其残株。')] };
     const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
     for (const [x, y] of grids) {
@@ -59,7 +59,8 @@
         window.landWaterRules.replaceNaturalCell(cell, 'tree', kind);
       }
     }
-    return { definition: { ...map, cells }, issues: [] };
+    const definition = { ...map, cells };
+    return erase ? { definition, issues: [] } : window.landWaterRules.normalizeNaturalStroke(definition, grids, rules);
   }
 
   window.treeRules = { resolve, applyStroke };

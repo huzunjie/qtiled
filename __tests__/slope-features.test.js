@@ -11,7 +11,7 @@ const height = json('static/terrain-samples/emperor-elevation/rules.json');
 const roads = json('static/construction-samples/road-rules.json');
 const elements = Object.assign({}, ...['emperor-land-water', 'emperor-elevation'].map(name => json(`static/terrain-samples/${name}/elements.json`)), json('static/construction-samples/elements.json'));
 const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
-for (const name of ['terrain-sample', 'environment-rules', 'land-water-rules', 'elevation-rules', 'construction-rules']) vm.runInContext(read(`static/js/${name}.js`), context);
+for (const name of ['terrain-sample', 'environment-rules', 'beach-rules', 'land-water-rules', 'elevation-rules', 'construction-rules']) vm.runInContext(read(`static/js/${name}.js`), context);
 const elevation = context.window.elevationRules;
 const construction = context.window.constructionRules;
 const resolve = (map, angle = 0) => elevation.resolve(map, elements, land, height, angle);
@@ -73,13 +73,16 @@ test('孤立、两种端部、连续直段使用原作半坡图；世界邻接�
   }
 });
 
-test('半坡任一部件整体铺擦道路；道路侧入拒绝，移除前须擦路，撤销半坡保留坡道', () => {
+test('半坡任一部件整体铺擦道路；道路侧入拒绝，移除自动清理失效道路，撤销半坡保留坡道', () => {
   const map = feature(feature(fresh(), 'half-slope').definition, 'ramp').definition;
   const painted = road(map, [[5, 4]]);
   expect(full(painted).issues).toEqual([]);
   expect(painted.cells[5][5].road).toBe('ordinary');
-  expect(feature(painted, 'ramp', [5, 4]).issues[0].code).toBe('slope-feature-road');
-  expect(feature(painted, 'half-slope').definition).toBeNull();
+  const noRamp = feature(painted, 'ramp', [5, 4]);
+  expect(noRamp.issues).toEqual([]); expect(noRamp.definition.cells[5][5].road).toBeUndefined();
+  expect(noRamp.definition.cells[4][5].road).toBeUndefined();
+  expect(full(noRamp.definition).issues).toEqual([]);
+  expect(feature(painted, 'half-slope').issues).toEqual([]);
   expect(full(road(painted, [[4, 4]])).issues.some(issue => issue.code === 'road-height')).toBe(true);
   const erased = road(painted, [[5, 4]], true);
   expect(erased).toEqual(map);
@@ -127,5 +130,69 @@ test('可交互样本两主题四镜头完整解析，序列化只保存作者�
 test('畸形旧地图仍返回结构诊断，不因读取扩展字段抛异常', () => {
   for (const cells of [{}, [null], ['bad-row']]) {
     expect(resolve({ version: 1, id: 'bad', tileSize: [80, 40], cells, entities: [] }).issues.length).toBeGreaterThan(0);
+  }
+});
+
+test('整图平移保留坡道半坡，降低高端后清理失效部件与道路', () => {
+  let map = feature(feature(fresh(), 'half-slope').definition, 'ramp').definition;
+  map = road(map, [[5, 4], [5, 5], [5, 6], [5, 3]]);
+  const grids = map.cells.flatMap((row, y) => row.map((cell, x) => [x, y]));
+  const shifted = elevation.applyStroke(map, { type: 'raise', grids }, elements, land, height);
+  expect(shifted.issues).toEqual([]); expect(shifted.definition.cells[5][5]).toMatchObject({ elevation: 9, ramp: true, halfSlope: true, road: 'ordinary' });
+  expect(full(shifted.definition).issues).toEqual([]);
+  const edited = elevation.applyStroke(map, { type: 'set-height', height: 8, grids: [[5, 6]] }, elements, land, height);
+  expect(edited.issues).toEqual([]); expect(full(edited.definition).issues).toEqual([]);
+  expect(edited.definition.cells[5][5].halfSlope).toBeUndefined();
+  expect(map.cells[5][5].halfSlope).toBe(true);
+});
+
+test('水刷改变坡道高端后移除失效标记及路面，保留低端合法道路', () => {
+  let map = feature(feature(fresh(), 'half-slope').definition, 'ramp').definition;
+  map = road(map, [[5, 4], [5, 5], [5, 6], [5, 3]]);
+  const result = construction.applySurfaceStroke(map, 'water', [[5, 6]], elements, land, height);
+  expect(result.issues).toEqual([]); const after = result.definition;
+  expect(after.cells[6][5].terrain).toBe('water'); expect(after.cells[6][5].road).toBeUndefined();
+  expect(after.cells[5][5].ramp).toBeUndefined(); expect(after.cells[5][5].halfSlope).toBeUndefined();
+  expect(after.cells[5][5].road).toBeUndefined(); expect(after.cells[3][5].road).toBe('ordinary');
+  for (const angle of [0, 90, 180, 270]) expect(full(after, angle).issues).toEqual([]);
+});
+
+test('半坡扩展到实体地基时清除整栋，原图和未受影响内容保留', () => {
+  const map = fresh(); map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 3], angle: 0 }];
+  expect(full(map).issues).toEqual([]);
+  const result = feature(map, 'half-slope'); expect(result.issues).toEqual([]);
+  expect(result.definition.entities).toEqual([]); expect(map.entities).toHaveLength(1);
+  for (const angle of [0, 90, 180, 270]) expect(full(result.definition, angle).issues).toEqual([]);
+});
+
+test.each([0, 1, 2, 3])('方向%i新增半坡只清失效坡段，邻侧平地支路保持', direction => {
+  const [dx, dy] = directions[direction];
+  const map = feature(fresh(direction), 'ramp').definition;
+  const side = [5 + dx + dy, 5 + dy - dx];
+  const grids = [[5 - dx, 5 - dy], [5, 5], [5 + dx, 5 + dy], [5 + 2 * dx, 5 + 2 * dy], side,
+    [side[0] + dy, side[1] - dx]];
+  grids.forEach(([x, y]) => { map.cells[y][x].road = 'ordinary'; });
+  expect(full(map).issues).toEqual([]);
+  const original = JSON.stringify(map);
+  const result = feature(map, 'half-slope');
+  expect(result.issues).toEqual([]);
+  for (const [x, y] of grids) expect(result.definition.cells[y][x].road)
+    .toBe((x === 5 && y === 5) || (x === 5 + dx && y === 5 + dy) ? undefined : 'ordinary');
+  for (const angle of [0, 90, 180, 270]) expect(full(result.definition, angle).issues).toEqual([]);
+  expect(feature(result.definition, 'half-slope').issues).toEqual([]);
+  expect(JSON.stringify(map)).toBe(original);
+});
+
+test.each([false, true])('海滩跳过坡面及半坡%s时保留道路，混合平地仍可画', half => {
+  let map = feature(fresh(1), 'ramp').definition;
+  if (half) map = feature(map, 'half-slope').definition;
+  map = road(map, [[4, 5], [5, 5], [6, 5], [7, 5]]);
+  for (const grids of [[[5, 5]], ...(half ? [[[6, 5]]] : []), [[5, 5], [8, 5]]]) {
+    const result = construction.applySurfaceStroke(map, 'beach', grids, elements, land, height);
+    expect(result.issues).toEqual([]);
+    if (grids.length === 1) expect(result.definition).toEqual(map);
+    else expect(result.definition.cells[5][8].beach).toBe(true);
+    for (const x of [4, 5, 6, 7]) expect(result.definition.cells[5][x].road).toBe('ordinary');
+    for (const angle of [0, 90, 180, 270]) expect(full(result.definition, angle).issues).toEqual([]);
   }
 });

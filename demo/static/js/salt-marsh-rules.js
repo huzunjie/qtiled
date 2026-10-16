@@ -33,7 +33,7 @@
     return { tiles: issues.length ? null : result, issues };
   }
 
-  function applyStroke(map, grids) {
+  function applyStroke(map, grids, rules) {
     const sources = [];
     map.cells.forEach((row, y) => row.forEach((cell, x) => {
       if (cell?.terrain === 'water' || cell?.beach === true) sources.push([x, y]);
@@ -49,12 +49,9 @@
       if (cell.saltMarsh !== true && distances[y][x] < 5) {
         return { definition: null, issues: [issue(path, 'salt-marsh-near-water', '新增盐沼距水域或海滩至少 5 格（含斜向）。')] };
       }
-      if (cell.road && cell.saltMarsh !== true) {
-        return { definition: null, issues: [issue(path, 'salt-marsh-road', '先清除道路再绘制盐沼，随后可重新铺路。')] };
-      }
       window.landWaterRules.replaceNaturalCell(cell, 'salt-marsh');
     }
-    return { definition: { ...map, cells }, issues: [] };
+    return window.landWaterRules.normalizeNaturalStroke({ ...map, cells }, grids, rules);
   }
 
   window.saltMarshRules = { resolve, applyStroke };

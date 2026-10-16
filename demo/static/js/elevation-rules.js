@@ -122,8 +122,8 @@
   }
 
   // 完整坡面原图包含岸地；低处水格若承担高差，显式转成陆地岸带。
-  // 只用于编辑候选，读图不改事实；高度、外观和其他字段均保留，整实体不能被联动转换。
-  function normalizeWaterBanks(map, elements) {
+  // 只用于编辑候选，读图不改事实；高度、外观和其他字段均保留；地表笔刷在岸带确定后统一清理失效内容。
+  function normalizeWaterBanks(map, elements, replaceSurface = false) {
     const issues = checkWaterLevels(map.cells);
     if (issues.length) return { definition: null, issues };
     const banks = [];
@@ -133,7 +133,7 @@
       }
     }));
     if (!banks.length) return { definition: map, bankGrids: banks, issues };
-    if (map.entities?.length) {
+    if (!replaceSurface && map.entities?.length) {
       const occupancy = window.qtiledMaps?.buildMapOccupancy(map, elements);
       if (!occupancy) return { definition: null, issues: [issue('$maps', 'missing-map-occupancy', '岸带整理需要地图占地模块。')] };
       issues.push(...occupancy.issues);
@@ -142,10 +142,10 @@
           'water-bank-protected', '岸带整理会改变已有完整实体下方的水域，请先移开实体。'));
       });
     }
-    // 不借岸带转换绕过水刷对已有道路、地物及作者标记的保护。
+    // 显式编辑交由最终地形统一清理；独立整理/导入仍保留占用保护。
     banks.forEach(([x, y]) => {
       if (['road', 'tree', 'rock', 'dune', 'ruin', 'quarry', 'saltMarsh', 'beach', 'ramp', 'halfSlope']
-        .some(key => map.cells[y][x][key] !== undefined)) issues.push(issue(`cells[${y}][${x}]`,
+        .some(key => !replaceSurface && map.cells[y][x][key] !== undefined)) issues.push(issue(`cells[${y}][${x}]`,
         'water-bank-protected', '岸带整理遇到道路、地物或坡道标记，整笔取消；请先处理冲突。'));
     });
     if (issues.length) return { definition: null, issues };
@@ -251,7 +251,7 @@
 
   // 原表71～74对应67～70坡道；0x476290按世界方向检查左右半坡，
   // 0x4772f0选孤立/单侧过渡/连续直边图。这里只开放一级直边，角形另行补证。
-  function resolveFeatures(map, tiles, elements, rules, column, issues) {
+  function resolveFeatures(map, tiles, elements, rules, column, issues, invalidOwners) {
     const byGrid = new Map(tiles.map(tile => [tile.grid.join(','), tile]));
     const owners = new Map();
     const parts = new Set();
@@ -266,6 +266,7 @@
       if (!cell.ramp && !cell.halfSlope) continue;
       const direction = tile.rowIndex - 71;
       if (cell.terrain !== 'land' || !Number.isInteger(direction) || direction < 0 || direction > 3) {
+        invalidOwners?.add(`${x},${y}`);
         issues.push(issue(path, 'slope-feature-shape', '坡道与半坡只支持一级直边坡面；不能放在平地、转角或两级坡面。'));
         continue;
       }
@@ -276,10 +277,12 @@
       if (high?.terrain !== 'land' || high.elevation !== cell.elevation + 1
         || low?.terrain !== 'land' || low.elevation !== cell.elevation
         || (cell.halfSlope && (byGrid.get(`${x + dx},${y + dy}`)?.slope || low.ramp || low.halfSlope))) {
+        invalidOwners?.add(`${x},${y}`);
         issues.push(issue(path, 'slope-feature-space', '需要完整的高端与等高低端陆地；半坡低端不能与其他坡面或作者标记重叠。'));
         continue;
       }
       if (grids.some(grid => parts.has(grid.join(',')))) {
+        invalidOwners?.add(`${x},${y}`);
         issues.push(issue(path, 'slope-feature-overlap', '两个坡面部件不能占用同一格。'));
         continue;
       }
@@ -299,6 +302,8 @@
           const adjacent = owners.get(`${x + dy * sign},${y - dx * sign}`);
           if (!adjacent?.cell.halfSlope) continue;
           if (adjacent.direction !== direction || adjacent.cell.elevation !== cell.elevation) {
+            invalidOwners?.add(`${x},${y}`);
+            invalidOwners?.add(adjacent.tile.grid.join(','));
             issues.push(issue(`cells[${y}][${x}]`, 'half-slope-junction', '暂不支持转角或不同高度的半坡交汇。'));
           } else side |= 1 << index;
         }
@@ -323,6 +328,40 @@
     }
   }
 
+  // 地形编辑先解析纯地形，再保留仍可表达的坡道部件，最后清理失效内容。
+  // 原图解析和导入不调用此整理；新增坡道/半坡仍须通过完整资格校验。
+  function reconcileTerrain(before, map, elements, landRules, rules, angle = 0, repairFeatures = true) {
+    const cells = map.cells.map(row => row.map(cell => cell && { ...cell }));
+    const bareCells = cells.map(row => row.map(cell => {
+      if (!cell) return null;
+      const bare = { ...cell };
+      [...window.landWaterRules.naturalFields, 'road', 'ramp', 'halfSlope'].forEach(key => { delete bare[key]; });
+      return bare;
+    }));
+    const ground = resolve({ ...map, cells: bareCells, entities: [] }, elements, landRules, rules, angle);
+    if (ground.issues.length) return { definition: null, ...ground };
+    let tiles;
+    // 每轮只删除无效标记，数量严格递减；半坡低端被另一部件占用时也复用同一校验。
+    while (true) {
+      const featureCells = bareCells.map((row, y) => row.map((cell, x) => cell && { ...cell,
+        ...(cells[y][x].ramp ? { ramp: true } : {}), ...(cells[y][x].halfSlope ? { halfSlope: true } : {}) }));
+      tiles = ground.tiles.map(tile => ({ ...tile }));
+      const errors = [];
+      const invalid = new Set();
+      resolveFeatures({ ...map, cells: featureCells }, tiles, elements, rules, rules.qtiledCameraColumns[angle / 90], errors, invalid);
+      if (!errors.length) break;
+      if (!repairFeatures || !invalid.size) return { definition: null, ...failed(errors) };
+      invalid.forEach(key => { const [x, y] = key.split(',').map(Number); delete cells[y][x].ramp; delete cells[y][x].halfSlope; });
+    }
+    const cleaned = window.constructionRules.reconcileTerrain(before, { ...map, cells }, tiles, elements);
+    if (cleaned.issues.length) return cleaned;
+    const changed = cells.flatMap((row, y) => row.flatMap((cell, x) => cell
+      && JSON.stringify(before.cells[y][x]) !== JSON.stringify(cleaned.definition.cells[y][x]) ? [[x, y]] : []));
+    const normalized = window.landWaterRules.normalizeNaturalStroke(cleaned.definition, changed, landRules);
+    if (normalized.issues.length) return normalized;
+    return window.constructionRules.reconcileSurface(before, normalized.definition, elements);
+  }
+
   // 双格半坡只保存主格作者事实；点击任一部件都切换同一个整体。
   function applyFeature(map, command, elements, landRules, rules, angle = 0) {
     const base = resolve(map, elements, landRules, rules, angle);
@@ -335,24 +374,23 @@
     const cell = map.cells[y]?.[x];
     if (!cell) return { definition: null, ...failed([issue('$command.grid', 'slope-feature-outside', '坡面不能放在地图外或空角。')]) };
     const key = command.type === 'ramp' ? 'ramp' : 'halfSlope';
-    if (cell.road && (cell[key] || key === 'halfSlope')) {
-      return { definition: null, ...failed([issue(`cells[${y}][${x}]`, 'slope-feature-road', '请先擦除道路，再移除坡道或改变半坡占地。')]) };
-    }
     const cells = map.cells.map(row => row.map(value => value && { ...value }));
     if (cell[key]) delete cells[y][x][key];
     else cells[y][x][key] = true;
     const definition = { ...map, cells };
-    const result = resolve(definition, elements, landRules, rules, angle);
+    const cleaned = reconcileTerrain(map, definition, elements, landRules, rules, angle, false);
+    if (cleaned.issues.length) return cleaned;
+    const result = resolve(cleaned.definition, elements, landRules, rules, angle);
     const parts = [...base.tiles, ...(result.tiles || [])].filter(value => value.slopeOwner?.join(',') === `${x},${y}`);
     const selectedGrids = [...new Map([[[x, y].join(','), [x, y]], ...parts.map(value => [value.grid.join(','), value.grid])]).values()];
-    return { definition: result.issues.length ? null : definition, ...result, selectedGrids };
+    return { definition: result.issues.length ? null : cleaned.definition, ...result, selectedGrids };
   }
 
   /** 原程序 0x4772f0 的局部规则：控制1/2优先增高，否则按工具方向夹取邻域高差。
    * 0x5430e0/0x544940 的世界行列扫描和未匹配队列单独处理。
    * 原程序这里只证明单次扫描；重复到稳定、循环检测和轮数上限是本工具的事务保护。
    */
-  function reconcile(cells, rules, lowering, occupied) {
+  function reconcile(cells, rules, lowering) {
     const seen = new Set();
     const maxPasses = 2 * (MAX_HEIGHT - MIN_HEIGHT + 1) + cells.length + cells[0].length;
     const signature = () => cells.map(row => row.map(cell => cell ? cell.elevation : '.').join(',')).join(';');
@@ -361,7 +399,6 @@
       if (height === cell.elevation) return [];
       const path = `cells[${y}][${x}]`;
       if (height < MIN_HEIGHT || height > MAX_HEIGHT) return [issue(path, 'elevation-adjustment-range', '联动高度超出 0～16，整笔取消。')];
-      if (occupied.has(`${x},${y}`)) return [issue(path, 'elevation-adjustment-protected', '联动会改变已有实体的地基，整笔取消。')];
       cell.elevation = height;
       return [];
     };
@@ -399,11 +436,11 @@
 
   // 降低目标被局部控制行回填时，逐圈扩展下挖范围，再复用原有坡面整理。
   // 这是工具的创作策略，不声称原作如此处理；只扩展陆地，不生成空角或移动实体。
-  function reconcileLowering(cells, targets, rules, occupied) {
+  function reconcileLowering(cells, targets, rules) {
     const limit = Math.max(cells.length, cells[0].length);
     for (let radius = 0; radius <= limit; radius += 1) {
       const candidate = cells.map(row => row.map(cell => cell && { ...cell }));
-      const errors = reconcile(candidate, rules, true, occupied);
+      const errors = reconcile(candidate, rules, true);
       if (errors.some(error => !['elevation-adjustment-cycle', 'elevation-adjustment-limit'].includes(error.code))) return { issues: errors };
       const filled = [...targets].filter(([key, height]) => {
         const [x, y] = key.split(',').map(Number);
@@ -416,8 +453,6 @@
           for (let x = Math.max(0, cx - radius - 1); x <= Math.min(cells[y].length - 1, cx + radius + 1); x += 1) {
             const cell = cells[y][x];
             if (!cell || cell.terrain !== 'land' || targets.has(`${x},${y}`) || cell.elevation <= height) continue;
-            if (occupied.has(`${x},${y}`)) return { issues: [issue(`cells[${y}][${x}]`,
-              'elevation-adjustment-protected', '下挖联动会改变已有实体的地基，整笔取消。')] };
             cell.elevation = height;
           }
         }
@@ -459,22 +494,6 @@
       } else grids.set(grid.join(','), grid);
     });
     if (issues.length) return { definition: null, ...failed(issues) };
-    const occupied = new Map();
-    if (heightTool && Array.isArray(map.entities) && map.entities.length) {
-      if (!window.qtiledMaps || typeof window.qtiledMaps.buildMapOccupancy !== 'function') {
-        issues.push(issue('$maps', 'missing-map-occupancy', '高程笔刷需要地图占地模块检查实体。'));
-      } else {
-        const occupancy = window.qtiledMaps.buildMapOccupancy(map, elements);
-        issues.push(...occupancy.issues);
-        if (occupancy.index) occupancy.index.forEach((value, key) => occupied.set(key, value));
-        if (occupancy.index) for (const [key, [x, y]] of grids) {
-          if (occupancy.index.has(key)) {
-            issues.push(issue(`cells[${y}][${x}]`, 'elevation-stroke-entity', '高程笔刷不能直接升降已有实体的地基，请先移开实体。'));
-          }
-        }
-      }
-    }
-    if (issues.length) return { definition: null, ...failed(issues) };
     let cells = map.cells.map(row => row.map(cell => cell === null ? null : { ...cell }));
     let heightChanged = false;
     const requested = new Map();
@@ -503,10 +522,10 @@
           const [x, y] = grids.get(key);
           return height < map.cells[y][x].elevation;
         }));
-        const result = reconcileLowering(cells, targets, elevationRules, occupied);
+        const result = reconcileLowering(cells, targets, elevationRules);
         issues.push(...result.issues);
         if (result.cells) cells = result.cells;
-      } else issues.push(...reconcile(cells, elevationRules, false, occupied));
+      } else issues.push(...reconcile(cells, elevationRules, false));
       if (issues.length) return { definition: null, ...failed(issues) };
     }
     const changes = [];
@@ -517,14 +536,12 @@
     heightChanged = changes.length > 0;
     const upgraded = heightChanged && map.version === 1 ? { version: 2, elevationStep: elevationRules.elevationStep } : {};
     let definition = { ...map, ...upgraded, cells };
-    const banks = normalizeWaterBanks(definition, elements);
+    const banks = normalizeWaterBanks(definition, elements, true);
     if (banks.issues.length) return { definition: null, ...failed(banks.issues) };
     definition = banks.definition;
-    if (!heightTool || banks.definition.cells !== cells) {
-      const normalized = window.landWaterRules.normalizeNaturalStroke(definition, [...grids.values(), ...banks.bankGrids], landRules);
-      if (normalized.issues.length) return { definition: null, ...failed(normalized.issues) };
-      definition = normalized.definition;
-    }
+    const cleaned = reconcileTerrain(map, definition, elements, landRules, elevationRules, angle);
+    if (cleaned.issues.length) return cleaned;
+    definition = cleaned.definition;
     const result = resolve(definition, elements, landRules, elevationRules, angle);
     return { definition: result.issues.length ? null : definition, ...result, changes, bankGrids: banks.bankGrids,
       adjusted: [...requested].filter(([key, height]) => {
@@ -533,5 +550,5 @@
       }).map(([key]) => grids.get(key)) };
   }
 
-  window.elevationRules = { resolve, applyStroke, applyFeature, normalizeWaterBanks };
+  window.elevationRules = { resolve, applyStroke, applyFeature, normalizeWaterBanks, reconcileTerrain };
 })();

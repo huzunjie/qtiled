@@ -16,15 +16,7 @@
       if (cell.road || cell.tree !== undefined || cell.rock !== undefined || cell.quarry !== undefined) {
         issues.push(issue(path, 'beach-occupied', '海滩不能覆盖道路、树木、岩石或采石地，请先清除冲突内容。'));
       }
-      // 坡道/半坡的跨格部件仍单列；普通高差交给高程解析器按本格形态判断。
-      for (let dy = -2; dy <= 2; dy += 1) for (let dx = -2; dx <= 2; dx += 1) {
-        const other = map.cells[y + dy]?.[x + dx];
-        if (other && (other.ramp !== undefined || other.halfSlope !== undefined)) {
-          issues.push(issue(path, 'beach-height', '海滩暂不支持与周围两格内的坡道或半坡衔接。'));
-          dy = 3;
-          break;
-        }
-      }
+
     }
     return issues;
   }
@@ -94,7 +86,6 @@
       const editable = (px, py) => {
         const other = cells[py]?.[px];
         return other?.terrain === 'land' && other.elevation === cell.elevation
-          && !other.road && other.tree === undefined && other.rock === undefined && other.quarry === undefined
           && other.ramp === undefined && other.halfSlope === undefined;
       };
       let edits = editable(x, y) ? [[x, y]] : null;
@@ -107,9 +98,9 @@
         edits = candidates[0];
       }
       if (!edits?.length) return { definition: null, issues: [issue(`cells[${y}][${x}]`, 'beach-adjustment-protected',
-        '草沙轮廓整理遇到占用或非平地，整笔取消；请先清除冲突或扩大选区。')] };
+        '草沙轮廓整理遇到非平地或坡道标记，整笔取消；请调整地形或选区。')] };
       for (const [px, py] of edits) {
-        if (sand) cells[py][px].beach = true;
+        if (sand) window.landWaterRules.replaceNaturalCell(cells[py][px], 'beach');
         else delete cells[py][px].beach;
         enqueue(px, py);
       }
@@ -124,12 +115,16 @@
       if (!cell) return { definition: null, issues: [issue(`cells[${y}][${x}]`, 'beach-outside', '海滩整笔不能越界或经过空角。')] };
       if (erase) delete cell.beach;
       else {
-        cell.terrain = 'land';
-        cell.beach = true;
+        window.landWaterRules.replaceNaturalCell(cell, 'beach');
       }
     }
     const definition = { ...map, cells };
-    return rules ? normalize(definition, grids, !erase, rules) : { definition, issues: [] };
+    const result = rules ? normalize(definition, grids, !erase, rules) : { definition, issues: [] };
+    // 独立海滩笔刷不整理高程；这里的海滩已是最终事实。地形事务则延后清理。
+    if (result.definition) result.definition.cells.forEach(row => row.forEach(cell => {
+      if (cell?.beach) delete cell.road;
+    }));
+    return result;
   }
 
   window.beachRules = { validate, select, normalize, applyStroke };

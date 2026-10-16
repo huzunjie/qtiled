@@ -243,7 +243,7 @@ test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s整笔、�
   expect(painted.cells[9][26].tree).toBe(kind);
   p.get('undo').click(); expect(p.save()).toEqual(before);
   p.get('redo').click(); expect(p.save()).toEqual(painted);
-  for (const tool of ['road', 'raise', 'raise-two', 'lower', 'lower-two']) {
+  for (const tool of ['road']) {
     p.tool(tool); p.pointer('pointerdown', [26, 9]); p.pointer('pointerup', [26, 9]);
     expect({ tool, hidden: p.get('issues').hidden }).toEqual({ tool, hidden: false });
     expect(p.save()).toEqual(painted);
@@ -1057,7 +1057,6 @@ test.each([true, false])('地图缓存恢复保留原播放状态（播放=%s）
 
 test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和松开不重复重建', async () => {
   const p = await page();
-  const rules = p.terrainResolve.mock.calls.length;
   expect(p.resolveFrame).not.toHaveBeenCalled();
   p.tool('water');
   p.pointer('pointerdown', [1, 0]);
@@ -1068,11 +1067,11 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
   expect(p.resolve).toHaveBeenCalledTimes(calls);
   p.pointer('pointermove', [2, 0]);
   const nextRoot = p.layer.children[0];
+  const rules = p.terrainResolve.mock.calls.length;
   p.pointer('pointermove', [1, 0]);
   p.pointer('pointerup', [1, 0]);
   expect(p.layer.children[0]).toBe(nextRoot);
   expect(p.resolve).toHaveBeenCalledTimes(calls + 1);
-  expect(p.terrainStroke).toHaveBeenCalledTimes(2);
   expect(p.terrainResolve).toHaveBeenCalledTimes(rules);
   expect(p.resolveFrame).not.toHaveBeenCalled();
   const map = p.save();
@@ -1187,12 +1186,13 @@ test('高程预览 resize 取消，保持旧地图和历史，坏 v2 导入也�
   p.window.close();
 });
 
-test('孤立水格可抬高形成湖台；完整实体占地不能被单格抬高', async () => {
+test('孤立水格可抬高形成湖台；破坏地基时自动清除完整实体', async () => {
   const p = await page();
   const initial = p.save();
   heightStroke(p, 'raise', [[1, 1]]);
-  expect(p.get('issues').hidden).toBe(false);
-  expect(p.save()).toEqual(initial);
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().entities.length).toBeLessThan(initial.entities.length);
+  p.get('undo').click(); expect(p.save()).toEqual(initial);
   flatElevationWorkspace(p);
   heightStroke(p, 'water', [[4, 4]]);
   const water = p.save();
@@ -1295,16 +1295,17 @@ test('平面编辑四向选取真实世界格，大笔刷可挖低顶层，撤�
   p.window.close();
 });
 
-test('手动设高入口已移除，大笔刷越界整笔拒绝且不留下预览层', async () => {
-  const p = await page({}, 'elevation-multilevel-map');
+test('手动设高入口已移除，大笔刷边界裁切且不留下预览层', async () => {
+  const p = await constructionPage();
   const before = p.save();
-  p.get('flat-edit').click();
   expect(p.get('target-height')).toBeNull();
   expect(p.window.document.querySelector('[data-tool="set-height"]')).toBeNull();
   p.get('brush-size').value = '5';
+  p.get('fit-map').click();
   heightStroke(p, 'raise', [[1, 1]]);
-  expect(p.get('issues').hidden).toBe(false);
-  expect(p.save()).toEqual(before);
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save()).not.toEqual(before);
+  p.get('undo').click(); expect(p.save()).toEqual(before);
   expect(p.layer.children).toHaveLength(1);
   expect(p.errors).toEqual([]);
   p.window.close();
@@ -1767,8 +1768,8 @@ test('悬停完整校验，奇偶尺寸与两形状均不重建绘制节点；�
   expect(p.save()).toEqual(before);
   p.tool('land'); expect(p.get('brush-size').value).toBe('9');
   p.pointer('pointermove', [0, 0]);
-  expect(p.get('hover-info').textContent).toContain('不能落笔');
-  expect(guide(p, 'map-brush-hover').children[0].attrs.strokeColor).toBe('#bc3e30');
+  expect(p.get('hover-info').textContent).toContain('可落笔');
+  expect(guide(p, 'map-brush-hover').children[0].attrs.strokeColor).toBe('#e8ffe9');
   p.pointer('pointerleave', [0, 0]);
   expect(guide(p, 'map-brush-hover')).toBeUndefined();
   expect(p.errors).toEqual([]);
@@ -1884,13 +1885,15 @@ test('道路快速拖动形成一个直角弯，整笔撤销/重做、重复无�
   p.pointer('pointerdown', [1, 1]);
   p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
   expect(p.save()).toEqual(after);
+  p.get('fit-map').click();
   p.pointer('pointerdown', [0, 0]);
   p.pointer('pointerup', [-1, 0]);
-  expect(p.get('issues').hidden).toBe(false);
-  expect(p.save()).toEqual(after);
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells[0][0].road).toBe('ordinary');
+  p.get('undo').click(); expect(p.save()).toEqual(after);
 });
 
-test('建筑预览不写事实，转向/放置/重复拒绝后可恢复，地形破坏拒绝，整栋删除与历史/文件回读', async () => {
+test('建筑预览不写事实，转向/放置/重复拒绝后可恢复，地表转换清除，整栋删除与历史/文件回读', async () => {
   const p = await constructionPage();
   const before = p.save();
   p.tool('building');
@@ -1915,8 +1918,9 @@ test('建筑预览不写事实，转向/放置/重复拒绝后可恢复，地形
   p.tool('water');
   p.pointer('pointerdown', [4, 3]);
   p.pointer('pointerup', [4, 3]);
-  expect(p.get('issues').hidden).toBe(false);
-  expect(p.save()).toEqual(placed);
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().entities).toEqual([]);
+  p.get('undo').click(); expect(p.save()).toEqual(placed);
   p.tool('select');
   p.clickGrid([4, 3]);
   expect(p.get('entity-id').textContent).toBe('house-1');
@@ -2243,8 +2247,9 @@ test('坡道半坡工具：双格归属、整笔取消、铺擦路、撤销重�
   expect(painted.cells[5][11].road).toBe('ordinary');
   expect(painted.cells[4][11].road).toBe('ordinary');
   p.tool('half-slope'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
-  expect(p.get('issues').textContent).toContain('先擦除道路');
-  expect(p.save()).toEqual(painted);
+  expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells[5][11].halfSlope).toBeUndefined();
+  p.get('undo').click(); expect(p.save()).toEqual(painted);
   p.tool('clear'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
   expect(p.save()).toEqual(ramp);
   p.tool('half-slope'); p.pointer('pointerdown', [11, 4]); p.pointer('pointerup', [11, 4]);
@@ -2290,7 +2295,7 @@ test('清除单点按真实alpha仅删重叠上层；全占地预览、取消和
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('范围清除一次移除树道路完整民居，保留地形，取消与越界失败不部分落笔', async () => {
+test('范围清除一次移除树道路完整民居，保留地形，取消整笔及边界裁切保持历史', async () => {
   const p = await constructionPage();
   const map = p.save(); map.climate = 'arid';
   map.cells[4][4].tree = 'ordinary-mature'; map.cells[4][5].road = 'ordinary';
@@ -2303,7 +2308,8 @@ test('范围清除一次移除树道路完整民居，保留地形，取消与�
   expect(cleared.cells.flat().some(c => c.tree || c.road)).toBe(false);
   expect(cleared.cells.flat().every(c => c.elevation === 8 && c.terrain === 'land')).toBe(true);
   p.get('undo').click(); expect(p.save()).toEqual(map);
-  p.pointer('pointerdown', [5, 4]); p.pointer('pointerup', [0, 0]); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [5, 4]); p.pointer('pointerup', [0, 0]); expect(p.save()).toEqual(cleared);
+  p.get('undo').click(); expect(p.save()).toEqual(map);
   expect(p.errors).toEqual([]); p.window.close();
 });
 
@@ -2331,7 +2337,8 @@ test.each([[9, 4], [9, 9]])('范围清除跳采样到[%i,%i]补齐中途实体�
   p.get('undo').click(); expect(p.save()).toEqual(map);
   p.get('redo').click(); expect(p.save()).toEqual(cleared);
   p.get('undo').click();
-  sweep(); p.pointer('pointerup', [0, 0]); expect(p.save()).toEqual(map);
+  sweep(); p.pointer('pointerup', [0, 0]); expect(p.save()).toEqual(cleared);
+  p.get('undo').click(); expect(p.save()).toEqual(map);
   expect(p.errors).toEqual([]); p.window.close();
 });
 
@@ -2366,7 +2373,7 @@ test('三个岩石按钮直接绘制对应类别，冲突拒绝、取消与历�
     p.pointer('pointerdown', [4, 4]); p.pointer('pointermove', [7, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(before);
     p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [7, 4]);
     const painted = p.save(); expect(painted.cells[4].slice(4, 8).map(c => c.rock)).toEqual(Array(4).fill(kind));
-    for (const tool of ['road', 'raise', 'raise-two', 'lower', 'lower-two', 'tree']) {
+    for (const tool of ['road', 'tree']) {
       p.tool(tool); p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]); expect(p.save()).toEqual(painted);
     }
     p.tool('building'); p.clickGrid([4, 4]); expect(p.save()).toEqual(painted);
@@ -2431,7 +2438,7 @@ test.each([2, 3])('%s格方块四镜头可逐格命中清除，不把重新分�
 });
 
 
-test('采石地独立按钮固定6×6，扩展、统一局部清除、取消、历史及JSON四向回读', async () => {
+test('采石地自定义6×6，扩展、统一局部清除、取消、历史及JSON四向回读', async () => {
   const p = await page({}, 'mineral-map');
   const original = p.save();
   const map = { ...original, cells: Array.from({ length: 20 }, () => Array.from({ length: 24 }, () => ({ terrain: 'land', elevation: 8 }))), entities: [] };
@@ -2439,22 +2446,22 @@ test('采石地独立按钮固定6×6，扩展、统一局部清除、取消、�
   p.window.document.querySelector('[data-tool="quarry"]').click();
   expect(p.get('edit-tool').value).toBe('quarry');
   expect(p.get('brush-size-control').hidden).toBe(false);
-  expect(p.get('brush-size').disabled).toBe(true);
-  expect(p.get('brush-size').value).toBe('6');
+  expect(p.get('brush-size').disabled).toBe(false);
+  p.get('brush-size').value = '6'; p.get('brush-size').dispatchEvent(new p.window.Event('change'));
   p.pointer('pointermove', [8, 8]); expect(p.get('hover-info').textContent).toContain('36');
   p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
   const first = p.save(); expect(first.cells.flat().filter(c => c.quarry)).toHaveLength(36);
-  expect(first.cells[6][5].quarry).toBe(true); expect(first.cells[11][10].quarry).toBe(true);
+  expect(first.cells[6][6].quarry).toBe(true); expect(first.cells[11][11].quarry).toBe(true);
   p.pointer('pointerdown', [11, 10]); p.pointer('pointerup', [11, 10]);
   const expanded = p.save(); expect(expanded.cells.flat().filter(c => c.quarry)).toHaveLength(60);
   p.pointer('pointerdown', [8, 8], 0, { ctrlKey: true }); p.pointer('pointerup', [8, 8], 0, { ctrlKey: true });
   expect(p.save()).toEqual(expanded);
   p.tool('clear'); p.get('brush-size').value = '6';
   p.get('brush-size').dispatchEvent(new p.window.Event('change'));
-  p.pointer('pointerdown', [7, 8]);
+  p.pointer('pointerdown', [8, 8]);
   p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
   expect(p.save()).toEqual(expanded);
-  p.pointer('pointerdown', [7, 8]); p.pointer('pointerup', [7, 8]);
+  p.pointer('pointerdown', [8, 8]); p.pointer('pointerup', [8, 8]);
   expect(p.get('issues').textContent).toBe('');
   const cleared = p.save(); expect(cleared.cells.flat().filter(c => c.quarry)).toHaveLength(24);
   p.get('undo').click(); expect(p.save()).toEqual(expanded);
@@ -2468,27 +2475,69 @@ test('采石地独立按钮固定6×6，扩展、统一局部清除、取消、�
   expect(p.save().cells.flat().filter(c => c.quarry)).toHaveLength(23);
   p.get('undo').click(); expect(p.save()).toEqual(cleared);
   p.tool('water'); p.pointer('pointerdown', [12, 11]); p.pointer('pointerup', [12, 11]);
-  expect(p.get('issues').hidden).toBe(false); expect(p.save()).toEqual(cleared);
-  p.tool('quarry'); p.pointer('pointerdown', [1, 1]); p.pointer('pointerup', [1, 1]);
-  expect(p.get('issues').textContent).toMatch(/越界|空角/); expect(p.save()).toEqual(cleared);
+  expect(p.get('issues').hidden).toBe(true); expect(p.save().cells[11][12].terrain).toBe('water');
+  p.get('undo').click(); expect(p.save()).toEqual(cleared);
+  p.get('fit-map').click(); p.tool('quarry'); p.pointer('pointerdown', [1, 1]); p.pointer('pointerup', [1, 1]);
+  expect(p.get('issues').textContent).toBe(''); expect(p.save().cells[1][1].quarry).toBe(true);
+  p.get('undo').click(); expect(p.save()).toEqual(cleared);
   expect(p.errors).toEqual([]);
 });
 
 
-test('笔刷参数常显禁用，采石地固定6×6，切回恢复作者的菱形尺寸', async () => {
+test('采石地共用作者笔刷尺寸和形状，查看工具禁用后仍可恢复', async () => {
   const p = await constructionPage();
   p.tool('ordinary'); p.get('brush-shape').value = 'diamond'; p.get('brush-size').value = '3';
   p.get('brush-size').dispatchEvent(new p.window.Event('change'));
   p.tool('quarry');
   expect(p.get('brush-size-control').hidden).toBe(false);
-  expect(p.get('brush-size').disabled).toBe(true);
-  expect(p.get('brush-shape').disabled).toBe(true);
-  expect(p.get('brush-size').value).toBe('6');
-  expect(p.get('brush-summary').textContent).toBe('固定 36 格');
+  expect(p.get('brush-size').disabled).toBe(false);
+  expect(p.get('brush-shape').disabled).toBe(false);
+  expect(p.get('brush-size').value).toBe('3');
+  expect(p.get('brush-shape').value).toBe('diamond');
+  expect(p.get('brush-summary').textContent).toBe('5 格');
   p.tool('select'); expect(p.get('brush-summary').textContent).toBe('无需笔刷');
   p.tool('iron'); expect(p.get('brush-size').disabled).toBe(false);
   expect(p.get('brush-size').value).toBe('3'); expect(p.get('brush-shape').value).toBe('diamond');
   p.window.close();
+});
+
+test('采石地1/3/9方形与菱形按选区绘制，取消、历史和JSON一致', async () => {
+  const p = await constructionPage(); const original = p.save();
+  original.cells = Array.from({ length: 20 }, () => Array.from({ length: 20 }, () => ({ terrain: 'land', elevation: 8 })));
+  for (const shape of ['square', 'diamond']) for (const size of [1, 3, 9]) {
+    p.get('map-json').value = JSON.stringify(original); p.get('read-map').click(); p.get('fit-map').click();
+    p.tool('quarry'); p.get('brush-shape').value = shape; p.get('brush-size').value = String(size);
+    p.get('brush-size').dispatchEvent(new p.window.Event('change'));
+    p.pointer('pointerdown', [10, 10]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(original);
+    p.pointer('pointerdown', [10, 10]); p.pointer('pointerup', [10, 10]);
+    expect(p.get('issues').textContent).toBe('');
+    const after = p.save();
+    const expected = shapes.polygon.getSelectionOffsets(size, shape).map(([x, y]) => `${10 + x},${10 + y}`).sort();
+    expect(after.cells.flatMap((row, y) => row.flatMap((cell, x) => cell.quarry ? [`${x},${y}`] : [])).sort()).toEqual(expected);
+    p.get('undo').click(); expect(p.save()).toEqual(original); p.get('redo').click(); expect(p.save()).toEqual(after);
+    for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); }
+    p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('自动清理只删失效坡段，坡面画海滩不误清路或新增历史', async () => {
+  const p = await constructionPage(); const original = p.save();
+  original.cells = Array.from({ length: 12 }, () => Array.from({ length: 12 }, (_, x) => ({ terrain: 'land', elevation: x < 5 ? 9 : 8 })));
+  original.cells[5][5].ramp = true;
+  [[4, 5], [5, 5], [6, 5], [7, 5], [6, 4], [6, 3]].forEach(([x, y]) => { original.cells[y][x].road = 'ordinary'; });
+  p.get('map-json').value = JSON.stringify(original); p.get('read-map').click(); setDisplay(p, 'flat-edit', true);
+  p.tool('half-slope'); p.pointer('pointerdown', [5, 5]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(original);
+  p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]);
+  const after = p.save(); expect(after.cells[4][6].road).toBe('ordinary'); expect(after.cells[5][5].road).toBeUndefined();
+  expect(after.cells[5][6].road).toBeUndefined(); expect(p.get('issues').textContent).toBe('');
+  p.get('undo').click(); expect(p.save()).toEqual(original); p.get('redo').click(); expect(p.save()).toEqual(after);
+  p.get('undo').click(); p.tool('beach'); p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]);
+  expect(p.save()).toEqual(original); expect(p.get('redo').disabled).toBe(false);
+  p.get('redo').click(); expect(p.save()).toEqual(after);
+  for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); }
+  p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
+  expect(p.errors).toEqual([]); p.window.close();
 });
 
 test('画布Ctrl滚轮锚点四向稳定，限值与滑杆同步，容器外保留默认', async () => {
@@ -2713,8 +2762,9 @@ test('旧图草沙整理需显式预览确认，取消保留输入，确认整�
   p.get('redo').click(); expect(p.save()).toEqual(repaired);
   old.cells[4][4].rock = 'ordinary';
   p.get('map-json').value = JSON.stringify(old); p.get('preview-map-repair').click();
-  expect(p.get('issues').textContent).toContain('占用');
-  expect(p.get('map-repair-actions').hidden).toBe(true);
+  expect(p.get('issues').textContent).toBe('');
+  expect(p.get('map-repair-actions').hidden).toBe(false);
+  p.get('cancel-map-repair').click();
   expect(p.save()).toEqual(repaired);
   p.get('map-json').value = '{'; p.get('preview-map-repair').click();
   expect(p.get('map-repair-actions').hidden).toBe(true);
@@ -2756,6 +2806,7 @@ test('山峰四向整座清除、取消、历史和JSON回读保持外观与25�
   for (const angle of [0, 90, 180, 270]) {
     p.camera(angle);
     expect(peaks().map(node => node.attrs.sourceRect[0]).sort((a, b) => a - b)).toEqual([0, 400, 800, 1200]);
+    p.get('fit-map').click();
     // 底面中央为真实不透明像素；拾取沿同一渲染画序，不能只删一格。
     p.tool('clear'); p.pointer('pointermove', [5, 6]);
     p.pointer('pointerdown', [5, 6]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(original);
@@ -2795,6 +2846,7 @@ test('山峰工具放置四种外观，冲突拒绝；清除后使用当前气�
   p.clickGrid([5, 6]);
   p.get('map-climate').value = 'arid'; p.get('map-climate').dispatchEvent(new p.window.Event('change'));
   const dry = p.save(); expect(dry.climate).toBe('arid');
+  p.get('fit-map').click();
   p.tool('clear'); p.pointer('pointerdown', [5, 6]); p.pointer('pointerup', [5, 6]);
   expect(p.save()).toEqual({ ...dry, entities: [] });
   setDisplay(p, 'flat-edit', false);
@@ -2909,22 +2961,31 @@ test('全部笔刷共用完整校验，绿色候选可以提交，红色候选�
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('水刷不能淹没道路或实体，失败反馈可取消且无红框残留', async () => {
+test.each([1, 2])('v%s 地表转换清理道路与完整实体，预览取消、联动、历史和JSON闭环', async version => {
   const p = await constructionPage(); const empty = p.save();
-  for (const fact of [{ road: 'ordinary' }, { entity: true }]) {
+  if (version === 1) { empty.version = 1; delete empty.elevationStep; empty.cells.forEach(row => row.forEach(cell => { cell.elevation = 0; })); }
+  for (const terrain of ['water', 'beach']) for (const element of ['road', 'sculpture-dog-preview', 'courtyard-house', 'emperor-pinnacle-1']) {
     const map = JSON.parse(JSON.stringify(empty));
-    if (fact.entity) map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
-    else Object.assign(map.cells[5][5], fact);
+    map.entities = [{ id: 'outside', element: 'sculpture-dog-preview', grid: [10, 10], angle: 0 }];
+    if (element === 'road') map.cells[5][5].road = 'ordinary';
+    else map.entities.push({ id: 'target', element, grid: [5, 5], angle: 0 });
     p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
     expect(p.get('issues').hidden).toBe(true);
-    p.tool('water'); p.pointer('pointermove', [5, 5]);
-    expect(p.get('hover-info').textContent).toContain('不能落笔');
-    p.pointer('pointerdown', [5, 5]);
-    expect(guide(p, 'map-stroke-preview').children[0].attrs.strokeColor).toBe('#bc3e30');
-    p.get('cancel-stroke').click();
-    expect(guide(p, 'map-stroke-preview')).toBeUndefined();
-    expect(p.save()).toEqual(map);
-    p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); expect(p.save()).toEqual(map);
+    p.tool(terrain); p.pointer('pointerdown', [5, 5]);
+    expect(p.get('issues').hidden).toBe(true);
+    const preview = guide(p, 'map-stroke-preview');
+    expect(preview.children.some(node => node.attrs.strokeColor === '#bc3e30')).toBe(false);
+    if (element === 'courtyard-house' || element === 'emperor-pinnacle-1') {
+      expect(preview.children.filter(node => node.attrs.strokeColor === '#83b68b').length).toBeGreaterThanOrEqual(element === 'courtyard-house' ? 3 : 24);
+    }
+    p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]);
+    const next = p.save(); expect(next.cells[5][5].terrain).toBe(terrain === 'water' ? 'water' : 'land');
+    expect(next.cells[5][5].road).toBeUndefined();
+    expect(next.entities).toEqual([map.entities[0]]);
+    p.get('undo').click(); expect(p.save()).toEqual(map);
+    p.get('redo').click(); expect(p.save()).toEqual(next);
+    p.get('map-json').value = JSON.stringify(next); p.get('read-map').click(); expect(p.save()).toEqual(next);
   }
   expect(p.errors).toEqual([]); p.window.close();
 });
@@ -2974,11 +3035,12 @@ test.each(['ordinary', 'copper', 'iron', 'dune', 'quarry'])('%s统一转换水�
     p.get('redo').click(); expect(p.save()).toEqual(after);
     p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
   }
-  // 转换地面不会删除道路，也不会允许半座实体覆盖。
+  // 旧道路被新地物替换，取消或撤销仍能完整恢复。
   const protectedMap = JSON.parse(JSON.stringify(empty)); protectedMap.cells[6][6].road = 'ordinary';
   p.get('map-json').value = JSON.stringify(protectedMap); p.get('read-map').click();
-  p.tool(tool); p.pointer('pointermove', [6, 6]); expect(p.get('hover-info').textContent).toContain('不能落笔');
-  p.pointer('pointerdown', [6, 6]); p.pointer('pointerup', [6, 6]); expect(p.save()).toEqual(protectedMap);
+  p.tool(tool); p.pointer('pointermove', [6, 6]); expect(p.get('hover-info').textContent).toContain('可落笔');
+  p.pointer('pointerdown', [6, 6]); p.pointer('pointerup', [6, 6]); expect(p.save().cells[6][6].road).toBeUndefined();
+  p.get('undo').click(); expect(p.save()).toEqual(protectedMap);
   expect(p.errors).toEqual([]); p.window.close();
 });
 
@@ -3198,22 +3260,20 @@ test.each(['ordinary', 'copper', 'iron', 'dune', 'quarry', 'tree'])('%s覆盖盐
   const field = ['dune', 'quarry', 'tree'].includes(tool) ? tool : 'rock';
   expect(after.cells[5][5]).toEqual({ terrain: 'land', elevation: 8, [field]: tool === 'tree' ? 'ordinary-stump' : field === 'rock' ? tool : true });
   const changed = after.cells.flat().filter((cell, i) => JSON.stringify(cell) !== JSON.stringify(map.cells.flat()[i]));
-  expect(changed).toHaveLength(tool === 'quarry' ? 36 : 1);
+  expect(changed).toHaveLength(1);
   for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); expect(p.save()).toEqual(after); }
   p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(after);
   p.get('map-json').value = JSON.stringify(after); p.get('read-map').click(); expect(p.save()).toEqual(after);
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('盐沼替换不能绕过原水源距离与道路实体保护；树不能靠自己在干盐沼取得草地', async () => {
+test('盐沼替换不能绕过原水源距离；树不能靠自己在干盐沼取得草地', async () => {
   const p = await constructionPage(); const empty = p.save(); empty.climate = 'arid';
-  for (const conflict of ['water', 'beach', 'near-water', 'road', 'entity', 'dry-salt']) {
+  for (const conflict of ['water', 'beach', 'near-water', 'dry-salt']) {
     const map = JSON.parse(JSON.stringify(empty));
     if (conflict === 'water') map.cells[5][5].terrain = 'water';
     if (conflict === 'beach') for (let y = 3; y <= 9; y++) for (let x = 3; x <= 9; x++) map.cells[y][x].beach = true;
     if (conflict === 'near-water') { map.cells[5][1].terrain = 'water'; map.cells[5][5].rock = 'ordinary'; }
-    if (conflict === 'road') map.cells[5][5].road = 'ordinary';
-    if (conflict === 'entity') map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
     if (conflict === 'dry-salt') map.cells[5][5].saltMarsh = true;
     p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
     p.tool(conflict === 'dry-salt' ? 'tree' : 'salt-marsh'); p.pointer('pointermove', [5, 5]);
@@ -3224,7 +3284,7 @@ test('盐沼替换不能绕过原水源距离与道路实体保护；树不能�
 });
 
 // 树木按格筛选不改变其他工具或整笔事务；使用真实规则链判断资格。
-test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s混合范围预览执行同源，保护水道路实体并支持取消和单笔历史', async kind => {
+test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s混合范围预览执行同源，跳过水域并替换道路实体，支持取消和单笔历史', async kind => {
   const p = await constructionPage(); const map = p.save(); map.climate = 'humid';
   map.cells[4][4].terrain = 'water'; map.cells[4][5].road = 'ordinary';
   map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 5], angle: 0 }];
@@ -3233,14 +3293,17 @@ test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s混合范�
   expect(p.get('issues').hidden).toBe(true);
   p.tool(treeTool(kind)); p.get('brush-size').value = '3';
   const expected = JSON.parse(JSON.stringify(map));
-  for (const [x, y] of [[6, 4], [4, 5], [4, 6]]) expected.cells[y][x].tree = kind;
+  for (let y = 4; y <= 6; y++) for (let x = 4; x <= 6; x++) if (x !== 4 || y !== 4) {
+    delete expected.cells[y][x].road; expected.cells[y][x].tree = kind;
+  }
+  expected.entities = [];
   const colors = id => guide(p, id).children.map(node => node.attrs.strokeColor);
   p.pointer('pointermove', [5, 5]);
   const hover = colors('map-brush-hover');
-  expect(hover.filter(color => color === '#e8ffe9')).toHaveLength(3);
-  expect(hover.filter(color => color === '#bc3e30')).toHaveLength(6);
-  expect(p.get('hover-info').textContent).toContain('跳过 6 格');
-  for (const grid of ['4, 4', '5, 4', '5, 5', '6, 5', '5, 6', '6, 6']) expect(p.get('hover-info').textContent).toContain(grid);
+  expect(hover.filter(color => color === '#e8ffe9')).toHaveLength(8);
+  expect(hover.filter(color => color === '#bc3e30')).toHaveLength(1);
+  expect(p.get('hover-info').textContent).toContain('跳过 1 格');
+  for (const grid of ['4, 4']) expect(p.get('hover-info').textContent).toContain(grid);
   p.pointer('pointerdown', [5, 5]); expect(colors('map-stroke-preview')).toEqual(hover);
   expect(p.get('issues').textContent).toContain('红格保持原状');
   p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
@@ -3270,12 +3333,12 @@ test('树笔拖动资格固定为原湿度，跨无效格继续插值，全无�
   p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
   p.pointer('pointerdown', [4, 6]); p.pointer('pointermove', [6, 6]); p.pointer('pointerup', [6, 6]);
   const after = p.save(); expect(after.cells[6][4].tree).toBe('ordinary-mature');
-  expect(after.cells[6][5]).toEqual(map.cells[6][5]); expect(after.cells[6][6].tree).toBe('ordinary-mature');
+  expect(after.cells[6][5]).toEqual({ terrain: 'land', elevation: 8, tree: 'ordinary-mature' }); expect(after.cells[6][6].tree).toBe('ordinary-mature');
   p.get('undo').click(); expect(p.save()).toEqual(map);
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test('树笔拒绝坡面，边界与空角仍整笔拒绝，采石地占用混合范围仍全部拒绝', async () => {
+test('树笔拒绝坡面，边界与空角按有效格裁切，采石地可覆盖旧道路', async () => {
   const p = await page({}, 'slope-features-map'); setDisplay(p, 'flat-edit', true);
   const map = p.save(); map.climate = 'humid'; map.cells[0][0].terrain = 'water';
   p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
@@ -3290,10 +3353,14 @@ test('树笔拒绝坡面，边界与空角仍整笔拒绝，采石地占用混�
   for (const corner of [null, { terrain: 'land', elevation: 8 }]) {
     base.cells[4][4] = corner; q.get('map-json').value = JSON.stringify(base); q.get('read-map').click();
     q.tool('tree'); q.get('brush-size').value = '3'; const grid = corner ? [0, 0] : [5, 5];
-    q.pointer('pointerdown', grid); q.pointer('pointerup', grid); expect(q.save()).toEqual(base);
+    q.get('fit-map').click(); q.pointer('pointerdown', grid); q.pointer('pointerup', grid);
+    const painted = q.save(); expect(painted.cells.flat().some(c => c?.tree)).toBe(true);
+    expect(painted.cells[4][4]).toEqual(corner);
+    q.get('undo').click(); expect(q.save()).toEqual(base);
   }
   base.cells[5][5].road = 'ordinary'; q.get('map-json').value = JSON.stringify(base); q.get('read-map').click();
-  q.tool('quarry'); q.pointer('pointerdown', [5, 5]); q.pointer('pointerup', [5, 5]); expect(q.save()).toEqual(base);
+  q.tool('quarry'); q.pointer('pointerdown', [5, 5]); q.pointer('pointerup', [5, 5]); expect(q.save().cells[5][5]).toEqual({ terrain: 'land', elevation: 8, quarry: true });
+  q.get('undo').click(); expect(q.save()).toEqual(base);
   expect(q.errors).toEqual([]); q.window.close();
 });
 
@@ -3355,4 +3422,263 @@ test('遗迹多格笔刷、四向逐格清除重组、取消、历史和JSON往�
   p.get('redo').click(); expect(p.save()).toEqual(painted);
   p.get('map-json').value = JSON.stringify(painted); p.get('read-map').click(); expect(p.save()).toEqual(painted);
   expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test.each([1, 2].flatMap(version => [['rock', 2], ['rock', 3], ['dune', 2], ['dune', 3], ['ruin', 2]]
+  .map(([field, size]) => [version, field, size])))('v%s 多格地物 %s %s格方块的小笔刷逐格落笔', async (version, field, size) => {
+  const p = await constructionPage();
+  const map = p.save();
+  if (version === 1) {
+    map.version = 1;
+    delete map.elevationStep;
+    map.cells.forEach(row => row.forEach(cell => { cell.elevation = 0; }));
+  }
+  for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) {
+    Object.assign(map.cells[y][x], { [field]: field === 'rock' ? 'copper' : true, terrainVariant: 0 });
+  }
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  const before = p.save();
+  for (const flat of [false, true]) {
+    setDisplay(p, 'flat-edit', flat);
+    for (const angle of [0, 90, 180, 270]) {
+      p.camera(angle);
+      for (const tool of ['clear', 'land', 'water']) {
+        p.tool(tool);
+        for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) {
+          p.pointer('pointerdown', [x, y]); p.pointer('pointerup', [x, y]);
+          const expected = JSON.parse(JSON.stringify(before));
+          delete expected.cells[y][x][field];
+          if (tool !== 'clear') expected.cells[y][x].terrain = tool;
+          expect(p.save()).toEqual(expected);
+          p.get('undo').click(); expect(p.save()).toEqual(before);
+          p.get('redo').click(); expect(p.save()).toEqual(expected);
+          p.get('undo').click();
+        }
+      }
+    }
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('地表转换按最终岸带清理水面实例；联动格、保留同类地表和失败原子性', async () => {
+  const p = await constructionPage();
+  const library = p.occupancy.mock.calls[p.occupancy.mock.calls.length - 1][1];
+  const base = p.save();
+  const dog = library['sculpture-dog-preview'];
+  const elements = { ...library, 'water-fixture': { ...dog, id: 'water-fixture', groundTerrain: 'water' } };
+  base.cells.forEach(row => row.forEach((cell, x) => {
+    if (x >= 4) cell.terrain = 'water';
+  }));
+  base.entities = [
+    { id: 'linked', element: 'water-fixture', grid: [4, 6], angle: 0 },
+    { id: 'keep', element: 'water-fixture', grid: [8, 8], angle: 0 },
+  ];
+  const landRules = JSON.parse(read('static/terrain-samples/emperor-land-water/rules.json'));
+  for (const terrain of ['land', 'beach']) {
+    const filled = p.window.constructionRules.applySurfaceStroke(base, terrain, [[4, 6]], elements, landRules);
+    expect(filled.issues).toEqual([]);
+    expect(filled.definition.entities.map(e => e.id)).toEqual(['keep']);
+    expect(filled.definition.cells[6][4].terrain).toBe('land');
+  }
+  const candidate = JSON.parse(JSON.stringify(base));
+  candidate.cells.forEach(row => row.forEach((cell, x) => { if (x < 4) cell.elevation++; }));
+  const banks = p.window.elevationRules.normalizeWaterBanks(candidate, elements, true);
+  expect(banks.issues).toEqual([]);
+  expect(banks.bankGrids).toContainEqual([4, 6]);
+  const cleaned = p.window.constructionRules.reconcileSurface(base, banks.definition, elements);
+  expect(cleaned.definition.entities.map(e => e.id)).toEqual(['keep']);
+  expect(base.entities).toHaveLength(2);
+
+  const map = p.save(); map.cells[7][7].road = 'ordinary';
+  map.entities = [{ id: 'dog', element: 'sculpture-dog-preview', grid: [5, 5], angle: 0 }];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  p.tool('land'); p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [7, 7]); p.pointer('pointerup', [7, 7]); expect(p.save()).toEqual(map);
+  p.tool('water'); p.pointer('pointerdown', [5, 5]); p.pointer('pointermove', [-1, -1]); p.pointer('pointerup', [-1, -1]);
+  expect(p.save().entities).toEqual([]); expect(p.save().cells[5][5].terrain).toBe('water');
+  p.get('undo').click(); expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+const overwriteFacts = {
+  land: {}, water: { terrain: 'water' }, beach: { beach: true },
+  ordinary: { rock: 'ordinary' }, copper: { rock: 'copper' }, iron: { rock: 'iron' },
+  dune: { dune: true }, quarry: { quarry: true }, ruin: { ruin: true },
+  tree: { tree: 'ordinary-mature' }, bamboo: { tree: 'bamboo-mature' }, stump: { tree: 'ordinary-stump' },
+  'salt-marsh': { saltMarsh: true }, road: { road: 'ordinary' }, entity: {},
+};
+
+test.each(Object.keys(overwriteFacts).filter(tool => !['road', 'entity'].includes(tool)))('%s地物替换方向表通过真实页面候选与最终校验', async target => {
+  const p = await constructionPage(); const empty = p.save(); empty.climate = 'humid'; empty.cells[6][0].terrain = 'water';
+  for (const source of Object.keys(overwriteFacts)) {
+    const map = JSON.parse(JSON.stringify(empty));
+    Object.assign(map.cells[6][5], overwriteFacts[source], { terrainVariant: 7 });
+    if (source === 'beach') for (let y = 5; y <= 7; y++) for (let x = 4; x <= 6; x++) map.cells[y][x].beach = true;
+    if (source === 'entity') map.entities = [{ id: 'house', element: 'courtyard-house', grid: [5, 6], angle: 0 }];
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+    p.tool(target); p.pointer('pointerdown', [5, 6]); p.pointer('pointerup', [5, 6]);
+    const after = p.save();
+    if ((['tree', 'bamboo', 'stump'].includes(target) && source === 'water')
+      || (target === 'salt-marsh' && ['water', 'beach'].includes(source))) {
+      expect(after).toEqual(map); continue;
+    }
+    expect(p.get('issues').hidden).toBe(true);
+    const cell = after.cells[6][5];
+    const expected = { terrain: 'land', elevation: 8, terrainVariant: 7, ...overwriteFacts[target] };
+    if (source === 'road' && ['land', 'salt-marsh'].includes(target)) expected.road = 'ordinary';
+    expect(cell).toEqual(expected);
+    expect(after.entities.length).toBe(source === 'entity' && target === 'land' ? 1 : 0);
+    expect(after.cells[11][11]).toEqual(map.cells[11][11]);
+    if (JSON.stringify(after) !== JSON.stringify(map)) {
+      p.get('undo').click(); expect(p.save()).toEqual(map);
+      p.get('redo').click(); expect(p.save()).toEqual(after);
+    }
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['ordinary', 'copper', 'iron', 'dune', 'ruin', 'quarry'])('%s被小笔刷局部覆盖后重组，四向历史与JSON一致', async source => {
+  const p = await constructionPage(); const map = p.save(); map.climate = 'humid'; map.cells[6][0].terrain = 'water';
+  const size = source === 'ruin' ? 2 : source === 'quarry' ? 6 : 3;
+  for (let y = 3; y < 3 + size; y++) for (let x = 3; x < 3 + size; x++) Object.assign(map.cells[y][x], overwriteFacts[source]);
+  for (const angle of [0, 90, 180, 270]) {
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); p.camera(angle);
+    setDisplay(p, 'flat-edit', false); p.tool(source === 'dune' ? 'iron' : 'dune');
+    p.pointer('pointerdown', [4, 4]); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+    p.pointer('pointerdown', [4, 4]); p.pointer('pointerup', [4, 4]);
+    const expected = JSON.parse(JSON.stringify(map));
+    expected.cells[4][4] = { terrain: 'land', elevation: 8, ...overwriteFacts[source === 'dune' ? 'iron' : 'dune'] };
+    expect(p.get('issues').textContent).toBe('');
+    expect(p.save()).toEqual(expected);
+    p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(expected);
+    p.get('map-json').value = JSON.stringify(expected); p.get('read-map').click(); expect(p.save()).toEqual(expected);
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('盐沼与道路绘制顺序一致，清路保留盐沼', async () => {
+  const p = await constructionPage(); const map = p.save(); const results = [];
+  for (const order of [['road', 'salt-marsh'], ['salt-marsh', 'road']]) {
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+    for (const tool of order) { p.tool(tool); p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); }
+    results.push(p.save());
+  }
+  expect(results[0]).toEqual(results[1]); expect(results[0].cells[5][5]).toMatchObject({ road: 'ordinary', saltMarsh: true });
+  p.tool('clear'); p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]);
+  expect(p.save().cells[5][5]).toEqual({ terrain: 'land', elevation: 8, saltMarsh: true });
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+// 边界只影响本次可绘制范围，不应永久污染同一笔的候选或历史。
+test.each([0, 90, 180, 270])('镜头%s越界返回原格能恢复，再续画不跨空白补线且一笔撤销', async angle => {
+  const p = await constructionPage(); const map = p.save();
+  setDisplay(p, 'flat-edit', true); p.camera(angle); p.tool('ordinary');
+  p.pointer('pointerdown', [5, 5]);
+  p.screenPointer('pointermove', [-20, -20]); expect(p.get('status').textContent).toContain('暂停');
+  p.pointer('pointermove', [5, 5]); expect(p.get('status').textContent).toContain('整笔预览');
+  p.screenPointer('pointermove', [-20, -20]);
+  p.pointer('pointermove', [7, 5]); p.pointer('pointerup', [7, 5]);
+  const after = p.save(); expect(after.cells[5][5].rock).toBe('ordinary'); expect(after.cells[5][7].rock).toBe('ordinary');
+  expect(after.cells[5][6]).toEqual(map.cells[5][6]);
+  p.get('undo').click(); expect(p.save()).toEqual(map);
+  p.get('redo').click(); expect(p.save()).toEqual(after);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['pointerup', 'Escape', 'pointercancel', 'lostpointercapture', 'blur'])('离开画布后%s正确提交或取消此前有效候选', async end => {
+  const p = await constructionPage(); const map = p.save();
+  p.tool('dune'); p.pointer('pointerdown', [5, 5]); p.screenPointer('pointermove', [-20, -20]);
+  if (end === 'Escape') p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape' }));
+  else if (end === 'blur') p.window.dispatchEvent(new p.window.Event('blur'));
+  else p.screenPointer(end, [-20, -20]);
+  const after = p.save();
+  if (end === 'pointerup') { expect(after.cells[5][5].dune).toBe(true); p.get('undo').click(); expect(p.save()).toEqual(map); }
+  else expect(after).toEqual(map);
+  expect(p.get('camera-angle').disabled).toBe(false);
+  expect(p.get('cancel-stroke').disabled).toBe(true);
+  p.tool('iron'); p.pointer('pointerdown', [6, 5]); p.pointer('pointerup', [6, 5]);
+  expect(p.save().cells[5][6].rock).toBe('iron');
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('空角起笔无修改，进入地图后绘制；空角暂停后续画不跨线，边界大刷只写有效格', async () => {
+  const p = await constructionPage(); const map = p.save(); map.cells[5][5] = null;
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); setDisplay(p, 'flat-edit', true);
+  p.tool('ordinary'); p.pointer('pointerdown', [5, 5]); p.pointer('pointerup', [5, 5]); expect(p.save()).toEqual(map);
+  p.pointer('pointerdown', [5, 5]); p.pointer('pointermove', [4, 5]);
+  p.pointer('pointermove', [5, 5]); p.pointer('pointermove', [7, 5]); p.pointer('pointerup', [7, 5]);
+  const after = p.save(); expect(after.cells[5][4].rock).toBe('ordinary'); expect(after.cells[5][7].rock).toBe('ordinary');
+  expect(after.cells[5][5]).toBeNull(); expect(after.cells[5][6]).toEqual(map.cells[5][6]);
+  p.get('undo').click(); expect(p.save()).toEqual(map);
+  p.get('brush-size').value = '3'; p.pointer('pointermove', [4, 5]);
+  expect(p.get('hover-info').textContent).toContain('占地 8 格');
+  p.pointer('pointerdown', [4, 5]); p.pointer('pointerup', [4, 5]);
+  expect(p.save().cells.flat().filter(c => c?.rock)).toHaveLength(8); expect(p.save().cells[5][5]).toBeNull();
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('画布外但投影仍在地图内时暂停，不把面板下地面算作落笔', async () => {
+  const p = await constructionPage(); const map = p.save();
+  p.tool('ordinary'); p.pointer('pointerdown', [5, 5]);
+  p.screenPointer('pointermove', [-1, 250]); p.screenPointer('pointerup', [-1, 250]);
+  expect(p.save().cells.flat().filter(c => c.rock)).toHaveLength(1);
+  p.get('undo').click(); expect(p.save()).toEqual(map); p.window.close();
+});
+
+test('道路离开后可重定终点，但穿过空角的路径仍拒绝且可缩回恢复', async () => {
+  const p = await constructionPage(); const map = p.save(); map.cells[5][6] = null;
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); setDisplay(p, 'flat-edit', true);
+  p.tool('road'); p.pointer('pointerdown', [4, 5]); p.pointer('pointermove', [7, 5]);
+  expect(p.get('issues').hidden).toBe(false);
+  p.screenPointer('pointermove', [-20, -20]); p.pointer('pointermove', [5, 5]); p.pointer('pointerup', [5, 5]);
+  expect(p.get('issues').hidden).toBe(true); expect(p.save().cells.flat().filter(c => c?.road)).toHaveLength(2);
+  p.get('undo').click(); expect(p.save()).toEqual(map); p.window.close();
+});
+
+test.each(['ordinary', 'copper', 'iron', 'dune', 'quarry', 'ruin', 'tree', 'bamboo', 'stump', 'salt-marsh'])('%s升降保留合法高地地物，自动清理邻格新坡面内容并可整笔恢复', async source => {
+  const p = await constructionPage(); const map = p.save(); map.climate = 'humid';
+  for (const [x, y] of [[5, 5], [6, 5], [10, 10]]) Object.assign(map.cells[y][x], overwriteFacts[source]);
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+  p.tool('raise'); p.pointer('pointerdown', [5, 5]);
+  expect(p.get('issues').textContent).toBe(''); p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+  heightStroke(p, 'raise', [[5, 5]]);
+  const raised = p.save(); expect(p.get('issues').textContent).toBe('');
+  expect(raised.cells[5][5]).toEqual({ ...map.cells[5][5], elevation: 9 });
+  expect(raised.cells[5][6]).toEqual({ terrain: 'land', elevation: 8 });
+  expect(raised.cells[10][10]).toEqual(map.cells[10][10]);
+  for (const angle of [0, 90, 180, 270]) { p.camera(angle); expect(p.get('issues').hidden).toBe(true); expect(p.save()).toEqual(raised); }
+  p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(raised);
+  p.get('map-json').value = JSON.stringify(raised); p.get('read-map').click(); expect(p.save()).toEqual(raised);
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  heightStroke(p, 'lower', [[5, 5]]); expect(p.get('issues').hidden).toBe(true);
+  expect(p.save().cells[5][5].elevation).toBe(7);
+  expect(p.save().cells[10][10]).toEqual(map.cells[10][10]);
+  p.get('undo').click(); expect(p.save()).toEqual(map); expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['sculpture-dog-preview', 'courtyard-house', 'emperor-pinnacle-1'])('%s整平台抬升保留，局部破坏地基删除整实例且预览和历史一致', async element => {
+  const p = await constructionPage(); const map = p.save();
+  map.entities = [{ id: 'target', element, grid: [3, 3], angle: 0 }];
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click(); expect(p.get('issues').hidden).toBe(true);
+  p.tool('raise'); p.get('brush-size').value = '9'; p.get('brush-size').dispatchEvent(new p.window.Event('change'));
+  heightStroke(p, 'raise', [[5, 5]]);
+  const raised = p.save(); expect(p.get('issues').textContent).toBe(''); expect(raised.entities).toEqual(map.entities);
+  expect(raised.cells[3][3].elevation).toBe(9); p.get('undo').click(); expect(p.save()).toEqual(map);
+  p.get('brush-size').value = '1'; p.get('brush-size').dispatchEvent(new p.window.Event('change'));
+  p.pointer('pointerdown', [3, 3]); expect(p.get('status').textContent).toContain('联动');
+  p.get('cancel-stroke').click(); expect(p.save()).toEqual(map);
+  heightStroke(p, 'raise', [[3, 3]]); const partial = p.save(); expect(partial.entities).toEqual([]);
+  p.get('undo').click(); expect(p.save()).toEqual(map); p.get('redo').click(); expect(p.save()).toEqual(partial);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('抬高道路格只清除新坡面与跨高差道路，合法孤立高台路和远处道路保留', async () => {
+  const p = await constructionPage(); const map = p.save();
+  for (const x of [4, 5, 6, 10]) map.cells[5][x].road = 'ordinary';
+  p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+  heightStroke(p, 'raise', [[5, 5]]); const after = p.save(); expect(p.get('issues').textContent).toBe('');
+  expect(after.cells[5][4].road).toBeUndefined(); expect(after.cells[5][6].road).toBeUndefined();
+  expect(after.cells[5][5].road).toBe('ordinary'); expect(after.cells[5][10].road).toBe('ordinary');
+  p.get('undo').click(); expect(p.save()).toEqual(map); expect(p.errors).toEqual([]); p.window.close();
 });
