@@ -7,7 +7,7 @@
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./static/css/index.css?20261012181344">
   <link rel="stylesheet" href="./static/css/preview-workspace.css?20261012181344">
-  <link rel="stylesheet" href="./static/css/map-editor.css?20261014070003">
+  <link rel="stylesheet" href="./static/css/map-editor.css?20261018234500">
 </head>
 <body class="map-editor-page">
   <script src="./static/js/navs.js?20261012181344"></script>
@@ -127,6 +127,10 @@
         <div class="canvas-stage">
           <div id="map-canvas" role="img" aria-label="地图画布：平移、绘制地表或查看格子和实体"></div>
           <output id="hover-info">移到画布查看坐标与笔刷占地</output>
+          <details id="minimap-panel" class="minimap-panel" open>
+            <summary>小地图 <span id="minimap-angle">0°</span></summary>
+            <canvas id="minimap" width="440" height="440" role="img" aria-label="小地图：点击有效地形快速定位"></canvas>
+          </details>
           <button id="cancel-stroke" type="button" disabled>取消整笔</button>
           <div class="issue-panel" aria-label="操作提示">
             <p id="status" role="status">正在加载地图与素材…</p>
@@ -214,6 +218,6 @@
       </div></aside>
     </div>
   </main>
-  <script src="./static/js/map-editor.js?20261019020000"></script>
+  <script src="./static/js/map-editor.js?20261018234500"></script>
 </body>
 </html>

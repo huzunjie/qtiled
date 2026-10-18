@@ -34,9 +34,16 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   const { window } = new JSDOM(read('map-editor.html'), { url: 'http://localhost/demo/map-editor.html' });
   const get = id => window.document.getElementById(id);
   // 使用仓库 PNG/WebP 的真实 RGBA；只替代 Canvas 读图，不模拟浏览器合成结果。
-  window.HTMLCanvasElement.prototype.getContext = () => {
+  const contexts = new WeakMap();
+  window.HTMLCanvasElement.prototype.getContext = function() {
+    if (contexts.has(this)) return contexts.get(this);
     let source;
-    return { clearRect() {}, drawImage(image) { source = image; }, getImageData: () => source.pixels };
+    const context = { clearRect() {}, drawImage: jest.fn(image => { source = image; }), getImageData: () => source.pixels,
+      beginPath() {}, moveTo: jest.fn(), lineTo: jest.fn(), closePath() {},
+      fill: jest.fn(function() { return this.fillStyle; }), stroke: jest.fn(function() { return this.strokeStyle; }),
+      fillRect() {}, strokeRect: jest.fn() };
+    contexts.set(this, context);
+    return context;
   };
   // 小地图仅作为可控动画夹具，不再出现在对外样本菜单。
   if (sample === 'deep-water-map') get('map-sample').add(new window.Option('深水测试夹具', sample));
@@ -226,6 +233,175 @@ function setDisplay(p, id, checked) {
   p.get(id).checked = checked;
   p.get(id).dispatchEvent(new p.window.Event('change'));
 }
+
+test('小地图四向点击保留缩放和历史，忽略空角；缩放和窗口变化仅更新视口框', async () => {
+  const p = await page({}, 'rectangular-water-map');
+  const before = p.save();
+  const canvas = p.get('minimap');
+  // 按窄屏 CSS 尺寸和滚动偏移点击，验证实际显示坐标到 Canvas 的换算。
+  canvas.getBoundingClientRect = () => ({ left: 117, top: -23, width: 176, height: 176 });
+  const click = (x, y) => canvas.dispatchEvent(new p.window.MouseEvent('click', { clientX: 117 + x, clientY: -23 + y }));
+  const context = canvas.getContext('2d');
+  const background = () => context.drawImage.mock.calls.slice(-1)[0][0];
+  const frame = () => context.strokeRect.mock.calls.slice(-1)[0];
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    zoom(p, 200);
+    const bitmap = background();
+    const calls = p.resolve.mock.calls.length;
+    // 点击实际绘出的非中心格，四向反算必须回到同一世界坐标。
+    const gridIndex = before.cells.flatMap((row, y) => row.flatMap((cell, x) => cell ? [[x, y]] : []))
+      .findIndex(([x, y]) => x === 16 && y === 19);
+    const painted = bitmap.getContext('2d');
+    const top = painted.moveTo.mock.calls[gridIndex];
+    const [right, bottom, left] = painted.lineTo.mock.calls.slice(gridIndex * 3, gridIndex * 3 + 3);
+    expect(right[0] - left[0]).toBeCloseTo(bottom[1] - top[1]);
+    click(top[0] * 176 / canvas.width, (top[1] + bottom[1]) / 2 * 176 / canvas.height);
+    const center = p.worldCenter();
+    expectNearPoint(center, [16, 19]);
+    expect(frame()[3] / frame()[2]).toBeCloseTo(p.size.height * 2 / p.size.width);
+    expectNearPoint([frame()[0] + frame()[2] / 2, frame()[1] + frame()[3] / 2], [top[0], (top[1] + bottom[1]) / 2]);
+    expect(p.get('status').textContent).toContain('已定位到');
+    expect(p.layer.children[0].attrs.scale).toEqual([2, 2]);
+    const position = [...p.layer.children[0].attrs.pos];
+    click(1, 1);
+    expect(p.layer.children[0].attrs.pos).toEqual(position);
+    const previousFrame = frame();
+    zoom(p, 100);
+    expect(frame()[2]).toBeCloseTo(previousFrame[2] * 2);
+    expect(frame()[3]).toBeCloseTo(previousFrame[3] * 2);
+    expect(background()).toBe(bitmap);
+    expect(p.resolve).toHaveBeenCalledTimes(calls);
+    expect(p.get('minimap-angle').textContent).toBe(`${angle}°`);
+  }
+  const previousFrame = frame();
+  p.resize(400, 250);
+  expect(frame()[2]).toBeCloseTo(previousFrame[2] / 2);
+  expect(frame()[3]).toBeCloseTo(previousFrame[3] / 2);
+  expect(p.save()).toEqual(before);
+  expect(p.get('undo').disabled).toBe(true);
+  expect(p.get('redo').disabled).toBe(true);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('小地图跟随编辑撤销和收起后换图，活动笔画期间不能定位', async () => {
+  const p = await page({}, 'rectangular-water-map');
+  const canvas = p.get('minimap');
+  canvas.getBoundingClientRect = () => ({ left: 0, top: 0, width: 220, height: 220 });
+  const context = canvas.getContext('2d');
+  const background = () => context.drawImage.mock.calls.slice(-1)[0][0];
+  const before = p.save();
+  const initial = background();
+  p.tool('water');
+  p.pointer('pointerdown', [16, 19]);
+  const position = [...p.layer.children[0].attrs.pos];
+  canvas.dispatchEvent(new p.window.MouseEvent('click', { clientX: 110, clientY: 110 }));
+  expect(p.layer.children[0].attrs.pos).toEqual(position);
+  p.pointer('pointerup', [16, 19]);
+  expect(background()).not.toBe(initial);
+  const edited = background();
+  p.get('undo').click();
+  expect(background()).not.toBe(edited);
+  expect(p.save()).toEqual(before);
+  p.get('minimap-panel').open = false;
+  const hidden = background();
+  p.get('map-sample').value = 'first-static-map';
+  await p.reload();
+  expect(background()).toBe(hidden);
+  p.get('minimap-panel').open = true;
+  p.get('minimap-panel').dispatchEvent(new p.window.Event('toggle'));
+  expect(background()).not.toBe(hidden);
+  expect(p.get('map-id').textContent).toBe('first-static-map');
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('小地图区分三类岩矿并消费实际派生湿度，转镜头不改变地表语义颜色', async () => {
+  const p = await page({}, 'mineral-map');
+  const map = p.save();
+  const cells = map.cells.flatMap((row, y) => row.flatMap((cell, x) => cell ? [{ cell, x, y }] : []));
+  const colors = () => p.get('minimap').getContext('2d').drawImage.mock.calls.slice(-1)[0][0]
+    .getContext('2d').fill.mock.results.slice(0, cells.length).map(result => result.value);
+  const before = colors();
+  const mineralColors = ['ordinary', 'copper', 'iron'].map(kind => {
+    const indices = cells.flatMap(({ cell }, index) => cell.rock === kind ? [index] : []);
+    expect(indices.length).toBeGreaterThan(0);
+    expect(new Set(indices.map(index => before[index])).size).toBe(1);
+    return before[indices[0]];
+  });
+  expect(new Set(mineralColors).size).toBe(3);
+  const moisture = p.window.environmentRules.deriveMoisture(map.cells, map.climate);
+  const ground = cells.map(({ cell, x, y }, index) => ({ cell, wetness: moisture[y][x], index }))
+    .filter(({ cell }) => Object.keys(cell).every(key => ['terrain', 'elevation', 'terrainVariant'].includes(key)) && cell.terrain === 'land')
+    .sort((a, b) => a.wetness - b.wetness);
+  expect(ground[0].wetness).toBeLessThan(ground[ground.length - 1].wetness);
+  expect(before[ground[0].index]).not.toBe(before[ground[ground.length - 1].index]);
+  for (const angle of [90, 180, 270]) {
+    p.camera(angle);
+    expect(colors()).toEqual(before);
+  }
+  expect(p.save()).toEqual(map);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test.each(['elevation-multilevel-map', 'slope-features-map'])('小地图以整格坡面表达高差，排除坡道并保持四向一致：%s', async sample => {
+  const p = await page({}, sample);
+  const slopePixels = new Set(['#734a42', '#944a31', '#9c5239', '#6b4a39', '#9c4a31']);
+  const bands = () => p.get('minimap').getContext('2d').drawImage.mock.calls.slice(-1)[0][0]
+    .getContext('2d').fill.mock.results.filter(result => slopePixels.has(result.value)).length;
+  const count = bands();
+  expect(count).toBeGreaterThan(0);
+  const original = p.save();
+  // 从地图高低关系独立计数：低侧八邻格承担坡面，半坡多一个低端格，坡道不着坡色。
+  let slopeCount = 0;
+  original.cells.forEach((row, y) => row.forEach((cell, x) => {
+    if (!cell) return;
+    const hasHigher = [-1, 0, 1].some(dy => [-1, 0, 1].some(dx =>
+      original.cells[y + dy]?.[x + dx]?.elevation > cell.elevation));
+    if (hasHigher && !cell.ramp) slopeCount++;
+    if (cell.halfSlope && !cell.ramp) slopeCount++;
+  }));
+  expect(count).toBe(slopeCount * 2);
+  if (sample === 'slope-features-map') expect(original.cells.flat().some(cell => cell?.ramp)).toBe(true);
+  for (const angle of [90, 180, 270]) { p.camera(angle); expect(bands()).toBe(count); }
+  const map = p.save();
+  map.cells.forEach(row => row.forEach(cell => {
+    if (!cell) return;
+    cell.elevation = 0;
+    delete cell.ramp;
+    delete cell.halfSlope;
+  }));
+  p.get('map-json').value = JSON.stringify(map);
+  p.get('read-map').click();
+  expect(p.get('issues').hidden).toBe(true);
+  expect(bands()).toBe(0);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('小地图桥梁完整占地与陆地道路同色，水面和渡口不被归为道路', async () => {
+  const p = await page({}, 'water-crossing-map');
+  const before = p.save();
+  const roadCount = before.cells.flat().filter(cell => cell?.road).length;
+  const bridges = p.result().filter(entity => p.window.waterCrossingRules.isBridge(entity.element));
+  const bridgeCount = bridges.reduce((sum, entity) => sum + entity.draw.footprint.length, 0);
+  expect(bridgeCount).toBeGreaterThan(0);
+  expect(roadCount).toBeGreaterThan(0);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    const context = p.get('minimap').getContext('2d');
+    const colors = context.drawImage.mock.calls.slice(-1)[0][0].getContext('2d').fill.mock.results.map(result => result.value);
+    expect(colors.filter(color => color === '#ffffff')).toHaveLength(roadCount + bridgeCount);
+    expect(colors).toContain('#669eaf');
+    expect(colors).toContain('#ad704b');
+    expect(context.strokeStyle).toBe('#ff0000');
+  }
+  expect(p.save()).toEqual(before);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
 
 test.each(['ordinary-mature', 'bamboo-mature', 'ordinary-stump'])('%s整笔、取消、历史、冲突及IO复用原事务', async kind => {
   const p = await page({}, 'tree-map');

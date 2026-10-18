@@ -36,6 +36,10 @@
 .map-demo #map-canvas { touch-action: none; position: relative; width: 100%; height: clamp(360px, calc(100vh - 171px), 850px); overflow: hidden; border: 0; padding: 0; }
 .map-demo .click-help { margin: 8px 0 0; padding: 0; color: #687383; border: 0; min-height: 82px; }
 .map-demo .canvas-stage { position: relative; background: #f4f6f8; }
+.map-demo .minimap-panel { position: absolute; top: 10px; right: 10px; z-index: 2; border: 1px solid #cdd8d1; border-radius: 6px; background: rgba(249,251,248,.96); box-shadow: 0 3px 12px #20382b14; overflow: hidden; }
+.map-demo .minimap-panel > summary { padding: 8px 10px; color: #334b43; user-select: none; }
+.map-demo #minimap-angle { float: right; margin-left: 28px; color: #78877d; font-size: 11px; }
+.map-demo #minimap { display: block; width: 220px; height: 220px; margin: 0; padding: 0; border: 0; cursor: crosshair; }
 .map-demo #map-canvas[data-tool="pan"] { cursor: grab; }
 .map-demo #map-canvas[data-tool="clear"] { cursor: url('../cursors/shovel.svg?20261014070002') 5 25, crosshair; }
 .map-demo #map-canvas[data-panning="true"] { cursor: grabbing; }
@@ -86,6 +90,7 @@
 .map-demo #target-height { width: 58px; }
 .map-demo #hover-info { position: absolute; top: 10px; left: 10px; z-index: 1; max-width: calc(100% - 20px); box-sizing: border-box; padding: 5px 10px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 4px; color: #526278; background: rgba(244,246,248,.8); pointer-events: none; }
 @media (max-width: 759px) {
+  .map-demo #minimap { width: 176px; height: 176px; }
   .map-demo .preview-workspace { flex-direction: column; }
   .map-demo .preview-workspace > aside { flex: auto; }
   .map-demo .map-details { position: static; max-height: none; }

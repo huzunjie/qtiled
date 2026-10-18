@@ -43,6 +43,105 @@
   const undoStack = [];
   const redoStack = [];
   const player = createElementAnimationPlayer(updateAnimation);
+  let minimap = null;
+
+  // 小地图只表达平面占地；缓存底图，导航只重画视口框，不再计算地表规则。
+  function updateMinimap() {
+    if (!currentScene || !get('minimap-panel').open) return;
+    const { map, entities, moisture, groundTiles } = currentScene;
+    // 俯视图取消主画布的纵向压缩，保留两条斜向格轴；格子呈等宽高的旋转正方形。
+    const verticalScale = map.tileSize[0] / map.tileSize[1];
+    const view = { ...currentScene.view, tileSize: [map.tileSize[0], map.tileSize[0]] };
+    const vertexes = currentScene.vertexes.map(([x, y]) => [x, y * verticalScale]);
+    const canvas = get('minimap');
+    const { width, height } = canvas;
+    if (!minimap || minimap.map !== map || minimap.angle !== view.angle) {
+      const points = [];
+      map.cells.forEach((row, y) => row.forEach((cell, x) => {
+        if (cell) points.push({ cell, grid: [x, y], position: window.qtiledView.projectGrid([x, y], view) });
+      }));
+      const xs = points.map(item => item.position[0]);
+      const ys = points.map(item => item.position[1]);
+      const minX = Math.min(...xs) - map.tileSize[0] / 2;
+      const minY = Math.min(...ys) - view.tileSize[1] / 2;
+      const spanX = Math.max(...xs) + map.tileSize[0] / 2 - minX;
+      const spanY = Math.max(...ys) + view.tileSize[1] / 2 - minY;
+      const scale = Math.min(width / spanX, height / spanY);
+      const origin = [(width - spanX * scale) / 2 - minX * scale, (height - spanY * scale) / 2 - minY * scale];
+      const background = document.createElement('canvas');
+      background.width = width;
+      background.height = height;
+      const context = background.getContext('2d');
+      function paint(position, color, shape = vertexes) {
+        context.beginPath();
+        shape.forEach(([x, y], index) => {
+          context[index ? 'lineTo' : 'moveTo'](origin[0] + (position[0] + x) * scale, origin[1] + (position[1] + y) * scale);
+        });
+        context.closePath();
+        context.fillStyle = color;
+        context.fill();
+        // 同色细描边消除菱形共边的抗锯齿缝隙。
+        context.strokeStyle = color;
+        context.lineWidth = 0.5;
+        context.stroke();
+      }
+      const rockColors = { ordinary: '#b6b8ac', copper: '#b46a3c', iron: '#505968' };
+      points.forEach(({ cell, grid: [x, y], position }) => {
+        // 消费主场景的最终湿度（含树木与矿石影响），不另算水源距离；未设气候不虚构湿度。
+        const wetness = (moisture?.[y][x] || 0) / 100;
+        const dry = [204, 181, 126];
+        const wet = [100, 140, 65];
+        const groundColor = `rgb(${dry.map((value, axis) => Math.round(value + (wet[axis] - value) * wetness)).join(',')})`;
+        paint(position, cell.cityWall ? '#655e55' : cell.residentialWall ? '#ae7954' : cell.road ? '#ffffff'
+          : cell.tree ? '#39785a' : rockColors[cell.rock] || (cell.quarry ? '#d0c7b5' : cell.ruin ? '#a3917e'
+            : cell.saltMarsh ? '#91afa2' : cell.beach || cell.dune ? '#d8c28b'
+              : cell.terrain === 'water' ? '#669eaf' : groundColor));
+      });
+      // 原作 ELEVATION 且非 RAMP 使用雷达组54，整格着色而非描边。
+      // China_Interface.sg3 #729..732：保留2×1像素的左右顺序，不平均色值。
+      const slopeColors = [['#734a42', '#944a31'], ['#9c5239', '#734a42'],
+        ['#6b4a39', '#9c4a31'], ['#944a31', '#734a42']];
+      groundTiles.filter(tile => tile.slope && !tile.ramp).forEach(({ grid: [x, y] }) => {
+        const variant = (map.cells[y][x].terrainVariant ?? window.terrainSample.getStableGridValue(x, y)) & 3;
+        const position = window.qtiledView.projectGrid([x, y], view);
+        paint(position, slopeColors[variant][0]);
+        paint(position, slopeColors[variant][1], vertexes.slice(0, 3));
+      });
+      entities.forEach(entity => entity.draw.footprint.forEach(({ grid }) => paint(window.qtiledView.projectGrid(grid, view),
+        window.waterCrossingRules.isBridge(entity.element) ? '#ffffff'
+          : entity.element.startsWith('emperor-pinnacle-') ? '#777e6e' : '#ad704b')));
+      minimap = { map, angle: view.angle, view, scale, origin, background };
+    }
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, width, height);
+    context.drawImage(minimap.background, 0, 0);
+    // 视口框对应当前导航基准面，不将山峰和建筑的遮挡当成地图边界。
+    const center = window.qtiledView.projectGrid(viewport.center, view).map((value, axis) => minimap.origin[axis] + value * minimap.scale);
+    const w = viewport.width / viewport.scale * minimap.scale;
+    const h = viewport.height / viewport.scale * minimap.scale * verticalScale;
+    // 原作概览在底图之后绘制纯红空心框（RGB565 0xf800）。
+    context.strokeStyle = '#ff0000';
+    context.lineWidth = 2;
+    context.strokeRect(center[0] - w / 2, center[1] - h / 2, w, h);
+    get('minimap-angle').textContent = `${view.angle}°`;
+  }
+
+  get('minimap-panel').addEventListener('toggle', updateMinimap);
+  get('minimap').addEventListener('click', event => {
+    if (!canInteract() || !minimap) return;
+    const canvas = get('minimap');
+    const rect = canvas.getBoundingClientRect();
+    const point = getPointerPosition(event, canvas).map((value, axis) =>
+      (value * (axis ? canvas.height / rect.height : canvas.width / rect.width) - minimap.origin[axis]) / minimap.scale);
+    const grid = window.qtiledView.pickGrid(point, minimap.view);
+    const cell = currentScene.map.cells[grid[1]]?.[grid[0]];
+    if (!cell) return;
+    viewport.center = grid;
+    viewport.baseHeight = cell.elevation || 0;
+    viewport.mode = 'work';
+    updateViewport();
+    status.textContent = `已定位到 ${grid.join(', ')} · 缩放保持不变`;
+  });
 
   function projectCell(grid, scene) {
     const point = window.qtiledView.projectGrid(grid, scene.view);
@@ -718,6 +817,7 @@
     get('zoom-value').textContent = `${Math.round(viewport.scale * 1000) / 10}%`;
     get('fit-map').setAttribute('aria-pressed', String(viewport.mode === 'fit'));
     get('native-size').setAttribute('aria-pressed', String(viewport.mode === 'work' && viewport.scale === 1));
+    updateMinimap();
     updateHover();
   }
 
