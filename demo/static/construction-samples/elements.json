@@ -5145,5 +5145,3908 @@
         ]
       }
     }
+  },
+  "city-part-888": {
+    "version": 1,
+    "id": "city-part-888",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-889": {
+    "version": 1,
+    "id": "city-part-889",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-890": {
+    "version": 1,
+    "id": "city-part-890",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-891": {
+    "version": 1,
+    "id": "city-part-891",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-892": {
+    "version": 1,
+    "id": "city-part-892",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          0,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          0,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          0,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          0,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "city-part-893": {
+    "version": 1,
+    "id": "city-part-893",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-894": {
+    "version": 1,
+    "id": "city-part-894",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-895": {
+    "version": 1,
+    "id": "city-part-895",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-896": {
+    "version": 1,
+    "id": "city-part-896",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-897": {
+    "version": 1,
+    "id": "city-part-897",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          0,
+          78,
+          234
+        ],
+        "anchor": [
+          39,
+          214
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          0,
+          78,
+          234
+        ],
+        "anchor": [
+          39,
+          214
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          0,
+          78,
+          234
+        ],
+        "anchor": [
+          39,
+          214
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          0,
+          78,
+          234
+        ],
+        "anchor": [
+          39,
+          214
+        ]
+      }
+    }
+  },
+  "city-part-898": {
+    "version": 1,
+    "id": "city-part-898",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          300,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          300,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          300,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          300,
+          78,
+          129
+        ],
+        "anchor": [
+          39,
+          109
+        ]
+      }
+    }
+  },
+  "city-part-899": {
+    "version": 1,
+    "id": "city-part-899",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      }
+    }
+  },
+  "city-part-900": {
+    "version": 1,
+    "id": "city-part-900",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          300,
+          78,
+          267
+        ],
+        "anchor": [
+          39,
+          247
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          300,
+          78,
+          267
+        ],
+        "anchor": [
+          39,
+          247
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          300,
+          78,
+          267
+        ],
+        "anchor": [
+          39,
+          247
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          300,
+          78,
+          267
+        ],
+        "anchor": [
+          39,
+          247
+        ]
+      }
+    }
+  },
+  "city-part-901": {
+    "version": 1,
+    "id": "city-part-901",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      }
+    }
+  },
+  "city-part-902": {
+    "version": 1,
+    "id": "city-part-902",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          300,
+          78,
+          286
+        ],
+        "anchor": [
+          39,
+          266
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          300,
+          78,
+          286
+        ],
+        "anchor": [
+          39,
+          266
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          300,
+          78,
+          286
+        ],
+        "anchor": [
+          39,
+          266
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          300,
+          78,
+          286
+        ],
+        "anchor": [
+          39,
+          266
+        ]
+      }
+    }
+  },
+  "city-part-903": {
+    "version": 1,
+    "id": "city-part-903",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          300,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          300,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          300,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          300,
+          78,
+          130
+        ],
+        "anchor": [
+          39,
+          110
+        ]
+      }
+    }
+  },
+  "city-part-904": {
+    "version": 1,
+    "id": "city-part-904",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          300,
+          78,
+          208
+        ],
+        "anchor": [
+          39,
+          188
+        ]
+      }
+    }
+  },
+  "city-part-905": {
+    "version": 1,
+    "id": "city-part-905",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          300,
+          78,
+          245
+        ],
+        "anchor": [
+          39,
+          225
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          300,
+          78,
+          245
+        ],
+        "anchor": [
+          39,
+          225
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          300,
+          78,
+          245
+        ],
+        "anchor": [
+          39,
+          225
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          300,
+          78,
+          245
+        ],
+        "anchor": [
+          39,
+          225
+        ]
+      }
+    }
+  },
+  "city-part-906": {
+    "version": 1,
+    "id": "city-part-906",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          300,
+          78,
+          287
+        ],
+        "anchor": [
+          39,
+          267
+        ]
+      }
+    }
+  },
+  "city-part-907": {
+    "version": 1,
+    "id": "city-part-907",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          300,
+          78,
+          289
+        ],
+        "anchor": [
+          39,
+          269
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          300,
+          78,
+          289
+        ],
+        "anchor": [
+          39,
+          269
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          300,
+          78,
+          289
+        ],
+        "anchor": [
+          39,
+          269
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          300,
+          78,
+          289
+        ],
+        "anchor": [
+          39,
+          269
+        ]
+      }
+    }
+  },
+  "city-part-908": {
+    "version": 1,
+    "id": "city-part-908",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-909": {
+    "version": 1,
+    "id": "city-part-909",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-910": {
+    "version": 1,
+    "id": "city-part-910",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-911": {
+    "version": 1,
+    "id": "city-part-911",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-912": {
+    "version": 1,
+    "id": "city-part-912",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          600,
+          78,
+          233
+        ],
+        "anchor": [
+          39,
+          213
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          600,
+          78,
+          233
+        ],
+        "anchor": [
+          39,
+          213
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          600,
+          78,
+          233
+        ],
+        "anchor": [
+          39,
+          213
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          600,
+          78,
+          233
+        ],
+        "anchor": [
+          39,
+          213
+        ]
+      }
+    }
+  },
+  "city-part-913": {
+    "version": 1,
+    "id": "city-part-913",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-914": {
+    "version": 1,
+    "id": "city-part-914",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-915": {
+    "version": 1,
+    "id": "city-part-915",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-916": {
+    "version": 1,
+    "id": "city-part-916",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          600,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-917": {
+    "version": 1,
+    "id": "city-part-917",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          600,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          600,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          600,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          600,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      }
+    }
+  },
+  "city-part-921": {
+    "version": 1,
+    "id": "city-part-921",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "city-part-922": {
+    "version": 1,
+    "id": "city-part-922",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "city-part-923": {
+    "version": 1,
+    "id": "city-part-923",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      }
+    }
+  },
+  "city-part-924": {
+    "version": 1,
+    "id": "city-part-924",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      }
+    }
+  },
+  "city-part-925": {
+    "version": 1,
+    "id": "city-part-925",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          900,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          900,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          900,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          900,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      }
+    }
+  },
+  "city-part-926": {
+    "version": 1,
+    "id": "city-part-926",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          900,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "city-part-927": {
+    "version": 1,
+    "id": "city-part-927",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          900,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          900,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          900,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          900,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      }
+    }
+  },
+  "city-part-928": {
+    "version": 1,
+    "id": "city-part-928",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      }
+    }
+  },
+  "city-part-929": {
+    "version": 1,
+    "id": "city-part-929",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          900,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          900,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          900,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          624,
+          900,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "city-part-930": {
+    "version": 1,
+    "id": "city-part-930",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          702,
+          900,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      }
+    }
+  },
+  "city-part-931": {
+    "version": 1,
+    "id": "city-part-931",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "city-part-932": {
+    "version": 1,
+    "id": "city-part-932",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          78,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "city-part-933": {
+    "version": 1,
+    "id": "city-part-933",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          156,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "city-part-934": {
+    "version": 1,
+    "id": "city-part-934",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          234,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      }
+    }
+  },
+  "city-part-935": {
+    "version": 1,
+    "id": "city-part-935",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          312,
+          1200,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "city-part-936": {
+    "version": 1,
+    "id": "city-part-936",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          1200,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          1200,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          1200,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          390,
+          1200,
+          78,
+          103
+        ],
+        "anchor": [
+          39,
+          83
+        ]
+      }
+    }
+  },
+  "city-part-937": {
+    "version": 1,
+    "id": "city-part-937",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          468,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      }
+    }
+  },
+  "city-part-938": {
+    "version": 1,
+    "id": "city-part-938",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          546,
+          1200,
+          78,
+          107
+        ],
+        "anchor": [
+          39,
+          87
+        ]
+      }
+    }
+  },
+  "city-gate": {
+    "version": 1,
+    "id": "city-gate",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          0,
+          78,
+          40
+        ],
+        "anchor": [
+          39,
+          20
+        ]
+      }
+    }
+  },
+  "city-part-879": {
+    "version": 1,
+    "id": "city-part-879",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-880": {
+    "version": 1,
+    "id": "city-part-880",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-881": {
+    "version": 1,
+    "id": "city-part-881",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1500,
+          30,
+          35
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-882": {
+    "version": 1,
+    "id": "city-part-882",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1500,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1500,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1500,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1500,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-883": {
+    "version": 1,
+    "id": "city-part-883",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-884": {
+    "version": 1,
+    "id": "city-part-884",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          160,
+          1800,
+          44,
+          40
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-885": {
+    "version": 1,
+    "id": "city-part-885",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1800,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1800,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1800,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          320,
+          1800,
+          43,
+          36
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-886": {
+    "version": 1,
+    "id": "city-part-886",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1800,
+          53,
+          71
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1800,
+          53,
+          71
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1800,
+          53,
+          71
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          480,
+          1800,
+          53,
+          71
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-part-887": {
+    "version": 1,
+    "id": "city-part-887",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          2100,
+          53,
+          70
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          2100,
+          53,
+          70
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          2100,
+          53,
+          70
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          2100,
+          53,
+          70
+        ],
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "city-tower": {
+    "version": 1,
+    "id": "city-tower",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          39,
+          167
+        ]
+      },
+      "90": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          79,
+          147
+        ]
+      },
+      "180": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          119,
+          167
+        ]
+      },
+      "270": {
+        "source": "city-wall-atlas.webp",
+        "rect": [
+          0,
+          1500,
+          158,
+          207
+        ],
+        "anchor": [
+          79,
+          187
+        ]
+      }
+    }
   }
 }

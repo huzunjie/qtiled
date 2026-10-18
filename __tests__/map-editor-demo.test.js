@@ -1084,7 +1084,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(21);
+  expect(Object.keys(initial)).toHaveLength(22);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
   expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
   expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
@@ -1614,7 +1614,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'beach-map', 'ruins-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'residential-wall-map', 'village-map',
+    'rectangular-water-map', 'beach-map', 'ruins-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'city-wall-map', 'residential-wall-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -3780,4 +3780,115 @@ test.each([1, 2, 3, 4])('款式 %i 控件参与预览/取消/历史/文件，异
   p.get('map-json').value = JSON.stringify(placed); p.get('read-map').click(); expect(p.save()).toEqual(placed);
   draw('clear', [5, 4]); expect(p.save().cells[4][5]).toEqual(before.cells[4][5]);
   expect(p.window.document.querySelectorAll('button[data-wall-style][aria-pressed="true"]')).toHaveLength(0); expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test('城门实际按钮放置、完整占地、删除留路与撤销；城墙连续笔画', async () => {
+  const p = await page({}, 'city-wall-map');
+  const before = p.save();
+  p.tool('city-gate'); p.clickGrid([9, 11]);
+  expect(p.get('issues').textContent).toBe('');
+  const placed = p.save();
+  expect(placed.entities).toHaveLength(before.entities.length + 1);
+  expect(placed.cells[12].filter(c => c.cityWall)).toHaveLength(0);
+  expect(p.get('entity-footprint').textContent.match(/\[/g)).toHaveLength(15);
+  p.get('undo').click(); expect(p.save()).toEqual(before);
+  p.get('redo').click(); expect(p.save()).toEqual(placed);
+  p.get('flat-edit').click(); p.get('fit-map').click();
+  p.tool('city-wall'); p.pointer('pointerdown', [2, 2]); p.pointer('pointermove', [5, 2]); p.pointer('pointerup', [5, 2]);
+  expect(p.get('issues').textContent).toBe('');
+  expect(p.save().cells.flatMap((row,y)=>row.flatMap((c,x)=>c.cityWall && y < 3 ? [[x,y]] : []))).toEqual([[2,2],[3,2],[4,2],[5,2]]);
+  p.get('undo').click(); expect(p.save()).toEqual(placed);
+  expect(p.errors).toEqual([]);
+  p.window.close();
+});
+
+test('塔楼独立按钮放置、四向查看、拆除和撤销保留占地外城墙', async () => {
+  const p = await page({}, 'city-wall-map');
+  p.get('fit-map').click(); const before = p.save();
+  expect(before.entities.find(e => e.id === 'tower-example')?.element).toBe('city-tower');
+  p.tool('city-tower'); p.clickGrid([12, 7]);
+  expect(p.get('issues').textContent).toBe('');
+  const placed = p.save(); expect(placed.entities.filter(e => e.element === 'city-tower')).toHaveLength(2);
+  expect(p.get('entity-footprint').textContent.match(/\[/g)).toHaveLength(4);
+  for (const angle of [90, 180, 270, 0]) { p.camera(angle); expect(p.save()).toEqual(placed); }
+  p.get('undo').click(); expect(p.save()).toEqual(before); p.get('redo').click(); expect(p.save()).toEqual(placed);
+  // 右侧塔楼的格心被前景外墙遮住；平面编辑下核对按占地清除，不误点外墙。
+  p.get('flat-edit').click();
+  p.tool('clear'); p.pointer('pointerdown', [11, 7]); p.pointer('pointerup', [11, 7]);
+  expect(p.save().entities.filter(e => e.element === 'city-tower').map(e => e.id)).toEqual(['tower-example']);
+  expect(p.save().cells[7][10].cityWall).toBe(true);
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test.each(['first-static-map', 'village-map', 'pinnacle-map', 'city-wall-map'])('%s实体四镜头完整地基地表先于主体绘制', async sample => {
+  const p = await page({}, sample);
+  const map = p.save();
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    const library = p.resolve.mock.calls[p.resolve.mock.calls.length - 1][1];
+    const projection = { angle, tileSize: map.tileSize };
+    const images = p.descendants(p.contentLayer()).filter(node => node instanceof Sprite);
+    const indexOf = draw => images.findIndex(node => node.attrs.texture.file === draw.source
+      && String(node.attrs.pos) === String(draw.position) && String(node.attrs.sourceRect) === String(draw.rect));
+    for (const entity of p.result()) {
+      const draws = entity.element === 'city-gate' ? p.window.constructionRules.gateDraws(entity, map, library, projection)
+        : entity.element === 'city-tower' ? p.window.constructionRules.towerDraws(entity, map, library, projection) : [entity.draw];
+      for (const body of draws) {
+        const bodyIndex = indexOf(body);
+        expect(bodyIndex).toBeGreaterThanOrEqual(0);
+        for (const { grid } of body.footprint) {
+          const cell = map.cells[grid[1]][grid[0]];
+          // 城门道路格由道路自身底面替代地表，单独核对其先于门的部件。
+          const tile = { ...p.tiles().find(item => String(item.grid) === String(grid)), elevation: cell.elevation };
+          if (cell.road) {
+            const construction = p.window.constructionRules.resolve(map, [tile], library, JSON.parse(read('static/construction-samples/road-rules.json')), angle);
+            Object.assign(tile, construction.tiles[0]);
+          }
+          for (const ground of p.window.elevationRendering.resolveTileDraws(tile, map, library, projection)) {
+            const groundIndex = indexOf(ground);
+            expect(groundIndex).toBeGreaterThanOrEqual(0);
+            expect(groundIndex).toBeLessThan(bodyIndex);
+          }
+        }
+      }
+    }
+  }
+  expect(p.errors).toEqual([]); p.window.close();
+});
+
+test('塔楼四向前后邻墙排序正确，完整占地地表不能覆盖塔基', async () => {
+  const p = await page({}, 'city-wall-map');
+  const base = p.save();
+  base.cells.forEach(row => row.forEach(cell => { delete cell.cityWall; delete cell.road; }));
+  base.entities = [{ id: 'tower', element: 'city-tower', grid: [3, 4], angle: 0 }];
+  for (const grid of [[2, 4], [2, 5], [3, 3], [4, 3], [5, 4], [5, 5], [3, 6], [4, 6]]) {
+    const map = JSON.parse(JSON.stringify(base));
+    map.cells[grid[1]][grid[0]].cityWall = true;
+    p.get('map-json').value = JSON.stringify(map); p.get('read-map').click();
+    expect(p.get('issues').textContent).toBe('');
+    for (const angle of [0, 90, 180, 270]) {
+      p.camera(angle);
+      const images = p.sprites().filter(node => node.attrs.texture.file === 'city-wall-atlas.webp');
+      const wall = images.findIndex(node => node.attrs.sourceRect[1] < 1500);
+      expect(wall).toBeGreaterThanOrEqual(0);
+      const projection = { angle, tileSize: [80, 40] };
+      const inFront = view.projectGrid(grid, projection)[1] > view.projectGrid([3.5, 4.5], projection)[1];
+      expect(wall).toBe(inFront ? images.length - 1 : 0);
+      const allImages = p.descendants(p.contentLayer()).filter(node => node instanceof Sprite);
+      const tower = allImages.findIndex(node => node.attrs.texture.file === 'city-wall-atlas.webp' && node.attrs.sourceRect[1] >= 1500);
+      const library = p.resolve.mock.calls[p.resolve.mock.calls.length - 1][1];
+      for (const groundGrid of [[3, 4], [4, 4], [3, 5], [4, 5]]) {
+        const tile = p.tiles().find(item => String(item.grid) === String(groundGrid));
+        const draws = p.window.elevationRendering.resolveTileDraws({ ...tile, elevation: map.cells[groundGrid[1]][groundGrid[0]].elevation }, map, library, projection);
+        for (const draw of draws) {
+          const ground = allImages.findIndex(node => node.attrs.texture.file === draw.source
+            && String(node.attrs.pos) === String(draw.position) && String(node.attrs.sourceRect) === String(draw.rect));
+          expect(ground).toBeGreaterThanOrEqual(0);
+          expect(ground).toBeLessThan(tower);
+        }
+      }
+    }
+  }
+  expect(p.errors).toEqual([]); p.window.close();
 });

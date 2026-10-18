@@ -8,7 +8,7 @@ import { resolveElementDraw } from '../src/element-rendering/draw';
 const read = file => fs.readFileSync(path.join(__dirname, '../demo', file), 'utf8');
 const elements = JSON.parse(read('static/construction-samples/elements.json'));
 const rules = JSON.parse(read('static/construction-samples/road-rules.json'));
-const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps } });
+const context = vm.createContext({ window: { qtiled: { pathFinding }, qtiledMaps: maps, qtiledElementRendering: { resolveElementDraw } } });
 ['terrain-sample', 'environment-rules', 'land-water-rules', 'construction-rules'].forEach(name => vm.runInContext(read(`static/js/${name}.js`), context));
 const construction = context.window.constructionRules;
 const fresh = (height = 8) => ({ version: 2, id: 'test', tileSize: [80, 40], elevationStep: 40,
@@ -243,4 +243,104 @@ test.each([1, 2, 3, 4])('第 %i 款混合邻接保留本款外观，门洞/删�
   const cleared = construction.reconcileSurface(map, water, elements).definition.cells[4][4];
   expect(cleared.road).toBeUndefined(); expect(cleared.residentialWall).toBeUndefined();
   for (const invalid of [0, 5, '2', NaN]) expect(construction.applyWallStroke(map, [[4, 4]], false, invalid).definition).toBeNull();
+});
+
+
+test('城墙在各高程平地可建，拒绝坡道半坡及占用，拆除不删除道路', () => {
+  for (const height of [0, 8, 16]) {
+    const map = construction.applyCityWallStroke(fresh(height), [[3, 3], [4, 3], [5, 3]]).definition;
+    for (const angle of [0, 90, 180, 270]) expect(construction.resolve(map, tiles(map), elements, rules, angle).issues).toEqual([]);
+    for (const flags of [{ slope: true }, { slope: true, ramp: true }, { slope: true, halfSlope: true }]) {
+      const ground = tiles(map).map(t => String(t.grid) === '4,3' ? { ...t, ...flags } : t);
+      expect(construction.validate(map, ground, elements).issues.some(i => i.code === 'city-wall-ground')).toBe(true);
+    }
+    expect(construction.applyRoadStroke(map, [[4, 3]]).definition).toBeNull();
+    expect(construction.applyCityWallStroke(map, [[4, 3]], true).definition.cells[3][4].cityWall).toBeUndefined();
+    map.cells[3][4].tree = 'ordinary-mature';
+    expect(resolve(map).issues.length).toBeGreaterThan(0);
+  }
+});
+
+test('城门四种姿态消耗四格墙、保留三路；完整占地存读、拆门和四镜头分片', () => {
+  for (const angle of [0, 90, 180, 270]) {
+    const map = fresh();
+    const entity = { id: 'gate', element: 'city-gate', grid: [5, 5], angle };
+    const footprint = resolveElementDraw(elements['city-gate'], entity.grid, {}, angle).footprint;
+    footprint.forEach(({ grid: [x, y] }, i) => {
+      if (i % 5 === 2) map.cells[y][x].road = 'ordinary';
+      else if (i >= 5 && i < 10) map.cells[y][x].cityWall = true;
+    });
+    const next = construction.placeCityGate(map, entity, elements);
+    expect(next.issues).toEqual([]);
+    expect(resolve(next.definition).issues).toEqual([]);
+    expect(next.definition.cells.flat().filter(c => c.cityWall)).toHaveLength(0);
+    expect(next.definition.cells.flat().filter(c => c.road)).toHaveLength(3);
+    expect(maps.importMapDefinition(JSON.stringify(next.definition), elements, construction.canCoexist).issues).toEqual([]);
+    for (const camera of [0, 90, 180, 270]) {
+      const draws = construction.gateDraws(entity, next.definition, elements, { angle: camera, tileSize: [80, 40] });
+      expect(draws).toHaveLength(15);
+      expect(new Set(draws.map(d => d.id)).size).toBe(15);
+      expect(draws.every(d => elements[d.id])).toBe(true);
+    }
+    const removed = maps.applyMapEdit(next.definition, { type: 'remove', id: 'gate' }, elements, construction.canCoexist).definition;
+    expect(removed.entities).toEqual([]);
+    expect(removed.cells.flat().filter(c => c.road)).toHaveLength(3);
+    expect(construction.placeCityGate(removed, entity, elements).definition).toBeNull();
+    const [rx, ry] = footprint[2].grid;
+    delete next.definition.cells[ry][rx].road;
+    expect(resolve(next.definition).issues.some(i => i.code === 'city-gate-road')).toBe(true);
+  }
+});
+
+test('密集城墙在选图前拒绝补齐2×2；空心回路和十字四镜头均可选图', () => {
+  const three = construction.applyCityWallStroke(fresh(), [[3, 3], [4, 3], [3, 4]]).definition;
+  expect(construction.applyCityWallStroke(three, [[4, 4]]).issues[0].code).toBe('city-wall-crowded');
+  expect(three.cells[4][4].cityWall).toBeUndefined();
+  const dense = copy(three); dense.cells[4][4].cityWall = true;
+  expect(resolve(dense).issues.some(i => i.code === 'city-wall-crowded')).toBe(true);
+  const ring = [[3, 3], [4, 3], [5, 3], [5, 4], [5, 5], [4, 5], [3, 5], [3, 4]];
+  const map = construction.applyCityWallStroke(fresh(), ring).definition;
+  for (const camera of [0, 90, 180, 270]) expect(construction.resolve(map, tiles(map), elements, rules, camera).issues).toEqual([]);
+});
+
+test('塔楼消耗占地内城墙，保留外墙；拒绝道路、无墙、密集墙与坡地', () => {
+  const entity = { id: 'tower', element: 'city-tower', grid: [4, 4], angle: 0 };
+  expect(construction.placeCityTower(fresh(), entity, elements).definition).toBeNull();
+  const map = construction.applyCityWallStroke(fresh(), [[3, 4], [4, 4], [5, 4], [6, 4]]).definition;
+  const next = construction.placeCityTower(map, entity, elements).definition;
+  expect(resolve(next).issues).toEqual([]);
+  expect(next.cells[4][4].cityWall).toBeUndefined();
+  expect(next.cells[4][3].cityWall).toBe(true);
+  const removed = maps.applyMapEdit(next, { type: 'remove', id: 'tower' }, elements, construction.canCoexist).definition;
+  expect(removed.cells.flat().filter(c => c.cityWall)).toHaveLength(2);
+  const road = copy(map); road.cells[5][4].road = 'ordinary';
+  expect(construction.placeCityTower(road, entity, elements).definition).toBeNull();
+  const slopes = tiles(next).map(t => String(t.grid) === '4,4' ? { ...t, slope: true, ramp: true } : t);
+  expect(construction.validate(next, slopes, elements).issues.length).toBeGreaterThan(0);
+  for (const height of [0, 8, 16]) {
+    const single = construction.applyCityWallStroke(fresh(height), [[4, 4]]).definition;
+    const placed = construction.placeCityTower(single, entity, elements).definition;
+    expect(resolve(placed).issues).toEqual([]);
+    for (const angle of [0, 90, 180, 270]) {
+      const draws = construction.towerDraws(entity, placed, elements, { angle, tileSize: [80, 40] });
+      expect(draws.map(d => d.id)).toEqual(['city-tower', ...[880, 881, 882, 883, 884, 885].map(i => `city-part-${i}`)]);
+      const points = draws[0].footprint.map(p => p.position);
+      expect(draws[0].position).toEqual([Math.min(...points.map(p => p[0])) - 39, Math.max(...points.map(p => p[1])) + 20 - 207]);
+    }
+  }
+});
+
+test('塔楼四镜头依据六格邻接隐藏垛口，前侧接墙显示对应门', () => {
+  const entity = { id: 'tower', element: 'city-tower', grid: [4, 4], angle: 0 };
+  const map = construction.placeCityTower(construction.applyCityWallStroke(fresh(), [[4, 4]]).definition, entity, elements).definition;
+  const rear = [[230, -228], [-227, 227], [-1, 457], [456, 2]];
+  const front = [[-1, 457, 456, 227], [456, 2, 230, 457], [230, -228, -227, 2], [-227, 227, -1, -228]];
+  for (const [i, angle] of [0, 90, 180, 270].entries()) for (const [j, offset] of [...rear[i], ...front[i]].entries()) {
+    const m = copy(map), dy = Math.round(offset / 228), dx = offset - dy * 228;
+    m.cells[4 + dy][4 + dx].cityWall = true;
+    const ids = construction.towerDraws(entity, m, elements, { angle, tileSize: [80, 40] }).map(d => d.id);
+    expect(ids).not.toContain(`city-part-${880 + j}`);
+    if (j >= 2) expect(ids).toContain(`city-part-${[886, 887, 887, 886][j - 2]}`);
+    expect(ids.indexOf('city-tower')).toBe(0);
+  }
 });

@@ -8,7 +8,7 @@
   const terrainDirectory = './static/terrain-samples/emperor-land-water/';
   const constructionDirectory = './static/construction-samples/';
   const featureTools = ['ramp', 'half-slope'];
-  const roadTools = ['road', 'residential-wall'];
+  const roadTools = ['road', 'residential-wall', 'city-wall'];
   const treeKinds = { tree: 'ordinary-mature', bamboo: 'bamboo-mature', stump: 'ordinary-stump' };
   const treeTools = Object.keys(treeKinds);
   const rockTools = Object.keys(rocks);
@@ -147,11 +147,15 @@
       button.setAttribute('aria-pressed', String(active));
       if (active) get('current-tool').textContent = button.textContent;
     });
-    get('building-control').hidden = tool !== 'building';
+    get('building-type-control').hidden = ['city-gate', 'city-tower'].includes(tool);
+    get('building-control').hidden = tool !== 'building' && tool !== 'city-gate';
     get('pinnacle-control').hidden = tool !== 'pinnacle';
     get('click-help').textContent = {
       select: '点击查看格子属性；命中实体时同时查看其完整占地与属性。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
+      'city-wall': '城墙：宽 1 格沿线绘制。平地不限高程，半坡、坡道不可建；道路、围墙、树木及其他实体须先清除。',
+      'city-tower': '塔楼：2×2平地内至少有一格城墙；不覆盖道路、树木或实体，不可补成密集墙角。平地不限高程，半坡、坡道不可建；拆塔不恢复原墙。',
+      'city-gate': '城门：覆盖三格直路与两侧各两格城墙，其余八格为空地。平地不限高程，半坡、坡道不可建。使用建筑朝向调整方向；拆门保留道路，不恢复原墙。',
       'residential-wall': '住宅围墙（四款）：宽 1 格，拖动绘制直线或一个直角弯，沿较长方向先画。覆盖已有普通道路生成门洞；已有墙不能直接铺路。需要平坦陆地，树木及其他地物、实体须先清除。四款可相邻连接；同款重复绘制不变，异款须先拆除；清除门保留道路，再清除一次才删路。松开整笔提交，Esc 取消。',
       clear: '清除海滩、植被、沙丘、废墟、岩石、铜矿、铁矿、采石地、住宅围墙、道路和实体。拆门保留道路，下一笔才可清路。海滩恢复普通陆地，水域、盐沼与高度保留；盐沼上的道路清除后恢复盐沼。单格只清实际命中的实体；范围笔刷清除占地内实体，绿色表示可清除，空白处不产生修改；外围淡绿表示实际联动，红框及原因表示不能落笔。松开提交，Esc 取消。',
       tree: '树木、竹子与树桩：三类可直接互换或替换其他地物，均以起笔前已有草地为准；混合范围逐格筛选，绿格生效，红格保持原状并提示原因。可替换其他地物、道路和实体；水域及坡面不能落笔。整笔松开提交，Esc 取消，一笔撤销一次；树木与树桩都会影响周围草地，不会自动生长。',
@@ -234,12 +238,14 @@
 
   function objectPreview(hit) {
     const pinnacle = get('edit-tool').value === 'pinnacle';
-    const element = get(pinnacle ? 'pinnacle-type' : 'building-type').value;
-    const angle = pinnacle ? 0 : Number(get('building-angle').value);
+    const gate = get('edit-tool').value === 'city-gate';
+    const tower = get('edit-tool').value === 'city-tower';
+    const element = tower ? 'city-tower' : gate ? 'city-gate' : get(pinnacle ? 'pinnacle-type' : 'building-type').value;
+    const angle = pinnacle || tower ? 0 : Number(get('building-angle').value);
     const definition = currentScene.elementsById[element];
     const placement = window.qtiledElementRendering.resolveElementPlacement(definition, hit.grid, angle, cameraAngle);
     let number = 1;
-    const prefix = pinnacle ? 'pinnacle' : 'house';
+    const prefix = tower ? 'tower' : gate ? 'gate' : pinnacle ? 'pinnacle' : 'house';
     while (currentScene.map.entities.some(entity => entity.id === `${prefix}-${number}`)) number++;
     const entity = { id: `${prefix}-${number}`, element, grid: placement.grid, angle };
     const height = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]]?.elevation ?? viewport.baseHeight;
@@ -248,7 +254,7 @@
     let error = '';
     try {
       if (hit.missed) throw new Error('未命中地表，不能放置');
-      const edited = requireSuccess(window.qtiledMaps.applyMapEdit(currentScene.map,
+      const edited = requireSuccess(tower ? window.constructionRules.placeCityTower(currentScene.map, entity, currentScene.elementsById) : gate ? window.constructionRules.placeCityGate(currentScene.map, entity, currentScene.elementsById) : window.qtiledMaps.applyMapEdit(currentScene.map,
         { type: 'place', entity }, currentScene.elementsById, window.constructionRules.canCoexist));
       resolveScene({ ...currentScene, map: edited.definition }, cameraAngle);
     } catch (reason) { error = reason.message; }
@@ -311,6 +317,8 @@
       ? window.rockRules.applyStroke(base.map, grids, false, terrain, base.rules)
       : treeTools.includes(terrain)
       ? window.treeRules.applyStroke(base.map, grids, false, base.moisture, treeKind, base.rules)
+      : terrain === 'city-wall'
+      ? window.constructionRules.applyCityWallStroke(base.map, grids)
       : terrain === 'residential-wall'
       ? window.constructionRules.applyWallStroke(base.map, grids, false, selectedWallStyle)
       : terrain === 'road'
@@ -369,14 +377,21 @@
     clearHover();
     hoverKey = key;
     const { Group } = window.spritejs;
-    if (tool === 'building' || tool === 'pinnacle') {
+    if (tool === 'building' || tool === 'pinnacle' || ['city-gate', 'city-tower'].includes(tool)) {
       const preview = objectPreview(hit);
       hoverOverlay = new Group({ id: 'map-building-hover', opacity: 0.65 });
-      if (!currentScene.flatEditing) window.qtiledElementRendering.renderElement(hoverOverlay, preview.draw,
+      if (!currentScene.flatEditing && !['city-gate', 'city-tower'].includes(tool)) window.qtiledElementRendering.renderElement(hoverOverlay, preview.draw,
         currentScene.sources, { footprint: false, placement: false });
+      if (['city-gate', 'city-tower'].includes(tool) && !preview.error && !currentScene.flatEditing) {
+        for (const draw of window.constructionRules[tool === 'city-tower' ? 'towerDraws' : 'gateDraws'](preview.entity, currentScene.map, currentScene.elementsById, currentScene.view)) {
+          const part = new window.spritejs.Group();
+          window.qtiledElementRendering.renderElement(part, draw, currentScene.sources, { footprint: false, placement: false });
+          hoverOverlay.append(part);
+        }
+      }
       appendBrushFeedback(hoverOverlay, currentScene, preview.draw.footprint.map(item => item.grid), { invalid: Boolean(preview.error), hit });
       currentScene.root.append(hoverOverlay);
-      get('hover-info').textContent = `${tool === 'pinnacle' ? '山峰 · 5×5' : `民居 · 2×2 · ${preview.entity.angle}°`} · ${preview.error ? `不能放置 · ${preview.error.split('\n')[0]}` : '可放置 · 点击确认 / Esc 取消'}`;
+      get('hover-info').textContent = `${tool === 'city-tower' ? '塔楼 · 2×2' : tool === 'city-gate' ? '城门 · 5×3' : tool === 'pinnacle' ? '山峰 · 5×5' : `民居 · 2×2 · ${preview.entity.angle}°`} · ${preview.error ? `不能放置 · ${preview.error.split('\n')[0]}` : '可放置 · 点击确认 / Esc 取消'}`;
       return;
     }
     const cell = currentScene.map.cells[hit.grid[1]]?.[hit.grid[0]];
@@ -520,6 +535,13 @@
     const drawables = [];
     const animated = [];
     const elapsedMs = player.elapsed();
+    // 塔楼按中心与外墙排序；其占地内地表必须先画，避免前半格地表覆盖塔基。
+    const towerGroundDepths = new Map();
+    entities.filter(entity => entity.element === 'city-tower').forEach(entity => {
+      const footprint = entity.draw.footprint;
+      const center = footprint.reduce((sum, item) => sum + projectGrid(item.grid, view)[1], 0) / footprint.length;
+      footprint.forEach(({ grid }) => towerGroundDepths.set(grid.join(','), center));
+    });
     // 完整岸线图片含上凸内容，按格心投影深度绘制，不截掉覆盖部分。
     tiles.forEach(tile => {
       const holder = new Group();
@@ -544,7 +566,7 @@
         if (draw.sequence) animated.push({ holder: part, definition, grid: tile.grid, phase, imageAngle: draw.imageAngle,
           frameIndex: draw.frameIndex, sequence: draw.sequence });
         drawables.push({ holder: part, depth: tile.rock || tile.dune || tile.ruin ? Math.max(...draw.footprint.map(item => projectGrid(item.grid, view)[1]))
-          : projectGrid(tile.grid, view)[1], draw, grid: tile.grid, definition, phase,
+          : Math.min(projectGrid(tile.grid, view)[1], towerGroundDepths.get(tile.grid.join(',')) ?? Infinity), draw, grid: tile.grid, definition, phase,
         rockSize: tile.rockSize, duneSize: tile.duneSize, ruinSize: tile.ruinSize, elevation: tile.elevation });
       });
     });
@@ -558,6 +580,20 @@
         entity.draw.footprint.forEach(({ grid }) => holder.append(new Polyline({ pos: projectGrid(grid, view), points: vertexes,
           close: true, strokeColor: '#6756a5', fillColor: 'rgba(103,86,165,.18)', lineWidth: 2 })));
         labels.append(holder);
+        return;
+      }
+      if (['city-gate', 'city-tower'].includes(entity.element)) {
+        for (const draw of window.constructionRules[entity.element === 'city-tower' ? 'towerDraws' : 'gateDraws'](entity, map, elementsById, view)) {
+          const part = new Group();
+          includeDraw(draw, elementsById[draw.id]);
+          window.qtiledElementRendering.renderElement(part, draw, sources, { footprint: false, placement: false });
+          const depths = draw.footprint.map(item => projectGrid(item.grid, view)[1]);
+          // 塔楼六处接墙分布在占地中心的前后；按最前格排序会把前侧接墙压到塔楼后面。
+          // 城门仍逐格排序，塔楼内部部件保持原有次序。
+          const partDepth = entity.element === 'city-tower' ? depths.reduce((sum, value) => sum + value, 0) / depths.length : Math.max(...depths);
+          drawables.push({ holder: part, depth: partDepth, draw,
+            grid: draw.footprint[0].grid, entityId: entity.id, definition: elementsById[draw.id] });
+        }
         return;
       }
       includeDraw(entity.draw, elementsById[entity.element]);
@@ -778,7 +814,7 @@
     if (!canInteract()) return;
     const tool = get('edit-tool').value;
     const hit = hitAt(event);
-    if (tool === 'building' || tool === 'pinnacle') {
+    if (tool === 'building' || tool === 'pinnacle' || ['city-gate', 'city-tower'].includes(tool)) {
       try {
         const preview = objectPreview(hit);
         if (preview.error) throw new Error(preview.error);
@@ -804,7 +840,9 @@
     updateSelection();
   });
   function editEntity(command) {
-    const edited = requireSuccess(window.qtiledMaps.applyMapEdit(currentScene.map, command,
+    const edited = requireSuccess(command.type === 'place' && ['city-gate', 'city-tower'].includes(command.entity.element)
+      ? window.constructionRules[command.entity.element === 'city-tower' ? 'placeCityTower' : 'placeCityGate'](currentScene.map, command.entity, currentScene.elementsById)
+      : window.qtiledMaps.applyMapEdit(currentScene.map, command,
       currentScene.elementsById, window.constructionRules.canCoexist));
     const next = prepareScene({ ...currentScene, map: edited.definition, occupancyIndex: edited.index }, cameraAngle);
     ++loadRequestId;
@@ -816,7 +854,7 @@
     commitScene(next);
     clearIssue();
     status.textContent = command.type === 'place'
-      ? `已放置${command.entity.element === window.constructionRules.buildingId ? '民居' : '山峰'} · 可继续放置 / Esc 返回查看`
+      ? `已放置${command.entity.element === window.constructionRules.buildingId ? '民居' : command.entity.element === 'city-tower' ? '塔楼' : command.entity.element === 'city-gate' ? '城门' : '山峰'} · 可继续放置 / Esc 返回查看`
       : '已删除整个实例 · 可撤销';
   }
 
@@ -830,7 +868,7 @@
   get('pinnacle-type').addEventListener('change', () => updateHover());
   document.addEventListener('keydown', event => {
     const tool = get('edit-tool').value;
-    if (tool !== 'building' && tool !== 'pinnacle') return;
+    if (tool !== 'building' && tool !== 'pinnacle' && !['city-gate', 'city-tower'].includes(tool)) return;
     if (tool === 'building' && event.key.toLowerCase() === 'r' && !event.ctrlKey && !event.metaKey && !event.altKey
       && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) {
       event.preventDefault();
@@ -845,7 +883,14 @@
 
   function hitAt(event, scene = currentScene) {
     const pixel = getPointerPosition(event, container).map((value, axis) => (value - scene.viewportOrigin[axis]) / scene.viewportScale);
-    if ((get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.ruin || tile.quarry || tile.residentialWall) || scene.map.entities.some(entity => window.constructionRules.isSolid(entity.element))) && !scene.flatEditing) {
+    if (['city-gate', 'city-tower'].includes(get('edit-tool').value) && !scene.flatEditing) {
+      for (const height of [...new Set(scene.groundTiles.map(tile => tile.elevation || 0))].sort((a, b) => b - a)) {
+        const grid = window.qtiledView.pickGrid([pixel[0], pixel[1] + height * (scene.map.elevationStep || 0)], scene.view);
+        if ((scene.map.cells[grid[1]]?.[grid[0]]?.elevation || 0) === height && scene.map.cells[grid[1]]?.[grid[0]]) return { grid };
+      }
+      return { grid: window.qtiledView.pickGrid(pixel, scene.view), missed: true };
+    }
+    if (!['city-gate', 'city-tower'].includes(get('edit-tool').value) && (get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.ruin || tile.quarry || tile.residentialWall) || scene.map.entities.some(entity => window.constructionRules.isSolid(entity.element))) && !scene.flatEditing) {
       for (let index = scene.drawables.length - 1; index >= 0; index--) {
         const item = scene.drawables[index];
         const frame = item.draw.sequence ? window.qtiledElementRendering.resolveElementFrame(item.definition, item.draw.imageAngle,
@@ -1108,14 +1153,15 @@
     result = requireSuccess(window.ruinRules.applyStroke(result.definition, grids, true));
     result = requireSuccess(window.quarryRules.applyStroke(result.definition, grids, true));
     // 起笔时有墙门的格，本笔只拆墙门；门下道路必须下一笔才能清除。
-    const roadGrids = grids.filter(([x, y]) => !scene.map.cells[y]?.[x]?.residentialWall);
+    const roadGrids = grids.filter(([x, y]) => !scene.map.cells[y]?.[x]?.residentialWall && !(scene.occupancyIndex.get(`${x},${y}`) || []).some(id => scene.map.entities.find(entity => entity.id === id)?.element === 'city-gate'));
+    result = requireSuccess(window.constructionRules.applyCityWallStroke(result.definition, grids, true));
     result = requireSuccess(window.constructionRules.applyWallStroke(result.definition, grids, true));
     result = requireSuccess(window.constructionRules.applyRoadStroke(result.definition, roadGrids, true, scene.groundTiles));
     // 同一候选内完成各类事实删除；prepareScene与历史只提交一次。
     for (const id of ids) result.definition = requireSuccess(window.qtiledMaps.applyMapEdit(result.definition,
       { type: 'remove', id }, scene.elementsById, window.constructionRules.canCoexist)).definition;
     const hasContent = ids.size > 0 || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.beach || scene.map.cells[y]?.[x]?.tree || scene.map.cells[y]?.[x]?.rock || scene.map.cells[y]?.[x]?.dune || scene.map.cells[y]?.[x]?.ruin || scene.map.cells[y]?.[x]?.quarry)
-      || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.residentialWall)
+      || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.residentialWall || scene.map.cells[y]?.[x]?.cityWall)
       || result.selectedGrids.some(([x, y]) => scene.map.cells[y]?.[x]?.road);
     const normalized = requireSuccess(window.beachRules.normalize(result.definition, grids, false, scene.rules));
     return { ...result, definition: normalized.definition, hasContent };
@@ -1182,7 +1228,7 @@
       stroke.start = start;
       stroke.grids = new Map([[start.join(','), start]]);
       const point = [...start];
-      const axes = stroke.terrain === 'residential-wall'
+      const axes = ['residential-wall', 'city-wall'].includes(stroke.terrain)
         ? Math.abs(grid[0] - start[0]) > Math.abs(grid[1] - start[1]) ? [0, 1] : [1, 0]
         : (grid[0] - start[0]) * (grid[1] - start[1]) > 0 ? [1, 0] : [0, 1];
       for (const axis of axes) while (point[axis] !== grid[axis]) {
