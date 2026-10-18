@@ -18,6 +18,7 @@
   let layer;
   let spriteScene;
   let currentScene;
+  let pendingFerry = null;
   let selectedGrid = null;
   let selectedEntityId = null;
   let cameraAngle = 0;
@@ -151,6 +152,8 @@
     get('building-control').hidden = tool !== 'building' && tool !== 'city-gate';
     get('pinnacle-control').hidden = tool !== 'pinnacle';
     get('click-help').textContent = {
+      bridge: '桥梁：点击岸边水格，自动跨越1～7格直线水面。两岸同高平坦；整桥清除，水面保留。',
+      ferry: '渡口：先选岸线，再点高亮的对岸完成配对；Esc取消未完成的一对。两端相向、同高，可横向错开。清除任一端会同时拆除另一端。',
       select: '点击查看格子属性；命中实体时同时查看其完整占地与属性。触控板双指滚动或鼠标中键拖动可平移。',
       road: '普通道路宽 1 格：按下定起点，拖动预览直线或一个直角弯；松开定终点并提交，Esc 取消。可沿坡道高低两端接路；不能经过实体、水面或侧入坡道。',
       'city-wall': '城墙：宽 1 格沿线绘制。平地不限高程，半坡、坡道不可建；道路、围墙、树木及其他实体须先清除。',
@@ -194,6 +197,7 @@
   }
 
   function updateTool() {
+    if (get('edit-tool').value !== 'ferry') pendingFerry = null;
     updateToolHelp();
     updateBrushControls();
   }
@@ -234,6 +238,47 @@
     hoverKey = null;
     if (forgetPointer) hoverPointer = null;
     get('hover-info').textContent = '移到画布查看坐标与笔刷占地';
+  }
+
+  function crossingPreview(hit) {
+    const rules = window.waterCrossingRules;
+    const tool = get('edit-tool').value;
+    const candidates = pendingFerry ? rules.ferryCandidates(currentScene.map, pendingFerry, currentScene.elementsById, currentScene.groundTiles) : [];
+    const result = hit.missed ? { issues: [{ message: '未命中地表。' }] }
+      : tool === 'bridge' ? rules.bridgeAt(currentScene.map, hit.grid, currentScene.elementsById, currentScene.groundTiles)
+      : pendingFerry ? { entity: candidates.find(entity => String(entity.grid) === String(hit.grid)), issues: [] }
+      : rules.ferryAt(currentScene.map, hit.grid, currentScene.elementsById, currentScene.groundTiles);
+    if (!result.entity) return { error: result.issues[0]?.message || '请点击高亮的有效对岸；Esc取消。', grids: [hit.grid], candidates };
+    const entity = result.entity;
+    if (tool === 'ferry' && !pendingFerry && !rules.ferryCandidates(currentScene.map, entity, currentScene.elementsById, currentScene.groundTiles).length) {
+      return { error: '此岸线范围内没有可配对渡口。', grids: rules.grids(entity, currentScene.elementsById), candidates: [] };
+    }
+    return { entity, grids: rules.grids(entity, currentScene.elementsById), candidates, error: '' };
+  }
+
+  function placeCrossing(preview) {
+    if (preview.error) throw new Error(preview.error);
+    if (get('edit-tool').value === 'ferry' && !pendingFerry) {
+      pendingFerry = preview.entity;
+      clearIssue();
+      clearHover();
+      status.textContent = '已选第一端 · 点击高亮对岸完成 / Esc取消';
+      return;
+    }
+    let entities = [preview.entity];
+    if (pendingFerry) {
+      const second = { ...preview.entity, id: `${pendingFerry.id}-opposite`, partner: pendingFerry.id };
+      entities = [{ ...pendingFerry, partner: second.id }, second];
+    }
+    const next = prepareScene({ ...currentScene, map: { ...currentScene.map, entities: [...currentScene.map.entities, ...entities] } }, cameraAngle);
+    undoStack.push(currentScene.map);
+    redoStack.length = 0;
+    pendingFerry = null;
+    selectedEntityId = entities[0].id;
+    selectedGrid = entities[0].grid;
+    commitScene(next);
+    clearIssue();
+    status.textContent = '已完成建造 · 可撤销';
   }
 
   function objectPreview(hit) {
@@ -377,6 +422,21 @@
     clearHover();
     hoverKey = key;
     const { Group } = window.spritejs;
+    if (['bridge', 'ferry'].includes(tool)) {
+      const preview = crossingPreview(hit);
+      hoverOverlay = new Group({ id: 'map-crossing-hover', opacity: 0.7 });
+      const ghosts = [pendingFerry, preview.entity].filter(Boolean);
+      if (!currentScene.flatEditing) ghosts.forEach(entity => window.waterCrossingRules.draws(entity, currentScene.map, currentScene.elementsById, currentScene.view).forEach(draw => {
+        const part = new Group();
+        window.qtiledElementRendering.renderElement(part, draw, currentScene.sources, { footprint: false, placement: false });
+        hoverOverlay.append(part);
+      }));
+      appendBrushFeedback(hoverOverlay, currentScene, preview.grids, { invalid: Boolean(preview.error), hit });
+      preview.candidates.forEach(entity => appendBrushFeedback(hoverOverlay, currentScene, window.waterCrossingRules.grids(entity, currentScene.elementsById), { hit }));
+      currentScene.root.append(hoverOverlay);
+      get('hover-info').textContent = preview.error || (pendingFerry ? '点击对岸完成配对 / Esc取消' : '点击建造 / Esc取消');
+      return;
+    }
     if (tool === 'building' || tool === 'pinnacle' || ['city-gate', 'city-tower'].includes(tool)) {
       const preview = objectPreview(hit);
       hoverOverlay = new Group({ id: 'map-building-hover', opacity: 0.65 });
@@ -582,6 +642,16 @@
         labels.append(holder);
         return;
       }
+      if (window.waterCrossingRules.isCrossing(entity.element)) {
+        for (const draw of window.waterCrossingRules.draws(entity, map, elementsById, view)) {
+          const part = new Group();
+          includeDraw(draw, elementsById[draw.id]);
+          window.qtiledElementRendering.renderElement(part, draw, sources, { footprint: false, placement: false });
+          drawables.push({ holder: part, depth: Math.max(...draw.footprint.map(item => projectGrid(item.grid, view)[1])), draw,
+            grid: draw.footprint[0].grid, entityId: entity.id, definition: elementsById[draw.id] });
+        }
+        return;
+      }
       if (['city-gate', 'city-tower'].includes(entity.element)) {
         for (const draw of window.constructionRules[entity.element === 'city-tower' ? 'towerDraws' : 'gateDraws'](entity, map, elementsById, view)) {
           const part = new Group();
@@ -652,6 +722,7 @@
   }
 
   function commitScene(next, resetViewport = false) {
+    if (next.map !== currentScene?.map) pendingFerry = null;
     clearHover(true);
     if (!layer) {
       spriteScene = new window.spritejs.Scene({ container, width: viewport.width, height: viewport.height, mode: 'static' });
@@ -814,6 +885,15 @@
     if (!canInteract()) return;
     const tool = get('edit-tool').value;
     const hit = hitAt(event);
+    if (['bridge', 'ferry'].includes(tool)) {
+      try { placeCrossing(crossingPreview(hit)); } catch (error) {
+        issues.hidden = false;
+        issues.textContent = error.message;
+        status.textContent = '放置被拒绝 · 地图未改变';
+      }
+      updateHover(event);
+      return;
+    }
     if (tool === 'building' || tool === 'pinnacle' || ['city-gate', 'city-tower'].includes(tool)) {
       try {
         const preview = objectPreview(hit);
@@ -840,7 +920,9 @@
     updateSelection();
   });
   function editEntity(command) {
-    const edited = requireSuccess(command.type === 'place' && ['city-gate', 'city-tower'].includes(command.entity.element)
+    const edited = requireSuccess(command.type === 'remove' && window.waterCrossingRules.isCrossing(currentScene.map.entities.find(entity => entity.id === command.id)?.element)
+      ? { definition: window.waterCrossingRules.remove(currentScene.map, [command.id]), issues: [] }
+      : command.type === 'place' && ['city-gate', 'city-tower'].includes(command.entity.element)
       ? window.constructionRules[command.entity.element === 'city-tower' ? 'placeCityTower' : 'placeCityGate'](currentScene.map, command.entity, currentScene.elementsById)
       : window.qtiledMaps.applyMapEdit(currentScene.map, command,
       currentScene.elementsById, window.constructionRules.canCoexist));
@@ -868,7 +950,7 @@
   get('pinnacle-type').addEventListener('change', () => updateHover());
   document.addEventListener('keydown', event => {
     const tool = get('edit-tool').value;
-    if (tool !== 'building' && tool !== 'pinnacle' && !['city-gate', 'city-tower'].includes(tool)) return;
+    if (tool !== 'building' && tool !== 'pinnacle' && !['city-gate', 'city-tower', 'bridge', 'ferry'].includes(tool)) return;
     if (tool === 'building' && event.key.toLowerCase() === 'r' && !event.ctrlKey && !event.metaKey && !event.altKey
       && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) {
       event.preventDefault();
@@ -883,14 +965,14 @@
 
   function hitAt(event, scene = currentScene) {
     const pixel = getPointerPosition(event, container).map((value, axis) => (value - scene.viewportOrigin[axis]) / scene.viewportScale);
-    if (['city-gate', 'city-tower'].includes(get('edit-tool').value) && !scene.flatEditing) {
+    if (['city-gate', 'city-tower', 'bridge', 'ferry'].includes(get('edit-tool').value) && !scene.flatEditing) {
       for (const height of [...new Set(scene.groundTiles.map(tile => tile.elevation || 0))].sort((a, b) => b - a)) {
         const grid = window.qtiledView.pickGrid([pixel[0], pixel[1] + height * (scene.map.elevationStep || 0)], scene.view);
         if ((scene.map.cells[grid[1]]?.[grid[0]]?.elevation || 0) === height && scene.map.cells[grid[1]]?.[grid[0]]) return { grid };
       }
       return { grid: window.qtiledView.pickGrid(pixel, scene.view), missed: true };
     }
-    if (!['city-gate', 'city-tower'].includes(get('edit-tool').value) && (get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.ruin || tile.quarry || tile.residentialWall) || scene.map.entities.some(entity => window.constructionRules.isSolid(entity.element))) && !scene.flatEditing) {
+    if (!['city-gate', 'city-tower', 'bridge', 'ferry'].includes(get('edit-tool').value) && (get('edit-tool').value === 'clear' || scene.map.version === 2 || scene.tiles.some(tile => tile.tree || tile.rock || tile.dune || tile.ruin || tile.quarry || tile.residentialWall) || scene.map.entities.some(entity => window.constructionRules.isSolid(entity.element))) && !scene.flatEditing) {
       for (let index = scene.drawables.length - 1; index >= 0; index--) {
         const item = scene.drawables[index];
         const frame = item.draw.sequence ? window.qtiledElementRendering.resolveElementFrame(item.definition, item.draw.imageAngle,
@@ -1158,7 +1240,9 @@
     result = requireSuccess(window.constructionRules.applyWallStroke(result.definition, grids, true));
     result = requireSuccess(window.constructionRules.applyRoadStroke(result.definition, roadGrids, true, scene.groundTiles));
     // 同一候选内完成各类事实删除；prepareScene与历史只提交一次。
-    for (const id of ids) result.definition = requireSuccess(window.qtiledMaps.applyMapEdit(result.definition,
+    const crossingIds = [...ids].filter(id => window.waterCrossingRules.isCrossing(scene.map.entities.find(entity => entity.id === id)?.element));
+    result.definition = window.waterCrossingRules.remove(result.definition, crossingIds);
+    for (const id of [...ids].filter(id => !crossingIds.includes(id))) result.definition = requireSuccess(window.qtiledMaps.applyMapEdit(result.definition,
       { type: 'remove', id }, scene.elementsById, window.constructionRules.canCoexist)).definition;
     const hasContent = ids.size > 0 || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.beach || scene.map.cells[y]?.[x]?.tree || scene.map.cells[y]?.[x]?.rock || scene.map.cells[y]?.[x]?.dune || scene.map.cells[y]?.[x]?.ruin || scene.map.cells[y]?.[x]?.quarry)
       || grids.some(([x, y]) => scene.map.cells[y]?.[x]?.residentialWall || scene.map.cells[y]?.[x]?.cityWall)

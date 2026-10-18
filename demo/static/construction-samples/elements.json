@@ -9048,5 +9048,9221 @@
         ]
       }
     }
+  },
+  "crossing-part-1896": {
+    "version": 1,
+    "id": "crossing-part-1896",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "crossing-part-1897": {
+    "version": 1,
+    "id": "crossing-part-1897",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          0,
+          158,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          0,
+          158,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          0,
+          158,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          0,
+          158,
+          87
+        ],
+        "anchor": [
+          39,
+          67
+        ]
+      }
+    }
+  },
+  "crossing-part-1898": {
+    "version": 1,
+    "id": "crossing-part-1898",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          0,
+          158,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          0,
+          158,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          0,
+          158,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          0,
+          158,
+          96
+        ],
+        "anchor": [
+          39,
+          76
+        ]
+      }
+    }
+  },
+  "crossing-part-1899": {
+    "version": 1,
+    "id": "crossing-part-1899",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          0,
+          158,
+          116
+        ],
+        "anchor": [
+          39,
+          96
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          0,
+          158,
+          116
+        ],
+        "anchor": [
+          39,
+          96
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          0,
+          158,
+          116
+        ],
+        "anchor": [
+          39,
+          96
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          0,
+          158,
+          116
+        ],
+        "anchor": [
+          39,
+          96
+        ]
+      }
+    }
+  },
+  "crossing-part-1900": {
+    "version": 1,
+    "id": "crossing-part-1900",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          0,
+          78,
+          59
+        ],
+        "anchor": [
+          39,
+          39
+        ]
+      }
+    }
+  },
+  "crossing-part-1901": {
+    "version": 1,
+    "id": "crossing-part-1901",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          0,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          0,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          0,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          0,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "crossing-part-1902": {
+    "version": 1,
+    "id": "crossing-part-1902",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          0,
+          78,
+          60
+        ],
+        "anchor": [
+          39,
+          40
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          0,
+          78,
+          60
+        ],
+        "anchor": [
+          39,
+          40
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          0,
+          78,
+          60
+        ],
+        "anchor": [
+          39,
+          40
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          0,
+          78,
+          60
+        ],
+        "anchor": [
+          39,
+          40
+        ]
+      }
+    }
+  },
+  "crossing-part-1903": {
+    "version": 1,
+    "id": "crossing-part-1903",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          0,
+          78,
+          58
+        ],
+        "anchor": [
+          39,
+          38
+        ]
+      }
+    }
+  },
+  "crossing-part-1934": {
+    "version": 1,
+    "id": "crossing-part-1934",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1935": {
+    "version": 1,
+    "id": "crossing-part-1935",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1936": {
+    "version": 1,
+    "id": "crossing-part-1936",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          120,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          120,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          120,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          120,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      }
+    }
+  },
+  "crossing-part-1937": {
+    "version": 1,
+    "id": "crossing-part-1937",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1938": {
+    "version": 1,
+    "id": "crossing-part-1938",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          120,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          120,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          120,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          120,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      }
+    }
+  },
+  "crossing-part-1939": {
+    "version": 1,
+    "id": "crossing-part-1939",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1940": {
+    "version": 1,
+    "id": "crossing-part-1940",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      }
+    }
+  },
+  "crossing-part-1941": {
+    "version": 1,
+    "id": "crossing-part-1941",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      }
+    }
+  },
+  "crossing-part-1942": {
+    "version": 1,
+    "id": "crossing-part-1942",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1943": {
+    "version": 1,
+    "id": "crossing-part-1943",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          120,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      }
+    }
+  },
+  "crossing-part-1944": {
+    "version": 1,
+    "id": "crossing-part-1944",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          120,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      }
+    }
+  },
+  "crossing-part-1945": {
+    "version": 1,
+    "id": "crossing-part-1945",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          120,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1946": {
+    "version": 1,
+    "id": "crossing-part-1946",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          240,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          240,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          240,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          240,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "crossing-part-1947": {
+    "version": 1,
+    "id": "crossing-part-1947",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          240,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          240,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          240,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          240,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      }
+    }
+  },
+  "crossing-part-1948": {
+    "version": 1,
+    "id": "crossing-part-1948",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      }
+    }
+  },
+  "crossing-part-1949": {
+    "version": 1,
+    "id": "crossing-part-1949",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          240,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          240,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          240,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          240,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "crossing-part-1950": {
+    "version": 1,
+    "id": "crossing-part-1950",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          240,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          240,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          240,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          240,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-1951": {
+    "version": 1,
+    "id": "crossing-part-1951",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          240,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          240,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          240,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          240,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      }
+    }
+  },
+  "crossing-part-1952": {
+    "version": 1,
+    "id": "crossing-part-1952",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          240,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      }
+    }
+  },
+  "crossing-part-1953": {
+    "version": 1,
+    "id": "crossing-part-1953",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          240,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "crossing-part-1954": {
+    "version": 1,
+    "id": "crossing-part-1954",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          240,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          240,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          240,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          240,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-1955": {
+    "version": 1,
+    "id": "crossing-part-1955",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          240,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          240,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          240,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          240,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      }
+    }
+  },
+  "crossing-part-1956": {
+    "version": 1,
+    "id": "crossing-part-1956",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-1957": {
+    "version": 1,
+    "id": "crossing-part-1957",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          360,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          360,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          360,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          360,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      }
+    }
+  },
+  "crossing-part-1958": {
+    "version": 1,
+    "id": "crossing-part-1958",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          360,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "crossing-part-1959": {
+    "version": 1,
+    "id": "crossing-part-1959",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          360,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          360,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          360,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          360,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-1960": {
+    "version": 1,
+    "id": "crossing-part-1960",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          360,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          360,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          360,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          360,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      }
+    }
+  },
+  "crossing-part-1961": {
+    "version": 1,
+    "id": "crossing-part-1961",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          360,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-1962": {
+    "version": 1,
+    "id": "crossing-part-1962",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          360,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          360,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          360,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          360,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      }
+    }
+  },
+  "crossing-part-1963": {
+    "version": 1,
+    "id": "crossing-part-1963",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          360,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          360,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          360,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          360,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1964": {
+    "version": 1,
+    "id": "crossing-part-1964",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          360,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          360,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          360,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          360,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      }
+    }
+  },
+  "crossing-part-1965": {
+    "version": 1,
+    "id": "crossing-part-1965",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          360,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          360,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          360,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          360,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "crossing-part-1966": {
+    "version": 1,
+    "id": "crossing-part-1966",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-1967": {
+    "version": 1,
+    "id": "crossing-part-1967",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      }
+    }
+  },
+  "crossing-part-1968": {
+    "version": 1,
+    "id": "crossing-part-1968",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          480,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          480,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          480,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          480,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      }
+    }
+  },
+  "crossing-part-1969": {
+    "version": 1,
+    "id": "crossing-part-1969",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          480,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "crossing-part-1970": {
+    "version": 1,
+    "id": "crossing-part-1970",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          480,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          480,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          480,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          480,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      }
+    }
+  },
+  "crossing-part-1971": {
+    "version": 1,
+    "id": "crossing-part-1971",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          480,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          480,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          480,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          480,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-1972": {
+    "version": 1,
+    "id": "crossing-part-1972",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          480,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-1973": {
+    "version": 1,
+    "id": "crossing-part-1973",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          480,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      }
+    }
+  },
+  "crossing-part-1974": {
+    "version": 1,
+    "id": "crossing-part-1974",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          480,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          480,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          480,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          480,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      }
+    }
+  },
+  "crossing-part-1975": {
+    "version": 1,
+    "id": "crossing-part-1975",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          480,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          480,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          480,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          480,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "crossing-part-1976": {
+    "version": 1,
+    "id": "crossing-part-1976",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-1977": {
+    "version": 1,
+    "id": "crossing-part-1977",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-1978": {
+    "version": 1,
+    "id": "crossing-part-1978",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          600,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-1979": {
+    "version": 1,
+    "id": "crossing-part-1979",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          600,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-1980": {
+    "version": 1,
+    "id": "crossing-part-1980",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          600,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          600,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          600,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          600,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      }
+    }
+  },
+  "crossing-part-1981": {
+    "version": 1,
+    "id": "crossing-part-1981",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          600,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          600,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          600,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          600,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      }
+    }
+  },
+  "crossing-part-1982": {
+    "version": 1,
+    "id": "crossing-part-1982",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          600,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          600,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          600,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          600,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      }
+    }
+  },
+  "crossing-part-1983": {
+    "version": 1,
+    "id": "crossing-part-1983",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          600,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          600,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          600,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          600,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      }
+    }
+  },
+  "crossing-part-1984": {
+    "version": 1,
+    "id": "crossing-part-1984",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "crossing-part-1985": {
+    "version": 1,
+    "id": "crossing-part-1985",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          600,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "crossing-part-1986": {
+    "version": 1,
+    "id": "crossing-part-1986",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          720,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          720,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          720,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          720,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      }
+    }
+  },
+  "crossing-part-1987": {
+    "version": 1,
+    "id": "crossing-part-1987",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          720,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          720,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          720,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          720,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      }
+    }
+  },
+  "crossing-part-1988": {
+    "version": 1,
+    "id": "crossing-part-1988",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          720,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          720,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          720,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          720,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      }
+    }
+  },
+  "crossing-part-1989": {
+    "version": 1,
+    "id": "crossing-part-1989",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          720,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          720,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          720,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          720,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      }
+    }
+  },
+  "crossing-part-1990": {
+    "version": 1,
+    "id": "crossing-part-1990",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1991": {
+    "version": 1,
+    "id": "crossing-part-1991",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1992": {
+    "version": 1,
+    "id": "crossing-part-1992",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          720,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          720,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          720,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          720,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      }
+    }
+  },
+  "crossing-part-1993": {
+    "version": 1,
+    "id": "crossing-part-1993",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1994": {
+    "version": 1,
+    "id": "crossing-part-1994",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          720,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          720,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          720,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          720,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      }
+    }
+  },
+  "crossing-part-1995": {
+    "version": 1,
+    "id": "crossing-part-1995",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          720,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1996": {
+    "version": 1,
+    "id": "crossing-part-1996",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      }
+    }
+  },
+  "crossing-part-1997": {
+    "version": 1,
+    "id": "crossing-part-1997",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      }
+    }
+  },
+  "crossing-part-1998": {
+    "version": 1,
+    "id": "crossing-part-1998",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-1999": {
+    "version": 1,
+    "id": "crossing-part-1999",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          840,
+          78,
+          93
+        ],
+        "anchor": [
+          39,
+          73
+        ]
+      }
+    }
+  },
+  "crossing-part-2000": {
+    "version": 1,
+    "id": "crossing-part-2000",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          840,
+          78,
+          77
+        ],
+        "anchor": [
+          39,
+          57
+        ]
+      }
+    }
+  },
+  "crossing-part-2001": {
+    "version": 1,
+    "id": "crossing-part-2001",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          840,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-2002": {
+    "version": 1,
+    "id": "crossing-part-2002",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          840,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          840,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          840,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          840,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "crossing-part-2003": {
+    "version": 1,
+    "id": "crossing-part-2003",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          840,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          840,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          840,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          840,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      }
+    }
+  },
+  "crossing-part-2004": {
+    "version": 1,
+    "id": "crossing-part-2004",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          840,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          840,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          840,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          840,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      }
+    }
+  },
+  "crossing-part-2005": {
+    "version": 1,
+    "id": "crossing-part-2005",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          840,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          840,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          840,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          840,
+          78,
+          51
+        ],
+        "anchor": [
+          39,
+          31
+        ]
+      }
+    }
+  },
+  "crossing-part-2006": {
+    "version": 1,
+    "id": "crossing-part-2006",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-2007": {
+    "version": 1,
+    "id": "crossing-part-2007",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          960,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          960,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          960,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          960,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      }
+    }
+  },
+  "crossing-part-2008": {
+    "version": 1,
+    "id": "crossing-part-2008",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          960,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          960,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          960,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          960,
+          78,
+          71
+        ],
+        "anchor": [
+          39,
+          51
+        ]
+      }
+    }
+  },
+  "crossing-part-2009": {
+    "version": 1,
+    "id": "crossing-part-2009",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          960,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          960,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          960,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          960,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "crossing-part-2010": {
+    "version": 1,
+    "id": "crossing-part-2010",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-2011": {
+    "version": 1,
+    "id": "crossing-part-2011",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          960,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          960,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          960,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          960,
+          78,
+          106
+        ],
+        "anchor": [
+          39,
+          86
+        ]
+      }
+    }
+  },
+  "crossing-part-2012": {
+    "version": 1,
+    "id": "crossing-part-2012",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          960,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-2013": {
+    "version": 1,
+    "id": "crossing-part-2013",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          960,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          960,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          960,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          960,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      }
+    }
+  },
+  "crossing-part-2014": {
+    "version": 1,
+    "id": "crossing-part-2014",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          960,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          960,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          960,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          960,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "crossing-part-2015": {
+    "version": 1,
+    "id": "crossing-part-2015",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          960,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-2016": {
+    "version": 1,
+    "id": "crossing-part-2016",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1080,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1080,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1080,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1080,
+          78,
+          108
+        ],
+        "anchor": [
+          39,
+          88
+        ]
+      }
+    }
+  },
+  "crossing-part-2017": {
+    "version": 1,
+    "id": "crossing-part-2017",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-2018": {
+    "version": 1,
+    "id": "crossing-part-2018",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1080,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1080,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1080,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1080,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      }
+    }
+  },
+  "crossing-part-2019": {
+    "version": 1,
+    "id": "crossing-part-2019",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1080,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1080,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1080,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1080,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    }
+  },
+  "crossing-part-2020": {
+    "version": 1,
+    "id": "crossing-part-2020",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1080,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1080,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1080,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1080,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      }
+    }
+  },
+  "crossing-part-2021": {
+    "version": 1,
+    "id": "crossing-part-2021",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1080,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1080,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1080,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1080,
+          78,
+          104
+        ],
+        "anchor": [
+          39,
+          84
+        ]
+      }
+    }
+  },
+  "crossing-part-2022": {
+    "version": 1,
+    "id": "crossing-part-2022",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1080,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-2023": {
+    "version": 1,
+    "id": "crossing-part-2023",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1080,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1080,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1080,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1080,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      }
+    }
+  },
+  "crossing-part-2024": {
+    "version": 1,
+    "id": "crossing-part-2024",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1080,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1080,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1080,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1080,
+          78,
+          75
+        ],
+        "anchor": [
+          39,
+          55
+        ]
+      }
+    }
+  },
+  "crossing-part-2025": {
+    "version": 1,
+    "id": "crossing-part-2025",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1080,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1080,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1080,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1080,
+          78,
+          52
+        ],
+        "anchor": [
+          39,
+          32
+        ]
+      }
+    }
+  },
+  "crossing-part-2026": {
+    "version": 1,
+    "id": "crossing-part-2026",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1200,
+          78,
+          98
+        ],
+        "anchor": [
+          39,
+          78
+        ]
+      }
+    }
+  },
+  "crossing-part-2027": {
+    "version": 1,
+    "id": "crossing-part-2027",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-2028": {
+    "version": 1,
+    "id": "crossing-part-2028",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-2029": {
+    "version": 1,
+    "id": "crossing-part-2029",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1200,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1200,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1200,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1200,
+          78,
+          91
+        ],
+        "anchor": [
+          39,
+          71
+        ]
+      }
+    }
+  },
+  "crossing-part-2030": {
+    "version": 1,
+    "id": "crossing-part-2030",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1200,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1200,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1200,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1200,
+          78,
+          76
+        ],
+        "anchor": [
+          39,
+          56
+        ]
+      }
+    }
+  },
+  "crossing-part-2031": {
+    "version": 1,
+    "id": "crossing-part-2031",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1200,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1200,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1200,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1200,
+          78,
+          54
+        ],
+        "anchor": [
+          39,
+          34
+        ]
+      }
+    }
+  },
+  "crossing-part-2032": {
+    "version": 1,
+    "id": "crossing-part-2032",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-2033": {
+    "version": 1,
+    "id": "crossing-part-2033",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-2034": {
+    "version": 1,
+    "id": "crossing-part-2034",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1200,
+          78,
+          105
+        ],
+        "anchor": [
+          39,
+          85
+        ]
+      }
+    }
+  },
+  "crossing-part-2035": {
+    "version": 1,
+    "id": "crossing-part-2035",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1200,
+          78,
+          101
+        ],
+        "anchor": [
+          39,
+          81
+        ]
+      }
+    }
+  },
+  "crossing-part-2036": {
+    "version": 1,
+    "id": "crossing-part-2036",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      }
+    }
+  },
+  "crossing-part-2037": {
+    "version": 1,
+    "id": "crossing-part-2037",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1320,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1320,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1320,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          158,
+          1320,
+          78,
+          81
+        ],
+        "anchor": [
+          39,
+          61
+        ]
+      }
+    }
+  },
+  "crossing-part-2038": {
+    "version": 1,
+    "id": "crossing-part-2038",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1320,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1320,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1320,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          316,
+          1320,
+          78,
+          61
+        ],
+        "anchor": [
+          39,
+          41
+        ]
+      }
+    }
+  },
+  "crossing-part-2039": {
+    "version": 1,
+    "id": "crossing-part-2039",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1320,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1320,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1320,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          474,
+          1320,
+          78,
+          97
+        ],
+        "anchor": [
+          39,
+          77
+        ]
+      }
+    }
+  },
+  "crossing-part-2040": {
+    "version": 1,
+    "id": "crossing-part-2040",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          632,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "crossing-part-2041": {
+    "version": 1,
+    "id": "crossing-part-2041",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          790,
+          1320,
+          78,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "crossing-part-2042": {
+    "version": 1,
+    "id": "crossing-part-2042",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1320,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1320,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1320,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          948,
+          1320,
+          78,
+          99
+        ],
+        "anchor": [
+          39,
+          79
+        ]
+      }
+    }
+  },
+  "crossing-part-2043": {
+    "version": 1,
+    "id": "crossing-part-2043",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1106,
+          1320,
+          78,
+          92
+        ],
+        "anchor": [
+          39,
+          72
+        ]
+      }
+    }
+  },
+  "crossing-part-2044": {
+    "version": 1,
+    "id": "crossing-part-2044",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1320,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1320,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1320,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          1320,
+          78,
+          82
+        ],
+        "anchor": [
+          39,
+          62
+        ]
+      }
+    }
+  },
+  "crossing-part-2045": {
+    "version": 1,
+    "id": "crossing-part-2045",
+    "kind": "tile",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1320,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1320,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1320,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1422,
+          1320,
+          78,
+          62
+        ],
+        "anchor": [
+          39,
+          42
+        ]
+      }
+    }
+  },
+  "bridge-x-1": {
+    "version": 1,
+    "id": "bridge-x-1",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-y-1": {
+    "version": 1,
+    "id": "bridge-y-1",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-x-2": {
+    "version": 1,
+    "id": "bridge-x-2",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-y-2": {
+    "version": 1,
+    "id": "bridge-y-2",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-x-3": {
+    "version": 1,
+    "id": "bridge-x-3",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-y-3": {
+    "version": 1,
+    "id": "bridge-y-3",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-x-4": {
+    "version": 1,
+    "id": "bridge-x-4",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-y-4": {
+    "version": 1,
+    "id": "bridge-y-4",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-x-5": {
+    "version": 1,
+    "id": "bridge-x-5",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-y-5": {
+    "version": 1,
+    "id": "bridge-y-5",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-x-6": {
+    "version": 1,
+    "id": "bridge-x-6",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-y-6": {
+    "version": 1,
+    "id": "bridge-y-6",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-x-7": {
+    "version": 1,
+    "id": "bridge-x-7",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        6,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "bridge-y-7": {
+    "version": 1,
+    "id": "bridge-y-7",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          1264,
+          0,
+          78,
+          53
+        ],
+        "anchor": [
+          39,
+          33
+        ]
+      }
+    },
+    "groundTerrain": "water"
+  },
+  "ferry-0": {
+    "version": 1,
+    "id": "ferry-0",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        -1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "ferry-1": {
+    "version": 1,
+    "id": "ferry-1",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        0
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "ferry-2": {
+    "version": 1,
+    "id": "ferry-2",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
+  },
+  "ferry-3": {
+    "version": 1,
+    "id": "ferry-3",
+    "kind": "sprite",
+    "footprint": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        -1,
+        1
+      ]
+    ],
+    "views": {
+      "0": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "90": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "180": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      },
+      "270": {
+        "source": "water-crossing-atlas.webp",
+        "rect": [
+          0,
+          0,
+          158,
+          100
+        ],
+        "anchor": [
+          39,
+          80
+        ]
+      }
+    }
   }
 }

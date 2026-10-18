@@ -3,7 +3,8 @@
  */
 (function () {
   const buildingId = 'courtyard-house';
-  const isSolid = element => element === 'city-gate' || element === 'city-tower' || element === buildingId || /^emperor-pinnacle-[1-4]$/.test(element);
+  const isCrossing = element => /^(bridge-[xy]-[1-7]|ferry-[0-3])$/.test(element);
+  const isSolid = element => isCrossing(element) || element === 'city-gate' || element === 'city-tower' || element === buildingId || /^emperor-pinnacle-[1-4]$/.test(element);
   const cityWallRows = [[1, 0, 1, 0, 1, 0, 1, 0, 12, 12, 12, 12], [1, 2, 1, 2, 0, 2, 1, 2, 8, 11, 10, 9], [1, 2, 1, 2, 1, 2, 0, 2, 9, 8, 11, 10], [0, 2, 1, 2, 1, 2, 1, 2, 10, 9, 8, 11], [1, 2, 0, 2, 1, 2, 1, 2, 11, 10, 9, 8], [1, 2, 0, 2, 1, 2, 0, 2, 2, 0, 2, 0], [0, 2, 1, 2, 0, 2, 1, 2, 0, 2, 0, 2], [1, 2, 1, 2, 0, 2, 0, 2, 7, 6, 5, 4], [0, 2, 1, 2, 1, 2, 0, 2, 4, 7, 6, 5], [0, 2, 0, 2, 1, 2, 1, 2, 5, 4, 7, 6], [1, 2, 0, 2, 0, 2, 1, 2, 6, 5, 4, 7], [1, 2, 0, 2, 0, 2, 0, 2, 15, 14, 13, 16], [0, 2, 1, 2, 0, 2, 0, 2, 16, 15, 14, 13], [0, 2, 0, 2, 1, 2, 0, 2, 13, 16, 15, 14], [0, 2, 0, 2, 0, 2, 1, 2, 14, 13, 16, 15], [0, 2, 0, 2, 0, 2, 0, 2, 17, 17, 17, 17]];
   const wallBases = [370, 387, 404, 421];
   const isGate = value => /^gate-[1-4]$/.test(value);
@@ -20,7 +21,7 @@
   // Demo 的地表适用规则；当前实例默认陆地，水面专属元素声明 groundTerrain: 'water'。
   const supportsGround = (element, cell) => cell
     && !window.landWaterRules.naturalFields.some(key => cell[key] !== undefined)
-    && cell.terrain === (element.groundTerrain || 'land');
+    && (isCrossing(element.id) || cell.terrain === (element.groundTerrain || 'land'));
 
   function reconcileSurface(before, after, elements) {
     const occupancy = window.qtiledMaps.buildMapOccupancy(before, elements, canCoexist);
@@ -31,7 +32,7 @@
       const old = before.cells[y][x];
       if (!cell || ['terrain', ...window.landWaterRules.naturalFields].every(key => cell[key] === old?.[key])) return cell;
       for (const id of occupancy.index.get(`${x},${y}`) || []) {
-        if (!supportsGround(elements[entities.get(id).element], cell)) removed.add(id);
+        if (!isCrossing(entities.get(id).element) && !supportsGround(elements[entities.get(id).element], cell)) removed.add(id);
       }
       if (cell.road && (cell.terrain !== 'land' || cell.beach)) {
         const next = { ...cell };
@@ -139,7 +140,7 @@
       const cell = cells[y][x];
       for (const id of ids) {
         const entity = entities.get(id);
-        if (!entity) continue;
+        if (!entity || isCrossing(entity.element)) continue;
         if (!heights.has(id)) heights.set(id, cell?.elevation);
         if (!supportsGround(elements[entity.element], cell) || byGrid.get(key)?.slope
           || cell.elevation !== heights.get(id)) removed.add(id);
@@ -165,7 +166,7 @@
       if (occupants.some(id => !supportsGround(elements[map.entities.find(entity => entity.id === id).element], cell))) {
         issues.push(issue(path, 'entity-ground', '实体完整占地的地表或地物不符合放置要求。'));
       }
-      const building = occupants.some(id => isSolid(map.entities.find(entity => entity.id === id)?.element));
+      const building = occupants.some(id => { const element = map.entities.find(entity => entity.id === id)?.element; return isSolid(element) && !isCrossing(element); });
       if (cell.cityWall !== undefined) {
         if (cell.cityWall !== true || !supportsGround({}, cell) || tile?.slope || cell.road || cell.residentialWall || occupants.length) {
           issues.push(issue(path, 'city-wall-ground', '城墙需要平坦空地，不能覆盖道路、围墙、地物或实体。'));
@@ -208,6 +209,7 @@
     if (map.entities.some(entity => entity.element === 'city-tower' && entity.angle !== 0)) {
       issues.push(issue('entities', 'city-tower-angle', '塔楼使用固定占地，外观随镜头四向切换。'));
     }
+    if (window.waterCrossingRules) issues.push(...window.waterCrossingRules.validate(map, elements, tiles).issues);
     return { issues, index: occupancy.index };
   }
 
@@ -259,7 +261,9 @@
       }
       if (!map.cells[y][x].road) return tile;
       if (tile.ramp) return { ...tile, road: 'ordinary' };
-      const neighbors = rules.neighborOffsets.map(([dx, dy]) => map.cells[y + dy]?.[x + dx]?.road === 'ordinary' ? 1 : 0);
+      const neighbors = rules.neighborOffsets.map(([dx, dy]) => map.cells[y + dy]?.[x + dx]?.road === 'ordinary'
+        || map.entities.some(entity => entity.element.startsWith(`bridge-${dx ? 'x' : 'y'}-`)
+          && elements[entity.element].footprint.some(([px, py]) => entity.grid[0] + px === x + dx && entity.grid[1] + py === y + dy)) ? 1 : 0);
       const row = rules.rows.find(row => row.conditions.every((value, i) => value === 2 || value === neighbors[i]));
       // 稳定的世界坐标变体；镜头、重绘和邻接遍历顺序不改变它。
       const variant = row ? ((x * 31 + y * 17) >>> 0) % row.variants : 0;

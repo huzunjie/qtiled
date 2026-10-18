@@ -149,6 +149,7 @@ async function page(initialFaults = {}, sample = 'first-static-map') {
   vm.runInContext(read('static/js/beach-rules.js'), context);
   vm.runInContext(read('static/js/land-water-rules.js'), context);
   vm.runInContext(read('static/js/elevation-rules.js'), context);
+  vm.runInContext(read('static/js/water-crossing-rules.js'), context);
   vm.runInContext(read('static/js/construction-rules.js'), context);
   vm.runInContext(read('static/js/tree-rules.js'), context);
   vm.runInContext(read('static/js/square-groups.js'), context);
@@ -1084,7 +1085,7 @@ test('笔刷复用命令的地表与绘制帧结果，同格移动、回描和�
 test('首次加载和切换样本复用图片 URL，仅手动重载刷新全部资源', async () => {
   const p = await page();
   const initial = p.imageRequests[0];
-  expect(Object.keys(initial)).toHaveLength(22);
+  expect(Object.keys(initial)).toHaveLength(23);
   expect(initial).not.toHaveProperty('bare-land-atlas.png');
   expect(initial['water-shore-atlas.webp']).toBe('./static/terrain-samples/emperor-land-water/water-shore-atlas.webp?v=20261015030000');
   expect(new URL(initial['trees-atlas.webp'], 'http://localhost/').searchParams.get('v')).toBe('20261015030000');
@@ -1614,7 +1615,7 @@ test('高处水面四向选格和动画位置稳定，水陆笔刷保留高度�
 test('对外样本包含道路民居入口，多级样本包含高程边缘、空角和沟谷', async () => {
   const p = await page({}, 'elevation-multilevel-map');
   expect([...p.get('map-sample').options].map(option => option.value)).toEqual([
-    'rectangular-water-map', 'beach-map', 'ruins-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'city-wall-map', 'residential-wall-map', 'village-map',
+    'rectangular-water-map', 'beach-map', 'ruins-map', 'pinnacle-map', 'salt-marsh-map', 'mineral-map', 'tree-map', 'climate-map', 'slope-features-map', 'elevation-map', 'elevation-multilevel-map', 'first-static-map', 'water-crossing-map', 'city-wall-map', 'residential-wall-map', 'village-map',
   ]);
   const map = p.save();
   expect(map.cells[0][0]).toBeNull();
@@ -3821,7 +3822,7 @@ test('塔楼独立按钮放置、四向查看、拆除和撤销保留占地外�
   expect(p.errors).toEqual([]); p.window.close();
 });
 
-test.each(['first-static-map', 'village-map', 'pinnacle-map', 'city-wall-map'])('%s实体四镜头完整地基地表先于主体绘制', async sample => {
+test.each(['first-static-map', 'village-map', 'pinnacle-map', 'city-wall-map', 'water-crossing-map'])('%s实体四镜头完整地基地表先于主体绘制', async sample => {
   const p = await page({}, sample);
   const map = p.save();
   for (const angle of [0, 90, 180, 270]) {
@@ -3833,7 +3834,8 @@ test.each(['first-static-map', 'village-map', 'pinnacle-map', 'city-wall-map'])(
       && String(node.attrs.pos) === String(draw.position) && String(node.attrs.sourceRect) === String(draw.rect));
     for (const entity of p.result()) {
       const draws = entity.element === 'city-gate' ? p.window.constructionRules.gateDraws(entity, map, library, projection)
-        : entity.element === 'city-tower' ? p.window.constructionRules.towerDraws(entity, map, library, projection) : [entity.draw];
+        : entity.element === 'city-tower' ? p.window.constructionRules.towerDraws(entity, map, library, projection)
+        : p.window.waterCrossingRules.isCrossing(entity.element) ? p.window.waterCrossingRules.draws(entity, map, library, projection) : [entity.draw];
       for (const body of draws) {
         const bodyIndex = indexOf(body);
         expect(bodyIndex).toBeGreaterThanOrEqual(0);
@@ -3846,7 +3848,9 @@ test.each(['first-static-map', 'village-map', 'pinnacle-map', 'city-wall-map'])(
             Object.assign(tile, construction.tiles[0]);
           }
           for (const ground of p.window.elevationRendering.resolveTileDraws(tile, map, library, projection)) {
-            const groundIndex = indexOf(ground);
+            // 水面动画相位改变裁切，不改变其地表位置与画序。
+            const groundIndex = cell.terrain === 'water' ? images.findIndex(node => node.attrs.texture.file === ground.source
+              && String(node.attrs.pos) === String(ground.position)) : indexOf(ground);
             expect(groundIndex).toBeGreaterThanOrEqual(0);
             expect(groundIndex).toBeLessThan(bodyIndex);
           }
@@ -3891,4 +3895,44 @@ test('塔楼四向前后邻墙排序正确，完整占地地表不能覆盖塔�
     }
   }
   expect(p.errors).toEqual([]); p.window.close();
+});
+
+
+test('桥梁与成对渡口两次点选、取消、删除及撤销重做保持原始水面', async () => {
+  const p = await page({}, 'water-crossing-map');
+  const original = p.save();
+  expect(p.get('issues').hidden).toBe(true);
+  const empty = { ...original, entities: [] };
+  p.get('map-json').value = JSON.stringify(empty); p.get('read-map').click(); await settle();
+  p.tool('ferry');
+  p.clickGrid([20, 20]);
+  expect(p.get('status').textContent).toContain('已选第一端');
+  expect(p.save().entities).toEqual([]);
+  p.window.document.dispatchEvent(new p.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  expect(p.save()).toEqual(empty);
+  p.tool('ferry'); p.clickGrid([20, 20]); p.clickGrid([22, 10]);
+  const pair = p.save();
+  expect(pair.entities).toHaveLength(2);
+  expect(pair.entities[0].partner).toBe(pair.entities[1].id);
+  expect(pair.entities[1].partner).toBe(pair.entities[0].id);
+  p.get('undo').click(); expect(p.save().entities).toEqual([]);
+  p.get('redo').click(); expect(p.save()).toEqual(pair);
+  p.tool('bridge'); p.clickGrid([8, 5]);
+  expect(p.save().entities).toHaveLength(3);
+  for (const angle of [0, 90, 180, 270]) {
+    p.camera(angle);
+    expect(p.get('issues').hidden).toBe(true);
+    expect(p.save().cells).toEqual(original.cells);
+  }
+  p.camera(0);
+  p.get('fit-map').click();
+  setDisplay(p, 'flat-edit', true);
+  p.tool('clear'); p.pointer('pointerdown', [20, 20]); p.pointer('pointerup', [20, 20]);
+  expect(p.get('issues').textContent).toBe('');
+  expect(p.save().entities.map(entity => entity.element)).toEqual(['bridge-x-3']);
+  p.get('undo').click(); expect(p.save().entities).toHaveLength(3);
+  p.tool('clear'); p.pointer('pointerdown', [9, 5]); p.pointer('pointerup', [9, 5]);
+  expect(p.save().entities).toHaveLength(2);
+  expect(p.save().cells).toEqual(original.cells);
+  expect(p.errors).toEqual([]);
 });
