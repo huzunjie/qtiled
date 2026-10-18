@@ -135,7 +135,8 @@
       const base = 1934 + points.length * (points.length - 1) + family * points.length;
       return projected.flatMap(({ grid }, i) => [draw(base + i, grid), draw(base + i + 56, grid)]);
     }
-    const direction = Number(entity.element.slice(-1)), image = (direction + (view.angle || 0) / 90) % 4;
+    // 原图0的踏板在画面右后方，对应本投影的方向1；素材方向比逻辑方向少一格。
+    const direction = Number(entity.element.slice(-1)), image = (direction + (view.angle || 0) / 90 + 3) % 4;
     const footprint = body.map(offset => add(entity.grid, offset));
     const positions = footprint.map(grid => window.qtiledView.projectGrid(grid, view));
     const main = draw(1896 + image, entity.grid);

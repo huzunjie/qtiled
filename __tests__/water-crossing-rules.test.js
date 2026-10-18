@@ -109,3 +109,20 @@ test('断开的水域、异高对岸及被坡面占据的码头不允许配对',
   expect(rules.ferryCandidates(raised, first, elements).some(entity => String(entity.grid) === '22,10')).toBe(false);
   expect(rules.ferryAt(empty(sample()), [20, 20], elements, [{ grid: [21, 21], slope: true }]).entity).toBeUndefined();
 });
+
+test('渡口四向素材与踏板所在屏幕方向一致，后方踏板先绘制', () => {
+  const map = sample();
+  for (let direction = 0; direction < 4; direction++) for (const angle of [0, 90, 180, 270]) {
+    const entity = { element: `ferry-${direction}`, grid: [10, 10], angle: 0 };
+    const draws = rules.draws(entity, map, elements, { tileSize: [80, 40], angle });
+    const main = draws.find(draw => draw.footprint.length === 4);
+    const deck = draws.find(draw => draw.footprint.length === 1);
+    const center = main.footprint.reduce((sum, item) => sum.map((value, i) => value + item.position[i] / 4), [0, 0]);
+    const [dx, dy] = deck.footprint[0].position.map((value, i) => value - center[i]);
+    // 原图0/1/2/3的踏板依次在右后、右前、左前、左后。
+    const image = dx > 0 ? (dy < 0 ? 0 : 1) : (dy > 0 ? 2 : 3);
+    expect(main.id).toBe(`crossing-part-${1896 + image}`);
+    expect(deck.id).toBe(`crossing-part-${1900 + image}`);
+    expect(draws[0]).toBe(dy < 0 ? deck : main);
+  }
+});
