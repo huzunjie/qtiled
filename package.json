@@ -1,6 +1,6 @@
 {
   "name": "qtiled",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一套轻量级 Tiled 布局基础库。",
   "main": "dist/qtiled.cjs.js",
   "module": "dist/qtiled.mjs.js",

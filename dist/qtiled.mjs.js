@@ -1,6 +1,6 @@
 
 /**
- * qtiled v0.2.7
+ * qtiled v1.0.0
  * (c) 2008-2026 huzunjie
  * Released under MIT
  */
@@ -935,14 +935,23 @@ function gridCoordToKey([gridX, gridY]) {
 }
 
 /**
- * 计算整数矩阵到最近来源格的八邻距离 max(|dx|, |dy|)。
- * 不解释障碍、高程或投影拓扑；调用方提供来源，不修改输入。
- * @param {number} width 正安全整数列数
- * @param {number} height 正安全整数行数
- * @param {Array<Array<number>>} sources 地图内的整数 [x, y] 坐标，允许重复或空数组
- * @returns {Array<Array<number>>} distances[y][x]；无来源时为 Infinity
- * @throws {TypeError} 输入结构或整数类型无效
- * @throws {RangeError} 尺寸非正或来源越界
+ * 给定网格大小和一组来源格（作为距离起点的格子），算出每格离最近来源有多远。
+ * 横着、竖着或斜着走一格都算 1，来源格自身的距离为 0。
+ * 有多个来源时取最近的距离；没有来源时，每格都返回 Infinity。
+ * 例如，把所有水格作为来源，就能得到每格离最近水格的距离。
+ *
+ * 只按行列坐标计算，不会绕开障碍，也不考虑高差或画面上的像素距离。
+ * 不修改传入的来源坐标。
+ * @param {number} width 网格列数，必须为正安全整数
+ * @param {number} height 网格行数，必须为正安全整数
+ * @param {Array<Array<number>>} sources 来源坐标列表；每项为 [列号, 行号]，从 0 开始，必须在网格内，可重复或为空
+ * @returns {Array<Array<number>>} 距离表，按 [行号][列号] 读取
+ * @throws {TypeError} 参数结构不符，或尺寸/坐标不是安全整数
+ * @throws {RangeError} 宽高小于 1，或来源坐标超出网格
+ * @example
+ * // 3 列 3 行，来源在中心：中心距离为 0，周围八格距离都为 1。
+ * getChebyshevDistanceField(3, 3, [[1, 1]]);
+ * // 返回 [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
  */
 function getChebyshevDistanceField$1(width, height, sources) {
   if (!Number.isSafeInteger(width) || !Number.isSafeInteger(height)) {
@@ -966,7 +975,7 @@ function getChebyshevDistanceField$1(width, height, sources) {
     length: height
   }, () => Array(width).fill(Infinity));
 
-  for (const [x, y] of sources) distances[y][x] = 0; // 两遍扫描传播八邻距离，时间 O(width * height + sources.length)。
+  for (const [x, y] of sources) distances[y][x] = 0; // 正向、反向各扫一遍，逐格更新到最近来源的距离；时间 O(width * height + sources.length)。
 
 
   for (const step of [1, -1]) {
