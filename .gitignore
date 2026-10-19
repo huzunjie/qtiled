@@ -62,3 +62,6 @@ typings/
 .env
 
 /output/
+
+# local npm auth token
+.npmrc

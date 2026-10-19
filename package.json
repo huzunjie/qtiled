@@ -1,6 +1,6 @@
 {
   "name": "qtiled",
-  "version": "0.2.7",
+  "version": "1.0.0",
   "description": "一套轻量级 Tiled 布局基础库。",
   "main": "dist/qtiled.cjs.js",
   "module": "dist/qtiled.mjs.js",
@@ -20,9 +20,6 @@
     "min": "rollup -c build/rollup.config.min.js",
     "debug": "rollup -c build/rollup.config.dev.js",
     "update-demo-version": "node build/update-demo-version.js"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
