@@ -6,7 +6,6 @@ node_modules/
 output/
 coverage/
 __tests__/
-test-utils/
 build/
 demo/
 docs/

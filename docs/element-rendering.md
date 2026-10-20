@@ -1,8 +1,8 @@
 # 元素绘制、动画帧与 SpriteJS 适配
 
-`src/element-rendering` 是元素编辑器、独立素材预览和地图消费者共用的可选模块。`draw`、`frame`、`placement` 为纯计算入口，`sources` 负责浏览器图片加载，`spritejs-element-renderer` 负责 SpriteJS 节点适配；页面布局、交互状态和样本资源配置留在 Demo。
+`src/element-rendering` 是元素编辑器、独立素材预览和地图消费者共用的可选模块。`draw`、`frame`、`placement` 为纯计算入口，`sources` 负责浏览器图片加载，`spritejs-element-renderer` 负责 SpriteJS 节点适配；页面布局、交互状态和素材配置由消费项目负责。
 
-原 `src/element-preview` 已迁移到本目录，`renderElementPreview` 改名为 `renderElement`；浏览器包与命名空间为 `qtiled-element-rendering.dev.js` / `qtiledElementRendering`。仓库内消费者同步迁移，不保留旧入口。实际素材预览页仍使用 `demo/element-preview.html`，其名称表示页面用途。
+浏览器正式包为 `dist/qtiled-element-rendering.umd.js`，命名空间为 `qtiledElementRendering`；构建及依赖顺序见[浏览器消费说明](browser-consumption.md)。
 
 运行顺序为：`loadElementSources()` → `importElementDefinition()` → `resolveElementPlacement()`（放置/转向时）→ `resolveElementDraw()` → `renderElement()`。编辑器和独立预览都可以消费这一流程，不依赖另一页面的临时状态。
 
@@ -126,26 +126,12 @@ draw = resolveElementDraw(definition, pose.grid, view, pose.objectAngle);
 
 `updateElementFrame(container, frame, sources = {})` 在已经绘制的同一容器中原地更新，并返回原有 Group。它先检查帧的图片引用、裁切结构与方向锚点，确认图片已加载后再更新 Sprite 的纹理、裁切、尺寸和 `pos = 原有 origin - frame.anchor`；若有裁切边框，同时更新其位置与尺寸。它不重建 Group，不改占地、放置基准或调用方其他节点。无已绘制元素、帧结构非法或缺图片时抛错，旧节点与画面保持不变；完整图片尺寸及裁切越界仍由元素定义校验负责。
 
-容器也可使用 SpriteJS Group。多实体消费者为每个实例创建独立 Group，再各自调用本函数；同一容器循环调用会替换前一个实例。[静态地图浏览 Demo](../demo/map-editor.html) 采用此方式复用适配器，由页面管理整个场景组的生命周期。
+容器也可使用 SpriteJS Group。多实体消费者为每个实例创建独立 Group，再各自调用本函数；同一容器循环调用会替换前一个实例。消费页面管理整个场景组的生命周期。
 
-纯计算可从 `src/element-rendering/draw`、`src/element-rendering/frame`、`src/element-rendering/placement` 单独引入。完整可选入口 `src/element-rendering` 导出加载、放置、绘制/帧计算、渲染/原地更新及元素的导入、校验、编辑和导出函数；SpriteJS 由调用方提供为外部依赖，不进入核心 `src/index.js`。Demo 构建输出独立的 `qtiled-element-rendering.dev.js`，浏览器命名空间为 `qtiledElementRendering`，须在 SpriteJS 后加载。
+纯计算可从 `src/element-rendering/draw`、`src/element-rendering/frame`、`src/element-rendering/placement` 单独引入。完整可选入口 `src/element-rendering` 导出加载、放置、绘制/帧计算、渲染/原地更新及元素的导入、校验、编辑和导出函数；SpriteJS 由调用方提供为外部依赖，不进入核心 `src/index.js`。`npm run optional` 输出独立的 `dist/qtiled-element-rendering.umd.js`，浏览器命名空间为 `qtiledElementRendering`，须在 SpriteJS 后加载。
 
-## 样本和边界
+## 消费项目与边界
 
-[四向静态素材 Demo](../demo/element-preview.html) 使用两份本地 JSON：完整素材与裁切示例。四张图片和 JSON 保存在[样本目录](../demo/static/element-samples/dog/)。没有可视化编辑、导出、地图放置或经营规则。
+元素编辑、素材预览和地图场景由 [EMK](https://emk.pyzy.net/) 维护，相关页面、游戏规则及原作素材已移出 QTiled Demo。调用方提供完整元素定义、图片索引和播放时间，本模块只处理通用绘制与帧解析。EMK 的集合简写格式应先由其加载器展开，不能直接代替 QTiled 的元素定义。
 
-狗样本资源目录和图片清单由 `demo/static/js/dog-element-sample.js` 统一提供，供编辑、素材预览和地图浏览三页使用。这个固定样本配置不进入可选模块；各页仍独立加载、校验并持有图片和定义。
-
-元素编辑器另提供“原作地表素材”入口，读取[普通陆地与水域素材库](../demo/static/terrain-samples/emperor-land-water/elements.json)及其[图集](../demo/static/terrain-samples/emperor-land-water/water-shore-atlas.webp)。素材库保留陆地、岸线和各水面单帧的 v1 定义，并增加 `emperor-water-even`、`emperor-water-odd`、`emperor-water-deep` 三个 v2 元素，各自以一份 24 帧序列供四向引用。每个元素使用单格占地、四个显式视图；素材定义与图集全部加载、校验通过后才替换编辑对象，失败保留原配置与资源。
-
-[地图编辑页](../demo/map-editor.html)读取同一份素材库和图集：地表规则按地图事实、邻域及镜头选择元素，再交给通用元素绘制模块。每张岸线图片的四向共用表示该图片本身的绑定；岸线随镜头变化时应选哪一张图片，由地表规则决定。元素工具展示和编辑所选元素副本，修改可导出 JSON，不会写回样本库或地图当前场景。
-
-这批素材采用 `[80,40]` 逻辑瓦片尺寸，保留原始图片上凸部分及对应锚点。当前覆盖普通陆地、水岸和按水域邻接规则选取的内部水面动画；海滩和高程组合由地图 Demo 的对应规则处理，灾害流程尚未接入。水面样本统一采用作者预览设置 `frameDurationMs:100, timingSource:'author'`。素材、帧序及邻域规则见[地表素材说明](../demo/static/terrain-samples/emperor-land-water/README.md)。
-
-`npm run debug` 生成 Demo 运行文件；`npm run dev` 同时监听核心、视图、元素绘制和地图四个 Demo 入口。独立项目使用 `npm run optional` 生成的正式 UMD 文件，路径、SpriteJS 加载顺序和完整调用例见[正式产物消费](browser-consumption.md)。
-
-本页与四向视图 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px。独立预览按实际可见宽高自动适配，长占地列表在右侧局部滚动。
-
-独立回读：选择素材根目录或图片文件，再选择编辑器导出的 JSON；导入重新调用元素校验，并使用本页加载的图片绘制。单独选图以文件名作为引用，目录图片保留目录内相对路径。两页不共享编辑状态。瓦片宽高属于视图参数，需手动与编辑预览保持一致；“载入样本”恢复内置图片与样本。完整流程见[元素编辑工具](element-editor.md)。
-
-独立预览从当前对象转向及平移后的占地建立网格范围，再合并四个镜头方向的素材边界和网格范围，按可见画布自动缩小并居中。该适配只影响显示，不改变侧栏中的裁切、锚点和绘制坐标；适配可能改变屏幕位置/比例，不是放置基准世界格变化。网格至少 9×9，随占地扩展并留出两格。右侧占用格子显示转向后的世界格，另显示当前上角放置基准格。
+`npm run optional` 生成正式可选 UMD；`npm run dev` 与 `npm run debug` 只生成当前几何 Demo 使用的核心与四向视图开发包。

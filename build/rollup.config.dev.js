@@ -27,21 +27,4 @@ Object.assign(viewConfig.output, {
   name: 'qtiledView',
   sourcemap: true,
 });
-const renderingConfig = getConf('umd');
-renderingConfig.input = 'src/element-rendering/index.js';
-renderingConfig.external = ['spritejs'];
-Object.assign(renderingConfig.output, {
-  file: 'demo/static/js/qtiled-element-rendering.dev.js',
-  name: 'qtiledElementRendering',
-  globals: { spritejs: 'spritejs' },
-  sourcemap: true,
-});
-// 地图 Demo 开发包；正式 UMD 由 rollup.config.optional.js 构建。
-const mapsConfig = getConf('umd');
-mapsConfig.input = 'src/maps/index.js';
-Object.assign(mapsConfig.output, {
-  file: 'demo/static/js/qtiled-maps.dev.js',
-  name: 'qtiledMaps',
-  sourcemap: true,
-});
-export default [config, viewConfig, renderingConfig, mapsConfig];
+export default [config, viewConfig];

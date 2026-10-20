@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const root = path.resolve(__dirname, '..');
 const release = path.join(root, 'output/demo-release');
-const bundles = ['qtiled', 'qtiled-view', 'qtiled-element-rendering', 'qtiled-maps'];
+const bundles = ['qtiled', 'qtiled-view'];
 const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex').slice(0, 12);
 const files = directory => fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
   const file = path.join(directory, entry.name);

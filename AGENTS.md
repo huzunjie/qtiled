@@ -9,6 +9,7 @@ QTiled 是一套零依赖的轻量级 Tiled 多边形布局库，提供基础图
 - `src/path-finding/` —— `a-star.js`，邻居获取方法由调用方注入，以适配错列、等距、正矩形等不同布局。
 - `__tests__/` —— 与 `src/` 对应的 Jest 用例，如 `__tests__/hexagon.test.js`；公共断言辅助放在 `utils.js`。
 - `demo/` —— 可直接在浏览器打开的示例页（`hexagon.html`、`pathfinding-rhombus.html` 等），依赖 `demo/static/js/qtiled.dev.js`。
+- 元素编辑器、素材预览、地图编辑器及游戏规则和资源由独立 `emk.pyzy.net` 项目维护；Demo 导航只保留两个编辑器的外部链接。龙之崛起调研与后续游戏计划也在该项目续接，见 `docs/editor-migration.md`。
 - `build/` —— Rollup 配置；`dist/`、`coverage/` 为生成产物，请勿手工修改。
 - `.github/prompts/` —— 用于沉淀长期规划类提示词。
 
@@ -18,7 +19,7 @@ QTiled 是一套零依赖的轻量级 Tiled 多边形布局库，提供基础图
 - `npm test` —— 运行 Jest 并输出覆盖率到 `coverage/`；`npm run test-w` 为监听模式。
 - `npm run lint` —— 按 `.eslintrc` 检查并自动修复（`--fix`）。
 - `npm run dev` —— Rollup 监听构建到 `demo/static/js/qtiled.dev.js`，并在 `http://localhost:8033/demo/index.html` 提供示例预览。
-- `npm run build:demo` —— 独立生成 `output/demo-release/` 发布副本：四个压缩包、无 LiveReload/source map、HTML 使用资源内容哈希。发布只使用此目录；不覆盖 `demo/` 开发包。
+- `npm run build:demo` —— 独立生成 `output/demo-release/` 发布副本：核心与四向视图两个压缩包、无 LiveReload/source map、HTML 使用资源内容哈希。发布只使用此目录；不覆盖 `demo/` 开发包。
 - `npm run build` —— 在 `dist/` 生成全部产物（`qtiled.cjs.js`、`qtiled.mjs.js`、`qtiled.umd.js`、`qtiled.min.js`）；也可单独执行 `npm run cjs`、`mjs`、`umd`、`min`、`debug`。
 
 ## 基础行为准则
@@ -44,13 +45,6 @@ QTiled 是一套零依赖的轻量级 Tiled 多边形布局库，提供基础图
 - 修改 Demo 脚本或样式后，即使无需重新构建核心库，也必须同步更新引用这些文件的 HTML 资源版本号。复用现有版本机制；单页补修只更新受影响的引用，统一更新可用 `npm run update-demo-version`。只改变页面 URL 的查询参数不能替代子资源版本更新。
 - 必须在已有浏览器会话的已打开页面中保留缓存、普通刷新验证，确认示例地图加载、相关控件和错误提示正常。全新会话、无痕窗口、禁用缓存或清缓存后的检查不能替代此项。刷新前保留用户未保存的编辑。
 - 验收记录注明已有页面刷新结果；新会话检查另行标明。涉及视觉变化时保留截图，不将新会话通过等同于已有页面升级通过。
-
-### Atlas 素材处理
-
-- Demo 正式 atlas 图集统一使用无损 WebP；非 atlas 图片不因这条规则批量转换。有损或近无损压缩须另获用户明确确认。
-- 转换必须保留尺寸、图集排列、裁切坐标、锚点和完整 RGBA，包括完全透明像素的 RGB。使用 `cwebp -lossless -exact` 或等价编码设置；不能用有损 `quality=100` 代替无损模式。
-- 删除旧图前保留可追溯原图，并解码逐像素核对完整 RGBA；原图和调研副本存本地 `output/`，正式资源目录不同时保留重复 PNG/WebP。
-- 更换图片格式或内容时，同步元素 JSON 的 source、公共加载清单、资源版本和受影响 HTML 引用，并检查所有裁切、动画、透明命中及已有页面缓存刷新。测试必须读取真实图片像素，不得用全不透明替身替代 alpha。
 
 ## 提交与合并请求规范
 

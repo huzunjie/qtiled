@@ -21,12 +21,10 @@
       ],
     },
     {
-      title: '游戏用例与工具',
+      title: '应用实例 · 游戏编辑工具 · EMK',
       items: [
-        ['element-preview.html', '四向静态素材 - 菱形'],
-        ['water-animation.html', '水域动画 - 菱形'],
-        ['element-editor.html', '元素编辑器 - 菱形'],
-        ['map-editor.html', '地图地表编辑 - 菱形'],
+        ['https://emk.pyzy.net/element-editor.html', '元素编辑器 ↗'],
+        ['https://emk.pyzy.net/map-editor.html', '地图编辑器 ↗'],
       ],
     },
   ];

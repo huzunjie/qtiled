@@ -61,6 +61,6 @@ const positions = worldCells.map(grid => projectGrid(grid, view));
 
 `npm run dev` 监听核心及可选 Demo 模块，打开 `http://localhost:8033/demo/isometric-view.html`。也可先运行 `npm run debug` 生成 Demo 包，再使用本地静态服务打开页面。可选视图 Demo 包为 `demo/static/js/qtiled-view.dev.js`，浏览器命名空间为 `qtiledView`。独立消费者使用 `npm run optional` 生成的正式 UMD 文件。
 
-本页与静态素材 Demo 共用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px；空间不足时在画布区域内滚动，保持绘制尺寸和鼠标坐标比例。
+本页使用 `demo/static/css/preview-workspace.css`：信息栏始终在画布右侧，正文 12px；空间不足时在画布区域内滚动，保持绘制尺寸和鼠标坐标比例。
 
 几何视图不加载图片或编辑元素；素材预览在这些坐标函数之上处理裁切和像素锚点。
